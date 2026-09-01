@@ -12,3 +12,8 @@ Documents
 12.*
 13.*
 14.*
+.mypy_cache
+.venv
+uv.lock
+pyproject.toml
+.python-version

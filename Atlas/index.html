@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Optimization Atlas</title>
+<!-- the one public address: search engines and link previews use it as is -->
+<link rel="canonical" href="https://optimization-methods.tarakan-tuc.ru/">
+<link rel="stylesheet" href="styles.css">
+<!-- first, so the language is set before the page is painted -->
+<script src="js/i18n.js"></script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <h1><span lang="en">Optimization Atlas</span><span lang="ru">Атлас оптимизации</span></h1>
+    <span class="brand-sub"><span lang="en">interactive notes for optimization methods in data science</span><span lang="ru">интерактивный конспект по методам оптимизации в анализе данных</span></span>
+  </div>
+
+  <nav class="tabs" id="tabs" aria-label="Sections" data-ru-aria-label="Разделы">
+    <button class="tab is-on" data-target="sec-A" aria-current="page">A &middot; <span lang="en">Landscape</span><span lang="ru">Ландшафт</span></button>
+    <button class="tab" data-target="sec-B">B &middot; <span lang="en">Continuous</span><span lang="ru">Непрерывная</span></button>
+    <button class="tab" data-target="sec-C">C &middot; <span lang="en">Stochastic</span><span lang="ru">Стохастическая</span></button>
+    <button class="tab" data-target="sec-D">D &middot; <span lang="en">Constraints</span><span lang="ru">Ограничения</span></button>
+    <button class="tab" data-target="sec-E">E &middot; <span lang="en">Discrete</span><span lang="ru">Дискретная</span></button>
+    <button class="tab" data-target="sec-F">F &middot; <span lang="en">Cheat sheet</span><span lang="ru">Шпаргалка</span></button>
+  </nav>
+
+  <div class="lang-switch" id="lang-switch" role="group" aria-label="Language" data-ru-aria-label="Язык">
+    <button class="lang-btn" data-lang="en" aria-pressed="true" title="English">EN</button>
+    <button class="lang-btn" data-lang="ru" aria-pressed="false" title="Русский">RU</button>
+  </div>
+
+  <button class="btn ghost" id="theme-toggle" aria-label="Switch colour theme" data-ru-aria-label="Переключить цветовую тему"><span lang="en">Dark</span><span lang="ru">Тёмная</span></button>
+</header>
+
+<main id="main">
+
+  <!-- ===================================================== A. LANDSCAPE -->
+  <section class="section" id="sec-A" aria-labelledby="a-head">
+    <div class="section-head">
+      <h2 id="a-head"><span lang="en">Landscape</span><span lang="ru">Ландшафт</span></h2>
+      <p class="lede"><span lang="en">What an optimization problem looks like from above, and what makes one hard.</span><span lang="ru">Как задача оптимизации выглядит сверху и что делает её трудной.</span></p>
+    </div>
+
+    <div class="lab">
+      <div class="lab-main">
+        <div class="canvas-wrap tall">
+          <canvas id="a-canvas"></canvas>
+          <div class="canvas-tag" id="a-tag"></div>
+        </div>
+        <div class="readout" id="a-readout">
+          <div class="ro-item"><span class="ro-k"><span lang="en">point</span><span lang="ru">точка</span></span><span class="ro-v" id="a-ro-pt">&mdash;</span></div>
+          <div class="ro-item"><span class="ro-k">f(x)</span><span class="ro-v" id="a-ro-f">&mdash;</span></div>
+          <div class="ro-item"><span class="ro-k">&nabla;f(x)</span><span class="ro-v" id="a-ro-g">&mdash;</span></div>
+          <div class="ro-item"><span class="ro-k">&#8214;&nabla;f&#8214;</span><span class="ro-v" id="a-ro-gn">&mdash;</span></div>
+          <div class="ro-item"><span class="ro-k">&lambda;<sub>1</sub>, &lambda;<sub>2</sub> <span lang="en">of</span><span lang="ru">матрицы</span> &nabla;&sup2;f</span><span class="ro-v" id="a-ro-eig">&mdash;</span></div>
+          <div class="ro-item"><span class="ro-k">&kappa; = |&lambda;|<sub>max</sub>/|&lambda;|<sub>min</sub></span><span class="ro-v" id="a-ro-k">&mdash;</span></div>
+          <div class="ro-item wide"><span class="ro-k"><span lang="en">curvature</span><span lang="ru">кривизна</span></span><span class="ro-v" id="a-ro-cls"><span lang="en">move the cursor over the plot</span><span lang="ru">наведите курсор на график</span></span></div>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <div class="ctl">
+          <div class="ctl-top"><label for="a-fn"><span lang="en">Test function</span><span lang="ru">Тестовая функция</span></label></div>
+          <select id="a-fn"></select>
+        </div>
+
+        <div id="a-params" class="params"></div>
+
+        <div class="ctl">
+          <div class="ctl-top"><span class="label"><span lang="en">View</span><span lang="ru">Вид</span></span></div>
+          <div class="seg" id="a-mode">
+            <button class="seg-btn is-on" data-mode="contours"><span lang="en">2D contours</span><span lang="ru">Линии уровня</span></button>
+            <button class="seg-btn" data-mode="height"><span lang="en">Height shading</span><span lang="ru">Заливка по высоте</span></button>
+          </div>
+          <div class="ctl-hint"><span lang="en">Both views use the same logarithmically spaced levels, so narrow valleys stay visible.</span><span lang="ru">Оба вида строятся по одним и тем же уровням с логарифмическим шагом, поэтому узкие овраги остаются видны.</span></div>
+        </div>
+
+        <div class="ctl">
+          <label class="check"><input type="checkbox" id="a-grad" checked> <span lang="en">Gradient arrow under the cursor</span><span lang="ru">Стрелка градиента под курсором</span></label>
+          <label class="check"><input type="checkbox" id="a-marks" checked> <span lang="en">Mark known optima and saddles</span><span lang="ru">Отмечать известные оптимумы и сёдла</span></label>
+        </div>
+
+        <div class="note" id="a-fnnote"></div>
+
+        <div class="prose">
+          <h3><span lang="en">Five words that decide everything</span><span lang="ru">Пять слов, которые решают всё</span></h3>
+          <p><span lang="en">A <b>minimum</b> is a point from which no small move decreases f. A problem is <b>convex</b> when every chord lies above the graph, and then any local minimum is already global. It is <b>smooth</b> with constant L when the gradient never changes faster than L, which is exactly what makes the step 1/L safe. The <b>condition number</b> &kappa; = &lambda;<sub>max</sub>/&lambda;<sub>min</sub> of the Hessian says how elongated the level sets are, and a large &kappa; is the narrow valley in which plain gradient descent zigzags. At a <b>saddle point</b> the Hessian has eigenvalues of both signs, so the surface curves up along one direction and down along another and the gradient still vanishes. Everything else in this atlas is a strategy for coping with these five facts.</span><span lang="ru"><b>Минимум</b> — это точка, из которой никакой малый сдвиг не уменьшает f. Задача <b>выпуклая</b>, если любая хорда лежит не ниже графика, и тогда всякий локальный минимум уже глобальный. Она <b>гладкая</b> с константой L, если скорость изменения градиента нигде не превышает L, — именно это и делает шаг 1/L безопасным. <b>Число обусловленности</b> гессиана &kappa; = &lambda;<sub>max</sub>/&lambda;<sub>min</sub> показывает, насколько вытянуты множества уровня, а большое &kappa; — это и есть тот узкий овраг, в котором обычный градиентный спуск идёт зигзагом. В <b>седловой точке</b> у гессиана есть собственные значения обоих знаков: вдоль одного направления поверхность изгибается вверх, вдоль другого — вниз, а градиент всё равно обращается в нуль. Всё остальное в этом атласе — способы справиться с этими пятью фактами.</span></p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- =================================================== B. CONTINUOUS -->
+  <section class="section" id="sec-B" aria-labelledby="b-head" hidden>
+    <div class="section-head">
+      <h2 id="b-head"><span lang="en">Continuous optimization</span><span lang="ru">Непрерывная оптимизация</span></h2>
+      <p class="lede"><span lang="en">Click the plot to move the starting point. Every enabled method restarts from there.</span><span lang="ru">Щёлкните по графику, чтобы перенести начальную точку. Все включённые методы перезапускаются из неё.</span></p>
+    </div>
+
+    <div class="lab">
+      <div class="lab-main">
+        <div class="canvas-wrap tall">
+          <canvas id="b-canvas"></canvas>
+          <div class="canvas-tag" id="b-tag"></div>
+        </div>
+
+        <div class="statusbar" id="b-status"></div>
+
+        <div class="chart-block">
+          <div class="chart-head">
+            <span class="chart-title" id="b-chart-title"><span lang="en">Convergence</span><span lang="ru">Сходимость</span></span>
+            <span class="chart-sub" id="b-chart-sub"></span>
+            <div class="chart-toggles" id="b-overlays"></div>
+          </div>
+          <div class="chart-wrap"><canvas id="b-chart"></canvas></div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="runs" id="b-runs">
+            <thead>
+              <tr><th><span lang="en">method</span><span lang="ru">метод</span></th><th class="num">k</th><th class="num">f(x<sub>k</sub>)</th><th class="num">&#8214;&nabla;f&#8214;</th><th class="num"><span lang="en">f&nbsp;evals</span><span lang="ru">вычисления&nbsp;f</span></th><th class="num"><span lang="en">&nabla;f&nbsp;evals</span><span lang="ru">вычисления&nbsp;&nabla;f</span></th><th><span lang="en">state</span><span lang="ru">состояние</span></th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <aside class="panel" id="b-panel">
+        <div class="ctl">
+          <div class="ctl-top"><label for="b-fn"><span lang="en">Test function</span><span lang="ru">Тестовая функция</span></label></div>
+          <select id="b-fn"></select>
+          <div class="ctl-hint" id="b-fnnote"></div>
+        </div>
+
+        <div id="b-params" class="params"></div>
+
+        <div class="ctl">
+          <div class="ctl-top"><span class="label"><span lang="en">Methods</span><span lang="ru">Методы</span></span><span class="mini" id="b-count"></span></div>
+          <div class="methods" id="b-methods"></div>
+        </div>
+
+        <div id="b-hyper" class="params"></div>
+
+        <div class="ctl buttons">
+          <button class="btn primary" id="b-run"><span lang="en">Run</span><span lang="ru">Запуск</span></button>
+          <button class="btn" id="b-pause"><span lang="en">Pause</span><span lang="ru">Пауза</span></button>
+          <button class="btn" id="b-step"><span lang="en">Step</span><span lang="ru">Шаг</span></button>
+          <button class="btn" id="b-reset"><span lang="en">Reset</span><span lang="ru">Сброс</span></button>
+        </div>
+        <div class="ctl">
+          <button class="btn wide" id="b-theory"><span lang="en">Show theoretical step 1/L</span><span lang="ru">Показать теоретический шаг 1/L</span></button>
+          <div class="ctl-hint" id="b-theory-note"><span lang="en">Sets &alpha; to 1/L for the current landscape.</span><span lang="ru">Задаёт &alpha; = 1/L для текущего ландшафта.</span></div>
+        </div>
+
+        <div class="card" id="b-card" aria-live="polite"></div>
+
+        <div class="ctl">
+          <div class="ctl-top"><span class="label"><span lang="en">How it breaks</span><span lang="ru">Как ломаются методы</span></span></div>
+          <div class="presets" id="b-presets"></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ================================================ C, D, E, F stubs -->
+  <!-- =================================================== C. STOCHASTIC -->
+  <section class="section" id="sec-C" aria-labelledby="c-head" hidden>
+    <div class="section-head">
+      <h2 id="c-head"><span lang="en">Stochastic optimization</span><span lang="ru">Стохастическая оптимизация</span></h2>
+      <p class="lede"><span lang="en">Minimise an average of 200 quadratic terms. Every term has its own minimum; the one you want sits at their centre.</span><span lang="ru">Минимизируем среднее 200 квадратичных слагаемых. У каждого слагаемого свой минимум, а искомый лежит в их центре.</span></p>
+    </div>
+
+    <div class="lab">
+      <div class="lab-main">
+        <div class="canvas-wrap tall">
+          <canvas id="c-canvas"></canvas>
+          <div class="canvas-tag" id="c-tag"></div>
+        </div>
+
+        <div class="statusbar" id="c-status"></div>
+
+        <div class="pair">
+          <div class="mini-card">
+            <div class="chart-head">
+              <span class="chart-title"><span lang="en">The noise ball</span><span lang="ru">Шар шума</span></span>
+              <span class="chart-sub"><span lang="en">last 200 iterates, zoomed on x*</span><span lang="ru">последние 200 итераций, окрестность x* крупным планом</span></span>
+            </div>
+            <div class="mini-canvas"><canvas id="c-ball"></canvas></div>
+            <div class="mini-foot" id="c-ball-note"></div>
+          </div>
+
+          <div class="mini-card">
+            <div class="chart-head">
+              <span class="chart-title"><span lang="en">Escape the saddle</span><span lang="ru">Выход из седловой точки</span></span>
+              <span class="chart-sub"><span lang="en">both start on the ridge</span><span lang="ru">оба стартуют на гребне</span></span>
+            </div>
+            <div class="mini-canvas"><canvas id="c-escape"></canvas></div>
+            <div class="mini-foot" id="c-escape-note"></div>
+            <div class="mini-actions">
+              <button class="btn" id="c-escape-run"><span lang="en">Run</span><span lang="ru">Запуск</span></button>
+              <button class="btn" id="c-escape-reset"><span lang="en">Reset</span><span lang="ru">Сброс</span></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-block">
+          <div class="chart-head">
+            <span class="chart-title"><span lang="en">Convergence</span><span lang="ru">Сходимость</span>: F(x) − F*</span>
+            <span class="chart-sub" id="c-chart-sub"></span>
+          </div>
+          <div class="chart-wrap"><canvas id="c-chart"></canvas></div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="runs" id="c-runs">
+            <thead>
+              <tr><th><span lang="en">optimizer</span><span lang="ru">оптимизатор</span></th><th class="num"><span lang="en">updates</span><span lang="ru">обновления</span></th><th class="num"><span lang="en">epochs</span><span lang="ru">эпохи</span></th><th class="num">F − F*</th><th class="num">‖x − x*‖</th><th class="num"><span lang="en">batch</span><span lang="ru">батч</span></th><th><span lang="en">state</span><span lang="ru">состояние</span></th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <aside class="panel" id="c-panel">
+        <div class="ctl">
+          <div class="ctl-top"><span class="label"><span lang="en">Optimizers</span><span lang="ru">Оптимизаторы</span></span><span class="mini" id="c-count"></span></div>
+          <div class="methods" id="c-methods"></div>
+        </div>
+
+        <div class="ctl">
+          <div class="ctl-top"><label for="c-schedule"><span lang="en">Step-size schedule</span><span lang="ru">Расписание шага</span></label></div>
+          <select id="c-schedule"></select>
+          <div class="sched-plot"><canvas id="c-sched"></canvas></div>
+          <div class="ctl-hint" id="c-sched-note"></div>
+        </div>
+
+        <div id="c-hyper" class="params"></div>
+
+        <div class="ctl buttons">
+          <button class="btn primary" id="c-run"><span lang="en">Run</span><span lang="ru">Запуск</span></button>
+          <button class="btn" id="c-pause"><span lang="en">Pause</span><span lang="ru">Пауза</span></button>
+          <button class="btn" id="c-step"><span lang="en">Step</span><span lang="ru">Шаг</span></button>
+          <button class="btn" id="c-reset"><span lang="en">Reset</span><span lang="ru">Сброс</span></button>
+        </div>
+        <div class="ctl buttons">
+          <button class="btn" id="c-race"><span lang="en">Race all eight</span><span lang="ru">Гонка всех восьми</span></button>
+          <button class="btn" id="c-resample"><span lang="en">Resample data</span><span lang="ru">Новая выборка</span></button>
+        </div>
+
+        <div class="card" id="c-card" aria-live="polite"></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ================================================== D. CONSTRAINTS -->
+  <section class="section" id="sec-D" aria-labelledby="d-head" hidden>
+    <div class="section-head">
+      <h2 id="d-head"><span lang="en">Constraints and nonsmoothness</span><span lang="ru">Ограничения и негладкость</span></h2>
+      <p class="lede"><span lang="en">Hover the plot to see any point projected onto the feasible set; click to move the starting point.</span><span lang="ru">Наведите курсор на график, чтобы увидеть проекцию любой точки на допустимое множество; щёлкните, чтобы перенести начальную точку.</span></p>
+    </div>
+
+    <div class="lab">
+      <div class="lab-main">
+        <div class="canvas-wrap tall">
+          <canvas id="d-canvas"></canvas>
+          <div class="canvas-tag" id="d-tag"></div>
+        </div>
+
+        <div class="statusbar" id="d-status"></div>
+
+        <div class="pair" id="d-l1-panels">
+          <div class="mini-card">
+            <div class="chart-head">
+              <span class="chart-title"><span lang="en">Why L1 gives sparsity</span><span lang="ru">Почему L1 даёт разреженность</span></span>
+              <span class="chart-sub"><span lang="en">same f, two penalties</span><span lang="ru">одна и та же f, два штрафа</span></span>
+            </div>
+            <div class="mini-canvas"><canvas id="d-l1"></canvas></div>
+            <div class="mini-foot" id="d-l1-note"></div>
+          </div>
+
+          <div class="mini-card">
+            <div class="chart-head">
+              <span class="chart-title"><span lang="en">Soft thresholding</span><span lang="ru">Мягкая пороговая функция</span></span>
+              <span class="chart-sub">prox <span lang="en">of</span><span lang="ru">функции</span> λ|x|</span>
+            </div>
+            <div class="mini-canvas"><canvas id="d-soft"></canvas></div>
+            <div class="mini-foot" id="d-soft-note"></div>
+          </div>
+        </div>
+
+        <div class="chart-block">
+          <div class="chart-head">
+            <span class="chart-title"><span lang="en">Convergence</span><span lang="ru">Сходимость</span>: f(x) − f*</span>
+            <span class="chart-sub" id="d-chart-sub"></span>
+            <div class="chart-toggles" id="d-overlays"></div>
+          </div>
+          <div class="chart-wrap"><canvas id="d-chart"></canvas></div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="runs" id="d-runs">
+            <thead>
+              <tr><th><span lang="en">method</span><span lang="ru">метод</span></th><th class="num">k</th><th class="num">f(x)</th><th class="num">f − f*</th><th class="num"><span lang="en">optimality</span><span lang="ru">мера оптимальности</span></th><th><span lang="en">state</span><span lang="ru">состояние</span></th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <aside class="panel" id="d-panel">
+        <div class="ctl">
+          <div class="ctl-top"><span class="label"><span lang="en">Problem</span><span lang="ru">Задача</span></span></div>
+          <div class="seg" id="d-mode">
+            <button class="seg-btn is-on" data-mode="constrained">min f <span lang="en">over a set</span><span lang="ru">на множестве</span></button>
+            <button class="seg-btn" data-mode="composite">min f + λ‖x‖₁</button>
+          </div>
+        </div>
+
+        <div class="ctl" id="d-set-row">
+          <div class="ctl-top"><label for="d-set"><span lang="en">Feasible set</span><span lang="ru">Допустимое множество</span></label></div>
+          <select id="d-set"></select>
+          <div class="ctl-hint" id="d-set-note"></div>
+        </div>
+        <div id="d-set-params" class="params"></div>
+        <div id="d-lam-row" class="params"></div>
+
+        <div class="ctl">
+          <div class="ctl-top"><span class="label"><span lang="en">Methods</span><span lang="ru">Методы</span></span><span class="mini" id="d-count"></span></div>
+          <div class="methods" id="d-methods"></div>
+          <div class="ctl-hint" id="d-mnote"></div>
+        </div>
+
+        <div id="d-hyper" class="params"></div>
+
+        <div class="ctl buttons">
+          <button class="btn primary" id="d-run"><span lang="en">Run</span><span lang="ru">Запуск</span></button>
+          <button class="btn" id="d-pause"><span lang="en">Pause</span><span lang="ru">Пауза</span></button>
+          <button class="btn" id="d-step"><span lang="en">Step</span><span lang="ru">Шаг</span></button>
+          <button class="btn" id="d-reset"><span lang="en">Reset</span><span lang="ru">Сброс</span></button>
+        </div>
+
+        <div class="kkt" id="d-kkt"></div>
+        <div class="card" id="d-card" aria-live="polite"></div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ==================================================== E. DISCRETE -->
+  <section class="section" id="sec-E" aria-labelledby="e-head" hidden>
+    <div class="section-head">
+      <h2 id="e-head"><span lang="en">Discrete optimization</span><span lang="ru">Дискретная оптимизация</span></h2>
+      <p class="lede"><span lang="en">Seven independent widgets. Each one runs the real algorithm a step at a time; nothing here is a recording.</span><span lang="ru">Семь независимых виджетов. Каждый выполняет настоящий алгоритм шаг за шагом; здесь ничего не записано заранее.</span></p>
+    </div>
+    <nav class="wnav" id="e-nav" aria-label="Widgets" data-ru-aria-label="Виджеты"></nav>
+    <div id="e-host"></div>
+  </section>
+
+  <!-- ================================================= F. CHEAT SHEET -->
+  <section class="section" id="sec-F" aria-labelledby="f-head" hidden>
+    <div class="section-head">
+      <h2 id="f-head"><span lang="en">Cheat sheet</span><span lang="ru">Шпаргалка</span></h2>
+      <p class="lede"><span lang="en">Every method in the course in one table, generated from the same registries the playgrounds run on. Click any row to open its widget with a matching setup already applied.</span><span lang="ru">Все методы курса в одной таблице, собранной из тех же реестров, на которых работают интерактивные разделы. Щёлкните по любой строке, чтобы открыть соответствующий виджет с уже подобранной настройкой.</span></p>
+    </div>
+    <div class="filters" id="f-filters"></div>
+    <div class="table-wrap sheet-wrap">
+      <table class="sheet" id="f-table"><thead></thead><tbody></tbody></table>
+    </div>
+  </section>
+
+</main>
+
+<script src="js/core.js"></script>
+<script src="js/functions.js"></script>
+<script src="js/methods.js"></script>
+<script src="js/discrete.js"></script>
+<script src="js/cheatsheet.js"></script>
+<script src="js/ui.js"></script>
+</body>
+</html>

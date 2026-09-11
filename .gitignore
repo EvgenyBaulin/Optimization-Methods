@@ -1,4 +1,12 @@
+# Personal and secrets
 Documents
+.DS_Store
+**Seminar Plan.md
+**out**
+**Speech**
+**Theory**
+
+# Future
 2.*
 3.*
 4.*
@@ -12,8 +20,8 @@ Documents
 12.*
 13.*
 14.*
+
+# Python
 .mypy_cache
 .venv
 uv.lock
-pyproject.toml
-.python-version

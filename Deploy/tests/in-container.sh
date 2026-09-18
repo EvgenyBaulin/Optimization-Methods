@@ -31,6 +31,7 @@ MAILDIR=/var/mail-test
 LOGS=/tmp/e2e
 OUT=$LOGS/last.out
 MARKER=never-publish-marker
+SSH_DEPLOY="ssh -i ~/.ssh/course_deploy -o IdentitiesOnly=yes"
 PAST="2026-01-01 10:00"
 FUTURE=$(TZ=Europe/Moscow date -d '+2 days' '+%Y-%m-%d %H:%M')
 mkdir -p "$LOGS" "$MAILDIR"
@@ -327,15 +328,15 @@ setup_mac() {
     useradd -m -s /bin/bash mac
     install -d -m 0700 -o mac -g mac "$MAC/.ssh"
     as_mac ssh-keygen -q -t ed25519 -f "$MAC/.ssh/course_deploy" -N "" -C "course-deploy mac"
+    # as on the Mac: the existing root entry Main_server, whose key file is not there
     put "$MAC/.ssh/config" <<'EOF'
-Host course-deploy
-    HostName 127.0.0.1
-    Port 2222
-    User deploy
-    IdentityFile ~/.ssh/course_deploy
-    IdentitiesOnly yes
-    BatchMode yes
-    StrictHostKeyChecking yes
+Host Main_server
+  HostName 127.0.0.1
+  User root
+  Port 2222
+  IdentityFile ~/.ssh/main_server
+  BatchMode yes
+  StrictHostKeyChecking yes
 EOF
     local f
     for f in /etc/ssh/ssh_host_*_key.pub; do
@@ -452,7 +453,8 @@ course | /seminars/vendor/ | $VENDOR | now
 EOF
     mgit init -q
     commit "Course materials"
-    mgit remote add deploy course-deploy:/srv/course-deploy/site.git
+    mgit remote add deploy deploy@Main_server:/srv/course-deploy/site.git
+    mgit config core.sshCommand "$SSH_DEPLOY"
 }
 
 upload_kit() {
@@ -486,7 +488,8 @@ s01() {
         for f in /etc/ssh/ssh_host_*_key.pub; do echo "  $(ssh-keygen -lf "$f")"; done
         echo
         echo "On the Mac:"
-        echo '  ssh course-deploy                      # expect "Interactive git shell is not enabled"'
+        echo '  ssh -i ~/.ssh/course_deploy -o IdentitiesOnly=yes deploy@Main_server'
+        echo '                                         # expect "Interactive git shell is not enabled"'
         echo "  python3 Deploy/publish.py --dry-run"
         echo "  python3 Deploy/publish.py"
         echo
@@ -558,7 +561,7 @@ s01() {
 
 s02() {
     local rc=0
-    as_mac ssh -n course-deploy > "$OUT" 2>&1 || rc=$?
+    as_mac ssh -n -i "$MAC/.ssh/course_deploy" -o IdentitiesOnly=yes deploy@Main_server > "$OUT" 2>&1 || rc=$?
     sed 's/^/    | /' "$OUT"
     check "git-shell refuses the login" has "fatal: Interactive git shell is not enabled."
     check "ssh fails" test "$rc" -ne 0
@@ -774,7 +777,8 @@ s11() {
     list0=$(releases)
     meta0=$(find "$RELEASES" -maxdepth 1 -name '*.meta' | sort)
     rm -rf "$HAND"
-    as_mac git clone -q course-deploy:/srv/course-deploy/site.git "$HAND"
+    as_mac git -c core.sshCommand="$SSH_DEPLOY" clone -q deploy@Main_server:/srv/course-deploy/site.git "$HAND"
+    hgit config core.sshCommand "$SSH_DEPLOY"
     as_mac cp "$main" "$HAND/entries/seminars--02/main.html"
     hgit commit -q -am "By hand: the same bundle with the missing script"
     local rc=0
@@ -1141,7 +1145,8 @@ EOF
     check "publish.py version" has "publish.py 1.0.0"
     check "publish.py bad option" code 2 publish --bogus
     check "unknown remote" code 1 publish --remote nowhere
-    check "remote hint" has "git remote add deploy course-deploy:/srv/course-deploy/site.git"
+    check "remote hint" has "git remote add deploy deploy@Main_server:/srv/course-deploy/site.git"
+    check "ssh command hint" has 'git config core.sshCommand "ssh -i ~/.ssh/course_deploy -o IdentitiesOnly=yes"'
 }
 
 s23() {
@@ -1151,7 +1156,8 @@ s23() {
     chown -R mac:mac "$COURSE/Atlas" "$COURSE/Seminars"
     # first seminar 01 released and 02 still ahead: the landing page must not bring 02 along
     local released="2026-09-01 18:10"
-    sed -E "s/^# (course \| \/seminars\/[0-9]{2}\/ \| .*) \| YYYY-MM-DD HH:MM\$/\1 | $released/" \
+    # every seminar line of the real publish.conf, commented or filled in, gets a released date
+    sed -E "s/^(# )?(course \| \/seminars\/[0-9]{2}\/ \| [^|]*) \| .*\$/\2 | $released/" \
         "$SRC/Deploy/publish.conf" > "$LOGS/publish.conf"
     sed "/\/seminars\/02\//s/$released\$/$FUTURE/" "$LOGS/publish.conf" | conf
     grep -v '^#' "$COURSE/Deploy/publish.conf" | sed '/^$/d; s/^/    /'

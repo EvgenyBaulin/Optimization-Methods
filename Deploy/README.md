@@ -100,16 +100,9 @@ ssh-keygen -t ed25519 -f ~/.ssh/course_deploy -N "" -C "course-deploy mac"
 The key has no passphrase, so publishing never asks for one. On the server it is restricted: it can
 push to and fetch from the site repository and nothing else.
 
-Add this block to `~/.ssh/config` (create the file if there is none):
-
-```text
-Host course-deploy
-    HostName 89.191.229.171
-    Port 22
-    User deploy
-    IdentityFile ~/.ssh/course_deploy
-    IdentitiesOnly yes
-```
+The address comes from the existing entry `Main_server` in `~/.ssh/config` (`HostName 89.191.229.171`,
+`Port 22`, `User root`); nothing is added there. The push goes to that host as the user `deploy`, with
+this key, which the repository sets up in step 3.
 
 ### 2. Install on the server
 
@@ -139,7 +132,8 @@ Host key fingerprints (compare them on the first connection from the Mac):
   …
 
 On the Mac:
-  ssh course-deploy                      # expect "Interactive git shell is not enabled"
+  ssh -i ~/.ssh/course_deploy -o IdentitiesOnly=yes deploy@Main_server
+                                         # expect "Interactive git shell is not enabled"
   python3 Deploy/publish.py --dry-run
   python3 Deploy/publish.py
 
@@ -156,10 +150,10 @@ that setting in `/etc/ssh/sshd_config` (or the file in `/etc/ssh/sshd_config.d/`
 On the Mac:
 
 ```bash
-ssh course-deploy
+ssh -i ~/.ssh/course_deploy -o IdentitiesOnly=yes deploy@Main_server
 ```
 
-ssh asks whether to trust the server and shows `ED25519 key fingerprint is SHA256:…`. Compare it with
+If ssh has not met the server before, it shows `ED25519 key fingerprint is SHA256:…`. Compare it with
 the ED25519 line the installer printed and answer `yes` only if they are the same. The server then
 answers `fatal: Interactive git shell is not enabled.` and closes the connection. That is the expected
 result: the key works, and the account can do nothing but git.
@@ -167,8 +161,14 @@ result: the key works, and the account can do nothing but git.
 Then, once, in the repository:
 
 ```bash
-git remote add deploy course-deploy:/srv/course-deploy/site.git
+git remote add deploy deploy@Main_server:/srv/course-deploy/site.git
+git config core.sshCommand "ssh -i ~/.ssh/course_deploy -o IdentitiesOnly=yes"
 ```
+
+`deploy@` overrides the `User root` of `Main_server`, and `core.sshCommand` (stored in this
+repository's `.git/config` only) makes git offer the deploy key; the `origin` remote on GitHub uses
+HTTPS and is not affected. Never push the site as `root`: the repository belongs to `deploy`, and objects
+written by root would lock it out.
 
 ### 4. First publish
 
@@ -593,7 +593,7 @@ Nothing is committed or pushed in any of these cases.
 | `<folder> (line N) has no files committed to git` | the folder is new | commit it, or use `--allow-dirty` |
 | `Refusing to publish: course /seminars/02/ collides with content published above it` (or `with a file published above it`) | an entry higher up, such as the atlas at `/`, already has a folder or file with that name | rename one of them or pick another path |
 | `Refusing to publish: pages refer to files that are not in the bundle:` and `course: ERROR missing file: /seminars/02/main.html -> ../shared/css/base.css (no such file)` | a page loads a file that is not in the bundle: not committed, excluded, in a folder that is not listed (such as the `shared` line), or spelled with a different letter case (the server's disk is case-sensitive) | add the file, list its folder or fix the reference; other reasons are `no such folder`, `folder without index.html`, `outside the site` and `malformed address` |
-| `There is no git remote 'deploy'. Add it once with:` | the remote is missing | `git remote add deploy course-deploy:/srv/course-deploy/site.git` |
+| `There is no git remote 'deploy'. Add it once, in the repository, with:` | the remote is missing | the two commands it prints: `git remote add deploy deploy@Main_server:/srv/course-deploy/site.git` and `git config core.sshCommand "ssh -i ~/.ssh/course_deploy -o IdentitiesOnly=yes"` |
 | `Cannot reach the server through the remote 'deploy':` and an ssh message | SSH problem | see [SSH, sudo and git](#ssh-sudo-and-git) |
 | `Cannot read Deploy/exclude.txt (…): No such file or directory` (also `publish.conf`, `course-deploy-kit/sites.conf`, `course-deploy-kit/forbidden.txt`) | the file is missing | restore it |
 | `Deploy/publish.conf is not UTF-8 text: …` (or another of those files) | the file was saved in another encoding | save it as UTF-8 |
@@ -695,11 +695,11 @@ in the journal and the failure e-mail. In every case below the live site stays a
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
-| `Permission denied (publickey)` | the server does not have this key, or ssh offers another one | check the `Host course-deploy` block (`User deploy`, `IdentityFile ~/.ssh/course_deploy`, `IdentitiesOnly yes`); run `install.sh` again with the contents of `~/.ssh/course_deploy.pub`; `ssh -v course-deploy` shows which key is offered; if `install.sh` warned about `AllowUsers`, fix `sshd_config` |
-| `Host key verification failed` after `WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!` | the server's host key differs from the one in `~/.ssh/known_hosts`: the server was reinstalled, or it is not the server | in Termius run `ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub` on the server; if it matches what ssh shows, run `ssh-keygen -R 89.191.229.171` on the Mac, then `ssh course-deploy` and accept; if not, stop |
+| `Permission denied (publickey)` | the server does not have this key, ssh offers another one, or the push goes as root | `git remote -v` must show `deploy@Main_server:…` and `git config core.sshCommand` the deploy key; run `install.sh` again with the contents of `~/.ssh/course_deploy.pub`; `ssh -v -i ~/.ssh/course_deploy -o IdentitiesOnly=yes deploy@Main_server` shows which key is offered; if `install.sh` warned about `AllowUsers`, fix `sshd_config` |
+| `Host key verification failed` after `WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!` | the server's host key differs from the one in `~/.ssh/known_hosts`: the server was reinstalled, or it is not the server | in Termius run `ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub` on the server; if it matches what ssh shows, run `ssh-keygen -R 89.191.229.171` on the Mac, then connect again as in [First connection](#3-first-connection) and accept; if not, stop |
 | `ssh: connect to host 89.191.229.171 port 22: Operation timed out` (or `Connection timed out`, `Connection refused`) | the network, a VPN, or sshd is down | check that Termius connects; try another network or switch the VPN; nothing was sent, publish again later |
-| `fatal: Interactive git shell is not enabled.` after `ssh course-deploy` | expected | nothing |
-| `fatal: '/srv/course-deploy/site.git' does not appear to be a git repository` | `install.sh` has not run, or the remote points elsewhere | `git remote -v`; `git remote set-url deploy course-deploy:/srv/course-deploy/site.git` |
+| `fatal: Interactive git shell is not enabled.` after `ssh … deploy@Main_server` | expected | nothing |
+| `fatal: '/srv/course-deploy/site.git' does not appear to be a git repository` | `install.sh` has not run, or the remote points elsewhere | `git remote -v`; `git remote set-url deploy deploy@Main_server:/srv/course-deploy/site.git` |
 | `remote: sudo: a password is required`, then `The push arrived, but the server reported no result` | the sudo rule for `deploy` is missing or broken | run `install.sh` again; `sudo -l -U deploy` must list `(root) NOPASSWD: /usr/local/bin/course-deploy hook`; then `course-deploy --force` |
 | `! [rejected] … (fetch first)` or `(non-fast-forward)`, or `remote: error: denying non-fast-forward refs/heads/site` | the server's `site` branch moved after `publish.py` read it (another publish at the same time, or a push by hand) | run `publish.py` again: it fetches the server's tip first and builds on it; never force-push, the server refuses rewrites and deletions |
 | `course-deploy: this command must be run as root` | `course-deploy` run by another user | run it as root |

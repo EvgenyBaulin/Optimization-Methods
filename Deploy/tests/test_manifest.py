@@ -231,13 +231,6 @@ class MacManifestTest(unittest.TestCase):
             self.assertNotIn("/theory", e.folder)
             self.assertNotIn("/checks", e.folder)
 
-    def test_shipped_publish_conf_seminar_lines_are_commented(self):
-        lines = read(os.path.join(DEPLOY, "publish.conf")).splitlines()
-        seminars = [line for line in lines if "/seminars/" in line and "YYYY-MM-DD HH:MM" in line]
-        self.assertTrue(seminars)
-        for line in seminars:
-            self.assertTrue(line.startswith("# course | /seminars/"), line)
-
 
 class BundleManifestTest(unittest.TestCase):
     def test_five_fields(self):

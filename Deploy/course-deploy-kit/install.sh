@@ -234,7 +234,8 @@ for f in /etc/ssh/ssh_host_*_key.pub; do
 done
 say ""
 say "On the Mac:"
-say '  ssh course-deploy                      # expect "Interactive git shell is not enabled"'
+say '  ssh -i ~/.ssh/course_deploy -o IdentitiesOnly=yes deploy@Main_server'
+say '                                         # expect "Interactive git shell is not enabled"'
 say "  python3 Deploy/publish.py --dry-run"
 say "  python3 Deploy/publish.py"
 say ""

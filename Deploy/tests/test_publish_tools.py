@@ -137,7 +137,9 @@ class SmallHelpersTest(unittest.TestCase):
         self.assertEqual(env["GIT_OPTIONAL_LOCKS"], "0")
 
     def test_constants(self):
-        self.assertEqual(publish.REMOTE_HINT, "git remote add deploy course-deploy:/srv/course-deploy/site.git")
+        self.assertEqual(publish.REMOTE_HINT.splitlines(), [
+            "git remote add deploy deploy@Main_server:/srv/course-deploy/site.git",
+            '  git config core.sshCommand "ssh -i ~/.ssh/course_deploy -o IdentitiesOnly=yes"'])
         self.assertEqual(publish.SERVER_REF, "refs/heads/site")
         self.assertEqual(publish.LOCAL_REF, "refs/course-deploy/site")
         self.assertEqual(publish.DEFAULT_REMOTE, "deploy")

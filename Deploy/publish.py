@@ -35,7 +35,9 @@ sys.path.insert(0, KIT)
 from course_deploy import __version__, filters, manifest, pages, sitecheck  # noqa: E402
 
 DEFAULT_REMOTE = "deploy"
-REMOTE_HINT = "git remote add deploy course-deploy:/srv/course-deploy/site.git"
+# the existing ssh host Main_server gives the address; the push goes as deploy with its own key
+REMOTE_HINT = ("git remote add deploy deploy@Main_server:/srv/course-deploy/site.git\n"
+               "  git config core.sshCommand \"ssh -i ~/.ssh/course_deploy -o IdentitiesOnly=yes\"")
 SERVER_REF = "refs/heads/site"
 LOCAL_REF = "refs/course-deploy/site"
 TIMEZONE = manifest.DEFAULT_TIMEZONE
@@ -371,7 +373,7 @@ def publish(args: argparse.Namespace) -> int:
     subject = git(repo, "log", "-1", "--format=%s", head).stdout.decode("utf-8", "replace").strip()
 
     if not args.dry_run and git(repo, "remote", "get-url", args.remote, check=False).returncode != 0:
-        raise Refusal(f"There is no git remote '{args.remote}'. Add it once with:\n  {REMOTE_HINT}")
+        raise Refusal(f"There is no git remote '{args.remote}'. Add it once, in the repository, with:\n  {REMOTE_HINT}")
 
     known = [s.name for s in manifest.parse_sites(read_text(os.path.join(KIT, "sites.conf"),
                                                               "Deploy/course-deploy-kit/sites.conf"))]
@@ -408,7 +410,7 @@ def publish(args: argparse.Namespace) -> int:
 
         if args.dry_run:
             if git(repo, "remote", "get-url", args.remote, check=False).returncode != 0:
-                print(f"\nNote: there is no git remote '{args.remote}' yet; add it with: {REMOTE_HINT}")
+                print(f"\nNote: there is no git remote '{args.remote}' yet; add it with:\n  {REMOTE_HINT}")
             print("\nDry run: nothing was committed or pushed.")
             return 0
 

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Evgeny Baulin
-// Page assembly: the shared header, controls and footer (of the seminar pages and of the landing page),
-// the block templates of main.html (each seminar composes its page in its own js/seminar.js), present and
-// instructor modes, the overview and shortcut dialogs, and the keyboard.
+// Page assembly: the shared header, controls and footer (of the seminar pages, the landing page and the
+// upcoming page), the block templates of the seminar page (each seminar composes it in its own js/seminar.js),
+// present and instructor modes, the overview and shortcut dialogs, and the keyboard.
 (function () {
   'use strict';
   var SEM = window.SEM;
@@ -14,7 +14,7 @@
 
   var app = (SEM.app = {});
 
-  // The block ids of main.html in order, as the seminar lists them in SEM.seminar.blocks.
+  // The block ids of the seminar page in order, as the seminar lists them in SEM.seminar.blocks.
   function blockList() {
     return (SEM.seminar && SEM.seminar.blocks) || [];
   }
@@ -195,12 +195,14 @@
 
   /* ------------------------------------------------------------------ chrome */
 
-  // Header, controls and footer shared by the three pages of a seminar and the landing page (page 'home').
+  // Header, controls and footer shared by the three pages of a seminar, the landing page (page 'home') and
+  // the page of a seminar that is not out yet (page 'upcoming'). The last two carry the course, not a seminar.
   app.chrome = function (page) {
+    var ofCourse = page === 'home' || page === 'upcoming';
     var header = el('header', { class: 'site-header' });
     var brand = el('div', { class: 'brand' });
     var h1 = el('h1', { class: 'brand-title' });
-    if (page === 'home') {
+    if (ofCourse) {
       brand.appendChild(text('p', { class: 'brand-course' }, 'meta.institution'));
       h1.appendChild(text('span', { class: 'brand-name' }, 'meta.course'));
       brand.appendChild(h1);
@@ -218,11 +220,12 @@
 
     var bar = el('div', { class: 'toolbar', role: 'toolbar' });
     SEM.i18n.bind(function () {
-      bar.setAttribute('aria-label', SEM.tu(page === 'home' ? 'controls.toolbarHome' : 'controls.toolbar'));
+      bar.setAttribute('aria-label', SEM.tu(ofCourse ? 'controls.toolbarHome' : 'controls.toolbar'));
     });
     var nav = el('nav', { class: 'toolbar-nav' });
     SEM.i18n.bind(function () {
-      nav.setAttribute('aria-label', SEM.tu('controls.navigation'));
+      // the blocks of the seminar page, the other pages of the seminar on its handout and cheat sheet
+      nav.setAttribute('aria-label', SEM.tu(page === 'main' ? 'controls.navigation' : 'controls.pageLinks'));
     });
     if (page === 'main') {
       blockList().forEach(function (b) {
@@ -236,13 +239,14 @@
         });
         nav.appendChild(a);
       });
-    } else if (page !== 'home') {
-      nav.appendChild(text('a', { href: 'main.html', class: 'nav-link' }, 'controls.toSeminar'));
-      if (page !== 'theory') nav.appendChild(text('a', { href: 'theory.html', class: 'nav-link' }, 'controls.toTheory'));
-      if (page !== 'cheatsheet') nav.appendChild(text('a', { href: 'cheatsheet.html', class: 'nav-link' }, 'controls.toCheatsheet'));
+    } else if (!ofCourse) {
+      // the other pages of this seminar, from its folder
+      nav.appendChild(text('a', { href: SEM.course.localHref('index.html'), class: 'nav-link' }, 'controls.toSeminar'));
+      if (page !== 'theory') nav.appendChild(text('a', { href: SEM.course.localHref('theory/index.html'), class: 'nav-link' }, 'controls.toTheory'));
+      if (page !== 'cheatsheet') nav.appendChild(text('a', { href: SEM.course.localHref('cheatsheet/index.html'), class: 'nav-link' }, 'controls.toCheatsheet'));
     }
-    // the landing page has no page links: the topics are in the sidebar
-    if (page !== 'home') bar.appendChild(nav);
+    // the landing and upcoming pages have no page links: the topics are in the sidebar
+    if (!ofCourse) bar.appendChild(nav);
 
     var tools = el('div', { class: 'toolbar-tools' });
     function tool(path, key, onClick, cls) {
@@ -295,8 +299,16 @@
     tool('controls.theme', 'D', app.toggleTheme);
     if (page === 'main') {
       tool('controls.present', 'F', function () { app.present(); }, 'tool-present');
-      tool('controls.instructor', 'I', function () { app.instructor(); }, 'tool-instructor');
-    } else if (page !== 'home') {
+      // the button shows the mode itself, pressed and in the second accent (components.css)
+      var instructor = tool('controls.instructor', 'I', function () { app.instructor(); }, 'tool-instructor');
+      var pressed = function () {
+        var on = root.classList.contains('is-instructor');
+        instructor.setAttribute('aria-pressed', on ? 'true' : 'false');
+        instructor.title = SEM.tu(on ? 'controls.instructorOn' : 'controls.instructor') + ' (I)';
+      };
+      SEM.i18n.bind(pressed);
+      SEM.on('mode', pressed);
+    } else if (!ofCourse) {
       tool('controls.print', 'P', function () { window.print(); });
     }
     var keysBtn = tool('controls.shortcuts', '?', function () { app.openDialog('shortcuts'); }, 'tool-keys');
@@ -305,9 +317,6 @@
       keysBtn.setAttribute('aria-label', SEM.tu('controls.shortcuts'));
     });
     bar.appendChild(tools);
-
-    var badge = text('div', { class: 'instructor-badge', 'aria-live': 'polite' }, 'controls.instructorOn');
-    tools.insertBefore(badge, tools.firstChild);
 
     var footer = el('footer', { class: 'site-footer' });
     var fl = el('div', { class: 'footer-lines' });
@@ -344,13 +353,58 @@
     else window.addEventListener('resize', measure);
   }
 
-  // The course sidebar (course-nav.js) with its toggle in the toolbar, and the toolbar height.
+  // The page links, and on a phone the tools too, keep to one line in either language and scroll sideways when
+  // they do not fit (grid.css). A fade marks the side that has more, and the link of the current block stays in view.
+  function currentLinkInView(smooth) {
+    var nav = dom.qs('.toolbar-nav');
+    var link = nav && dom.qs('[aria-current="true"]', nav);
+    if (!link || nav.scrollWidth <= nav.clientWidth) return;
+    var box = nav.getBoundingClientRect();
+    var r = link.getBoundingClientRect();
+    // clear of the fade
+    var room = 32;
+    var by = 0;
+    if (r.left < box.left + room) by = r.left - box.left - room;
+    else if (r.right > box.right - room) by = r.right - box.right + room;
+    if (by) nav.scrollTo({ left: nav.scrollLeft + by, behavior: smooth && !util.reducedMotion() ? 'smooth' : 'auto' });
+  }
+  function trackRows(bar) {
+    var rows = dom.qsa('.toolbar-nav, .toolbar-tools', bar);
+    var edges = function () {
+      rows.forEach(function (row) {
+        var end = row.scrollWidth - row.clientWidth;
+        row.classList.toggle('is-cut-start', end > 1 && row.scrollLeft > 1);
+        row.classList.toggle('is-cut-end', end > 1 && row.scrollLeft < end - 1);
+      });
+    };
+    var update = function () {
+      currentLinkInView(false);
+      edges();
+    };
+    rows.forEach(function (row) {
+      row.addEventListener('scroll', edges, { passive: true });
+    });
+    SEM.on('lang', update);
+    if (typeof window.ResizeObserver === 'function') {
+      var watch = new ResizeObserver(update);
+      [bar].concat(rows).forEach(function (n) {
+        watch.observe(n);
+      });
+    } else {
+      window.addEventListener('resize', update);
+    }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(update);
+    update();
+  }
+
+  // The course sidebar (course-nav.js) with its toggle in the toolbar, the toolbar height and its rows.
   function mountBar(bar) {
     if (SEM.courseNav && SEM.courseNav.mount) SEM.courseNav.mount(bar);
     trackToolbar(bar);
+    trackRows(bar);
   }
 
-  /* ------------------------------------------------------------------ blocks of main.html */
+  /* ------------------------------------------------------------------ blocks of the seminar page */
 
   function sectionHead(block) {
     var head = el('header', { class: 'block-head' });
@@ -470,7 +524,7 @@
   }
 
   function blockSection(block) {
-    var sec = el('section', { class: 'block', id: 'block-' + block, dataset: { block: block, anchor: block } });
+    var sec = el('section', { class: 'block', id: 'block-' + block, dataset: { block: block } });
     sec.appendChild(sectionHead(block));
     return sec;
   }
@@ -513,8 +567,9 @@
     var cs = sub(sec, null, 'timeline.' + id + '.cheatsheet', E.cheatsheet.title);
     cs.appendChild(rich('p', null, E.cheatsheet.text));
     var links = el('p', { class: 'link-row' });
+    // the content gives each link from the seminar folder ('theory/index.html')
     E.cheatsheet.links.forEach(function (l) {
-      var a = el('a', { href: l.href, class: 'btn' });
+      var a = el('a', { href: SEM.course.localHref(l.href), class: 'btn' });
       SEM.i18n.bind(function () {
         a.textContent = SEM.t(l.label);
       });
@@ -607,6 +662,7 @@
       if (a.dataset.nav === block) a.setAttribute('aria-current', 'true');
       else a.removeAttribute('aria-current');
     });
+    currentLinkInView(true);
     if (root.classList.contains('is-present')) {
       window.scrollTo(0, 0);
       SEM.redrawAll();
@@ -762,6 +818,7 @@
           if (a.dataset.nav === current) a.setAttribute('aria-current', 'true');
           else a.removeAttribute('aria-current');
         });
+        currentLinkInView(true);
         dom.qsa('.block').forEach(function (s) {
           s.classList.toggle('is-current', s.dataset.block === current);
         });

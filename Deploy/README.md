@@ -4,7 +4,8 @@ The site <https://optimization-methods.tarakan-tuc.ru> is built on the Mac and p
 server. `Deploy/publish.py` packs the folders listed in `Deploy/publish.conf`, checks them and pushes
 the result over SSH. On the server, `course-deploy` turns the push into a release, points the site at
 it, checks it over HTTPS and goes back to the previous release if the check fails. A seminar with a
-future date waits on the server and goes live about a minute after its time.
+future date waits on the server and goes live about a minute after its time; until then its address
+shows the coming-later page.
 
 ## How it works
 
@@ -38,9 +39,9 @@ and every published path over HTTPS. If that check fails, the symlink goes back 
 release and the new one is deleted. The five newest releases are kept, plus the live one and the one
 before it.
 
-The timer runs `course-deploy` every minute. It does nothing until something is due: a seminar whose
-time has come, or a retry of a failed run after 15 minutes. The HTTPS check goes to the server itself;
-the only outside connection is to the mail server, if alerts are configured.
+The timer runs `course-deploy` every minute. It does nothing until something is due: a line of
+`publish.conf` whose time has come, or a retry of a failed run after 15 minutes. The HTTPS check goes
+to the server itself; the only outside connection is to the mail server, if alerts are configured.
 
 The server never runs code from the bundle. It only reads and copies files.
 
@@ -55,7 +56,8 @@ Only the folders listed in `Deploy/publish.conf` are packed, and from them only 
 - `Seminars/Evgeny Baulin/theory/` and `Seminars/Evgeny Baulin/checks/`;
 - `Documents/`;
 - any folder or file without a line in `publish.conf`: of `Seminars/Evgeny Baulin/web/` only the
-  landing page `index.html`, `shared/` and the released seminar folders go out;
+  landing page `index.html`, `shared/`, the coming-later page `upcoming/` and the seminar folders
+  listed there go out;
 - files matched by `Deploy/exclude.txt` or the built-in patterns, and files ignored by git.
 
 The server has its own guard: `pre-receive` refuses LaTeX files, notebooks, hidden files, symlinks
@@ -214,11 +216,12 @@ enough; it needs nothing outside the standard library. It prints the plan, pushe
 server's output as `remote:` lines. The result lines look like this:
 
 ```text
-remote: course-deploy: OK course -> 20260918T071502Z-5d0c9e1 (/, /seminars/, /seminars/shared/)
-remote: course-deploy: scheduled /seminars/02/ at 2026-09-25 18:10 Moscow time
+remote: course-deploy: OK course -> 20260918T071502Z-5d0c9e1 (/, /seminars/, /seminars/1/, /seminars/2/, …, /seminars/shared/)
+remote: course-deploy: scheduled /seminars/2/ at 2026-09-21 13:00 Moscow time (02)
 ```
 
-and the last line is `Published.`
+and the last line is `Published.` A `scheduled` line ends with the title of the line, the last part of
+its folder name.
 
 `course-deploy: OK nothing changed` means the server built the site and found it identical to the live
 release. If the server already has this bundle (the same files and the same `publish.conf`),
@@ -242,31 +245,47 @@ site | path | folder | publish from
 | folder | a folder of the repository, from its root, spelled exactly as on disk; spaces and commas are fine. It can also be a single file: the entry then holds that file alone |
 | publish from | `now`, or `YYYY-MM-DD HH:MM` in Moscow time |
 
-Lines starting with `#` and blank lines are ignored. A path may appear once per site. One bad line
-makes the whole file invalid, and the error names the line.
+Lines starting with `#` and blank lines are ignored. One bad line makes the whole file invalid, and the
+error names the line.
+
+A path may have several lines with different times. At any moment it shows the line with the latest
+time that has come (`now` comes before every date), and nothing before the time of its first line. Two
+lines of one path with the same time are an error. The order of the lines in the file does not matter.
 
 The file now holds the atlas at `/`, the seminars' landing page `web/index.html` at `/seminars/` (a
 line that names one file, so the seminar folders next to it stay out), the shared framework of the
 seminar pages at `/seminars/shared/` (the pages load it as `../shared/`, so it has to sit next to the
-seminar folders), and one commented line per seminar.
+seminar folders), and the seminar addresses `/seminars/1/` to `/seminars/14/`. Each of them shows the
+coming-later page `web/upcoming` from `now`, and its seminar folder from the end of its class:
+
+```text
+course | /seminars/2/      | Seminars/Evgeny Baulin/web/upcoming   | now
+course | /seminars/2/      | Seminars/Evgeny Baulin/web/02         | 2026-09-21 13:00
+```
+
+The addresses use the plain number (`/seminars/2/`); the folders on disk keep two digits (`web/02`).
+Seminar 1 has only its seminar line: its class is over.
 
 `publish.conf` is in `Deploy/` and does not have to be committed before a publish; the published
 folders do.
 
 ### Schedule a seminar
 
-To publish seminar 02 when its class ends, remove the `#` from its line and put the time in place of
-`YYYY-MM-DD HH:MM`:
+To publish seminar 3 when its class ends, add its line under the coming-later line of `/seminars/3/`,
+with the time of the end of the class:
 
 ```text
-course | /seminars/02/ | Seminars/Evgeny Baulin/web/02 | 2026-09-25 18:10
+course | /seminars/3/      | Seminars/Evgeny Baulin/web/upcoming   | now
+course | /seminars/3/      | Seminars/Evgeny Baulin/web/03         | 2026-09-25 18:10
 ```
 
 Publish once, at any time before the class. The server answers
-`course-deploy: scheduled /seminars/02/ at 2026-09-25 18:10 Moscow time`, and `/seminars/02/` answers
-404 until then. About a minute after 18:10 the timer publishes it with no further action, and an e-mail
-arrives if alerts are set up. Changes to the seminar made before the class go out with the next publish
-and stay hidden in the same way; the server publishes the last bundle it received.
+`course-deploy: scheduled /seminars/3/ at 2026-09-25 18:10 Moscow time (03)`, and `/seminars/3/` shows
+the coming-later page until then. About a minute after 18:10 the timer switches it to the seminar with
+no further action, and an e-mail arrives if alerts are set up. Changes to the seminar made before the
+class go out with the next publish and stay hidden in the same way; the server publishes the last
+bundle it received. A server that still runs course-deploy 1.0 answers 404 at `/seminars/3/` until
+18:10 instead (see [Updating the tool](#updating-the-tool)).
 
 A time in the past, or `now`, publishes the folder right away. Times are Moscow time whatever the Mac's
 time zone is.
@@ -274,8 +293,9 @@ time zone is.
 ### Take something off the site
 
 Delete its line, comment it out, or move its date into the future, then publish. Every release is built
-from scratch, so the next one does not have it. A site is never published empty: if none of its entries
-is released, the server leaves it as it is.
+from scratch, so the next one does not have it. Where the path has an earlier line, such as the
+coming-later page of a seminar, the path shows that line again. A site is never published empty: if
+none of its lines has come yet, the server leaves it as it is.
 
 ### Check before publishing
 
@@ -283,10 +303,22 @@ is released, the server leaves it as it is.
 python3 Deploy/publish.py --dry-run
 ```
 
-It builds and checks the bundle exactly as a publish does and prints the plan: for every entry its path
+It builds and checks the bundle exactly as a publish does and prints the plan: for every line its path
 and folder, the publish time (`now`, or the date with a countdown such as `(in 2d 5h)`), the number of
-files, where the entry page comes from, and the excluded files; then the link warnings. It writes
-nothing to git and does not contact the server.
+files, where the entry page comes from, and the excluded files; then the link warnings. The lines of a
+path come in time order, and a line that a later one replaces says until when it shows:
+
+```text
+course  /seminars/2/       Seminars/Evgeny Baulin/web/upcoming
+    now, until 2026-09-21 13:00, 3 files, entry page: index.html
+course  /seminars/2/       Seminars/Evgeny Baulin/web/02
+    2026-09-21 13:00 (in 3d 3h), 23 files, entry page: index.html
+```
+
+`(already replaced)` after the date means the later line is out already. The link check lays the site
+out as it is now and as it will be right after every later publish time, and the plan names these
+times: `Links checked for the site now and from 2026-09-21 13:00.` It writes nothing to git and does
+not contact the server.
 
 ### publish.py
 
@@ -308,8 +340,8 @@ Every command except `--help` and `--version` needs root; the Termius session is
 
 | Command | What it does |
 | --- | --- |
-| `course-deploy status` | per site: URL, live release, published paths, source commit and whether it was dirty, build times, kept releases, scheduled entries with a countdown; then the last failure and the timer state |
-| `course-deploy schedule` | every entry of the current bundle: site, path, publish time, state (`live`, `in 2d 5h` or `due`), title |
+| `course-deploy status` | per site: URL, live release, published paths, source commit and whether it was dirty, build times, kept releases, scheduled lines with their title and a countdown; then the last failure and the timer state |
+| `course-deploy schedule` | every line of the current bundle, the lines of a path in time order: site, path, publish time, state (`live`, `due`, `replaced` or a countdown such as `in 2d 5h`), title |
 | `course-deploy rollback course` | switch the site to the release before the live one and check it over HTTPS |
 | `course-deploy --dry-run` | build and check the current bundle and print what would change; changes nothing |
 | `course-deploy --force` | publish now, ignoring the "already deployed" record and the retry delay; prints the result lines |
@@ -327,11 +359,11 @@ unknown site for `rollback`).
 ```text
 course  https://optimization-methods.tarakan-tuc.ru
   live release   20260918T071502Z-5d0c9e1
-  paths          /, /seminars/, /seminars/shared/
-  source         a9a55be (dirty: no), bundle built 2026-09-18T07:14:58Z by publish.py 1.0.0
+  paths          /, /seminars/, /seminars/1/, /seminars/2/, …, /seminars/14/, /seminars/shared/
+  source         a9a55be (dirty: no), bundle built 2026-09-18T07:14:58Z by publish.py 1.1.0
   release built  2026-09-18T07:15:02Z
   releases kept  00000000T000000Z-legacy, 20260918T071502Z-5d0c9e1
-  scheduled      /seminars/02/ at 2026-09-25 18:10 Moscow time (in 7d 8h)
+  scheduled      /seminars/2/ at 2026-09-21 13:00 Moscow time (02, in 3d 5h)
 last failure: none since the last successful run
 timer: enabled, active
 ```
@@ -342,14 +374,20 @@ timer: enabled, active
 site    path               publish time      state     title
 course  /                  now               live      Atlas
 course  /seminars/         now               live      index.html
-course  /seminars/01/      2026-09-11 18:10  live      01
-course  /seminars/02/      2026-09-25 18:10  in 7d 8h  02
+course  /seminars/1/       2026-09-11 19:30  live      01
+course  /seminars/2/       now               live      upcoming
+course  /seminars/2/       2026-09-21 13:00  in 3d 5h  02
+course  /seminars/3/       now               live      upcoming
+…
+course  /seminars/14/      now               live      upcoming
 course  /seminars/shared/  now               live      shared
 Times are Moscow time.
 ```
 
-`due` means the time has passed but the entry is not in the live release yet: the timer has not run, is
-not enabled, or the last run failed (`course-deploy status` shows the failure).
+`live` means the live release shows this line. `due` means its time has come but the live release
+does not show it yet: the timer has not run, is not enabled, or the last run failed
+(`course-deploy status` shows the failure). `replaced` means a later line of the same path has come;
+after 2026-09-21 13:00 the `upcoming` line of `/seminars/2/` is `replaced` and the `02` line `live`.
 
 ### Roll back
 
@@ -363,7 +401,7 @@ HTTPS; run it again to go further back. With no older release it says
 Before the first publish the web root is still a plain folder, and rollback says
 `… is not a link to a release; nothing to roll back`.
 
-A rollback holds until the server builds again: the next publish from the Mac, the next scheduled entry
+A rollback holds until the server builds again: the next publish from the Mac, the next scheduled line
 that becomes due, `course-deploy --force`, a change to `/etc/course-deploy/sites.conf`, or a new
 version of the tool. Publishing the same files again from the Mac does not undo it, because
 `publish.py` finds nothing to publish; `course-deploy --force` returns to the current bundle.
@@ -387,6 +425,30 @@ untracked files, so what goes out is what is committed. With `--allow-dirty` it 
 they are and adds untracked files that are not ignored. Ignored files are never published. Symlinks,
 submodules and Git LFS pointer files are refused, and so is an entry with no files left after the
 exclude rules.
+
+### The bundle
+
+`publish.py` commits one bundle per publish, with these files at its top:
+
+| In the bundle | What it is |
+| --- | --- |
+| `publish.conf` | the last line of every path, in five fields: `site \| path \| entries/<slug> \| publish from \| title` |
+| `earlier.conf` | the other lines, in the same five fields with the folder `earlier/<slug>/<k>`, k = 1, 2, … in time order within the path; written only when some path has several lines |
+| `entries/<slug>/` | the files of the last line of a path |
+| `earlier/<slug>/<k>/` | the files of an earlier line |
+| `exclude.txt` | a copy of `Deploy/exclude.txt` |
+| `source.txt` | the main commit, whether it was dirty, the build time and the version of `publish.py` |
+
+The slug is the site path with `--` between its parts, `root` for `/`: `/seminars/2/` is
+`seminars--2`. The title is the last part of the folder name in `Deploy/publish.conf`. `publish.conf`
+has exactly the format of `publish.py` 1.0, so a server still at course-deploy 1.0 reads it and ignores
+the rest (see [Updating the tool](#updating-the-tool)).
+
+On the server, `course-deploy` 1.1 reads `earlier.conf` when it is there and refuses the whole bundle
+if a line is wrong: a path that is not in `publish.conf`, a folder other than the next
+`earlier/<slug>/<k>`, a time that is not earlier than the time of the path in `publish.conf`, or the
+times of a path not strictly increasing. At every run it builds each path from its line with the latest
+time that has come.
 
 ### Excluded files
 
@@ -446,12 +508,17 @@ Every entry gets an `index.html`, so its path opens without a file name. The ser
 order:
 
 1. the entry's own `index.html`;
-2. otherwise a copy of `main.html` (the seminars; `main.html` itself stays);
+2. otherwise a copy of `main.html` (`main.html` itself stays);
 3. otherwise a copy of the only `.html` file at the top level of the entry, if there is exactly one;
 4. otherwise a generated list of all the entry's files with their sizes, headed by the folder name.
 
-The `--dry-run` plan shows which one applies (`entry page: main.html`, `entry page: file listing`, …).
-`/seminars/shared/` has no page of its own and gets a file listing.
+The seminar folders carry their own `index.html`, and so do the coming-later page and the landing page;
+no seminar has a `main.html` any more, so the second rule is there for other folders only. The theory
+handout and the cheat sheet of a seminar are the folders `theory/` and `cheatsheet/` with an
+`index.html` each, at `/seminars/2/theory/` and `/seminars/2/cheatsheet/`. The coming-later page has the
+same two folders, so `/seminars/3/theory/` and `/seminars/3/cheatsheet/` show it too. The `--dry-run` plan shows
+which rule applies (`entry page: index.html`, `entry page: file listing`, …). `/seminars/shared/` has no
+page of its own and gets a file listing.
 
 ### Folder indexes
 
@@ -480,10 +547,13 @@ replaced.
 ### What the link check does not see
 
 The check reads the HTML. A missing script, stylesheet, image or other asset stops the publish; a broken
-`<a href>` is printed as a warning. Links that JavaScript builds while the page runs are not checked:
+`<a href>` is printed as a warning. `publish.py` lays the site out as it is now and as it will be right
+after every later publish time, so the seminar that replaces a coming-later page is checked before its
+time. Links that JavaScript builds while the page runs are not checked:
 
-- The sidebar links to other seminars (`../02/main.html`) and the cards of the landing page answer
-  404 until that seminar is released.
+- The sidebar links to other seminars and the cards of the landing page lead to seminar addresses
+  and their `theory/` and `cheatsheet/` pages, which show the coming-later page until the seminar is
+  out.
 - The atlas Seminars button leads to `/seminars/`, the atlas link of the seminar pages to `/`.
 - The PDF buttons (handout, cheat sheet, the landing cards) point to the `theory/` folder of the
   repository. The site has no PDFs, so the pages show these buttons only when they are opened from the
@@ -493,7 +563,7 @@ The server keeps its present nginx configuration with the web root `/var/www/opt
 
 ### nginx behaviour
 
-- `/seminars/02` without the slash answers 301 to `/seminars/02/`.
+- `/seminars/2` without the slash answers 301 to `/seminars/2/`.
 - A folder without `index.html` answers 403; nginx does not list folders.
 - Dot-files and `*.md`, `*.zip`, `*.tar.gz` answer 403.
 - Every answer carries `Cache-Control: no-cache`, so a new release shows on the next reload.
@@ -591,8 +661,9 @@ Nothing is committed or pushed in any of these cases.
 | `<path> is not a regular file`, `'<path>' has a control character in its name` | a special file, or a strange file name | remove or rename it |
 | `<folder> (line N) has no files left after Deploy/exclude.txt` | every file is excluded | check the folder and `exclude.txt` |
 | `<folder> (line N) has no files committed to git` | the folder is new | commit it, or use `--allow-dirty` |
-| `Refusing to publish: course /seminars/02/ collides with content published above it` (or `with a file published above it`) | an entry higher up, such as the atlas at `/`, already has a folder or file with that name | rename one of them or pick another path |
-| `Refusing to publish: pages refer to files that are not in the bundle:` and `course: ERROR missing file: /seminars/02/main.html -> ../shared/css/base.css (no such file)` | a page loads a file that is not in the bundle: not committed, excluded, in a folder that is not listed (such as the `shared` line), or spelled with a different letter case (the server's disk is case-sensitive) | add the file, list its folder or fix the reference; other reasons are `no such folder`, `folder without index.html`, `outside the site` and `malformed address` |
+| `Refusing to publish: course /seminars/2/ collides with content published above it` (or `with a file published above it`) | an entry higher up, such as the atlas at `/`, already has a folder or file with that name | rename one of them or pick another path |
+| `Refusing to publish: pages refer to files that are not in the bundle:` and `course: ERROR missing file: /seminars/2/index.html -> ../shared/css/base.css (no such file)` | a page loads a file that is not in the bundle: not committed, excluded, in a folder that is not listed (such as the `shared` line), or spelled with a different letter case (the server's disk is case-sensitive) | add the file, list its folder or fix the reference; other reasons are `no such folder`, `folder without index.html`, `outside the site` and `malformed address` |
+| the same with `course from 2026-09-21 13:00: ERROR missing file: …` | the problem appears only from that time, when a later line comes: the seminar that replaces a coming-later page, say | as above; the site before that time is fine |
 | `There is no git remote 'deploy'. Add it once, in the repository, with:` | the remote is missing | the two commands it prints: `git remote add deploy deploy@Main_server:/srv/course-deploy/site.git` and `git config core.sshCommand "ssh -i ~/.ssh/course_deploy -o IdentitiesOnly=yes"` |
 | `Cannot reach the server through the remote 'deploy':` and an ssh message | SSH problem | see [SSH, sudo and git](#ssh-sudo-and-git) |
 | `Cannot read Deploy/exclude.txt (…): No such file or directory` (also `publish.conf`, `course-deploy-kit/sites.conf`, `course-deploy-kit/forbidden.txt`) | the file is missing | restore it |
@@ -603,8 +674,8 @@ Nothing is committed or pushed in any of these cases.
 | `git <command> failed: …` | a git command failed | the rest of the line says why |
 | `publish.py needs Python 3.9 or newer` | an old `python3` | use `/usr/bin/python3` or a newer Python |
 
-The link check covers every entry as if it were already published, including the scheduled ones.
-Warnings (`warning broken link: …`) do not stop a publish.
+The link check covers the site now and right after every later publish time, so every line that will
+ever be shown is checked. Warnings (`warning broken link: …`) do not stop a publish.
 
 Messages about lines of `publish.conf`:
 
@@ -617,11 +688,11 @@ Messages about lines of `publish.conf`:
 | `path segment '..' in '/../' is not allowed (letters, digits, '.', '_', '-'; not starting with '.')` | plain names only; no spaces in paths |
 | `folder must be relative to the repository root, not '/…'` | drop the leading `/` |
 | `folder '…' has an empty, '.' or '..' segment` | write the folder out in full |
-| `folder is empty`, `folder contains a control character` | an empty third field, or a stray tab or control character in it | write the folder name |
+| `folder is empty`, `folder contains a control character` | the third field is empty or holds a stray tab or control character; write the folder name |
 | `publish time must be 'now' or YYYY-MM-DD HH:MM, not '…'` | often the literal `YYYY-MM-DD HH:MM` left in place |
 | `no such date or time: '2026-02-30 10:00'` | a real date |
-| `path /seminars/02/ of site course is already listed on line N` | one line per path |
-| `path /seminars--02/ has the same bundle folder name 'seminars--02' as course /seminars/02/ on line N` | two paths that turn into the same bundle folder; pick another path |
+| `path /seminars/2/ of site course is already listed on line N with the same publish time now` | two lines of one path need different times |
+| `path /seminars--2/ has the same bundle folder name 'seminars--2' as course /seminars/2/ on line N` | two paths that turn into the same bundle folder; pick another path |
 
 After the push, `publish.py` ends with one of these:
 
@@ -631,21 +702,22 @@ After the push, `publish.py` ends with one of these:
 | `The server did not publish this build; see the lines above and Deploy/README.md.` | there is a `REJECTED` or `FAILED` line above; see the next two sections |
 | `git push failed; see the lines above and the troubleshooting table in Deploy/README.md.` | SSH or git refused the push; see [SSH, sudo and git](#ssh-sudo-and-git) |
 | `The push arrived, but the server reported no result: check the lines above (e.g. 'sudo: a password is required') and run 'course-deploy status' on the server.` | the hook did not run; usually sudo, see below |
-| `Interrupted during the push: the server may already have this build. Run 'course-deploy status' on the server, or publish again.` | Ctrl-C while the push or the server's answer was running | `course-deploy status` shows whether the build went live; publishing again is safe |
+| `Interrupted during the push: the server may already have this build. Run 'course-deploy status' on the server, or publish again.` | Ctrl-C while the push or the server's answer was running; `course-deploy status` shows whether the build went live, and publishing again is safe |
 
 ### The server rejects a push (REJECTED)
 
 A rejected push is refused as a whole and leaves none of its files on the server. It looks like this:
 
 ```text
-remote: course-deploy: REJECTED forbidden file type *.tex: entries/seminars--02/notes.tex
+remote: course-deploy: REJECTED forbidden file type *.tex: entries/seminars--2/notes.tex
 remote: course-deploy: nothing from this push was stored on the server.
  ! [remote rejected] … -> site (pre-receive hook declined)
 ```
 
-Paths in these lines are bundle paths: `entries/<slug>/…`, where the slug is the site path with `--`
-between its parts (`root` for `/`). `entries/seminars--02/notes.tex` is `notes.tex` in the folder
-published at `/seminars/02/`.
+Paths in these lines are bundle paths (see [The bundle](#the-bundle)): `entries/<slug>/…` or
+`earlier/<slug>/<k>/…`, where the slug is the site path with `--` between its parts (`root` for `/`).
+`entries/seminars--2/notes.tex` is `notes.tex` in the folder published at `/seminars/2/` from its last
+line.
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
@@ -670,17 +742,18 @@ in the journal and the failure e-mail. In every case below the live site stays a
 | `course: live check failed, switched back to <release>: https://…/version.txt: curl: (7) Failed to connect to … Connection refused` | nginx is not running | `nginx -t`, `systemctl start nginx`, then `course-deploy --force` |
 | `course: live check failed, switched back to <release>: …: curl: (60) SSL certificate problem: certificate has expired` | the certificate was not renewed | see [The site](#the-site), then `course-deploy --force` |
 | `course: live check failed, switched back to <release>: https://…/version.txt does not show the new release` | nginx serves a different folder from the web root in `/etc/course-deploy/sites.conf` | make the nginx `root` and the web root in `sites.conf` the same, then `course-deploy --force` |
-| `course: live check failed, switched back to <release>: https://…/seminars/02/: curl: (22) The requested URL returned error: 404` | the same, or a changed nginx configuration | check the nginx site with `nginx -T`, then `course-deploy --force` |
+| `course: live check failed, switched back to <release>: https://…/seminars/2/: curl: (22) The requested URL returned error: 404` | the same, or a changed nginx configuration | check the nginx site with `nginx -T`, then `course-deploy --force` |
 | `course: live check failed, web root link removed: …` | the very first release of a site failed its check, with nothing to go back to | as above |
 | `course: 1 missing file(s), first: ERROR missing file: …` | the bundle refers to a file it does not contain; `publish.py` refuses such a bundle, so it came from a push by hand or from a Mac and a server on different versions of the kit | update the server (see [Updating the tool](#updating-the-tool)) and publish from the Mac |
-| `course: course /seminars/02/ collides with content published above it`, `course: course /… has no files left after the exclude rules` | as on the Mac | as on the Mac |
+| `course: course /seminars/2/ collides with content published above it`, `course: course /… has no files left after the exclude rules` | as on the Mac | as on the Mac |
 | `course: symlinks are not published: …`, `course: Git LFS pointer files instead of content: …` | a bundle made by hand | publish with `publish.py` |
 | `bundle <sha7>: invalid publish.conf: publish.conf line N: unknown site 'x' (known sites: course)` | the site is in `Deploy/course-deploy-kit/sites.conf` on the Mac but not in `/etc/course-deploy/sites.conf` on the server | add the same line on the server, then `course-deploy --force` |
 | `bundle <sha7>: invalid publish.conf: …` (other reasons), `bundle <sha7>: publish.conf is not UTF-8`, `bundle <sha7> has no exclude.txt`, `bundle <sha7> has no publish.conf` | a bundle made by hand | publish with `publish.py` |
+| `bundle <sha7>: invalid earlier.conf: earlier.conf line N: …` (`path … is not in publish.conf`, `folder must be earlier/<slug>/<k>, not …`, `publish time … is not earlier than …`, `… is not later than … on line N`), `bundle <sha7>: earlier.conf is not UTF-8` | a bundle made by hand, or by a `publish.py` of another version | publish with `publish.py` from this repository |
 | `another run still holds the lock after 60 s; the timer publishes this bundle within a few minutes` | a timer run or another command was busy | with the timer enabled, nothing; otherwise `course-deploy --force` a little later |
 | `course: cannot switch the web root: course: /var/www/optimization-methods is neither a folder nor a symlink; left as is` | something else sits at the web root | look with `ls -l /var/www/`, move it away, then `course-deploy --force` |
 | `course: cannot switch the web root: …` (other) | usually a full disk | `df -h` |
-| `cannot export entries/<slug> from <sha7>: …` | git or tar failed, usually a full disk | `df -h` |
+| `cannot export entries/<slug> from <sha7>: …` (or `earlier/<slug>/<k>`) | git or tar failed, usually a full disk | `df -h` |
 | `/etc/course-deploy/course-deploy.conf is missing; run install.sh from the course-deploy kit` (or `sites.conf`) | the configuration was deleted | run `install.sh` again; it creates missing files from the templates |
 | `cannot read /etc/course-deploy/…: …` | the file is unreadable or not UTF-8 | `ls -l /etc/course-deploy/`; save the file as UTF-8 |
 | `/etc/course-deploy/sites.conf defines no site` | every line of `sites.conf` is commented out | restore the `course` line |
@@ -708,9 +781,10 @@ in the journal and the failure e-mail. In every case below the live site stays a
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
-| `/seminars/02/` answers 404 | not released: the line is commented out, its time is in the future, or it was not published after the change | `course-deploy schedule`: `in …` means wait; `due` means the timer is off or failing (`course-deploy status`); not listed means uncomment the line and publish |
-| `/seminars/02` redirects | nginx answers 301 to `/seminars/02/` | nothing; link with the trailing slash |
-| 403 on a folder such as `/seminars/02/figures/` | a folder without `index.html`; nginx does not list folders | link to the files |
+| `/seminars/2/` still shows the coming-later page after the class | the seminar line is not in effect: its time is ahead, it is commented out, or it was not published after the change | `course-deploy schedule`: `in …` means wait; `due` means the timer is off or failing (`course-deploy status`); not listed means add the line and publish |
+| `/seminars/2/` answers 404 | the path has no line whose time has come; or the server still runs course-deploy 1.0, which shows a path only from the time of its last line | `course-deploy schedule` as above; `course-deploy --version`, and see [Updating the tool](#updating-the-tool) |
+| `/seminars/2` redirects | nginx answers 301 to `/seminars/2/` | nothing; link with the trailing slash |
+| 403 on a folder such as `/seminars/2/figures/` | a folder without `index.html`; nginx does not list folders | link to the files |
 | 403 on a `.md` file or a dot-file | nginx denies them; they are not published anyway | nothing |
 | `/seminars/` shows a plain list instead of the topic cards | the landing line `course \| /seminars/ \| Seminars/Evgeny Baulin/web/index.html \| now` is missing | put it back and publish |
 | no PDF buttons on the site | on purpose: the site has no PDFs, and the pages hide the buttons there | the PDFs stay in the repository's `theory/` folders |
@@ -738,6 +812,30 @@ agree.
 A new Mac key goes in the same way: run `install.sh` with it. The line of the same key is replaced and
 other lines stay, so remove an old key from `/home/deploy/.ssh/authorized_keys` by hand.
 
+### From 1.0 to 1.1
+
+Version 1.1 lets a path have several lines (see [publish.conf](#publishconf)). `publish.py` 1.1 can
+publish to a server that still runs course-deploy 1.0. That server reads only the bundle's
+`publish.conf`, which holds the last line of every path, and ignores `earlier.conf` and `earlier/`. So
+it shows a path only from the time of its last line: with today's `publish.conf`, `/seminars/2/` (with
+its `theory/` and `cheatsheet/`) answers 404 until 2026-09-21 13:00 and then shows seminar 2. Every
+other address is the same as with 1.1.
+
+To upgrade:
+
+1. In a Termius terminal on the server, as root: `rm -rf /root/course-deploy-kit`.
+2. In Termius SFTP, upload the folder `Deploy/course-deploy-kit` into `/root/`.
+3. On the Mac, `pbcopy < ~/.ssh/course_deploy.pub`; on the server, paste it into
+   `bash /root/course-deploy-kit/install.sh "<contents of ~/.ssh/course_deploy.pub>"`.
+4. `course-deploy --version` must say `course-deploy 1.1.0`. Then `course-deploy --force` rebuilds the
+   site with it at once; an enabled timer would do the same within a minute.
+
+Nothing has to be published again, as long as the last publish was made with `publish.py` 1.1
+(`course-deploy status` says `by publish.py 1.1.0`). After the upgrade, an address with a coming-later
+line and a later seminar line shows the coming-later page until the seminar's time, and
+`course-deploy schedule` lists every line of a path. `/etc/course-deploy/`, the releases and the timer
+stay as they are. A 1.1 server also publishes a bundle of `publish.py` 1.0 exactly as 1.0 did.
+
 ## Emergency
 
 - Never edit files under `/var/www/optimization-methods`. It is a link into a release folder. A hand
@@ -748,8 +846,9 @@ other lines stay, so remove an old key from `/home/deploy/.ssh/authorized_keys` 
 - No time, or no Mac: `course-deploy rollback course` on the server goes back one release and checks
   it; run it again for older ones. `course-deploy status` lists the kept releases. The oldest,
   `00000000T000000Z-legacy`, is the site as it was before course-deploy, for as long as it is kept.
-- A seminar went out too early: comment out its line (or correct the date) and publish. A rollback can
-  bring back a release that still has it; `course-deploy status` shows the paths of the live release.
+- A seminar went out too early: comment out its line (or correct the date) and publish; its address
+  shows the coming-later page again. A rollback can bring back a release that still has it;
+  `course-deploy status` shows the paths of the live release.
 - Taking a file off the site does not remove it from `/srv/course-deploy/site.git`, which keeps every
   bundle ever pushed, or from the older releases until they are deleted. nginx serves neither.
 

@@ -31,17 +31,19 @@
     return node;
   }
 
-  // One topic of the list: a link when its pages exist, the pages of the current seminar under it.
-  function topicItem(topic, seminar, page, up) {
-    var current = topic.dir === seminar;
+  // One topic of the list: a link when its pages exist, the pages of the current seminar under it
+  // (the upcoming page marks its topic without them).
+  function topicItem(topic, currentTopic, page) {
+    var current = topic === currentTopic;
     var li = el('li', { class: 'course-nav-item' + (current ? ' is-current' : '') });
     var link;
     if (topic.available) {
-      link = el('a', { class: 'course-nav-link', href: up + topic.dir + '/main.html' });
-      if (current) link.setAttribute('aria-current', 'page');
+      link = el('a', { class: 'course-nav-link', href: SEM.course.pageHref(topic, 'main') });
     } else {
       link = el('span', { class: 'course-nav-link', 'aria-disabled': 'true' });
     }
+    // a topic not out yet is current on its upcoming page
+    if (current) link.setAttribute('aria-current', 'page');
     link.appendChild(el('span', { class: 'course-nav-num', text: String(topic.n) }));
     var name = el('span', { class: 'course-nav-name' });
     SEM.i18n.bind(function () {
@@ -50,10 +52,10 @@
     link.appendChild(name);
     if (!topic.available) link.appendChild(text('span', { class: 'visually-hidden' }, 'courseNav.later'));
     li.appendChild(link);
-    if (current) {
+    if (current && PAGES.indexOf(page) >= 0) {
       var sub = el('ul', { class: 'course-nav-pages' });
       PAGES.forEach(function (p) {
-        sub.appendChild(el('li', null, text('a', { href: p + '.html', 'aria-current': p === page ? 'page' : null }, 'courseNav.pages.' + p)));
+        sub.appendChild(el('li', null, text('a', { href: SEM.course.pageHref(topic, p), 'aria-current': p === page ? 'page' : null }, 'courseNav.pages.' + p)));
       });
       li.appendChild(sub);
     }
@@ -63,9 +65,7 @@
   // Put the toggle first in the toolbar and the sidebar with its scrim right after the toolbar.
   nav.mount = function (bar) {
     var page = SEM.state.page;
-    var seminar = SEM.state.seminar;
-    var depth = seminar ? 1 : 0;
-    var up = seminar ? '../' : '';
+    var currentTopic = SEM.course.current();
     var docked = null;
     try {
       docked = window.matchMedia(DOCKED);
@@ -88,7 +88,7 @@
     });
     var head = el('div', { class: 'course-nav-head' });
     var title = el('p', { class: 'course-nav-title' });
-    var home = text('a', { href: up + 'index.html', 'aria-current': page === 'home' ? 'page' : null }, 'meta.course');
+    var home = text('a', { href: SEM.course.homeHref(), 'aria-current': page === 'home' ? 'page' : null }, 'meta.course');
     SEM.i18n.bind(function () {
       home.title = SEM.tu('courseNav.home');
     });
@@ -102,14 +102,14 @@
       atlas.textContent = SEM.tu('courseNav.atlas');
       atlas.title = SEM.tu('courseNav.atlasTitle');
       // in the repository the link carries the language, which the Atlas reads from ?lang=
-      atlas.setAttribute('href', SEM.course.atlasHref(depth));
+      atlas.setAttribute('href', SEM.course.atlasHref());
     });
     side.appendChild(atlas);
 
     side.appendChild(text('p', { class: 'course-nav-group', id: 'course-nav-group' }, 'courseNav.seminars'));
     var list = el('ol', { class: 'course-nav-list', 'aria-labelledby': 'course-nav-group' });
     SEM.course.topics().forEach(function (topic) {
-      list.appendChild(topicItem(topic, seminar, page, up));
+      list.appendChild(topicItem(topic, currentTopic, page));
     });
     side.appendChild(list);
 

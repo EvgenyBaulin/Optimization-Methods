@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 Evgeny Baulin
-"""publish.conf (Mac and bundle formats), slugs, countdowns, publish times and sites.conf."""
+"""publish.conf (Mac and bundle formats), earlier.conf, the line a path shows, slugs, countdowns,
+publish times and sites.conf."""
 
 from __future__ import annotations
 
@@ -28,6 +29,10 @@ def mac(text: str, known=SITES, label: str = "publish.conf"):
 
 def bundle(text: str, known=SITES):
     return manifest.parse_manifest(text, bundle=True, known_sites=known)
+
+
+def moscow(when: str) -> datetime:
+    return manifest.parse_time(when, "Europe/Moscow")
 
 
 def read(path: str) -> str:
@@ -180,9 +185,34 @@ class MacManifestTest(unittest.TestCase):
         message = self.assertOneProblem(text, 4, "already listed on line 1")
         self.assertIn("/", message)
 
-    def test_same_path_twice_even_with_different_times(self):
-        text = "course | /seminars/02/ | A | now\ncourse | /seminars/02/ | A | 2026-09-20 10:00\n"
-        self.assertOneProblem(text, 2, "already listed on line 1")
+    def test_several_lines_per_path_with_different_times(self):
+        text = ("course | /seminars/2/ | Web/upcoming | now\n"
+                "course | /seminars/2/ | Web/02 | 2026-09-21 13:00\n"
+                "course | /seminars/2/ | Web/02-revised | 2026-10-01 10:00\n"
+                "course | /seminars/3/ | Web/upcoming | now\n")
+        entries = mac(text)
+        self.assertEqual([(e.line, e.path, e.folder) for e in entries], [
+            (1, "/seminars/2/", "Web/upcoming"), (2, "/seminars/2/", "Web/02"),
+            (3, "/seminars/2/", "Web/02-revised"), (4, "/seminars/3/", "Web/upcoming")])
+
+    def test_lines_of_a_path_in_any_order(self):
+        text = "course | /s/ | B | 2026-09-21 13:00\ncourse | /s/ | A | now\n"
+        self.assertEqual([e.folder for e in mac(text)], ["B", "A"])
+
+    def test_same_time_twice_names_both_lines(self):
+        text = "course | /s/ | A | now\n# comment\ncourse | /s/ | B | now\n"
+        self.assertOneProblem(text, 3, "path /s/ of site course is already listed on line 1",
+                              "same publish time now")
+        text = "course | /s/ | A | 2026-09-21 13:00\ncourse | /s/ | B | now\ncourse | /s/ | A | 2026-09-21 13:00\n"
+        self.assertOneProblem(text, 3, "already listed on line 1", "same publish time 2026-09-21 13:00")
+
+    def test_same_time_on_other_paths_is_fine(self):
+        text = "course | /a/ | A | 2026-09-21 13:00\ncourse | /b/ | A | 2026-09-21 13:00\n"
+        self.assertEqual(len(mac(text)), 2)
+
+    def test_lines_of_one_path_share_their_slug(self):
+        text = "course | /a/b/ | X | now\ncourse | /a/b/ | Y | 2026-09-21 13:00\ncourse | /a--b/ | Z | now\n"
+        self.assertOneProblem(text, 3, "a--b", "line 1")
 
     def test_slug_collision(self):
         text = "course | /a/b/ | X | now\ncourse | /a--b/ | Y | now\n"
@@ -226,10 +256,19 @@ class MacManifestTest(unittest.TestCase):
         self.assertIn("/", paths)
         root = next(e for e in entries if e.path == "/")
         self.assertEqual((root.site, root.folder, root.when), ("course", "Atlas", "now"))
+        for n in range(1, 15):
+            self.assertIn(f"/seminars/{n}/", paths)
         for e in entries:
             self.assertFalse(e.folder.startswith(("Lecture", "Documents")), e.folder)
             self.assertNotIn("/theory", e.folder)
             self.assertNotIn("/checks", e.folder)
+        # the coming-later page never replaces a seminar
+        folders = manifest.bundle_folders(entries, "Europe/Moscow")
+        for e in entries:
+            if e.folder.endswith("/upcoming"):
+                self.assertEqual(e.when, "now", e)
+            if folders[e].startswith("earlier/"):
+                self.assertTrue(e.folder.endswith("/upcoming"), e)
 
 
 class BundleManifestTest(unittest.TestCase):
@@ -275,6 +314,12 @@ class BundleManifestTest(unittest.TestCase):
                    "other | /x/ | entries/x | now | X\n")
         self.assertEqual(len(caught.exception.problems), 2)
 
+    def test_one_line_per_path_even_with_different_times(self):
+        with self.assertRaises(ManifestError) as caught:
+            bundle("course | /s/ | entries/s | now | A\ncourse | /s/ | entries/s | 2026-09-21 13:00 | B\n")
+        self.assertEqual(len(caught.exception.problems), 1)
+        self.assertIn("line 2: path /s/ of site course is already listed on line 1", caught.exception.problems[0])
+
     def test_render_round_trip(self):
         entries = [
             Entry(3, "course", "/", "Atlas", "now", "Atlas"),
@@ -289,6 +334,171 @@ class BundleManifestTest(unittest.TestCase):
             ("course", "/seminars/02/", "entries/seminars--02", "2026-09-20 12:00",
              "02. Convexity, Constraints and Optimality Conditions"),
         ])
+
+
+LATEST = ("course | / | entries/root | now | Atlas\n"
+          "course | /seminars/2/ | entries/seminars--2 | 2026-09-21 13:00 | 02\n"
+          "course | /seminars/3/ | entries/seminars--3 | 2026-10-01 18:10 | 03\n")
+
+
+class EarlierManifestTest(unittest.TestCase):
+    def earlier(self, text: str, latest: str = LATEST, known=SITES):
+        return manifest.parse_earlier(text, bundle(latest), known_sites=known)
+
+    def problems(self, text: str, latest: str = LATEST):
+        with self.assertRaises(ManifestError) as caught:
+            self.earlier(text, latest)
+        return caught.exception.problems
+
+    def assertOneProblem(self, text: str, line: int, *fragments: str) -> str:
+        problems = self.problems(text)
+        self.assertEqual(len(problems), 1, problems)
+        self.assertTrue(problems[0].startswith(f"earlier.conf line {line}: "), problems[0])
+        for fragment in fragments:
+            self.assertIn(fragment, problems[0])
+        return problems[0]
+
+    def test_lines(self):
+        text = ("# Generated\n"
+                "course | /seminars/2/ | earlier/seminars--2/1 | now | upcoming\n"
+                "course | /seminars/3/ | earlier/seminars--3/1 | now | upcoming\n"
+                "course | /seminars/3/ | earlier/seminars--3/2 | 2026-09-25 10:00 | 03-draft\n")
+        entries = self.earlier(text)
+        self.assertEqual(entries[0], Entry(2, "course", "/seminars/2/", "earlier/seminars--2/1", "now", "upcoming"))
+        self.assertEqual([(e.path, e.folder, e.when) for e in entries[1:]], [
+            ("/seminars/3/", "earlier/seminars--3/1", "now"),
+            ("/seminars/3/", "earlier/seminars--3/2", "2026-09-25 10:00")])
+
+    def test_empty(self):
+        self.assertEqual(self.earlier(""), [])
+        self.assertEqual(self.earlier("# nothing\n"), [])
+
+    def test_crlf_and_bom(self):
+        entries = self.earlier("\ufeff# x\r\ncourse | /seminars/2/ | earlier/seminars--2/1 | now | upcoming\r\n")
+        self.assertEqual((entries[0].line, entries[0].title), (2, "upcoming"))
+
+    def test_path_must_be_in_publish_conf(self):
+        self.assertOneProblem("course | /seminars/4/ | earlier/seminars--4/1 | now | upcoming\n", 1,
+                              "path /seminars/4/ of site course is not in publish.conf")
+
+    def test_folder_rule(self):
+        for folder in ("entries/seminars--2", "earlier/seminars--2/2", "earlier/seminars--2/0",
+                       "earlier/seminars--2", "earlier/seminars--3/1", "earlier/seminars--2/01",
+                       "Seminars/web/upcoming", "earlier/x/1"):
+            with self.subTest(folder=folder):
+                self.assertOneProblem(f"course | /seminars/2/ | {folder} | now | upcoming\n", 1,
+                                      "folder must be earlier/seminars--2/1")
+
+    def test_folders_numbered_in_file_order(self):
+        text = ("course | /seminars/3/ | earlier/seminars--3/2 | 2026-09-25 10:00 | B\n"
+                "course | /seminars/3/ | earlier/seminars--3/1 | now | A\n")
+        problems = self.problems(text)
+        self.assertIn("line 1: folder must be earlier/seminars--3/1", problems[0])
+
+    def test_times_strictly_increasing_within_a_path(self):
+        text = ("course | /seminars/3/ | earlier/seminars--3/1 | 2026-09-25 10:00 | A\n"
+                "course | /seminars/3/ | earlier/seminars--3/2 | now | B\n")
+        self.assertOneProblem(text, 2, "publish time now is not later than 2026-09-25 10:00 on line 1")
+        text = ("course | /seminars/3/ | earlier/seminars--3/1 | now | A\n"
+                "course | /seminars/3/ | earlier/seminars--3/2 | now | A\n")
+        self.assertOneProblem(text, 2, "not later than now on line 1")
+
+    def test_time_before_the_publish_conf_line(self):
+        for when in ("2026-09-21 13:00", "2026-09-21 13:01", "2027-01-01 00:00"):
+            with self.subTest(when=when):
+                self.assertOneProblem(f"course | /seminars/2/ | earlier/seminars--2/1 | {when} | A\n", 1,
+                                      f"publish time {when} is not earlier than 2026-09-21 13:00",
+                                      "(line 2)")
+
+    def test_a_now_path_cannot_have_earlier_lines(self):
+        self.assertOneProblem("course | / | earlier/root/1 | now | Old atlas\n", 1, "not earlier than now")
+
+    def test_other_problems(self):
+        cases = {
+            "course | /seminars/2/ | earlier/seminars--2/1 | now": "expected 5 fields",
+            "course | /seminars/2/ | earlier/seminars--2/1 | now |": "title",
+            "other | /seminars/2/ | earlier/seminars--2/1 | now | A": "unknown site 'other'",
+            "course | /seminars/../ | earlier/seminars--2/1 | now | A": "path segment",
+            "course | /seminars/2/ | earlier/../entries/root | now | A": "'..'",
+            "course | /seminars/2/ | earlier/seminars--2/1 | 2026-02-30 10:00 | A": "no such date",
+            "course | /seminars/2/ | earlier/seminars--2/1 | today | A": "publish time must be",
+        }
+        for line, fragment in cases.items():
+            with self.subTest(line=line):
+                self.assertOneProblem("# x\n" + line + "\n", 2, fragment)
+
+    def test_every_bad_line_reported(self):
+        text = ("course | /seminars/9/ | earlier/seminars--9/1 | now | A\n"
+                "course | /seminars/2/ | earlier/seminars--2/1 | now | A\n"
+                "course | /seminars/2/ | earlier/seminars--2/2 | now | A\n"
+                "course | /seminars/3/ | earlier/seminars--3/1 | 2027-01-01 00:00 | A\n")
+        problems = self.problems(text)
+        self.assertEqual([p.split(":")[0] for p in problems],
+                         ["earlier.conf line 1", "earlier.conf line 3", "earlier.conf line 4"])
+
+    def test_render_round_trip(self):
+        latest = bundle(LATEST)
+        earlier = [Entry(0, "course", "/seminars/2/", "earlier/seminars--2/1", "now", "upcoming"),
+                   Entry(0, "course", "/seminars/3/", "earlier/seminars--3/1", "now", "upcoming"),
+                   Entry(0, "course", "/seminars/3/", "earlier/seminars--3/2", "2026-09-25 10:00", "03, draft")]
+        text = manifest.render_earlier_manifest(earlier)
+        self.assertTrue(text.startswith("# Generated by Deploy/publish.py"))
+        parsed = manifest.parse_earlier(text, latest, known_sites=SITES)
+        self.assertEqual([(e.path, e.folder, e.when, e.title) for e in parsed],
+                         [(e.path, e.folder, e.when, e.title) for e in earlier])
+
+
+class LinesOfAPathTest(unittest.TestCase):
+    TEXT = ("course | / | Atlas | now\n"
+            "course | /seminars/2/ | Web/02 | 2026-09-21 13:00\n"
+            "course | /seminars/2/ | Web/upcoming | now\n"
+            "course | /seminars/3/ | Web/03 | 2026-10-01 18:10\n"
+            "course | /seminars/3/ | Web/03-draft | 2026-09-25 10:00\n"
+            "course | /seminars/4/ | Web/04 | 2026-10-08 18:10\n")
+
+    def shown(self, when: str):
+        entries = mac(self.TEXT)
+        return sorted((e.path, e.folder) for e in manifest.current(entries, moscow(when), "Europe/Moscow"))
+
+    def test_current(self):
+        self.assertEqual(self.shown("2026-09-18 12:00"), [
+            ("/", "Atlas"), ("/seminars/2/", "Web/upcoming")])
+        self.assertEqual(self.shown("2026-09-21 12:59"), [
+            ("/", "Atlas"), ("/seminars/2/", "Web/upcoming")])
+        self.assertEqual(self.shown("2026-09-21 13:00"), [
+            ("/", "Atlas"), ("/seminars/2/", "Web/02")])
+        self.assertEqual(self.shown("2026-09-25 10:00"), [
+            ("/", "Atlas"), ("/seminars/2/", "Web/02"), ("/seminars/3/", "Web/03-draft")])
+        self.assertEqual(self.shown("2026-12-31 23:59"), [
+            ("/", "Atlas"), ("/seminars/2/", "Web/02"), ("/seminars/3/", "Web/03"), ("/seminars/4/", "Web/04")])
+
+    def test_bundle_folders(self):
+        entries = mac(self.TEXT)
+        folders = manifest.bundle_folders(entries, "Europe/Moscow")
+        self.assertEqual([folders[e] for e in entries], [
+            "entries/root", "entries/seminars--2", "earlier/seminars--2/1", "entries/seminars--3",
+            "earlier/seminars--3/1", "entries/seminars--4"])
+
+    def test_bundle_folders_number_in_time_order(self):
+        entries = mac("course | /s/ | C | 2026-10-01 10:00\ncourse | /s/ | A | now\n"
+                      "course | /s/ | D | 2026-11-01 10:00\ncourse | /s/ | B | 2026-09-01 10:00\n")
+        folders = manifest.bundle_folders(entries, "Europe/Moscow")
+        self.assertEqual({e.folder: folders[e] for e in entries},
+                         {"A": "earlier/s/1", "B": "earlier/s/2", "C": "earlier/s/3", "D": "entries/s"})
+
+    def test_time_key(self):
+        now = Entry(1, "course", "/", "A", "now")
+        early = Entry(2, "course", "/", "A", "2026-01-01 00:00")
+        late = Entry(3, "course", "/", "A", "2026-09-21 13:00")
+        self.assertEqual(sorted([late, now, early], key=lambda e: manifest.time_key(e, "Europe/Moscow")),
+                         [now, early, late])
+
+    def test_path_key(self):
+        paths = ["/seminars/shared/", "/seminars/10/", "/", "/seminars/2/", "/seminars/", "/seminars/1/",
+                 "/atlas/", "/seminars/2/extra/"]
+        self.assertEqual(sorted(paths, key=manifest.path_key), [
+            "/", "/atlas/", "/seminars/", "/seminars/1/", "/seminars/2/", "/seminars/2/extra/", "/seminars/10/",
+            "/seminars/shared/"])
 
 
 class SlugTest(unittest.TestCase):

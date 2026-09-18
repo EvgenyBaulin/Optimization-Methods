@@ -1,10 +1,13 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 Evgeny Baulin
-"""publish.conf and sites.conf parsers, shared by the Mac (publish.py) and the server.
+"""publish.conf, earlier.conf and sites.conf parsers, shared by the Mac (publish.py) and the server.
 
-The Mac file has four fields, `site | path | folder | publish from`; the bundle
-copy on the server has five, `site | path | entries/<slug> | publish from | title`.
-Runs on Python 3.9.
+The Mac file has four fields, `site | path | folder | publish from`, and may list a path on
+several lines with different times: at any moment the path shows its line with the latest
+time that has come. The bundle splits these lines in two files of five fields,
+`site | path | folder | publish from | title`: publish.conf holds the last line of every
+path, from entries/<slug>, exactly as publish.py 1.0 wrote it, and earlier.conf the lines
+before it, from earlier/<slug>/<k>, k = 1, 2, ... in time order. Runs on Python 3.9.
 """
 
 from __future__ import annotations
@@ -12,7 +15,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Dict, Iterable, List, Optional
+from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 from zoneinfo import ZoneInfo
 
 DEFAULT_TIMEZONE = "Europe/Moscow"
@@ -25,6 +28,7 @@ WHEN = re.compile(r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}\Z")
 WEBROOT = re.compile(r"/var/www/[A-Za-z0-9_-][A-Za-z0-9._-]*\Z")
 URL = re.compile(r"(https?)://([A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?)(?::([0-9]{1,5}))?/?\Z")
 CONTROL = re.compile(r"[\x00-\x1f\x7f]")
+DIGITS = re.compile(r"[0-9]+\Z")
 
 
 class ManifestError(ValueError):
@@ -148,71 +152,86 @@ def _lines(text: str):
             yield number, line
 
 
+def _entry(number: int, line: str, *, bundle: bool, known: Optional[List[str]], timezone: str,
+           entries_folder: bool) -> Entry:
+    """One line as an Entry; ValueError with the problem.
+
+    entries_folder requires the folder entries/<slug> of a bundle publish.conf.
+    """
+    fields_expected = 5 if bundle else 4
+    fields = [f.strip() for f in line.split("|")]
+    if len(fields) != fields_expected:
+        raise ValueError(f"expected {fields_expected} fields separated by '|', found {len(fields)}")
+    site, path, folder, when = fields[:4]
+    title = fields[4] if bundle else ""
+    if not SITE_NAME.match(site):
+        raise ValueError(f"site name '{site}' is not valid (lower-case letters, digits, '_', '-')")
+    if known is not None and site not in known:
+        shown = ", ".join(known) if known else "none"
+        raise ValueError(f"unknown site '{site}' (known sites: {shown})")
+    problem = check_path(path)
+    if problem:
+        raise ValueError(problem)
+    folder = normalize_folder(folder)
+    if entries_folder and folder != f"entries/{slug(path)}":
+        raise ValueError(f"folder must be entries/{slug(path)}, not '{folder}'")
+    if when != NOW:
+        parse_time(when, timezone)
+    if bundle and (not title or CONTROL.search(title)):
+        raise ValueError("title is empty or contains a control character")
+    return Entry(number, site, path, folder, when, title)
+
+
+def time_key(entry: Entry, timezone: str) -> Tuple[int, float]:
+    """Orders the lines of a path: `now` first, then the times in order."""
+    at = entry.publish_time(timezone)
+    return (0, 0.0) if at is None else (1, at.timestamp())
+
+
+def path_key(path: str) -> Tuple[List[Tuple[int, int, str]], str]:
+    """Orders paths for reading: parents first, /seminars/2/ before /seminars/10/."""
+    return [(0, int(s), "") if DIGITS.match(s) else (1, 0, s) for s in segments(path)], path
+
+
 def parse_manifest(text: str, *, bundle: bool, known_sites: Optional[Iterable[str]] = None,
                    timezone: str = DEFAULT_TIMEZONE, label: str = "publish.conf") -> List[Entry]:
     """Entries of a publish.conf; ManifestError naming every bad line.
 
-    bundle=False reads the Mac file (four fields), bundle=True the server copy (five).
+    bundle=False reads the Mac file (four fields; a path may have several lines with different
+    times), bundle=True the publish.conf of a bundle (five fields; one line per path).
     """
     known = None if known_sites is None else list(known_sites)
-    fields_expected = 5 if bundle else 4
     problems: List[str] = []
     entries: List[Entry] = []
-    seen_paths: Dict[tuple, int] = {}
+    seen_paths: Dict[tuple, List[Entry]] = {}
     seen_slugs: Dict[str, Entry] = {}
 
     for number, line in _lines(text):
         def bad(message: str) -> None:
             problems.append(f"{label} line {number}: {message}")
 
-        fields = [f.strip() for f in line.split("|")]
-        if len(fields) != fields_expected:
-            bad(f"expected {fields_expected} fields separated by '|', found {len(fields)}")
-            continue
-        site, path, folder, when = fields[:4]
-        title = fields[4] if bundle else ""
-
-        if not SITE_NAME.match(site):
-            bad(f"site name '{site}' is not valid (lower-case letters, digits, '_', '-')")
-            continue
-        if known is not None and site not in known:
-            shown = ", ".join(known) if known else "none"
-            bad(f"unknown site '{site}' (known sites: {shown})")
-            continue
-        problem = check_path(path)
-        if problem:
-            bad(problem)
-            continue
         try:
-            folder = normalize_folder(folder)
+            entry = _entry(number, line, bundle=bundle, known=known, timezone=timezone, entries_folder=bundle)
         except ValueError as error:
             bad(str(error))
             continue
-        if bundle and folder != f"entries/{slug(path)}":
-            bad(f"folder must be entries/{slug(path)}, not '{folder}'")
+        site, path = entry.site, entry.path
+        earlier = seen_paths.get((site, path), [])
+        if bundle and earlier:
+            bad(f"path {path} of site {site} is already listed on line {earlier[0].line}")
             continue
-        if when != NOW:
-            try:
-                parse_time(when, timezone)
-            except ValueError as error:
-                bad(str(error))
-                continue
-        if bundle and (not title or CONTROL.search(title)):
-            bad("title is empty or contains a control character")
+        same = next((e for e in earlier if time_key(e, timezone) == time_key(entry, timezone)), None)
+        if same is not None:
+            bad(f"path {path} of site {site} is already listed on line {same.line} "
+                f"with the same publish time {entry.when}")
             continue
-
-        key = (site, path)
-        if key in seen_paths:
-            bad(f"path {path} of site {site} is already listed on line {seen_paths[key]}")
-            continue
-        entry = Entry(number, site, path, folder, when, title)
         other = seen_slugs.get(entry.slug)
-        if other is not None:
+        if other is not None and (other.site, other.path) != (site, path):
             bad(f"path {path} has the same bundle folder name '{entry.slug}' as "
                 f"{other.site} {other.path} on line {other.line}")
             continue
-        seen_paths[key] = number
-        seen_slugs[entry.slug] = entry
+        seen_paths.setdefault((site, path), []).append(entry)
+        seen_slugs.setdefault(entry.slug, entry)
         entries.append(entry)
 
     if problems:
@@ -220,11 +239,101 @@ def parse_manifest(text: str, *, bundle: bool, known_sites: Optional[Iterable[st
     return entries
 
 
+def parse_earlier(text: str, latest: Sequence[Entry], *, known_sites: Optional[Iterable[str]] = None,
+                  timezone: str = DEFAULT_TIMEZONE, label: str = "earlier.conf") -> List[Entry]:
+    """Lines of the earlier.conf of a bundle; ManifestError naming every bad line.
+
+    latest are the entries of the bundle's publish.conf. Every line names a path of it, with a
+    time before the time there; the lines of a path come in time order, from earlier/<slug>/1,
+    earlier/<slug>/2, ...
+    """
+    known = None if known_sites is None else list(known_sites)
+    last = {(e.site, e.path): e for e in latest}
+    problems: List[str] = []
+    entries: List[Entry] = []
+    before: Dict[tuple, List[Entry]] = {}
+
+    for number, line in _lines(text):
+        def bad(message: str) -> None:
+            problems.append(f"{label} line {number}: {message}")
+
+        try:
+            entry = _entry(number, line, bundle=True, known=known, timezone=timezone, entries_folder=False)
+        except ValueError as error:
+            bad(str(error))
+            continue
+        key = (entry.site, entry.path)
+        final = last.get(key)
+        if final is None:
+            bad(f"path {entry.path} of site {entry.site} is not in publish.conf")
+            continue
+        lines = before.setdefault(key, [])
+        lines.append(entry)
+        folder = f"earlier/{entry.slug}/{len(lines)}"
+        if entry.folder != folder:
+            bad(f"folder must be {folder}, not '{entry.folder}'")
+            continue
+        if len(lines) > 1 and time_key(lines[-2], timezone) >= time_key(entry, timezone):
+            bad(f"publish time {entry.when} is not later than {lines[-2].when} on line {lines[-2].line}")
+            continue
+        if time_key(entry, timezone) >= time_key(final, timezone):
+            bad(f"publish time {entry.when} is not earlier than {final.when}, the time of {entry.path} "
+                f"in publish.conf (line {final.line})")
+            continue
+        entries.append(entry)
+
+    if problems:
+        raise ManifestError(problems)
+    return entries
+
+
+def current(entries: Iterable[Entry], moment: datetime, timezone: str) -> List[Entry]:
+    """What every (site, path) shows at the moment: its line with the latest time that has come.
+
+    Paths none of whose lines has come yet are left out.
+    """
+    shown: Dict[tuple, Entry] = {}
+    for e in entries:
+        if not e.released(moment, timezone):
+            continue
+        key = (e.site, e.path)
+        if key not in shown or time_key(e, timezone) > time_key(shown[key], timezone):
+            shown[key] = e
+    return list(shown.values())
+
+
+def bundle_folders(entries: Sequence[Entry], timezone: str) -> Dict[Entry, str]:
+    """The bundle folder of every line of a Mac publish.conf.
+
+    The last line of a path gets entries/<slug>, the lines before it earlier/<slug>/1,
+    earlier/<slug>/2, ... in time order.
+    """
+    lines: Dict[tuple, List[Entry]] = {}
+    for e in entries:
+        lines.setdefault((e.site, e.path), []).append(e)
+    folders: Dict[Entry, str] = {}
+    for group in lines.values():
+        group.sort(key=lambda e: time_key(e, timezone))
+        for k, e in enumerate(group[:-1], 1):
+            folders[e] = f"earlier/{e.slug}/{k}"
+        folders[group[-1]] = f"entries/{group[-1].slug}"
+    return folders
+
+
 def render_bundle_manifest(entries: Iterable[Entry]) -> str:
     """The five-field publish.conf of the bundle."""
     lines = ["# Generated by Deploy/publish.py: site | path | folder | publish from | title"]
     for e in entries:
         lines.append(f"{e.site} | {e.path} | entries/{e.slug} | {e.when} | {e.title}")
+    return "\n".join(lines) + "\n"
+
+
+def render_earlier_manifest(entries: Iterable[Entry]) -> str:
+    """The five-field earlier.conf of the bundle; the entries carry their earlier/<slug>/<k> folders."""
+    lines = ["# Generated by Deploy/publish.py: the lines before the last one of a path, "
+             "site | path | folder | publish from | title"]
+    for e in entries:
+        lines.append(f"{e.site} | {e.path} | {e.folder} | {e.when} | {e.title}")
     return "\n".join(lines) + "\n"
 
 

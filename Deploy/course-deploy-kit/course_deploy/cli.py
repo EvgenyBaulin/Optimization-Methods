@@ -26,7 +26,8 @@ from typing import Callable, Dict, List, Optional, Sequence, Tuple
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from . import __version__, notify, release
-from .manifest import Entry, ManifestError, countdown, parse_sites, parse_source_info
+from .manifest import (Entry, ManifestError, Site, countdown, current, parse_sites, parse_source_info, path_key,
+                       time_key)
 from .release import Bundle, Context, DeployError, Outcome
 
 CONFIG = "/etc/course-deploy/course-deploy.conf"
@@ -55,8 +56,8 @@ Publishes the course site from the bundle that Deploy/publish.py pushes from the
   course-deploy hook           run by post-receive after a push; always rebuilds, no e-mail
   course-deploy --force        run now, ignoring the "already deployed" cache and the retry delay
   course-deploy --dry-run      build and check the current bundle, print what would change
-  course-deploy status         per site: what is live, scheduled entries, the last failure
-  course-deploy schedule       every entry with its publish time and state
+  course-deploy status         per site: what is live, scheduled lines, the last failure
+  course-deploy schedule       every line of publish.conf with its publish time and state
   course-deploy rollback SITE  switch SITE to the release before the live one and check it
   course-deploy test-notify    send a test e-mail
   course-deploy --help         this text
@@ -307,13 +308,19 @@ def zone_label(timezone: str) -> str:
     return timezone.rsplit("/", 1)[-1].replace("_", " ") + " time"
 
 
-def run_key(commit: str, sites_text: str, released: Sequence[Entry]) -> str:
+def run_key(commit: str, sites_text: str, shown: Sequence[Entry]) -> str:
+    """Changes with the bundle, the sites and the line each path shows (its folder)."""
     h = hashlib.sha256()
     for part in (__version__, commit, sites_text):
         h.update(part.encode("utf-8") + b"\0")
-    for e in sorted(released, key=lambda e: (e.site, e.path)):
+    for e in sorted(shown, key=lambda e: (e.site, e.path)):
         h.update(f"{e.site} {e.path} {e.folder}\n".encode("utf-8"))
     return h.hexdigest()
+
+
+def in_order(entries: Sequence[Entry], timezone: str) -> List[Entry]:
+    """By site, by path as read (/seminars/2/ before /seminars/10/), the lines of a path in time order."""
+    return sorted(entries, key=lambda e: (e.site, path_key(e.path), time_key(e, timezone)))
 
 
 def _mail(ctx: Context, subject: str, body: str) -> bool:
@@ -381,16 +388,16 @@ def _run_locked(ctx: Context, command: str) -> int:
         return _fail(ctx, command, state, key, commit, [str(error)])
 
     moment = datetime.fromtimestamp(now, ZoneInfo(ctx.timezone))
-    released = [e for e in bundle.entries if e.released(moment, ctx.timezone)]
-    pending = [e for e in bundle.entries if e not in released]
-    key = run_key(commit, ctx.sites_text, released)
+    shown = current(bundle.entries, moment, ctx.timezone)
+    pending = in_order([e for e in bundle.entries if not e.released(moment, ctx.timezone)], ctx.timezone)
+    key = run_key(commit, ctx.sites_text, shown)
     if command == "timer" and state.skip(key, now, retry_after):
         return 0
 
     outcomes: List[Outcome] = []
     failures: List[str] = []
     for site in ctx.sites:
-        entries = [e for e in released if e.site == site.name]
+        entries = [e for e in shown if e.site == site.name]
         if not entries:
             ctx.log(f"{site.name}: nothing to publish, left as is.")
             continue
@@ -411,7 +418,7 @@ def _run_locked(ctx: Context, command: str) -> int:
     label = zone_label(ctx.timezone)
     for e in pending:
         wait = countdown(e.publish_time(ctx.timezone).timestamp() - now)
-        ctx.log(f"{e.site}: {e.path} is scheduled for {e.when} {label} ({wait}).")
+        ctx.log(f"{e.site}: {e.path} is scheduled for {e.when} {label} ({e.title}, {wait}).")
 
     if command == "dry-run":
         return 1 if failures else 0
@@ -427,7 +434,7 @@ def _run_locked(ctx: Context, command: str) -> int:
         if not outcomes:
             print(f"{RESULT} OK nothing changed", flush=True)
         for e in pending:
-            print(f"{RESULT} scheduled {e.path} at {e.when} {label}", flush=True)
+            print(f"{RESULT} scheduled {e.path} at {e.when} {label} ({e.title})", flush=True)
     return 0
 
 
@@ -496,10 +503,11 @@ def status(ctx: Context) -> int:
         kept = release.list_releases(ctx, site)
         print(f"  releases kept  {', '.join(kept) if kept else 'none'}")
         if bundle:
-            for e in bundle.entries:
+            for e in in_order(bundle.entries, ctx.timezone):
                 at = e.publish_time(ctx.timezone)
                 if e.site == site.name and at is not None and at.timestamp() > now:
-                    print(f"  scheduled      {e.path} at {e.when} {label} ({countdown(at.timestamp() - now)})")
+                    wait = countdown(at.timestamp() - now)
+                    print(f"  scheduled      {e.path} at {e.when} {label} ({e.title}, {wait})")
     if note:
         print(note)
     state = State(ctx)
@@ -515,25 +523,43 @@ def status(ctx: Context) -> int:
     return 0
 
 
+def live_folders(ctx: Context, site: Site) -> Dict[str, str]:
+    """Path -> the bundle folder it was built from, for the live release of a site.
+
+    The folder is '' for a release built before course-deploy 1.1, whose meta names no folders.
+    """
+    live = release.live_release(ctx, site)
+    meta = release.read_meta(ctx, site, live) if live else {}
+    paths = meta.get("paths", "").split()
+    folders = meta.get("folders", "").split()
+    if len(folders) != len(paths):
+        folders = [""] * len(paths)
+    return dict(zip(paths, folders))
+
+
+def line_state(e: Entry, shown: Sequence[Entry], now: float, timezone: str, live: Dict[str, str]) -> str:
+    """A countdown before its time; `replaced` once a later line of its path has come; otherwise
+    `live` when the live release shows this line, `due` when it does not yet."""
+    at = e.publish_time(timezone)
+    if at is not None and at.timestamp() > now:
+        return countdown(at.timestamp() - now)
+    if e not in shown:
+        return "replaced"
+    folder = live.get(e.path)
+    return "live" if folder is not None and folder in ("", e.folder) else "due"
+
+
 def schedule(ctx: Context) -> int:
     bundle, note = _bundle_or_note(ctx)
     if bundle is None:
         print(note)
         return 0 if note.startswith("Nothing") else 1
     now = ctx.clock()
-    live_paths = {}
-    for site in ctx.sites:
-        live = release.live_release(ctx, site)
-        live_paths[site.name] = set(release.read_meta(ctx, site, live).get("paths", "").split()) if live else set()
+    shown = current(bundle.entries, datetime.fromtimestamp(now, ZoneInfo(ctx.timezone)), ctx.timezone)
+    live = {site.name: live_folders(ctx, site) for site in ctx.sites}
     rows = [("site", "path", "publish time", "state", "title")]
-    for e in sorted(bundle.entries, key=lambda e: (e.site, e.path)):
-        at = e.publish_time(ctx.timezone)
-        if at is not None and at.timestamp() > now:
-            state = countdown(at.timestamp() - now)
-        elif e.path in live_paths.get(e.site, set()):
-            state = "live"
-        else:
-            state = "due"
+    for e in in_order(bundle.entries, ctx.timezone):
+        state = line_state(e, shown, now, ctx.timezone, live.get(e.site, {}))
         rows.append((e.site, e.path, e.when, state, e.title))
     widths = [max(len(r[i]) for r in rows) for i in range(4)]
     for r in rows:

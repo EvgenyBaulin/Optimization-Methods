@@ -27,6 +27,7 @@ WEB_REL="Seminars/Evgeny Baulin/web"
 S02="$WEB_REL/02. Convexity, Constraints and Optimality Conditions"
 S03="$WEB_REL/03. Gradient Descent and Automatic Differentiation"
 VENDOR="$WEB_REL/vendor"
+UPCOMING="$WEB_REL/upcoming"
 MAILDIR=/var/mail-test
 LOGS=/tmp/e2e
 OUT=$LOGS/last.out
@@ -444,6 +445,12 @@ EOF
     echo "# Versions ($MARKER)" | put "$vendor/VERSIONS.md"
     printf '<!doctype html>\n<title>Seminars</title>\n<a href="02.%%20Convexity/main.html">02</a>\n' \
         | put "$COURSE/$WEB_REL/index.html"
+    put "$COURSE/$UPCOMING/index.html" <<'EOF'
+<!doctype html>
+<title>Coming later</title>
+<link rel="stylesheet" href="../vendor/katex.min.css">
+<p>coming later</p>
+EOF
 
     cp -r "$SRC/Deploy" "$COURSE/Deploy"
     chown -R mac:mac "$COURSE/Deploy"
@@ -937,7 +944,10 @@ s14() {
     bad_conf "course | /x/ | No Such Folder | now" "No Such Folder (line 3) does not exist"
     bad_conf "course | /x/ | Atlas | 2026-02-30 10:00" \
         "Deploy/publish.conf line 3: no such date or time: '2026-02-30 10:00'"
-    bad_conf "course | / | Lecture | now" "Deploy/publish.conf line 3: path / of site course is already listed on line 1"
+    bad_conf "course | / | Lecture | now" \
+        "Deploy/publish.conf line 3: path / of site course is already listed on line 1 with the same publish time now"
+    bad_conf "course | /seminars/vendor/ | Atlas | now" \
+        "Deploy/publish.conf line 3: path /seminars/vendor/ of site course is already listed on line 2 with the same publish time now"
     bad_conf "course | /x/ | Atlas | now | extra" \
         "Deploy/publish.conf line 3: expected 4 fields separated by '|', found 5"
     check "nothing pushed" eq "$(tip)" "$before"
@@ -1099,7 +1109,7 @@ s22() {
     check "paths" has "  paths          /, /seminars/02/, /seminars/vendor/"
     check "source" has_re "^  source         [0-9a-f]{7} \(dirty: no\), bundle built "
     check "kept releases" has "  releases kept  "
-    check "scheduled entry" has_re "^  scheduled      /seminars/03/ at $FUTURE Moscow time \(in "
+    check "scheduled entry" has_re "^  scheduled      /seminars/03/ at $FUTURE Moscow time \(03\. Gradient Descent and Automatic Differentiation, in "
     check "last failure" has "last failure: "
     check "timer state" has "timer: systemd is not running here"
     check "schedule" code 0 server schedule
@@ -1123,7 +1133,7 @@ s22() {
     check "--help" code 0 server --help
     check "usage" has "usage: course-deploy"
     check "--version" code 0 server --version
-    check "version" has "course-deploy 1.0.0"
+    check "version" has "course-deploy 1.1.0"
     check "unknown command" code 2 server bogus
     check "unknown site" code 2 server rollback nosuchsite
     check "root required" code 1 as_mac /usr/local/bin/course-deploy status
@@ -1142,11 +1152,35 @@ EOF
     check "publish.py --help" code 0 publish --help
     check "publish.py usage" has "--allow-dirty"
     check "publish.py --version" code 0 publish --version
-    check "publish.py version" has "publish.py 1.0.0"
+    check "publish.py version" has "publish.py 1.1.0"
     check "publish.py bad option" code 2 publish --bogus
     check "unknown remote" code 1 publish --remote nowhere
     check "remote hint" has "git remote add deploy deploy@Main_server:/srv/course-deploy/site.git"
     check "ssh command hint" has 'git config core.sshCommand "ssh -i ~/.ssh/course_deploy -o IdentitiesOnly=yes"'
+}
+
+# seminar_folders STAGE: "path folder" per seminar address of the course's publish.conf, the line it
+# shows now (STAGE 1: lines from now or $PAST) or after $FUTURE (STAGE 2)
+seminar_folders() {
+    awk -F' *[|] *' -v past="$PAST" -v future="$FUTURE" -v stage="$1" '
+        $1 == "course" && $2 ~ /^\/seminars\/[0-9]+\/$/ {
+            t = $4 == "now" ? 0 : $4 == past ? 1 : $4 == future ? 2 : 9
+            if (t <= stage && (!($2 in best) || t > best[$2])) { best[$2] = t; folder[$2] = $3 }
+        }
+        END { for (p in folder) print p, folder[p] }' "$COURSE/Deploy/publish.conf" | sort -V
+}
+
+# seminar_pages STAGE: every seminar address shows the index.html of its folder, and its subpages answer
+seminar_pages() {
+    local path folder page
+    while read -r path folder; do
+        check "$path shows ${folder##*/}" cmp <(body_of "$path") "$SRC/$folder/index.html"
+        for page in theory cheatsheet; do
+            if [[ -f $SRC/$folder/$page/index.html ]]; then
+                check "$path$page/" eq "$(code_of "$path$page/")" 200
+            fi
+        done
+    done < <(seminar_folders "$1")
 }
 
 s23() {
@@ -1154,62 +1188,203 @@ s23() {
     cp -r "$SRC/Atlas" "$COURSE/Atlas"
     cp -r "$SRC/$WEB_REL" "$COURSE/$WEB_REL"
     chown -R mac:mac "$COURSE/Atlas" "$COURSE/Seminars"
-    # first seminar 01 released and 02 still ahead: the landing page must not bring 02 along
-    local released="2026-09-01 18:10"
-    # every seminar line of the real publish.conf, commented or filled in, gets a released date
-    sed -E "s/^(# )?(course \| \/seminars\/[0-9]{2}\/ \| [^|]*) \| .*\$/\2 | $released/" \
-        "$SRC/Deploy/publish.conf" > "$LOGS/publish.conf"
-    sed "/\/seminars\/02\//s/$released\$/$FUTURE/" "$LOGS/publish.conf" | conf
+    # the real publish.conf with every date in the past, except that of seminar 2, which is ahead
+    sed -E -e "s/\| [0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}\$/| $PAST/" \
+           -e "/^course \| \/seminars\/2\/ +\| [^|]*\/web\/02 +\|/s/\| $PAST\$/| $FUTURE/" \
+        "$SRC/Deploy/publish.conf" | conf
     grep -v '^#' "$COURSE/Deploy/publish.conf" | sed '/^$/d; s/^/    /'
     commit "Real content"
-    check "publish with 02 ahead" code 0 publish
-    check "02 scheduled" has "remote: course-deploy: scheduled /seminars/02/ at $FUTURE Moscow time"
-    check "landing page at /seminars/" cmp <(body_of /seminars/) "$SRC/$WEB_REL/index.html"
-    check "/seminars redirects to /seminars/" eq "$(code_of /seminars)" 301
-    check "01 live" eq "$(code_of /seminars/01/)" 200
-    check "02 not on the site" eq "$(code_of /seminars/02/main.html)" 404
-    check "02 not in the release" test ! -e "$RELEASES/$(live)/seminars/02"
-    check "only index.html from web/ itself" eq "$(find "$RELEASES/$(live)/seminars" -maxdepth 1 -type f -printf '%f\n')" index.html
-    conf < "$LOGS/publish.conf"
-    grep -v '^#' "$COURSE/Deploy/publish.conf" | sed '/^$/d; s/^/    /'
+    check "every address from /seminars/1/ to /seminars/14/" eq "$(seminar_folders 2 | cut -d' ' -f1 | tr '\n' ' ')" \
+        "$(seq -f '/seminars/%g/' 1 14 | tr '\n' ' ')"
     check "publish exits 0" code 0 publish
     check "OK line" has "remote: course-deploy: OK course -> "
-    grep 'warning broken link' "$OUT" | sed -E 's/^ *(remote: *)?//' | sort -u > "$LOGS/real-link-warnings.txt" || true
+    check "02 scheduled" has "remote: course-deploy: scheduled /seminars/2/ at $FUTURE Moscow time (02)"
+    grep 'warning broken link' "$OUT" | sed -E 's/^ *(remote: *)?//' > "$LOGS/real-link-warnings.txt" || true
+    seminar_pages 1
+    check "/seminars/2/ shows the coming-later page" cmp <(body_of /seminars/2/) "$SRC/$WEB_REL/upcoming/index.html"
+    check "02 not in the release" test ! -e "$RELEASES/$(live)/seminars/2/figures"
+    check "landing page at /seminars/" cmp <(body_of /seminars/) "$SRC/$WEB_REL/index.html"
+    check "/seminars redirects to /seminars/" eq "$(code_of /seminars)" 301
+    check "only index.html from web/ itself" eq "$(find "$RELEASES/$(live)/seminars" -maxdepth 1 -type f -printf '%f\n')" index.html
+
+    local rel later
+    later=$(( $(date +%s) + 3 * 86400 ))
+    COURSE_DEPLOY_NOW=$later course-deploy > "$OUT" 2>&1
+    sed 's/^/    | /' "$OUT"
+    grep 'warning broken link' "$OUT" | sed -E 's/^ *[0-9-]+ [0-9:]+ //' >> "$LOGS/real-link-warnings.txt" || true
+    sort -u -o "$LOGS/real-link-warnings.txt" "$LOGS/real-link-warnings.txt"
     echo "  link warnings (Mac and server):"
     sed 's/^/    /' "$LOGS/real-link-warnings.txt"
-    local rel n
+    check "the timer publishes seminar 2" has "course: /seminars/2/ shows 02: "
+    seminar_pages 2
     rel=$(live)
-    while read -r n; do
-        check "seminar $n" eq "$(code_of "/seminars/$n/")" 200
-        check "seminar $n theory" eq "$(code_of "/seminars/$n/theory.html")" 200
-        check "seminar $n cheat sheet" eq "$(code_of "/seminars/$n/cheatsheet.html")" 200
-        check "seminar $n entry page is main.html" cmp <(body_of "/seminars/$n/") "$SRC/$WEB_REL/$n/main.html"
-    done < <(grep -oE '^course \| /seminars/[0-9]{2}/' "$COURSE/Deploy/publish.conf" | grep -oE '[0-9]{2}')
-    check "landing page still at /seminars/" cmp <(body_of /seminars/) "$SRC/$WEB_REL/index.html"
-    check "atlas links to /seminars/" grep -q 'id="seminars-link" href="/seminars/"' <(body_of /)
+    check "atlas links to /seminars/" grep -qE 'id="seminars-link" href="/seminars/?"' <(body_of /)
     check "no link warnings" test ! -s "$LOGS/real-link-warnings.txt"
     check "shared framework" eq "$(code_of /seminars/shared/js/core.js)" 200
     check "KaTeX" eq "$(code_of /seminars/shared/vendor/katex/katex.min.js)" 200
     check "atlas" grep -q "Optimization Atlas" <(body_of /)
-    check "an SVG byte for byte" cmp <(body_of /seminars/02/figures/fig_sets.svg) "$SRC/$WEB_REL/02/figures/fig_sets.svg"
+    check "an SVG byte for byte" cmp <(body_of /seminars/2/figures/fig_sets.svg) "$SRC/$WEB_REL/02/figures/fig_sets.svg"
     check "VERSIONS.md not published" test ! -e "$RELEASES/$rel/seminars/shared/vendor/VERSIONS.md"
     check "README.md not published" test ! -e "$RELEASES/$rel/README.md"
     check "licenses published" test -f "$RELEASES/$rel/seminars/shared/vendor/katex/LICENSE"
     echo "  files in the release: $(find "$RELEASES/$rel" -type f | wc -l)"
 }
 
+s26() {
+    local m0 later old rel
+    conf <<EOF
+course | / | Atlas | now
+course | /seminars/vendor/ | $VENDOR | now
+course | /seminars/02/ | $S02 | $FUTURE
+course | /seminars/02/ | $UPCOMING | now
+EOF
+    check "dry run exits 0" code 0 publish --dry-run
+    check "the coming-later line until the seminar" has_re "^    now, until $FUTURE, 1 file, entry page: index.html$"
+    check "the seminar line after it" has_re "^    $FUTURE \(in [0-9]+d [0-9]+h\), 4 files, entry page: main.html$"
+    check "both states checked" has "Links checked for the site now and from $FUTURE."
+    check "publish exits 0" code 0 publish
+    check "result line" has_re "^remote: course-deploy: OK course -> [^ ]+ \(/, /seminars/02/, /seminars/vendor/\)$"
+    check "the build names the line" has "remote: course: /seminars/02/ shows upcoming: 1 file; entry page from index.html."
+    check "scheduled line with its title" \
+        has "remote: course-deploy: scheduled /seminars/02/ at $FUTURE Moscow time (02. Convexity, Constraints and Optimality Conditions)"
+    check "publish.conf of the bundle as publish.py 1.0 writes it" \
+        grep -qx "course | /seminars/02/ | entries/seminars--02 | $FUTURE | 02. Convexity, Constraints and Optimality Conditions" \
+        <(srv_git show site:publish.conf)
+    check "earlier.conf holds the coming-later line" \
+        grep -qx "course | /seminars/02/ | earlier/seminars--02/1 | now | upcoming" <(srv_git show site:earlier.conf)
+    check "its files under earlier/" eq "$(srv_git ls-tree -r --name-only site earlier)" "earlier/seminars--02/1/index.html"
+    check "the address shows the coming-later page" cmp <(body_of /seminars/02/) "$COURSE/$UPCOMING/index.html"
+    old=$(live)
+    check "the meta names the folders" \
+        grep -qx "folders=entries/root earlier/seminars--02/1 entries/seminars--vendor" "$RELEASES/$old.meta"
+    check "schedule" code 0 server schedule
+    check "coming-later line live" has_re "^course +/seminars/02/ +now +live +upcoming$"
+    check "seminar line counting down" has_re "^course +/seminars/02/ +$FUTURE +in [0-9]+d [0-9]+h +02\. Convexity"
+    check "status" code 0 server status
+    check "status lists the seminar line" has_re "^  scheduled      /seminars/02/ at $FUTURE Moscow time \(02\. Convexity, Constraints and Optimality Conditions, in "
+
+    m0=$(mails)
+    later=$(( $(date +%s) + 3 * 86400 ))
+    COURSE_DEPLOY_NOW=$later course-deploy > "$OUT" 2>&1
+    sed 's/^/    | /' "$OUT"
+    rel=$(live)
+    check "a new release" test "$rel" != "$old"
+    check "built with the seminar line" has "course: /seminars/02/ shows 02. Convexity, Constraints and Optimality Conditions: 4 files"
+    check "switched and checked" has "course: web root switched to $rel; checking it over HTTPS."
+    check "live" has "course: $rel is live."
+    check "the address shows the seminar" cmp <(body_of /seminars/02/) "$COURSE/$S02/main.html"
+    check "with its figure" eq "$(code_of /seminars/02/figures/fig_sets.svg)" 200
+    check "the meta names the new folder" \
+        grep -qx "folders=entries/root entries/seminars--02 entries/seminars--vendor" "$RELEASES/$rel.meta"
+    check "one e-mail" eq "$(mails)" "$(( m0 + 1 ))"
+    COURSE_DEPLOY_NOW=$later course-deploy > "$OUT" 2>&1
+    check "the next timer run is silent" test ! -s "$OUT"
+    COURSE_DEPLOY_NOW=$later server schedule
+    check "coming-later line replaced" has_re "^course +/seminars/02/ +now +replaced +upcoming$"
+    check "seminar line live" has_re "^course +/seminars/02/ +$FUTURE +live +02\. Convexity"
+}
+
+s27() {
+    reset_hand
+    hgit rm -q -r earlier.conf earlier
+    hgit commit -q -m "By hand: the bundle as publish.py 1.0 makes it"
+    hgit push origin HEAD:refs/heads/site > "$OUT" 2>&1
+    sed 's/^/    | /' "$OUT"
+    check "no earlier.conf" eq "$(srv_git ls-tree --name-only site | sort | tr '\n' ' ')" "entries exclude.txt publish.conf source.txt "
+    # git pads the remote: lines of a push by hand with spaces
+    check "published" has_re "^remote: course-deploy: OK course -> [^ ]+ \(/, /seminars/vendor/\) *$"
+    check "the seminar is scheduled" has "remote: course-deploy: scheduled /seminars/02/ at $FUTURE Moscow time (02. Convexity"
+    check "nothing at its address before its time" eq "$(code_of /seminars/02/)" 404
+    check "schedule" code 0 server schedule
+    check "one line for the path" eq "$(grep -cE '^course +/seminars/02/' "$OUT")" 1
+    COURSE_DEPLOY_NOW=$(( $(date +%s) + 3 * 86400 )) course-deploy > "$OUT" 2>&1
+    sed 's/^/    | /' "$OUT"
+    check "the timer publishes it at its time" cmp <(body_of /seminars/02/) "$COURSE/$S02/main.html"
+}
+
+# bad_earlier TEXT MESSAGE: a hand-made bundle with this earlier.conf fails with MESSAGE; the site stays
+bad_earlier() {
+    local live0 rc=0
+    live0=$(live)
+    reset_hand
+    printf '%b\n' "$1" | put "$HAND/earlier.conf"
+    echo "<p>earlier</p>" | put "$HAND/earlier/seminars--02/1/index.html"
+    echo "<p>earlier</p>" | put "$HAND/earlier/seminars--02/2/index.html"
+    hgit add -A && hgit commit -q -m "By hand: an invalid earlier.conf"
+    hgit push origin HEAD:refs/heads/site > "$OUT" 2>&1 || rc=$?
+    sed 's/^/    | /' "$OUT"
+    echo "  case: $1"
+    check "pre-receive accepts the push" eq "$rc" 0
+    check "FAILED: $2" has "remote: course-deploy: FAILED bundle $(tip | cut -c1-7): invalid earlier.conf: earlier.conf $2"
+    check "live release unchanged" eq "$(live)" "$live0"
+}
+
+s28() {
+    local line="course | /seminars/02/ | earlier/seminars--02/1"
+    bad_earlier "course | /seminars/03/ | earlier/seminars--03/1 | now | upcoming" \
+        "line 1: path /seminars/03/ of site course is not in publish.conf"
+    bad_earlier "course | /seminars/02/ | earlier/seminars--02/2 | now | upcoming" \
+        "line 1: folder must be earlier/seminars--02/1, not 'earlier/seminars--02/2'"
+    bad_earlier "course | /seminars/02/ | entries/seminars--02 | now | upcoming" \
+        "line 1: folder must be earlier/seminars--02/1, not 'entries/seminars--02'"
+    bad_earlier "$line | 2099-01-01 10:00 | upcoming" \
+        "line 1: publish time 2099-01-01 10:00 is not earlier than $FUTURE, the time of /seminars/02/ in publish.conf"
+    bad_earlier "$line | $PAST | upcoming\n# a comment\ncourse | /seminars/02/ | earlier/seminars--02/2 | now | upcoming" \
+        "line 3: publish time now is not later than $PAST on line 1"
+    bad_earlier "$line | now" "line 1: expected 5 fields separated by '|', found 4"
+    bad_earlier "nosuch | /seminars/02/ | earlier/seminars--02/1 | now | upcoming" \
+        "line 1: unknown site 'nosuch' (known sites: course)"
+    check "a publish from the Mac recovers" code 0 publish
+    check "OK" has "remote: course-deploy: OK course -> "
+    check "the coming-later page is back" cmp <(body_of /seminars/02/) "$COURSE/$UPCOMING/index.html"
+}
+
+# the seminar line is added under a coming-later line that is live: the site keeps the same files,
+# so the live release stays, and schedule still calls the coming-later line live
+s29() {
+    local rel
+    conf <<EOF
+course | / | Atlas | now
+course | /seminars/vendor/ | $VENDOR | now
+course | /seminars/02/ | $UPCOMING | now
+EOF
+    check "publish the coming-later line alone" code 0 publish
+    check "nothing changed on the site" has "remote: course-deploy: OK nothing changed"
+    rel=$(live)
+    check "its meta names the folder of the line" \
+        grep -qx "folders=entries/root entries/seminars--02 entries/seminars--vendor" "$RELEASES/$rel.meta"
+    check "schedule" code 0 server schedule
+    check "coming-later line live" has_re "^course +/seminars/02/ +now +live +upcoming$"
+    conf <<EOF
+course | / | Atlas | now
+course | /seminars/vendor/ | $VENDOR | now
+course | /seminars/02/ | $UPCOMING | now
+course | /seminars/02/ | $S02 | $FUTURE
+EOF
+    check "publish with the seminar line added" code 0 publish
+    check "nothing changed again" has "remote: course-deploy: OK nothing changed"
+    check "the same release stays" eq "$(live)" "$rel"
+    check "its meta names the new folder" \
+        grep -qx "folders=entries/root earlier/seminars--02/1 entries/seminars--vendor" "$RELEASES/$rel.meta"
+    check "schedule" code 0 server schedule
+    check "coming-later line still live" has_re "^course +/seminars/02/ +now +live +upcoming$"
+    check "seminar line counting down" has_re "^course +/seminars/02/ +$FUTURE +in [0-9]+d [0-9]+h +02\. Convexity"
+}
+
 s05() {
     local commit bad=0 top path base
     for commit in $(srv_git rev-list --all); do
         top=$(srv_git ls-tree --name-only "$commit" | sort | tr '\n' ' ')
-        if [[ $top != "entries exclude.txt publish.conf source.txt " ]]; then
+        if [[ $top != "entries exclude.txt publish.conf source.txt " \
+              && $top != "earlier earlier.conf entries exclude.txt publish.conf source.txt " ]]; then
             echo "    $commit top level: $top"
             bad=1
         fi
         while IFS= read -r -d '' path; do
             base=${path##*/}
             case $path in
-                *theory/* | *checks/* | *Lecture* | *Ignatov* | *Matveeva* | *Kasimov* | *Documents* | *CLAUDE.md*)
+                # the seminar pages have theory/ and cheatsheet/ folders; the repository's are theory/NN. <title>/
+                *theory/[0-9][0-9].\ * | *checks/* | *Lecture* | *Ignatov* | *Matveeva* | *Kasimov* | *Documents* | *CLAUDE.md*)
                     echo "    $commit: $path"; bad=1 ;;
             esac
             case $base in
@@ -1295,6 +1470,10 @@ run 19 "course-deploy --dry-run with a pending change" s19
 run 20 "KEEP_RELEASES=2, five publishes" s20
 run 21 "local refs/course-deploy/site deleted" s21
 run 22 "status, schedule, test-notify, --help, the stub" s22
+run 26 "one path, two lines: the coming-later page, then the seminar" s26
+run 27 "a bundle of publish.py 1.0 (no earlier.conf)" s27
+run 28 "invalid earlier.conf" s28
+run 29 "a line added under the one a path shows: same release, still live" s29
 run 23 "real content" s23
 run 5 "contents of site.git, all commits" s05
 run 24 "static checks" s24

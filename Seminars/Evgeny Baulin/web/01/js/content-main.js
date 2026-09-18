@@ -423,14 +423,14 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
      },
      "links": [
       {
-       "href": "cheatsheet.html",
+       "href": "cheatsheet/index.html",
        "label": {
         "en": "Cheat sheet",
         "ru": "Шпаргалка"
        }
       },
       {
-       "href": "theory.html",
+       "href": "theory/index.html",
        "label": {
         "en": "Theory handout",
         "ru": "Конспект теории"

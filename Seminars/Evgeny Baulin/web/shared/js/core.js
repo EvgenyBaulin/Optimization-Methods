@@ -146,6 +146,8 @@
   // One state object per page: om.s<NN>.state.<page> on a seminar page, om.<page>.state elsewhere.
   var page = document.documentElement.getAttribute('data-page') || 'main';
   var seminar = document.documentElement.getAttribute('data-seminar') || '';
+  // the upcoming page in upcoming/theory/ and upcoming/cheatsheet/ stands in for that page of a seminar
+  var standsFor = document.documentElement.getAttribute('data-for') || '';
   var STATE_KEY = seminar ? 'om.s' + seminar + '.state.' + page : 'om.' + page + '.state';
   var state = SEM.store.getJSON(STATE_KEY, {});
   if (typeof state !== 'object' || state === null) state = {};
@@ -180,7 +182,12 @@
 
   /* ------------------------------------------------------------------ course registry */
 
-  // Helpers over content.course (web/shared/js/content-common.js): the topics, their PDFs and the Atlas link.
+  // Helpers over content.course (web/shared/js/content-common.js): the topics, the addresses of their pages,
+  // their PDFs and the Atlas link. Every link between the pages is made here, in one of two forms:
+  //   site      /seminars/ is the landing page, /seminars/1/ seminar 1, /seminars/1/theory/ and
+  //             /seminars/1/cheatsheet/ its handout and cheat sheet: folders only, no file names;
+  //   checkout  web/index.html, web/01/index.html, web/01/theory/index.html, web/01/cheatsheet/index.html:
+  //             file:// has no directory index, so every link names the file.
   var course = (SEM.course = {});
 
   course.pad2 = function (n) {
@@ -200,16 +207,22 @@
     return null;
   };
 
-  // The folder of a topic in theory/: 'NN. <English title>'.
-  course.theoryDir = function (topic) {
-    return topic ? course.pad2(topic.n) + '. ' + topic.title.en : '';
+  // The topic with the number n (a number or a string of digits), or null.
+  course.topicByNumber = function (n) {
+    var k = parseInt(n, 10);
+    var list = course.topics();
+    for (var i = 0; i < list.length; i++) if (list[i].n === k) return list[i];
+    return null;
   };
 
-  // A PDF of a topic from a page depth levels below web/: theory/NN. <Topic title>/<base>_<lang>.pdf.
-  course.pdfHref = function (topic, base, lang, depth) {
-    var prefix = '../';
-    for (var i = 0; i < (depth | 0); i++) prefix += '../';
-    return prefix + 'theory/' + encodeURIComponent(course.theoryDir(topic)) + '/' + base + '_' + lang + '.pdf';
+  // The topic the page belongs to: the seminar of a seminar page. The upcoming page stands in for any
+  // seminar that is not out yet, so it reads the number from its folder (/seminars/3/, /seminars/3/theory/),
+  // else from ?topic=3.
+  course.current = function () {
+    if (seminar) return course.topic(seminar);
+    if (page !== 'upcoming') return null;
+    var m = /\/(\d+)\/(?:(?:theory|cheatsheet)\/)?(?:index\.html?)?$/.exec(window.location.pathname);
+    return course.topicByNumber(m ? m[1] : SEM.param('topic'));
   };
 
   // Opened from the repository (file:// or a server rooted at the repository), not from the site.
@@ -223,15 +236,73 @@
     return window.location.protocol === 'file:' || path.indexOf('/Seminars/Evgeny Baulin/web/') >= 0;
   };
 
-  // The Atlas link from a page depth levels below web/ (the landing page is depth 0, web/NN/ is depth 1).
-  course.atlasHref = function (depth) {
-    var atlas = (SEM.content.course && SEM.content.course.atlas) || {};
+  // How many folders below web/ the page is: the landing page 0, a seminar page and the upcoming page 1,
+  // a handout, a cheat sheet and the upcoming page standing in for one of them 2.
+  course.depth = function () {
+    if (page === 'home') return 0;
+    return page === 'theory' || page === 'cheatsheet' || standsFor ? 2 : 1;
+  };
+
+  function up(depth) {
     var prefix = '';
-    for (var i = 0; i < (depth | 0); i++) prefix += '../';
+    for (var i = 0; i < depth; i++) prefix += '../';
+    return prefix;
+  }
+
+  // The link from this page to a page of a topic: 'main' (the seminar), 'theory' or 'cheatsheet'.
+  // On the site the folder is the number without the zero (1/), in the checkout the folder on disk (01/).
+  course.pageHref = function (topic, which) {
+    var sub = which === 'theory' || which === 'cheatsheet' ? which + '/' : '';
+    if (course.inRepository()) return up(course.depth()) + topic.dir + '/' + sub + 'index.html';
+    return up(course.depth()) + topic.n + '/' + sub;
+  };
+
+  // The link from this page to the landing page.
+  course.homeHref = function () {
+    var prefix = up(course.depth());
+    if (course.inRepository()) return prefix + 'index.html';
+    return prefix || './';
+  };
+
+  // A path given from the seminar folder ('theory/index.html', 'figures/fig_sets.svg') as a link from this
+  // page; on the site a final index.html is dropped, so the link names the folder.
+  course.localHref = function (path) {
+    var p = String(path || '');
+    if (!course.inRepository()) p = p.replace(/(^|\/)index\.html?(?=$|[?#])/, '$1');
+    return (course.depth() === 2 ? '../' : '') + p || './';
+  };
+
+  // The folder of a topic in theory/: 'NN. <English title>'.
+  course.theoryDir = function (topic) {
+    return topic ? course.pad2(topic.n) + '. ' + topic.title.en : '';
+  };
+
+  // The link from this page to a PDF of a topic, theory/NN. <Topic title>/<base>_<lang>.pdf next to web/.
+  course.pdfHref = function (topic, base, lang) {
+    var file = encodeURIComponent(course.theoryDir(topic)) + '/' + base + '_' + lang + '.pdf';
+    return up(course.depth() + 1) + 'theory/' + file;
+  };
+
+  // The link from this page to the Atlas. In the checkout the link carries the language, which the Atlas
+  // reads from ?lang=.
+  course.atlasHref = function () {
+    var atlas = (SEM.content.course && SEM.content.course.atlas) || {};
+    var prefix = up(course.depth());
     if (!course.inRepository()) return prefix + (atlas.site || '');
     var lang = SEM.i18n ? SEM.i18n.lang : SEM.boot.lang;
     return prefix + (atlas.repo || '') + '?lang=' + (lang === 'ru' ? 'ru' : 'en');
   };
+
+  // On the site a page is shown at its folder: /seminars/1/index.html becomes /seminars/1/, the query
+  // and the hash kept. Relative links still resolve, the folder being the same.
+  if (!course.inRepository() && /\/index\.html?$/.test(window.location.pathname)) {
+    try {
+      var clean = window.location.pathname.replace(/\/index\.html?$/, '/');
+      window.history.replaceState(window.history.state, '', clean + window.location.search + window.location.hash);
+    } catch (e) {
+      /* history refused: the address keeps its file name */
+    }
+  }
 
   /* ------------------------------------------------------------------ DOM */
 

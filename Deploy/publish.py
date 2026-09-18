@@ -4,9 +4,10 @@
 """Publish the course site from this Mac.
 
 Builds the bundle of the folders listed in Deploy/publish.conf (minus Deploy/exclude.txt),
-checks it laid out as the site, commits it to refs/course-deploy/site without touching the
-working tree, the index or any branch, and pushes it to refs/heads/site on the server,
-which publishes it and answers with "course-deploy:" result lines.
+checks it laid out as the site at every moment its content changes, commits it to
+refs/course-deploy/site without touching the working tree, the index or any branch, and
+pushes it to refs/heads/site on the server, which publishes it and answers with
+"course-deploy:" result lines.
 """
 
 from __future__ import annotations
@@ -20,6 +21,7 @@ import subprocess
 import sys
 import tempfile
 import unicodedata
+from dataclasses import replace
 from datetime import datetime, timezone
 from typing import Dict, List, Optional, Sequence, Tuple
 
@@ -109,11 +111,14 @@ def folder_problem(repo: str, folder: str) -> Optional[str]:
 
 
 class Plan:
-    """What one entry publishes: files relative to base (its folder, or the folder of its single file)."""
+    """What one line publishes: files relative to base (its folder, or the folder of its single file),
+    staged in the bundle under bundle_folder (entries/<slug>, or earlier/<slug>/<k> for a line that a
+    later line of the same path replaces)."""
 
-    def __init__(self, entry: manifest.Entry):
+    def __init__(self, entry: manifest.Entry, bundle_folder: Optional[str] = None):
         self.entry = entry
         self.base = entry.folder
+        self.bundle_folder = bundle_folder or f"entries/{entry.slug}"
         self.files: List[str] = []
         self.excluded: List[str] = []
         self.page = ""
@@ -125,6 +130,7 @@ def collect(repo: str, entries: Sequence[manifest.Entry], rules: filters.Rules, 
     dirty: List[str] = []
     problems: List[str] = []
     plans = []
+    folders = manifest.bundle_folders(entries, TIMEZONE)
     for entry in entries:
         problem = folder_problem(repo, entry.folder)
         if problem:
@@ -154,7 +160,7 @@ def collect(repo: str, entries: Sequence[manifest.Entry], rules: filters.Rules, 
             others = git(repo, "ls-files", "-z", "-o", "--exclude-standard", "--", spec).stdout
             paths += [os.fsdecode(r) for r in nul_split(others)]
 
-        plan = Plan(entry)
+        plan = Plan(entry, folders[entry])
         if single:
             plan.base = entry.folder.rpartition("/")[0]
         prefix = plan.base + "/" if plan.base else ""
@@ -197,49 +203,87 @@ def collect(repo: str, entries: Sequence[manifest.Entry], rules: filters.Rules, 
         lines.append("Commit them first (git add, git commit), or publish them as they are with --allow-dirty.")
         raise Refusal("\n".join(lines))
     if problems:
-        raise Refusal("\n".join(["Refusing to publish:"] + listed(problems)))
+        # a folder listed on several lines would repeat its problems
+        raise Refusal("\n".join(["Refusing to publish:"] + listed(list(dict.fromkeys(problems)))))
     return plans, bool(dirty)
 
 
 def stage_bundle(repo: str, bundle: str, plans: Sequence[Plan], exclude_text: str, source: str) -> None:
     for plan in plans:
-        base = os.path.join(bundle, "entries", plan.entry.slug)
+        base = os.path.join(bundle, *plan.bundle_folder.split("/"))
         for rel in plan.files:
             dst = os.path.join(base, *rel.split("/"))
             os.makedirs(os.path.dirname(dst), exist_ok=True)
             shutil.copyfile(os.path.join(repo, plan.base, rel), dst)
+    latest = [p.entry for p in plans if p.bundle_folder.startswith("entries/")]
+    earlier = [replace(p.entry, folder=p.bundle_folder) for p in plans if p.bundle_folder.startswith("earlier/")]
     with open(os.path.join(bundle, "publish.conf"), "w", encoding="utf-8") as f:
-        f.write(manifest.render_bundle_manifest(p.entry for p in plans))
+        f.write(manifest.render_bundle_manifest(latest))
+    if earlier:
+        earlier.sort(key=lambda e: (e.site, e.path, manifest.time_key(e, TIMEZONE)))
+        with open(os.path.join(bundle, "earlier.conf"), "w", encoding="utf-8") as f:
+            f.write(manifest.render_earlier_manifest(earlier))
     with open(os.path.join(bundle, "exclude.txt"), "w", encoding="utf-8") as f:
         f.write(exclude_text)
     with open(os.path.join(bundle, "source.txt"), "w", encoding="utf-8") as f:
         f.write(source)
 
 
-def check_site(bundle: str, scratch: str, plans: Sequence[Plan], rules: filters.Rules) -> List[str]:
-    """Lay the bundle out as each site, with every entry published; refuses on missing assets.
+def site_states(plans: Sequence[Plan], now: datetime) -> List[Tuple[str, List[Plan]]]:
+    """Every state of the site from now on: ('now', the lines shown now), then (time, the lines
+    shown from then) for every later publish time."""
+    by_entry = {p.entry: p for p in plans}
+    later = {p.entry.when for p in plans if p.entry.when != manifest.NOW and p.entry.publish_time(TIMEZONE) > now}
+    times = sorted(later, key=lambda when: manifest.parse_time(when, TIMEZONE))
+    states = []
+    for label in ["now"] + times:
+        moment = now if label == "now" else manifest.parse_time(label, TIMEZONE)
+        states.append((label, [by_entry[e] for e in manifest.current(by_entry, moment, TIMEZONE)]))
+    return states
 
-    Returns the link warnings.
+
+def check_site(bundle: str, scratch: str, plans: Sequence[Plan], rules: filters.Rules,
+               states: Optional[Sequence[Tuple[str, List[Plan]]]] = None) -> List[str]:
+    """Lay the bundle out as each site in every state it will pass through; refuses on missing assets.
+
+    Returns the link warnings. A problem of a later state is labelled with its time.
     """
+    if states is None:
+        states = site_states(plans, datetime.now(timezone.utc))
     warnings: List[str] = []
     errors: List[str] = []
-    by_site: Dict[str, List[Plan]] = {}
-    for plan in plans:
-        by_site.setdefault(plan.entry.site, []).append(plan)
-    for site, site_plans in by_site.items():
-        root = os.path.join(scratch, site)
+    seen = set()
+
+    def lay_out(root: str, site_plans: Sequence[Plan]):
         os.makedirs(root)
+        folder_of = {p.entry: p.bundle_folder for p in site_plans}
         try:
             placed = pages.lay_out(root, [p.entry for p in site_plans],
-                                   lambda e: os.path.join(bundle, "entries", e.slug), rules)
+                                   lambda e: os.path.join(bundle, *folder_of[e].split("/")), rules)
         except (pages.LayoutError, filters.UnsafeFileError) as error:
             raise Refusal(f"Refusing to publish: {error}") from None
-        page_of = {e.path: page for e, _, _, page in placed}
+        page_of = {e: page for e, _, _, page in placed}
         for plan in site_plans:
-            plan.page = page_of[plan.entry.path]
-        site_errors, site_warnings = sitecheck.check_links(root, pages.copied_pages(placed))
-        errors += [f"{site}: {line}" for line in site_errors]
-        warnings += [f"{site}: {line}" for line in site_warnings]
+            plan.page = page_of[plan.entry]
+        return placed
+
+    for n, (label, shown) in enumerate(states):
+        by_site: Dict[str, List[Plan]] = {}
+        for plan in shown:
+            by_site.setdefault(plan.entry.site, []).append(plan)
+        for site, site_plans in by_site.items():
+            root = os.path.join(scratch, f"{site}-{n}")
+            placed = lay_out(root, site_plans)
+            where = site if label == "now" else f"{site} from {label}"
+            site_errors, site_warnings = sitecheck.check_links(root, pages.copied_pages(placed))
+            for found, lines in ((errors, site_errors), (warnings, site_warnings)):
+                for line in lines:
+                    if (site, line) not in seen:
+                        seen.add((site, line))
+                        found.append(f"{where}: {line}")
+    # a line that a later one replaced before now is still staged; it only needs its entry page
+    for n, plan in enumerate(p for p in plans if not p.page):
+        lay_out(os.path.join(scratch, f"replaced-{n}"), [plan])
     if errors:
         raise Refusal("\n".join(["Refusing to publish: pages refer to files that are not in the bundle:"]
                                 + listed(errors)))
@@ -255,22 +299,32 @@ def when_text(entry: manifest.Entry, now: datetime) -> str:
     return f"{entry.when} ({manifest.countdown((at - now).total_seconds())})"
 
 
-def print_plan(plans: Sequence[Plan], warnings: Sequence[str], head: str, subject: str, dirty: bool) -> None:
-    now = datetime.now(timezone.utc)
+def print_plan(plans: Sequence[Plan], warnings: Sequence[str], head: str, subject: str, dirty: bool,
+               now: Optional[datetime] = None, states: Sequence[Tuple[str, List[Plan]]] = ()) -> None:
+    now = now or datetime.now(timezone.utc)
     print(f"Source: {head[:7]} (dirty: {'yes' if dirty else 'no'}) {subject}")
     print(f"Publish times are {TIMEZONE} time.")
     print()
     width = max(len(p.entry.path) for p in plans)
-    for plan in sorted(plans, key=lambda p: (p.entry.site, p.entry.path)):
+    ordered = sorted(plans, key=lambda p: (p.entry.site, manifest.path_key(p.entry.path),
+                                           manifest.time_key(p.entry, TIMEZONE)))
+    for plan, after in zip(ordered, ordered[1:] + [None]):
         e = plan.entry
+        until = ""
+        if after is not None and (after.entry.site, after.entry.path) == (e.site, e.path):
+            until = f", until {after.entry.when}"
+            if after.entry.released(now, TIMEZONE):
+                until += " (already replaced)"
         print(f"{e.site}  {e.path.ljust(width)}  {e.folder}")
         count = f"{len(plan.files)} file" + ("" if len(plan.files) == 1 else "s")
-        print(f"    {when_text(e, now)}, {count}, entry page: {plan.page}")
+        print(f"    {when_text(e, now)}{until}, {count}, entry page: {plan.page}")
         if plan.excluded:
             print(f"    excluded ({len(plan.excluded)}):")
             for line in listed(plan.excluded, indent="      "):
                 print(line)
     print()
+    if len(states) > 1:
+        print(f"Links checked for the site now and from {', '.join(label for label, _ in states[1:])}.")
     if warnings:
         print(f"Link warnings ({len(warnings)}):")
         for line in warnings:
@@ -405,8 +459,10 @@ def publish(args: argparse.Namespace) -> int:
         bundle = os.path.join(scratch, "bundle")
         os.makedirs(bundle)
         stage_bundle(repo, bundle, plans, exclude_text, source)
-        warnings = check_site(bundle, os.path.join(scratch, "site"), plans, rules)
-        print_plan(plans, warnings, head, subject, dirty)
+        now = datetime.now(timezone.utc)
+        states = site_states(plans, now)
+        warnings = check_site(bundle, os.path.join(scratch, "site"), plans, rules, states)
+        print_plan(plans, warnings, head, subject, dirty, now, states)
 
         if args.dry_run:
             if git(repo, "remote", "get-url", args.remote, check=False).returncode != 0:

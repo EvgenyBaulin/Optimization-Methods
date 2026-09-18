@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Evgeny Baulin
-// Seminar 01: the composition of main.html (blocks O, A-E), the problems overview, and the self-test
+// Seminar 01: the composition of the seminar page (blocks O, A-E), the problems overview, and the self-test
 // checks of the widget numerics against the data exported by the checks notebook.
 (function () {
   'use strict';
@@ -8,7 +8,7 @@
   var util = SEM.util;
   var el = SEM.dom.el;
 
-  /* ------------------------------------------------------------------ blocks of main.html */
+  /* ------------------------------------------------------------------ blocks of the seminar page */
 
   // The problem blocks: F1 specs, plus the instructor cut note placed right after the block head.
   var GROUPS = {
@@ -71,7 +71,7 @@
   function dataChecks(results, check) {
     var M = SEM.math;
     var d = util.data;
-    if (!M) return; // theory.html and cheatsheet.html load seminar.js without the widget numerics
+    if (!M) return; // the handout and the cheat sheet load seminar.js without the widget numerics
     var group = 'data';
     function eig2(H) {
       return M.eigSym2(H[0][0], H[0][1], H[1][1]);

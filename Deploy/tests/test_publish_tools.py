@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2026 Evgeny Baulin
-"""Deploy/publish.py helpers that need no network: folder checks, times, file collection, the site
-check and the plumbing commit in a throwaway repository."""
+"""Deploy/publish.py helpers that need no network: folder checks, times, file collection, the bundle,
+the site check in every state, the plan and the plumbing commit in a throwaway repository."""
 
 from __future__ import annotations
 
@@ -246,6 +246,181 @@ class CheckSiteTest(unittest.TestCase):
         ])
         with open(os.path.join(self.bundle, "exclude.txt"), encoding="utf-8") as f:
             self.assertEqual(f.read(), "*.md\n")
+        self.assertFalse(os.path.exists(os.path.join(self.bundle, "earlier.conf")))
+
+
+NOW = datetime(2026, 9, 18, 7, 0, tzinfo=timezone.utc)  # 10:00 in Moscow
+
+
+class StatesTest(unittest.TestCase):
+    """A path listed on several lines: the bundle, the states of the site and the plan."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp(prefix="publish-test-")
+        self.addCleanup(shutil.rmtree, self.tmp, True)
+        self.bundle = os.path.join(self.tmp, "bundle")
+        self.rules = filters.Rules.with_builtin("*.md\n")
+        self.n = 0
+
+    def plans(self, lines):
+        """lines: (path, folder, when, files); files go to the bundle folder of the line."""
+        entries = [entry(path, folder, when, line=i) for i, (path, folder, when, _) in enumerate(lines, 1)]
+        folders = manifest.bundle_folders(entries, publish.TIMEZONE)
+        plans = []
+        for e, (_, _, _, files) in zip(entries, lines):
+            plan = publish.Plan(e, folders[e])
+            for rel, data in files.items():
+                write(os.path.join(self.bundle, *plan.bundle_folder.split("/"), *rel.split("/")), data)
+            plan.files = sorted(files)
+            plans.append(plan)
+        return plans
+
+    def check(self, plans):
+        self.n += 1
+        states = publish.site_states(plans, NOW)
+        return publish.check_site(self.bundle, os.path.join(self.tmp, f"site{self.n}"), plans, self.rules, states)
+
+    def seminar_lines(self, later_page='<script src="../shared/app.js"></script>'):
+        return [
+            ("/", "Atlas", "now", {"index.html": '<a href="seminars/2/">2</a>'}),
+            ("/seminars/2/", "Web/upcoming", "now", {"index.html": '<script src="../shared/app.js"></script>'}),
+            ("/seminars/2/", "Web/02", "2026-09-21 13:00", {"index.html": later_page, "theory/index.html": "t"}),
+            ("/seminars/3/", "Web/upcoming", "now", {"index.html": '<script src="../shared/app.js"></script>'}),
+            ("/seminars/shared/", "Web/shared", "now", {"app.js": "1"}),
+        ]
+
+    def test_site_states(self):
+        plans = self.plans(self.seminar_lines() + [
+            ("/seminars/4/", "Web/04", "2026-10-01 18:10", {"index.html": "4"}),
+            ("/seminars/1/", "Web/01", "2026-09-11 19:30", {"index.html": "1"}),
+        ])
+        states = publish.site_states(plans, NOW)
+        self.assertEqual([label for label, _ in states], ["now", "2026-09-21 13:00", "2026-10-01 18:10"])
+        shown = [sorted((p.entry.path, p.entry.folder) for p in state) for _, state in states]
+        self.assertIn(("/seminars/2/", "Web/upcoming"), shown[0])
+        self.assertIn(("/seminars/1/", "Web/01"), shown[0])
+        self.assertNotIn("/seminars/4/", [path for path, _ in shown[0]])
+        self.assertIn(("/seminars/2/", "Web/02"), shown[1])
+        self.assertNotIn(("/seminars/2/", "Web/upcoming"), shown[1])
+        self.assertIn(("/seminars/4/", "Web/04"), shown[2])
+        self.assertEqual(len(shown[2]), 6)
+
+    def test_one_state_without_future_times(self):
+        plans = self.plans([("/", "Atlas", "now", {"index.html": "A"}),
+                            ("/s/", "S", "2026-01-01 10:00", {"index.html": "S"})])
+        self.assertEqual([label for label, _ in publish.site_states(plans, NOW)], ["now"])
+
+    def test_every_state_is_checked(self):
+        plans = self.plans(self.seminar_lines())
+        self.assertEqual(self.check(plans), [])
+        self.assertEqual([p.page for p in plans], ["index.html"] * 4 + ["file listing"])
+
+    def test_missing_asset_in_a_later_state_refuses(self):
+        plans = self.plans(self.seminar_lines('<script src="../shared/app.js"></script><img src="fig/a.svg">'))
+        with self.assertRaises(publish.Refusal) as caught:
+            self.check(plans)
+        message = str(caught.exception)
+        self.assertIn("course from 2026-09-21 13:00: ERROR missing file: /seminars/2/index.html -> fig/a.svg "
+                      "(no such file)", message)
+        self.assertNotIn("course: ERROR", message)
+
+    def test_missing_asset_now_is_labelled_plainly(self):
+        lines = self.seminar_lines()
+        lines[4] = ("/seminars/shared/", "Web/shared", "2026-09-21 13:00", {"app.js": "1"})
+        with self.assertRaises(publish.Refusal) as caught:
+            self.check(self.plans(lines))
+        message = str(caught.exception)
+        self.assertIn("course: ERROR missing file: /seminars/2/index.html -> ../shared/app.js (no such file)",
+                      message)
+        self.assertIn("course: ERROR missing file: /seminars/3/index.html -> ../shared/app.js", message)
+        # the same problem is not repeated for the later state
+        self.assertNotIn("course from", message)
+
+    def test_a_warning_of_several_states_is_listed_once(self):
+        lines = self.seminar_lines()
+        lines[0] = ("/", "Atlas", "now", {"index.html": '<a href="gone.html">x</a>'})
+        warnings = self.check(self.plans(lines))
+        self.assertEqual(warnings, ["course: warning broken link: /index.html -> gone.html (no such file)"])
+
+    def test_a_line_replaced_before_now_is_not_checked(self):
+        plans = self.plans([
+            ("/", "Atlas", "now", {"index.html": "A"}),
+            ("/s/", "Old", "now", {"index.html": '<script src="gone.js"></script>'}),
+            ("/s/", "New", "2026-09-01 10:00", {"index.html": "N"}),
+        ])
+        self.assertEqual(self.check(plans), [])
+        self.assertEqual(plans[1].page, "index.html")
+
+    def test_stage_bundle(self):
+        repo = os.path.join(self.tmp, "repo")
+        for folder in ("Atlas", "Web/upcoming", "Web/02"):
+            write(os.path.join(repo, *folder.split("/"), "index.html"), folder)
+        entries = [entry("/", "Atlas"), entry("/seminars/3/", "Web/upcoming", line=2),
+                   entry("/seminars/2/", "Web/02", "2026-09-21 13:00", line=3),
+                   entry("/seminars/2/", "Web/upcoming", line=4)]
+        folders = manifest.bundle_folders(entries, publish.TIMEZONE)
+        plans = []
+        for e in entries:
+            plan = publish.Plan(e, folders[e])
+            plan.files = ["index.html"]
+            plans.append(plan)
+        publish.stage_bundle(repo, self.bundle, plans, "", "commit: abc\n")
+        found = []
+        for top, dirs, names in os.walk(self.bundle):
+            for name in names:
+                found.append(os.path.relpath(os.path.join(top, name), self.bundle).replace(os.sep, "/"))
+        self.assertEqual(sorted(found), [
+            "earlier.conf", "earlier/seminars--2/1/index.html", "entries/root/index.html",
+            "entries/seminars--2/index.html", "entries/seminars--3/index.html", "exclude.txt", "publish.conf",
+            "source.txt"])
+        with open(os.path.join(self.bundle, "earlier", "seminars--2", "1", "index.html"), encoding="utf-8") as f:
+            self.assertEqual(f.read(), "Web/upcoming")
+        with open(os.path.join(self.bundle, "publish.conf"), encoding="utf-8") as f:
+            latest = manifest.parse_manifest(f.read(), bundle=True, known_sites=["course"])
+        self.assertEqual([(e.path, e.folder, e.when, e.title) for e in latest], [
+            ("/", "entries/root", "now", "Atlas"),
+            ("/seminars/3/", "entries/seminars--3", "now", "upcoming"),
+            ("/seminars/2/", "entries/seminars--2", "2026-09-21 13:00", "02"),
+        ])
+        with open(os.path.join(self.bundle, "earlier.conf"), encoding="utf-8") as f:
+            earlier = manifest.parse_earlier(f.read(), latest, known_sites=["course"])
+        self.assertEqual([(e.path, e.folder, e.when, e.title) for e in earlier], [
+            ("/seminars/2/", "earlier/seminars--2/1", "now", "upcoming")])
+
+    def test_print_plan(self):
+        plans = self.plans([
+            ("/seminars/10/", "Web/upcoming", "now", {"index.html": "U"}),
+            ("/seminars/2/", "Web/02", "2026-09-21 13:00", {"index.html": "2", "a.js": "1"}),
+            ("/", "Atlas", "now", {"index.html": "A"}),
+            ("/seminars/2/", "Web/upcoming", "now", {"index.html": "U"}),
+            ("/seminars/1/", "Web/upcoming", "now", {"index.html": "U"}),
+            ("/seminars/1/", "Web/01", "2026-09-11 19:30", {"index.html": "1"}),
+        ])
+        states = publish.site_states(plans, NOW)
+        self.check(plans)
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            publish.print_plan(plans, [], "abc1234def", "Subject", False, NOW, states)
+        self.assertEqual(out.getvalue().splitlines(), [
+            "Source: abc1234 (dirty: no) Subject",
+            "Publish times are Europe/Moscow time.",
+            "",
+            "course  /              Atlas",
+            "    now, 1 file, entry page: index.html",
+            "course  /seminars/1/   Web/upcoming",
+            "    now, until 2026-09-11 19:30 (already replaced), 1 file, entry page: index.html",
+            "course  /seminars/1/   Web/01",
+            "    2026-09-11 19:30 (now), 1 file, entry page: index.html",
+            "course  /seminars/2/   Web/upcoming",
+            "    now, until 2026-09-21 13:00, 1 file, entry page: index.html",
+            "course  /seminars/2/   Web/02",
+            "    2026-09-21 13:00 (in 3d 3h), 2 files, entry page: index.html",
+            "course  /seminars/10/  Web/upcoming",
+            "    now, 1 file, entry page: index.html",
+            "",
+            "Links checked for the site now and from 2026-09-21 13:00.",
+            "Link warnings: none.",
+        ])
 
 
 class GitCase(unittest.TestCase):
@@ -598,6 +773,22 @@ class CollectTest(GitCase):
         self.commit("pointer")
         plans, _ = self.collect([entry("/", "Atlas")])
         self.assertNotIn("notes.md", plans[0].files)
+
+    def test_one_folder_on_several_lines(self):
+        self.put("Web/upcoming/index.html", "soon")
+        self.put("Web/upcoming/pointer.svg", LFS_POINTER)
+        self.commit("Coming later")
+        entries = [entry("/s/2/", "Web/upcoming", line=1), entry("/s/2/", "Atlas", "2026-09-21 13:00", line=2),
+                   entry("/s/3/", "Web/upcoming", line=3)]
+        with self.assertRaises(publish.Refusal) as caught:
+            self.collect(entries)
+        self.assertEqual(str(caught.exception).count("pointer.svg is a Git LFS pointer"), 1)
+        os.unlink(os.path.join(self.repo, "Web", "upcoming", "pointer.svg"))
+        self.commit("No pointer")
+        plans, _ = self.collect(entries)
+        self.assertEqual([(p.entry.line, p.bundle_folder, p.files) for p in plans], [
+            (1, "earlier/s--2/1", ["index.html"]), (2, "entries/s--2", ["LICENSE.md", "index.html"]),
+            (3, "entries/s--3", ["index.html"])])
 
     def test_collect_does_not_write_to_git(self):
         self.put("Atlas/new.js", "new")

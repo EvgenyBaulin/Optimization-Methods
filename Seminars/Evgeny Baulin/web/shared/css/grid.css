@@ -42,30 +42,68 @@
   margin: 0;
 }
 
+/* One row: the Topics toggle, the page links, the tools on the right. Nothing in it wraps, so the toolbar has the
+   same height in either language: the links shrink and scroll sideways instead, and app.js fades the side with
+   more and keeps the current block in view. Where the tools would leave the links too little room, the links
+   take a row of their own above them; the responsive rules below choose that by the width alone. */
 .toolbar {
   position: sticky;
   top: 0;
   z-index: 20;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
-  justify-content: flex-start;
-  gap: 8px 18px;
+  gap: 8px 16px;
   padding: 8px max(var(--gutter), calc((100% - var(--column)) / 2 + var(--gutter)));
   background: var(--panel);
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
-/* the Topics toggle first, the page links take the free space, the tools stay on the right */
-.toolbar-nav {
+.toolbar-nav,
+.toolbar-tools {
   display: flex;
-  flex-wrap: wrap;
-  gap: 2px 4px;
-  margin-right: auto;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+.toolbar-nav {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.toolbar-tools {
+  flex: none;
+  gap: 5px;
+}
+/* a row that scrolls (the tools do on a phone): no scroll bar, and 5px of padding, taken back by the margin,
+   keep the focus ring inside */
+.toolbar-nav {
+  margin: -5px;
+  padding: 5px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+.toolbar-nav::-webkit-scrollbar,
+.toolbar-tools::-webkit-scrollbar {
+  display: none;
+}
+.toolbar .is-cut-end {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
+}
+.toolbar .is-cut-start {
+  -webkit-mask-image: linear-gradient(to left, #000 calc(100% - 32px), transparent);
+  mask-image: linear-gradient(to left, #000 calc(100% - 32px), transparent);
+}
+.toolbar .is-cut-start.is-cut-end {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 32px), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 32px), transparent);
 }
 .nav-link {
+  flex: none;
   padding: 4px 6px;
   font-size: 0.95rem;
+  white-space: nowrap;
   border-radius: var(--radius);
   color: var(--fg-soft);
   text-decoration: none;
@@ -78,12 +116,6 @@
   color: var(--accent);
   border-bottom-color: var(--accent);
   font-weight: 700;
-}
-.toolbar-tools {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px;
 }
 
 .content {
@@ -117,13 +149,10 @@
   gap: 4px 14px;
   margin-bottom: 8px;
 }
+/* the handout column sets its own line length (components.css) */
 .subblock > p,
 .subblock > ul,
-.subblock > ol,
-.handout-section > p,
-.handout-subsection > p,
-.handout-section > ul,
-.handout-subsection > ul {
+.subblock > ol {
   max-width: var(--measure);
 }
 
@@ -192,16 +221,6 @@
   margin: 0;
 }
 
-.instructor-badge {
-  display: none;
-  padding: 3px 10px;
-  border: 1px solid var(--accent-2);
-  border-radius: var(--radius);
-  background: var(--panel);
-  color: var(--accent-2);
-  font-size: 0.85rem;
-}
-
 /* ---------------------------------------------------------------- instructor mode */
 .planned-time,
 .instructor-only {
@@ -211,9 +230,6 @@
   display: inline-block;
 }
 .is-instructor .instructor-only {
-  display: block;
-}
-.is-instructor .instructor-badge {
   display: block;
 }
 
@@ -230,8 +246,8 @@
 .is-present .site-footer,
 .is-present .self-study,
 .is-present .check-ref,
-.is-present .tool-instructor,
-.is-present .toolbar .tool:not(.tool-present):not(.timer-display):not(.timer-step):not(.timer-reset):not(.tool-lang) {
+.is-present:not(.is-instructor) .tool-instructor,
+.is-present .toolbar .tool:not(.tool-present):not(.timer-display):not(.timer-step):not(.timer-reset):not(.tool-lang):not(.tool-instructor) {
   display: none;
 }
 .is-present .brand-title {
@@ -278,6 +294,26 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+/* Two rows of the toolbar, by the width alone: the tools of the seminar page leave its block links too little room
+   below 1200px, those of the handout and the cheat sheet below 600px. The links (with the Topics toggle) go first. */
+@media (max-width: 1199.98px) {
+  .page-main .toolbar {
+    flex-wrap: wrap;
+  }
+  .page-main .toolbar-tools {
+    flex-basis: 100%;
+  }
+}
+@media (max-width: 599.98px) {
+  .page-theory .toolbar,
+  .page-cheatsheet .toolbar {
+    flex-wrap: wrap;
+  }
+  .page-theory .toolbar-tools,
+  .page-cheatsheet .toolbar-tools {
+    flex-basis: 100%;
+  }
+}
 @media (max-width: 700px) {
   :root {
     --gutter: 16px;
@@ -299,5 +335,16 @@
   }
   .tool-label {
     font-size: 0.9rem;
+  }
+  /* the tools of the seminar page are wider than a phone: their row scrolls sideways like the links */
+  .page-main .toolbar-tools {
+    flex-basis: calc(100% + 10px);
+    min-width: 0;
+    margin: -5px;
+    padding: 5px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
   }
 }

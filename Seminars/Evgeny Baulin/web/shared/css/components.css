@@ -43,20 +43,28 @@
   background: transparent;
 }
 .tool {
+  flex: none;
   min-height: 2em;
-  padding: 0.15em 0.5em;
+  padding: 0.15em 0.45em;
   font-size: 0.88rem;
+  white-space: nowrap;
 }
 .tool-keys {
   min-width: 2.1em;
   font-weight: 700;
+}
+/* a mode that is on (instructor): the second accent, like the notes it shows */
+.tool[aria-pressed="true"],
+.tool[aria-pressed="true"]:hover {
+  border-color: var(--accent-2);
+  color: var(--accent-2);
 }
 
 .timer {
   display: inline-flex;
   align-items: stretch;
   gap: 0;
-  margin-right: 6px;
+  margin-right: 4px;
 }
 .timer .btn {
   border-radius: 0;
@@ -671,6 +679,12 @@ pre.code {
   color: var(--fg-soft);
 }
 
+/* The handout is one column of text: every block keeps its two edges, and the column is as wide as a
+   comfortable line. From 860px the contents stand in a column of their own to the right of the text and
+   stay in view while it scrolls; below that, and on paper, they come first, under the header. */
+.handout {
+  --read: 40rem;
+}
 .handout-head {
   margin-top: 26px;
 }
@@ -682,20 +696,63 @@ pre.code {
 .page-cheatsheet .cs-title {
   display: none;
 }
+/* the column itself sets the line length: no block is narrower than the text */
+.handout .lead,
+.handout .note,
+.handout .faq,
+.handout .answer-text,
+.handout .code-note,
+.handout .figure figcaption {
+  max-width: none;
+}
+.handout .lead {
+  margin-top: 0;
+}
+
 .toc {
   margin: 20px 0 30px;
-  padding: 12px 20px;
+  padding: 12px 20px 14px;
   border: 1px solid var(--line);
   background: var(--panel);
-  max-width: 60ch;
 }
 .toc-title {
   font-size: 1.15rem;
 }
-.toc ol {
-  margin: 0.3em 0;
-  padding-left: 1.4em;
+.toc-list,
+.toc-subs {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
+.toc-list {
+  margin-top: 0.35em;
+}
+.toc a {
+  display: block;
+  padding: 2px 0;
+  text-decoration: none;
+}
+.toc a:hover {
+  text-decoration: underline;
+}
+/* the number in a column of its own, so that a long title wraps under its own first word */
+.toc-section > a {
+  display: grid;
+  grid-template-columns: 1.7rem minmax(0, 1fr);
+}
+.toc-number {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.toc-subs {
+  margin-bottom: 0.2em;
+  padding-left: 1.7rem;
+  font-size: 0.92em;
+}
+.toc-subs a {
+  color: var(--fg-soft);
+}
+
 .handout-section {
   margin: 40px 0;
   padding-top: 18px;
@@ -717,12 +774,17 @@ pre.code {
 .handout-problem-title {
   font-size: 1.1rem;
 }
+.handout .table-wrap {
+  margin: 0.8em 0;
+}
+.handout .data-table {
+  width: 100%;
+}
 .figure {
   margin: 1em 0;
 }
+/* the panel spans the column, the figure sits in its middle at its own size or smaller */
 .figure-panel {
-  display: inline-block;
-  max-width: 100%;
   padding: 10px;
   background: #ffffff;
   border: 1px solid var(--line);
@@ -732,9 +794,9 @@ pre.code {
   display: block;
   max-width: 100%;
   height: auto;
+  margin: 0 auto;
 }
 .figure figcaption {
-  max-width: var(--measure);
   margin-top: 0.4em;
   color: var(--fg-soft);
   font-size: 0.95rem;
@@ -744,6 +806,82 @@ pre.code {
 }
 .pdf-link {
   margin: 0.8em 0;
+}
+
+@media screen and (min-width: 860px) {
+  .handout {
+    display: grid;
+    grid-template-columns: minmax(0, var(--read)) minmax(12rem, 1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas: "head toc" "body toc";
+    column-gap: clamp(2rem, 4vw, 4rem);
+  }
+  .handout-head {
+    grid-area: head;
+  }
+  .handout-body {
+    grid-area: body;
+  }
+  /* the contents: a quiet list on a rule, the section being read and its subsections open and marked */
+  .handout > .toc {
+    grid-area: toc;
+    align-self: start;
+    position: sticky;
+    top: calc(var(--toolbar-h) + 22px);
+    max-height: calc(100vh - var(--toolbar-h) - 44px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    /* the title stands on the first line of the lead */
+    margin: 34px 0 0;
+    padding: 0 4px 0 0;
+    border: 0;
+    background: transparent;
+    font-size: 0.9rem;
+    line-height: 1.35;
+  }
+  .toc-title {
+    padding-left: 15px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .toc-list {
+    margin-top: 8px;
+    border-left: 1px solid var(--line);
+  }
+  .toc a {
+    margin-left: -1px;
+    padding: 4px 0 4px 12px;
+    border-left: 3px solid transparent;
+    color: var(--fg-soft);
+  }
+  .toc-subs {
+    margin: 0 0 4px;
+    padding-left: 0;
+    font-size: 0.94em;
+  }
+  .toc-subs a {
+    padding: 2px 0 2px calc(12px + 1.7rem);
+  }
+  .toc-section:not(.is-current) > .toc-subs {
+    display: none;
+  }
+  .toc .is-current > a {
+    border-left-color: var(--accent);
+    color: var(--accent);
+  }
+  .toc-section.is-current > a {
+    font-weight: 700;
+  }
+  .toc-section.is-current .toc-number {
+    color: var(--accent);
+  }
+  /* the scrolling list would clip an outline drawn outside */
+  .toc a:focus-visible {
+    outline-offset: -3px;
+  }
 }
 
 .cheatsheet {

@@ -1,6 +1,6 @@
 # Vendored libraries
 
-The seminar pages load these files locally from `web/shared/vendor/` (as `../shared/vendor/…` from `web/NN/`) and make no network requests. Each library was downloaded once, from its official npm tarball. The SHA-256 is that of the tarball; the tarball also matched the `sha512` integrity value published by the npm registry.
+The seminar pages load these files locally from `web/shared/vendor/` (as `../shared/vendor/…` from `web/NN/`, `../../shared/vendor/…` from its `theory/` and `cheatsheet/`) and make no network requests. Each library was downloaded once, from its official npm tarball. The SHA-256 is that of the tarball; the tarball also matched the `sha512` integrity value published by the npm registry.
 
 | Library  | Version | Source                                                               | SHA-256 of the tarball                                             | License    |
 | -------- | ------- | -------------------------------------------------------------------- | ------------------------------------------------------------------ | ---------- |
@@ -11,7 +11,7 @@ The seminar pages load these files locally from `web/shared/vendor/` (as `../sha
 ## What was copied
 
 - `katex/`: `dist/katex.min.js`, `dist/katex.min.css`, every file of `dist/fonts/`, and `LICENSE`. The auto-render extension is not used and not copied.
-- `mathjs/`: the UMD browser build `lib/browser/math.js`, its `math.js.LICENSE.txt`, and the package `LICENSE` and `NOTICE`. It is loaded only by the seminar pages `NN/main.html`, which check answers.
+- `mathjs/`: the UMD browser build `lib/browser/math.js`, its `math.js.LICENSE.txt`, and the package `LICENSE` and `NOTICE`. It is loaded only by the seminar pages `NN/index.html`, which check answers.
 - `pt-serif/`: the Fontsource build of PT Serif by ParaType, WOFF2 files of the `latin` and `cyrillic` subsets in regular, italic, bold and bold italic, and `LICENSE` (SIL Open Font License 1.1). The `@font-face` rules are in `shared/css/base.css`, with the unicode ranges of Fontsource's `unicode.json`.
 
 No library file in this folder was modified.

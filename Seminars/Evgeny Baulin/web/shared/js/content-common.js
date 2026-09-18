@@ -23,12 +23,20 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
     "home": {
      "en": "Seminars",
      "ru": "Семинары"
+    },
+    "upcoming": {
+     "en": "Seminars",
+     "ru": "Семинары"
     }
    },
    "pageTitle": {
     "home": {
      "en": "Optimization Methods: seminars",
      "ru": "Методы оптимизации: семинары"
+    },
+    "upcoming": {
+     "en": "Optimization Methods: coming later",
+     "ru": "Методы оптимизации: появится позже"
     }
    },
    "lecturerCredit": {
@@ -77,6 +85,10 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
     "en": "Blocks of the seminar",
     "ru": "Блоки семинара"
    },
+   "pageLinks": {
+    "en": "Pages of the seminar",
+    "ru": "Страницы семинара"
+   },
    "skip": {
     "en": "Skip to the content",
     "ru": "Перейти к содержанию"
@@ -111,7 +123,7 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
    },
    "instructor": {
     "en": "Instructor",
-    "ru": "Для преподавателя"
+    "ru": "Преподаватель"
    },
    "print": {
     "en": "Print",
@@ -499,6 +511,10 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
     "languages": {
      "en": "Rendering in both languages",
      "ru": "Отрисовка на обоих языках"
+    },
+    "links": {
+     "en": "Addresses of the links",
+     "ru": "Адреса ссылок"
     }
    }
   },
@@ -638,6 +654,28 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
     "ru": "Шпаргалка (PDF)"
    }
   },
+  "upcoming": {
+   "pageTitle": {
+    "en": "Seminar {nn}: {title}",
+    "ru": "Семинар {n}. {title}"
+   },
+   "text": {
+    "en": "The seminar page, the theory handout and the cheat sheet will appear here after the class.",
+    "ru": "Страница семинара, конспект теории и шпаргалка появятся здесь после занятия."
+   },
+   "genericTitle": {
+    "en": "This seminar is not out yet",
+    "ru": "Этого семинара пока нет"
+   },
+   "genericText": {
+    "en": "Each seminar page appears here after its class, together with the theory handout and the cheat sheet.",
+    "ru": "Страница семинара появляется здесь после занятия, вместе с конспектом теории и шпаргалкой."
+   },
+   "home": {
+    "en": "All seminars",
+    "ru": "Все семинары"
+   }
+  },
   "shortcuts": [
    {
     "keys": [
@@ -714,7 +752,8 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
      "main",
      "theory",
      "cheatsheet",
-     "home"
+     "home",
+     "upcoming"
     ]
    },
    {
@@ -729,7 +768,8 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
      "main",
      "theory",
      "cheatsheet",
-     "home"
+     "home",
+     "upcoming"
     ]
    },
    {
@@ -744,7 +784,8 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
      "main",
      "theory",
      "cheatsheet",
-     "home"
+     "home",
+     "upcoming"
     ]
    },
    {
@@ -796,7 +837,8 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
      "main",
      "theory",
      "cheatsheet",
-     "home"
+     "home",
+     "upcoming"
     ]
    },
    {
@@ -811,7 +853,8 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
      "main",
      "theory",
      "cheatsheet",
-     "home"
+     "home",
+     "upcoming"
     ]
    }
   ]

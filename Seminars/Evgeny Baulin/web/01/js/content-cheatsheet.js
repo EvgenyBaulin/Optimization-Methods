@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Evgeny Baulin
-// Seminar 01 content: the one-page cheat sheet (cheatsheet.html), in English and Russian.
+// Seminar 01 content: the one-page cheat sheet (cheatsheet/index.html), in English and Russian.
 // Strict JSON between the markers. Numbers come from data/seminar01_data.js through {{tokens}}.
 window.SEM = window.SEM || {};
 window.SEM.content = window.SEM.content || {};

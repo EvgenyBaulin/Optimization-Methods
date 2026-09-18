@@ -14,7 +14,7 @@ Course materials for the optimization methods seminars at HSE University, Facult
 
 ## Published site
 
-<https://optimization-methods.tarakan-tuc.ru> serves the atlas, and <https://optimization-methods.tarakan-tuc.ru/seminars/> the seminar pages: the landing page with the topics, and each seminar from the end of its class. The handout and cheat-sheet PDFs are not on the site; they are in the `theory` folders of this repository, and the seminar pages show their PDF buttons only when opened from here
+<https://optimization-methods.tarakan-tuc.ru> serves the atlas, and <https://optimization-methods.tarakan-tuc.ru/seminars/> the seminar pages: the landing page with the topics, and each seminar from the end of its class at `/seminars/1/`, `/seminars/2/` and so on, with its handout at `/seminars/1/theory/` and its cheat sheet at `/seminars/1/cheatsheet/`. Until then the address of a seminar shows a page saying that it comes later. The handout and cheat-sheet PDFs are not on the site; they are in the `theory` folders of this repository, and the seminar pages show their PDF buttons only when opened from here
 
 The site is published from my Mac by `Deploy/publish.py`, which sends the server only the finished pages listed in `Deploy/publish.conf`; nothing is deployed from GitHub. `Deploy/README.md` describes how it works, the setup of the server and what to do when something goes wrong
 

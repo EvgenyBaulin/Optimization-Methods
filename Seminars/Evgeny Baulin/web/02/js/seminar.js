@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Evgeny Baulin
-// Seminar 02: the composition of main.html (blocks O, A-E), the problems overview, and the self-test
+// Seminar 02: the composition of the seminar page (blocks O, A-E), the problems overview, and the self-test
 // checks of the widget numerics against the data exported by the checks notebook.
 (function () {
   'use strict';
@@ -8,7 +8,7 @@
   var util = SEM.util;
   var el = SEM.dom.el;
 
-  /* ------------------------------------------------------------------ blocks of main.html */
+  /* ------------------------------------------------------------------ blocks of the seminar page */
 
   // O: the bridge from Seminar 1, the hook widget, and today's problems.
   function buildOpening(main, app) {
@@ -66,7 +66,7 @@
   /* ------------------------------------------------------------------ self-test */
 
   // The widget numerics reproduce the exported data on every canonical configuration.
-  // Runs only where the numerics are loaded (main.html).
+  // Runs only where the numerics are loaded (the seminar page, index.html).
   function dataChecks(results, check) {
     var M = SEM.math;
     var d = util.data;

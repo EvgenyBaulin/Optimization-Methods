@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Evgeny Baulin
-// Seminar 01 content: the theory handout (theory.html), in English and Russian.
+// Seminar 01 content: the theory handout (theory/index.html), in English and Russian.
 // Strict JSON between the markers. Numbers come from data/seminar01_data.js through {{tokens}}.
 window.SEM = window.SEM || {};
 window.SEM.content = window.SEM.content || {};

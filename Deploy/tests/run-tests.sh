@@ -72,6 +72,7 @@ EOF
         cat > Deploy/publish.conf <<CONF
 course | / | Atlas | now
 course | /seminars/vendor/ | Seminars/Evgeny Baulin/web/vendor | now
+course | /seminars/02/ | Seminars/Evgeny Baulin/web/vendor | now
 course | /seminars/02/ | Seminars/Evgeny Baulin/web/02. Convexity, Constraints and Optimality Conditions | 2099-09-01 18:10
 CONF
         git init -q . && git add -A && git commit -q -m "Fixture"

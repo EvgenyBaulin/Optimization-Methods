@@ -20,7 +20,7 @@ from datetime import datetime, timezone
 from typing import Callable, Dict, FrozenSet, List, Optional, Sequence
 
 from . import filters, pages, sitecheck
-from .manifest import Entry, ManifestError, Site, parse_manifest, parse_source_info
+from .manifest import Entry, ManifestError, Site, parse_earlier, parse_manifest, parse_source_info, path_key
 
 RELEASE_NAME = re.compile(r"\d{8}T\d{6}Z-[0-9A-Za-z]+(?:-\d+)?\Z")
 LEGACY = "00000000T000000Z-legacy"
@@ -82,6 +82,8 @@ class Context:
 
 @dataclass
 class Bundle:
+    """entries are every line of publish.conf and earlier.conf; a path may have several."""
+
     commit: str
     entries: List[Entry]
     exclude_text: str
@@ -135,32 +137,38 @@ def read_blob(ctx: Context, commit: str, path: str) -> Optional[bytes]:
 
 
 def load_bundle(ctx: Context, commit: str) -> Bundle:
-    """The bundle of a commit; DeployError if publish.conf or exclude.txt is missing or invalid."""
+    """The bundle of a commit; DeployError if publish.conf or exclude.txt is missing, or either
+    manifest is invalid. earlier.conf is optional: bundles of publish.py 1.0 have none."""
     raw = read_blob(ctx, commit, "publish.conf")
     if raw is None:
         raise DeployError(f"bundle {commit[:7]} has no publish.conf")
     exclude = read_blob(ctx, commit, "exclude.txt")
     if exclude is None:
         raise DeployError(f"bundle {commit[:7]} has no exclude.txt")
+    known = [s.name for s in ctx.sites]
+    name = "publish.conf"
     try:
-        entries = parse_manifest(raw.decode("utf-8"), bundle=True, known_sites=[s.name for s in ctx.sites],
-                                 timezone=ctx.timezone)
+        entries = parse_manifest(raw.decode("utf-8"), bundle=True, known_sites=known, timezone=ctx.timezone)
+        raw = read_blob(ctx, commit, "earlier.conf")
+        if raw is not None:
+            name = "earlier.conf"
+            entries += parse_earlier(raw.decode("utf-8"), entries, known_sites=known, timezone=ctx.timezone)
     except UnicodeDecodeError:
-        raise DeployError(f"bundle {commit[:7]}: publish.conf is not UTF-8") from None
+        raise DeployError(f"bundle {commit[:7]}: {name} is not UTF-8") from None
     except ManifestError as error:
-        raise DeployError(f"bundle {commit[:7]}: invalid publish.conf: " + "; ".join(error.problems)) from None
+        raise DeployError(f"bundle {commit[:7]}: invalid {name}: " + "; ".join(error.problems)) from None
     source = read_blob(ctx, commit, "source.txt") or b""
     subject = git(ctx, "show", "-s", "--format=%s", commit).stdout.decode("utf-8", "replace").strip()
     return Bundle(commit, entries, exclude.decode("utf-8", "replace"),
                   parse_source_info(source.decode("utf-8", "replace")), subject)
 
 
-def export_entry(ctx: Context, commit: str, slug: str, dest: str) -> None:
-    """git archive of entries/<slug> unpacked into dest."""
+def export_folder(ctx: Context, commit: str, folder: str, dest: str) -> None:
+    """git archive of a bundle folder (entries/<slug> or earlier/<slug>/<k>) unpacked into dest."""
     os.makedirs(dest)
     env = subprocess_env()
     with tempfile.TemporaryFile() as archive_err, tempfile.TemporaryFile() as tar_err:
-        archive = subprocess.Popen(git_command(ctx, "archive", "--format=tar", f"{commit}:entries/{slug}"),
+        archive = subprocess.Popen(git_command(ctx, "archive", "--format=tar", f"{commit}:{folder}"),
                                    stdout=subprocess.PIPE, stderr=archive_err, env=env)
         tar = subprocess.run(["tar", "-x", "--no-same-owner", "--no-same-permissions", "-C", dest, "-f", "-"],
                              stdin=archive.stdout, stderr=tar_err, env=env)
@@ -170,7 +178,7 @@ def export_entry(ctx: Context, commit: str, slug: str, dest: str) -> None:
             archive_err.seek(0)
             tar_err.seek(0)
             message = (archive_err.read() + tar_err.read()).decode("utf-8", "replace").strip()
-            raise DeployError(f"cannot export entries/{slug} from {commit[:7]}: {message}")
+            raise DeployError(f"cannot export {folder} from {commit[:7]}: {message}")
 
 
 def file_sha256(path: str) -> str:
@@ -264,13 +272,16 @@ def _free_name(site_dir: str, base: str) -> str:
 
 
 class Build:
-    """A site assembled in <releases>/<site>/.build-<random>; removed unless finalised."""
+    """A site assembled in <releases>/<site>/.build-<random>; removed unless finalised.
+
+    entries hold one line per path: the ones the site shows at this moment.
+    """
 
     def __init__(self, ctx: Context, site: Site, bundle: Bundle, entries: Sequence[Entry]):
         self.ctx = ctx
         self.site = site
         self.bundle = bundle
-        self.entries = sorted(entries, key=lambda e: e.path)
+        self.entries = sorted(entries, key=lambda e: path_key(e.path))
         self.paths = [e.path for e in self.entries]
         os.makedirs(ctx.site_dir(site), mode=0o755, exist_ok=True)
         os.makedirs(ctx.work, mode=0o700, exist_ok=True)
@@ -285,8 +296,8 @@ class Build:
         work = tempfile.mkdtemp(prefix=f"export-{site.name}-", dir=ctx.work)
         try:
             def source_of(entry: Entry) -> str:
-                dest = os.path.join(work, entry.slug)
-                export_entry(ctx, self.bundle.commit, entry.slug, dest)
+                dest = os.path.join(work, *entry.folder.split("/"))
+                export_folder(ctx, self.bundle.commit, entry.folder, dest)
                 return dest
 
             try:
@@ -295,10 +306,10 @@ class Build:
                 raise DeployError(f"{site.name}: {error}") from None
         finally:
             shutil.rmtree(work, ignore_errors=True)
-        for entry, copied, excluded, page in placed:
+        for entry, copied, excluded, page in sorted(placed, key=lambda p: path_key(p[0].path)):
             note = f", {len(excluded)} excluded" if excluded else ""
             count = f"{len(copied)} file" + ("" if len(copied) == 1 else "s")
-            ctx.log(f"{site.name}: {entry.path} has {count}{note}; entry page from {page}.")
+            ctx.log(f"{site.name}: {entry.path} shows {entry.title}: {count}{note}; entry page from {page}.")
         self.validate(pages.copied_pages(placed))
         self.files = len(site_files(self.dir))
         self.tree = tree_hash(self.dir)
@@ -334,7 +345,7 @@ class Build:
         self.dir = None
         _write_atomic(os.path.join(site_dir, name + ".meta"),
                       f"tree={self.tree}\ncommit={self.bundle.commit}\nsource={source}\nbuilt={built}\n"
-                      f"paths={' '.join(self.paths)}\n")
+                      f"paths={' '.join(self.paths)}\nfolders={' '.join(e.folder for e in self.entries)}\n")
         return name
 
     def discard(self) -> None:
@@ -401,6 +412,25 @@ def remove_release(ctx: Context, site: Site, name: str) -> None:
         pass
 
 
+def relabel(ctx: Context, site: Site, name: str, build: Build) -> None:
+    """Give the meta of the live release the paths and folders of a build with the same files.
+
+    A line added before or after the one a path shows moves that line to another bundle folder
+    while the files stay the same; `schedule` compares these folders with the current bundle.
+    """
+    meta = read_meta(ctx, site, name)
+    paths = " ".join(build.paths)
+    folders = " ".join(e.folder for e in build.entries)
+    if (meta.get("paths"), meta.get("folders")) == (paths, folders):
+        return
+    meta["paths"], meta["folders"] = paths, folders
+    try:
+        _write_atomic(os.path.join(ctx.site_dir(site), name + ".meta"),
+                      "".join(f"{key}={value}\n" for key, value in meta.items()))
+    except OSError as error:
+        ctx.log(f"{site.name}: cannot update {name}.meta: {error}")
+
+
 def deploy(ctx: Context, site: Site, bundle: Bundle, entries: Sequence[Entry], dry_run: bool) -> Optional[Outcome]:
     """Build and publish one site; the Outcome when the web root was switched, else None."""
     build = Build(ctx, site, bundle, entries)
@@ -415,6 +445,7 @@ def deploy(ctx: Context, site: Site, bundle: Bundle, entries: Sequence[Entry], d
             return None
         if same:
             ctx.log(f"{site.name}: unchanged, {live} stays live.")
+            relabel(ctx, site, live, build)
             return None
         name = build.finalise()
     finally:

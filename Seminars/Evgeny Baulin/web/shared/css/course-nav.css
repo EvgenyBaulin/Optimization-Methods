@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* Copyright (c) 2026 Evgeny Baulin */
-/* The course navigation: the topic sidebar (docked from 1440px, a drawer below) and the topic cards of the landing page. */
+/* The course navigation: the topic sidebar (docked from 1440px, a drawer below), the topic cards of the landing page
+   and the card of the upcoming page. */
 
 /* ---------------------------------------------------------------- toolbar toggle */
 .tool-topics {
@@ -14,7 +15,19 @@
 .tool-topics + .toolbar-tools {
   margin-left: auto;
 }
-/* below 1300px only the icon shows, so the toolbar of the seminar page keeps its rows; screen readers still get the label */
+/* only the icon shows below 1300px, and on the seminar page, whose block links need the room; screen readers
+   still get the label */
+.page-main .tool-topics {
+  min-width: 2.1em;
+}
+.page-main .tool-topics .tool-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
 @media (max-width: 1299.98px) {
   .tool-topics {
     min-width: 2.1em;
@@ -285,4 +298,55 @@ a.course-nav-link:hover {
   color: var(--muted);
   font-style: italic;
   --punct-style: italic;
+}
+
+/* ---------------------------------------------------------------- upcoming page: the card of a seminar not out yet */
+.upcoming {
+  max-width: 46rem;
+  margin: 36px 0 12px;
+  padding: 18px 24px 22px;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+.upcoming-number {
+  margin: 0;
+  color: var(--accent);
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.upcoming-title {
+  margin: 0.2em 0 0;
+  font-size: 1.5rem;
+}
+.upcoming-text {
+  margin: 0.7em 0 1.2em;
+  color: var(--fg-soft);
+}
+.upcoming-links {
+  margin: 0;
+}
+/* a short page: the footer stays at the bottom of the window */
+.page-upcoming {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.page-upcoming .site-header,
+.page-upcoming .content {
+  width: 100%;
+}
+.page-upcoming .content {
+  flex: 1 0 auto;
+}
+@media (max-width: 700px) {
+  .upcoming {
+    margin-top: 20px;
+    padding: 14px 16px 18px;
+  }
+  .upcoming-title {
+    font-size: 1.3rem;
+  }
 }

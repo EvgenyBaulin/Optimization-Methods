@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Evgeny Baulin
-// Builders of theory.html (the handout), cheatsheet.html (one printed A4 page) and the landing page index.html.
+// Builders of the pages other than the seminar page: the handout (NN/theory/), the cheat sheet (NN/cheatsheet/,
+// one printed A4 page), the landing page and the upcoming page (upcoming/, published for a seminar not out yet).
 (function () {
   'use strict';
   var SEM = window.SEM;
@@ -36,7 +37,7 @@
     var p = el('p', { class: 'pdf-link' });
     var a = el('a', { class: 'btn' });
     SEM.i18n.bind(function (lang) {
-      a.setAttribute('href', SEM.course.pdfHref(SEM.course.topic(), base, lang, 1));
+      a.setAttribute('href', SEM.course.pdfHref(SEM.course.topic(), base, lang));
       a.textContent = SEM.tu('pages.pdf');
     });
     p.appendChild(a);
@@ -189,7 +190,8 @@
       }
       case 'figure': {
         var fig = el('figure', { class: 'figure' });
-        var img = el('img', { src: b.src, loading: 'lazy' });
+        // src is given from the seminar folder ('figures/fig_sets.svg')
+        var img = el('img', { src: SEM.course.localHref(b.src), loading: 'lazy' });
         SEM.i18n.bind(function () {
           img.setAttribute('alt', render.plain(b.alt));
         });
@@ -268,6 +270,107 @@
     }
   }
 
+  // The contents: the sections, numbered as their headings, each with its subsections. entries gets one
+  // {id, item, subs: [{id, item}]} per section, the list items that followReading marks.
+  function contents(H, entries) {
+    var toc = el('nav', { class: 'toc' });
+    SEM.i18n.bind(function () {
+      toc.setAttribute('aria-label', SEM.tu('pages.toc'));
+    });
+    toc.appendChild(text('h2', { class: 'toc-title' }, 'pages.toc'));
+    var list = el('ol', { class: 'toc-list' });
+    H.sections.forEach(function (sec, i) {
+      var li = el('li', { class: 'toc-section' });
+      var a = el('a', { href: '#sec-' + sec.id });
+      dom.append(a, [el('span', { class: 'toc-number', text: String(i + 1) + '.' }), render.el('span', null, sec.title)]);
+      li.appendChild(a);
+      var entry = { id: 'sec-' + sec.id, item: li, subs: [] };
+      if (sec.subsections && sec.subsections.length) {
+        var subList = el('ol', { class: 'toc-subs' });
+        sec.subsections.forEach(function (sub) {
+          var subItem = el('li', null, rich('a', { href: '#sub-' + sub.id }, sub.title));
+          subList.appendChild(subItem);
+          entry.subs.push({ id: 'sub-' + sub.id, item: subItem });
+        });
+        li.appendChild(subList);
+      }
+      entries.push(entry);
+      list.appendChild(li);
+    });
+    toc.appendChild(list);
+    return toc;
+  }
+
+  // Marks the section being read and its subsection in the contents: the last one whose top has passed a line
+  // under the toolbar, as the seminar page marks its block. The last sections are too short to reach that line,
+  // so at the end of the page the one picked in the contents keeps the mark.
+  function followReading(toc, entries) {
+    var picked = null;
+    var shown = [];
+    var queued = false;
+    function last(list, line) {
+      var found = null;
+      list.forEach(function (e) {
+        var node = document.getElementById(e.id);
+        if (node && node.getBoundingClientRect().top <= line) found = e;
+      });
+      return found;
+    }
+    function mark(entry, on) {
+      entry.item.classList.toggle('is-current', on);
+      if (on) entry.item.firstChild.setAttribute('aria-current', 'location');
+      else entry.item.firstChild.removeAttribute('aria-current');
+    }
+    function update() {
+      queued = false;
+      var bar = parseFloat(window.getComputedStyle(document.documentElement).getPropertyValue('--toolbar-h')) || 0;
+      var line = Math.max(bar + 24, window.innerHeight * 0.3);
+      var scroller = document.scrollingElement || document.documentElement;
+      if (scroller.scrollTop + window.innerHeight < scroller.scrollHeight - 2) picked = null;
+      var sec = picked ? picked[0] : last(entries, line);
+      var sub = picked ? picked[1] : sec && last(sec.subs, line);
+      if (sec === shown[0] && sub === shown[1]) return;
+      shown.forEach(function (e) {
+        if (e) mark(e, false);
+      });
+      shown = [sec, sub];
+      shown.forEach(function (e) {
+        if (e) mark(e, true);
+      });
+      // the contents beside the text scroll on their own when taller than the window: keep the mark in view
+      var link = (sub || sec) && (sub || sec).item.firstChild;
+      if (link && toc.scrollHeight > toc.clientHeight + 1) {
+        var box = toc.getBoundingClientRect();
+        var r = link.getBoundingClientRect();
+        if (r.top < box.top + 32) toc.scrollTop -= box.top + 32 - r.top;
+        else if (r.bottom > box.bottom - 12) toc.scrollTop += r.bottom - box.bottom + 12;
+      }
+    }
+    function queue() {
+      if (queued) return;
+      queued = true;
+      window.requestAnimationFrame(update);
+    }
+    toc.addEventListener('click', function (ev) {
+      var a = ev.target.closest ? ev.target.closest('a') : null;
+      if (!a) return;
+      var id = (a.getAttribute('href') || '').slice(1);
+      entries.forEach(function (e) {
+        if (e.id === id) picked = [e, null];
+        e.subs.forEach(function (s) {
+          if (s.id === id) picked = [e, s];
+        });
+      });
+      queue();
+    });
+    window.addEventListener('scroll', queue, { passive: true });
+    window.addEventListener('resize', queue);
+    window.addEventListener('load', queue);
+    queue();
+  }
+
+  // The header, the contents and the sections. On a wide screen the contents stand beside the text and stay in
+  // view; on a narrow one and on paper they come first, under the header (components.css, print.css).
   pages.theory = function (main) {
     var H = SEM.content.handout;
     var article = el('article', { class: 'handout' });
@@ -281,30 +384,13 @@
     pdfLink(head, 'Theory');
     article.appendChild(head);
 
-    var toc = el('nav', { class: 'toc' });
-    SEM.i18n.bind(function () {
-      toc.setAttribute('aria-label', SEM.tu('pages.toc'));
-    });
-    toc.appendChild(text('h2', { class: 'toc-title' }, 'pages.toc'));
-    var tocList = el('ol');
-    H.sections.forEach(function (sec) {
-      var li = el('li');
-      var a = rich('a', { href: '#sec-' + sec.id }, sec.title);
-      li.appendChild(a);
-      if (sec.subsections && sec.subsections.length) {
-        var subList = el('ol');
-        sec.subsections.forEach(function (sub) {
-          subList.appendChild(el('li', null, rich('a', { href: '#sub-' + sub.id }, sub.title)));
-        });
-        li.appendChild(subList);
-      }
-      tocList.appendChild(li);
-    });
-    toc.appendChild(tocList);
+    var entries = [];
+    var toc = contents(H, entries);
     article.appendChild(toc);
 
+    var body = el('div', { class: 'handout-body' });
     H.sections.forEach(function (sec, i) {
-      var s = el('section', { class: 'handout-section', id: 'sec-' + sec.id, dataset: { anchor: sec.id } });
+      var s = el('section', { class: 'handout-section', id: 'sec-' + sec.id });
       var h2 = el('h2');
       dom.append(h2, [el('span', { class: 'section-number', text: String(i + 1) + '.' }), ' ', render.el('span', null, sec.title)]);
       s.appendChild(h2);
@@ -319,9 +405,11 @@
         });
         s.appendChild(ss);
       });
-      article.appendChild(s);
+      body.appendChild(s);
     });
+    article.appendChild(body);
     main.appendChild(article);
+    followReading(toc, entries);
   };
 
   /* ------------------------------------------------------------------ cheat sheet */
@@ -371,7 +459,7 @@
     if (topic.available) {
       var web = el('ul', { class: 'topic-links' });
       ['main', 'theory', 'cheatsheet'].forEach(function (p) {
-        web.appendChild(el('li', null, text('a', { href: topic.dir + '/' + p + '.html' }, 'courseNav.pages.' + p)));
+        web.appendChild(el('li', null, text('a', { href: SEM.course.pageHref(topic, p) }, 'courseNav.pages.' + p)));
       });
       foot.appendChild(web);
       // the PDFs are in the repository only; the site does not have them
@@ -380,7 +468,7 @@
         [['Theory', 'home.theoryPdf'], ['Cheatsheet', 'home.cheatsheetPdf']].forEach(function (d) {
           var a = text('a', { type: 'application/pdf' }, d[1]);
           SEM.i18n.bind(function (lang) {
-            a.setAttribute('href', SEM.course.pdfHref(topic, d[0], lang, 0));
+            a.setAttribute('href', SEM.course.pdfHref(topic, d[0], lang));
           });
           pdf.appendChild(el('li', null, a));
         });
@@ -403,5 +491,41 @@
     });
     section.appendChild(grid);
     main.appendChild(section);
+  };
+
+  /* ------------------------------------------------------------------ upcoming page */
+
+  // One card: the number and the title of the topic, what appears here after the class, and the way to the
+  // landing page and the Atlas. Without a known topic (a mistyped address) the card says it in general words.
+  pages.upcoming = function (main) {
+    var topic = SEM.course.current();
+    var card = el('section', { class: 'upcoming', 'aria-labelledby': 'upcoming-title' });
+    if (topic) {
+      var number = el('p', { class: 'upcoming-number' });
+      var title = el('h2', { class: 'upcoming-title', id: 'upcoming-title' });
+      var values = { n: topic.n, nn: SEM.course.pad2(topic.n) };
+      SEM.i18n.bind(function () {
+        number.textContent = SEM.tuf('home.number', values);
+        title.textContent = SEM.t(topic.title);
+      });
+      dom.append(card, [number, title, text('p', { class: 'upcoming-text' }, 'upcoming.text')]);
+      // the document title names the seminar, in both languages
+      var pageTitle = {};
+      ['en', 'ru'].forEach(function (lang) {
+        pageTitle[lang] = SEM.tuf('upcoming.pageTitle', { n: values.n, nn: values.nn, title: SEM.t(topic.title, lang) }, lang);
+      });
+      SEM.i18n.setTitle(pageTitle);
+    } else {
+      card.appendChild(text('h2', { class: 'upcoming-title', id: 'upcoming-title' }, 'upcoming.genericTitle'));
+      card.appendChild(text('p', { class: 'upcoming-text' }, 'upcoming.genericText'));
+    }
+    var links = el('p', { class: 'link-row upcoming-links' });
+    var atlas = text('a', { class: 'btn' }, 'courseNav.atlas');
+    SEM.i18n.bind(function () {
+      atlas.setAttribute('href', SEM.course.atlasHref());
+    });
+    dom.append(links, [text('a', { class: 'btn btn-primary', href: SEM.course.homeHref() }, 'upcoming.home'), atlas]);
+    card.appendChild(links);
+    main.appendChild(card);
   };
 })();

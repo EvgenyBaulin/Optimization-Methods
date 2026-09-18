@@ -2,7 +2,8 @@
 // Copyright (c) 2026 Evgeny Baulin
 // ?selftest=1: the seminar's numerics reproduce the exported data (its own checks in js/seminar.js),
 // every answer spec accepts its reference value, every content token resolves, both languages
-// have every string (the course-wide and the seminar strings alike), and KaTeX renders every formula.
+// have every string (the course-wide and the seminar strings alike), KaTeX renders every formula,
+// and every link has the address form of the copy the page was opened from and climbs to the right folder.
 (function () {
   'use strict';
   var SEM = window.SEM;
@@ -123,6 +124,28 @@
     results.push({ group: 'languages', name: 'no KaTeX errors while rendering both languages', ok: errorsOther === 0 && render.errors.length === 0, detail: render.errors.map(function (e) { return e.tex; }).join('; ') });
   };
 
+  // Every link to another page has the form of the copy it was opened from (see SEM.course in core.js):
+  // a folder on the site, with no file name in the address; index.html or a PDF in the checkout.
+  T.linkChecks = function (results) {
+    var repo = SEM.course.inRepository();
+    var bad = [];
+    dom.qsa('a[href]').forEach(function (a) {
+      var href = a.getAttribute('href');
+      if (!href || href.charAt(0) === '#' || /^[a-z]+:/i.test(href)) return;
+      var path = href.split('#')[0].split('?')[0];
+      var ok = repo ? /(^|\/)index\.html$|\.pdf$/.test(path) : /\/$/.test(path);
+      if (!ok) bad.push(href);
+    });
+    results.push({ group: 'links', name: repo ? 'every link names index.html or a PDF' : 'every link names a folder', ok: bad.length === 0, detail: bad.join(', ') });
+    // The links climb as many folders as the page is deep (SEM.course.depth, which the upcoming page takes from
+    // data-for): from the folder of the landing page down to this page there is a seminar folder or upcoming/,
+    // and under it the folder of the handout or of the cheat sheet.
+    var here = window.location.pathname.replace(/[^\/]*$/, '');
+    var home = new URL(SEM.course.homeHref(), window.location.href).pathname.replace(/[^\/]*$/, '');
+    var below = here.indexOf(home) === 0 ? here.slice(home.length) : null;
+    results.push({ group: 'links', name: 'the link to the landing page climbs to its folder', ok: below !== null && /^((\d+|upcoming)\/((theory|cheatsheet)\/)?)?$/.test(below), detail: below === null ? home : below });
+  };
+
   T.run = function (slot) {
     var results = [];
     try {
@@ -140,6 +163,11 @@
       T.languageChecks(results);
     } catch (e) {
       results.push({ group: 'content', name: 'exception: ' + String(e.message || e), ok: false });
+    }
+    try {
+      T.linkChecks(results);
+    } catch (e) {
+      results.push({ group: 'links', name: 'exception: ' + String(e.message || e), ok: false });
     }
     T.results = results;
     var passed = results.filter(function (r) { return r.ok; }).length;

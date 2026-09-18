@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Evgeny Baulin
 /* ==========================================================================
    Optimization Atlas - i18n.js
    The language switch.  English and Russian are written side by side, at the
@@ -27,9 +29,14 @@
 
    This file is loaded in <head>, before any markup, so the page never
    flashes the wrong language.  The address of the page always stays clean,
-   so the choice is remembered in localStorage (the only thing the atlas
-   keeps there); without a choice the atlas opens in English.  An old link
-   ending in /ru or /en (index.html#/B/ru) still sets the language.
+   so the choice is remembered in localStorage under atlas.lang, and with the
+   same value under om.lang, the course-wide key that the seminar pages read
+   first (nothing else is kept there).  The seminar pages write both keys as
+   well, so on the site the language chosen last, on either side, is the one
+   both open in.  Without a choice the atlas opens in English.  A link
+   ending in /ru or /en (index.html#/B/ru) still sets the language, and so
+   does ?lang=ru, which the seminar pages add when opened from the
+   repository.
    ========================================================================== */
 (function () {
   'use strict';
@@ -39,6 +46,7 @@
   var LANGS = ['en', 'ru'];
   var DEFAULT = 'en';
   var STORE_KEY = 'atlas.lang';
+  var COURSE_KEY = 'om.lang';   /* written, never read: the seminar pages' key */
 
   /* '#/B/ru' -> 'ru'.  A section hash without a suffix, or any other hash,
      gives null: the language is then left as it is. */
@@ -56,12 +64,24 @@
     } catch (e) { return null; }
   }
   function remember(lang) {
-    try { window.localStorage.setItem(STORE_KEY, lang); } catch (e) { /* not remembered */ }
+    try {
+      window.localStorage.setItem(STORE_KEY, lang);
+      window.localStorage.setItem(COURSE_KEY, lang);
+    } catch (e) { /* not remembered */ }
   }
 
-  /* An old link names its language explicitly; it is remembered, because the
-     address is cleaned as soon as the page starts. */
-  var fromLink = langFromHash(window.location.hash);
+  /* '?lang=ru' -> 'ru': how the seminar pages hand their language over when
+     opened from the repository, where the two pages may not share
+     localStorage (file://).  ui.js removes the query together with the rest
+     of the address. */
+  function langFromQuery(search) {
+    var m = /[?&]lang=(en|ru)(?:&|$)/.exec(search || '');
+    return m ? m[1] : null;
+  }
+
+  /* A link names its language explicitly (a hash wins over the query); it is
+     remembered, because the address is cleaned as soon as the page starts. */
+  var fromLink = langFromHash(window.location.hash) || langFromQuery(window.location.search);
   if (fromLink) remember(fromLink);
 
   var i18n = {

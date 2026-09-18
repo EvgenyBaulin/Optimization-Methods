@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: MIT */
+/* Copyright (c) 2026 Evgeny Baulin */
 /* ==========================================================================
    Optimization Atlas - stylesheet
    Light and dark themes are driven entirely by the custom properties in
@@ -97,9 +99,10 @@ h1, h2, h3 { margin: 0; font-weight: 620; letter-spacing: -0.01em; }
 .brand h1 { font-size: 15px; }
 .brand-sub { color: var(--muted); font-size: 12px; }
 /* When the bar is too narrow for both, the subtitle gives its room to the
-   tabs, so all six stay visible (the Russian words are longer). */
-@media (max-width: 1380px) { .brand-sub { display: none; } }
-@media (max-width: 1599px) { :root[lang="ru"] .brand-sub { display: none; } }
+   tabs, so all six and the Seminars link stay visible (the Russian words are
+   longer). */
+@media (max-width: 1499px) { .brand-sub { display: none; } }
+@media (max-width: 1719px) { :root[lang="ru"] .brand-sub { display: none; } }
 .brand-mark {
   width: 12px; height: 12px; border-radius: 3px;
   background: linear-gradient(135deg, var(--accent), var(--ok));
@@ -135,6 +138,10 @@ h1, h2, h3 { margin: 0; font-weight: 620; letter-spacing: -0.01em; }
 .lang-btn + .lang-btn { border-left: 1px solid var(--line); }
 .lang-btn:hover { color: var(--fg); background: var(--panel-2); }
 .lang-btn[aria-pressed="true"] { color: var(--fg); background: var(--accent-soft); cursor: default; }
+
+/* The way out to the seminar pages: a link, styled like the theme button next
+   to it rather than like a tab, because it leaves the atlas. */
+a.btn { display: inline-block; flex: 0 0 auto; text-decoration: none; white-space: nowrap; }
 
 /* -------------------------------------------------------------- layout -- */
 

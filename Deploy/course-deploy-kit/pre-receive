@@ -1,0 +1,104 @@
+#!/bin/bash
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Evgeny Baulin
+#
+# pre-receive of /srv/course-deploy/site.git, run as the deploy user during a push.
+# Accepts only updates of refs/heads/site. Every commit the push adds may hold only regular
+# files, none hidden, none matching forbidden.txt, none over 50 MB, and the new tip must have
+# publish.conf. A rejected push leaves none of its objects on the server (git quarantine).
+
+set -uo pipefail
+export LC_ALL=C
+
+FORBIDDEN=/usr/local/lib/course-deploy/forbidden.txt
+MAX_SIZE=$((50 * 1024 * 1024))
+
+declare -A reported=()
+problems=0
+
+reject() {
+    local key="$1: $2"
+    [[ -n ${reported[$key]+set} ]] && return
+    reported[$key]=1
+    printf 'course-deploy: REJECTED %s\n' "$key"
+    problems=$((problems + 1))
+}
+
+listing=$(mktemp) || exit 1
+trap 'rm -f "$listing"' EXIT
+
+patterns=()
+if [[ ! -r $FORBIDDEN ]]; then
+    reject "the server has no list of forbidden files; rerun install.sh" "$FORBIDDEN"
+    exit 1
+fi
+# forbidden names are matched ignoring case (Notes.TEX is a TeX file too); refs are not
+while read -r -a words; do
+    [[ ${#words[@]} -eq 0 || ${words[0]} == '#'* ]] && continue
+    for word in "${words[@]}"; do
+        patterns+=("${word,,}")
+    done
+done < "$FORBIDDEN"
+
+check_commit() {
+    local commit=$1 record meta path mode type object size base pattern
+    if ! git ls-tree -r -l -z --full-tree "$commit" > "$listing"; then
+        reject "cannot read the files of commit" "$commit"
+        return
+    fi
+    while IFS= read -r -d '' record; do
+        meta=${record%%$'\t'*}
+        path=${record#*$'\t'}
+        read -r mode type object size <<< "$meta"
+        case $mode in
+            120000) reject "symbolic links are not accepted" "$path"; continue ;;
+            160000) reject "submodules are not accepted" "$path"; continue ;;
+        esac
+        if [[ /$path == */.* ]]; then
+            reject "hidden files and folders are not accepted" "$path"
+        fi
+        base=${path##*/}
+        base=${base,,}
+        for pattern in "${patterns[@]}"; do
+            # shellcheck disable=SC2053 # the pattern is a glob on purpose
+            if [[ $base == $pattern ]]; then
+                reject "forbidden file type $pattern" "$path"
+                break
+            fi
+        done
+        if [[ $type == blob && $size =~ ^[0-9]+$ ]] && (( size > MAX_SIZE )); then
+            reject "file larger than 50 MB ($object)" "$path"
+        fi
+    done < "$listing"
+}
+
+while read -r _old new ref; do
+    if [[ $ref != refs/heads/site ]]; then
+        reject "only the site branch can be pushed" "$ref"
+        continue
+    fi
+    if [[ $new =~ ^0+$ ]]; then
+        reject "the site branch cannot be deleted" "$ref"
+        continue
+    fi
+    if [[ $(git cat-file -t "$new" 2>/dev/null) != commit ]]; then
+        reject "not a commit" "$new"
+        continue
+    fi
+    if [[ $(git cat-file -t "$new:publish.conf" 2>/dev/null) != blob ]]; then
+        reject "missing file" "publish.conf"
+    fi
+    if ! commits=$(git rev-list "$new" --not --all); then
+        reject "cannot list the new commits of" "$ref"
+        continue
+    fi
+    for commit in $commits; do
+        check_commit "$commit"
+    done
+done
+
+if (( problems > 0 )); then
+    echo "course-deploy: nothing from this push was stored on the server."
+    exit 1
+fi
+exit 0

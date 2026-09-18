@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Evgeny Baulin
 /* ==========================================================================
    Optimization Atlas - cheatsheet.js
    Section F: one table covering every method in the course.

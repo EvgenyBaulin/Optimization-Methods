@@ -1,0 +1,1033 @@
+% SPDX-License-Identifier: MIT
+% Copyright (c) 2026 Evgeny Baulin
+% Optimization Methods, Seminar 02: theory handout (English).
+% The section structure mirrors web/02/js/content-handout.js (web/02/theory.html); every number comes from values.tex.
+% Compile with: latexmk -xelatex Theory_en.tex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\setmainfont{cmunrm.otf}[BoldFont=cmunbx.otf, ItalicFont=cmunti.otf, BoldItalicFont=cmunbi.otf]
+\setsansfont{cmunss.otf}[BoldFont=cmunsx.otf, ItalicFont=cmunsi.otf, BoldItalicFont=cmunso.otf]
+\setmonofont{cmuntt.otf}[BoldFont=cmuntb.otf, ItalicFont=cmunit.otf, BoldItalicFont=cmuntx.otf]
+\usepackage{polyglossia}
+\setdefaultlanguage{english}
+
+\usepackage[a4paper,left=2.3cm,right=2.3cm,top=2.4cm,bottom=2.4cm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{array,booktabs,longtable}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[expansion=false]{microtype}
+\usepackage[colorlinks=true,linkcolor=hseblue,urlcolor=hseblue,citecolor=hseblue]{hyperref}
+
+\definecolor{hseblue}{RGB}{16,45,105}
+\definecolor{hseaccent}{RGB}{198,40,40}
+\definecolor{hsegray}{RGB}{108,114,126}
+\definecolor{hselight}{RGB}{240,243,248}
+\definecolor{hsewarm}{RGB}{253,244,232}
+
+\def\valuelang{en}
+\input{values}
+
+\hypersetup{pdftitle={Optimization Methods. Seminar 02. Theory handout}, pdfauthor={Evgeny Baulin}}
+
+\titleformat{\section}{\color{hseblue}\Large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\color{hseblue}\large\bfseries}{\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{16pt plus 4pt minus 2pt}{8pt plus 2pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 3pt minus 2pt}{6pt plus 2pt}
+
+\tcbset{handoutbox/.style={enhanced, breakable, sharp corners, boxrule=0pt, left=7pt, right=7pt, top=5pt, bottom=5pt, before skip=8pt plus 2pt, after skip=8pt plus 2pt}}
+\newtcolorbox{examplebox}{handoutbox, colback=hselight, colframe=hselight, before upper={\textcolor{hseblue}{\bfseries Example.}\ }}
+\newtcolorbox{whybox}{handoutbox, colback=white, colframe=hseblue, leftrule=2.5pt, top=3pt, bottom=3pt, before upper={\textcolor{hseaccent}{\bfseries Why.}\ }}
+\newtcolorbox{answerbox}{handoutbox, colback=hsewarm, colframe=hsewarm, before upper={\textcolor{hseaccent}{\bfseries Answer.}\ }}
+\newtcolorbox{conventionbox}{handoutbox, colback=hselight, colframe=hseblue, leftrule=2.5pt, before upper={\textcolor{hseblue}{\bfseries Sign convention.}\par\smallskip}}
+
+\newcommand{\handoutfigure}[3]{\par\medskip\noindent\begin{minipage}{\linewidth}\centering
+  \includegraphics[width=#1\linewidth]{figures/#2.pdf}\par\smallskip
+  \begin{minipage}{0.94\linewidth}\small\textcolor{hseblue}{\bfseries Figure.}\ #3\end{minipage}\end{minipage}\par\medskip}
+\newcommand{\problemhead}[3]{\par\bigskip\noindent{\color{hseblue}\large\bfseries #1.\ #2}\par\nopagebreak
+  \noindent{\small\itshape\color{hsegray}#3}\par\nopagebreak\smallskip}
+
+\setlist[itemize]{itemsep=3pt,topsep=4pt}
+\setlist[enumerate]{itemsep=3pt,topsep=4pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\setcounter{tocdepth}{2}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{hsegray}Optimization Methods}
+\fancyhead[R]{\small\color{hsegray}Seminar 02}
+\fancyfoot[L]{\small\color{hsegray}Evgeny Baulin}
+\fancyfoot[C]{\small\thepage}
+\fancyfoot[R]{\small\color{hsegray}MIT License}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\pagestyle{fancy}}
+
+\begin{document}
+
+\begin{center}
+  {\large\color{hsegray}Optimization Methods\par}
+  \vspace{4pt}
+  {\large\bfseries\color{hseaccent}Seminar 02\par}
+  \vspace{8pt}
+  {\LARGE\bfseries\color{hseblue}Convexity, Constraints and Optimality Conditions\par}
+  \vspace{8pt}
+  {\Large Theory handout\par}
+  \vspace{12pt}
+  HSE University, Faculty of Computer Science\par
+  Academic year 2026–2027\par
+  \vspace{8pt}
+  Course lecturer: Andrey Ignatov\par
+  Evgeny Baulin\par
+  Telegram: \href{https://t.me/tarakan_tuc}{@tarakan\_tuc}\par
+\end{center}
+
+\noindent{\color{hseblue}\rule{\linewidth}{0.6pt}}
+
+\tableofcontents
+
+\clearpage
+
+This handout collects the theory behind Seminar 2: convex sets and functions, projections, the KKT conditions and the basics of duality. It can be read from the first line: derivatives, vectors and matrices are all you need. Every formula is followed by a small example with numbers, and the examples come from the seminar problems, so the same points and functions keep coming back. The section on seminar problems contains all nine problems with complete solutions.
+
+\begin{conventionbox}
+Throughout, as in the course lectures, a constrained problem is written as
+\[
+\min_x f(x) \quad \text{subject to} \quad g_i(x) \le 0,\ \ i = 1, \dots, m, \qquad h_j(x) = 0,\ \ j = 1, \dots, p.
+\]
+The Lagrangian is $\mathcal L(x, \lambda, \nu) = f(x) + \sum_i \lambda_i g_i(x) + \sum_j \nu_j h_j(x)$ with $\lambda \ge 0$ and $\nu$ of any sign, and the dual function is $q(\lambda, \nu) = \inf_x \mathcal L(x, \lambda, \nu)$. A constraint of the form $x_1 \ge 0$ is first rewritten as $-x_1 \le 0$: in C3 this gives $g_2(x) = -x_1$ with $\nabla g_2 = \val{C3.params.A.2}$. The probability simplex is $\Delta_d = \{x \in \mathbb R^d:\ x \ge 0,\ \mathbf 1^\top x = 1\}$, and a convex combination of two points is $(1-t)x + ty$ with $t \in [0, 1]$.
+\end{conventionbox}
+
+% =====================================================================
+\section{Convex sets}\label{sec:sets}
+
+Convexity is the property that makes optimization problems tractable. It is defined first for sets, through segments, and then for functions.
+
+\subsection{Segments and convex sets}\label{sub:sets-definition}
+
+Take two points $x, y \in \mathbb R^d$ and a number $t \in [0, 1]$. The point
+\[
+z = (1-t)x + ty
+\]
+is a \textbf{convex combination} of $x$ and $y$. At $t = 0$ it is $x$, at $t = 1$ it is $y$, and as $t$ runs over $[0, 1]$ the point $z$ runs over the segment from $x$ to $y$. The weights $1-t$ and $t$ are nonnegative and sum to $1$, so $z$ is a weighted average of the two points.
+
+\begin{examplebox}
+$x = \val{ex.combo.x}$, $y = \val{ex.combo.y}$, $t = \val{ex.combo.tex.t}$: $z = (1-t)x + ty = \val{ex.combo.tex.z}$, the midpoint of the segment.
+\end{examplebox}
+
+A set $C \subseteq \mathbb R^d$ is \textbf{convex} if together with any two of its points it contains the whole segment between them:
+\[
+(1-t)x + ty \in C \quad \text{for all } x, y \in C \text{ and } t \in [0, 1].
+\]
+To prove convexity one has to check all pairs of points; to disprove it, one pair and one $t$ are enough.
+
+\begin{examplebox}
+The unit disk $\{\|x\| \le 1\}$ contains $x = \val{ex.combo.x}$ and $y = \val{ex.combo.y}$ (both have norm $1$), and their midpoint $z = \val{ex.combo.tex.z}$ has $\|z\|^2 = \val{ex.combo.tex.norm2} \le 1$: it lies in the disk too, as convexity requires. The ring $\{ \val{A.widgets.sets.annulus.1} \le \|x\| \le \val{A.widgets.sets.annulus.2} \}$ also contains $x$ and $y$ but not $z$, because $\|z\|^2 = \val{ex.combo.tex.norm2} < 1$: the ring is not convex.
+\end{examplebox}
+
+\handoutfigure{1.0}{fig_sets}{Left to right: the disk $\|x\| \le r$ and the set $T$ of problem A3 are convex, and the segment stays inside. The ring $\val{A.widgets.sets.annulus.1} \le \|x\| \le \val{A.widgets.sets.annulus.2}$ and the set $S$ of problem A3 are not convex: the part of the segment that leaves the set is red.}
+
+\subsection{Basic convex sets}\label{sub:sets-examples}
+
+The following sets are convex. Each comes with a point from the seminar that belongs to it.
+
+\begin{itemize}
+  \item \textbf{Half-space} $\{x:\ a^\top x \le b\}$. The feasible set of C1 is the half-plane $\{x_1 + x_2 \le \val{C1.params.b.1} \}$, and it contains $\val{ex.slater.point}$: $x_1 + x_2 - \val{C1.params.b.1} = \val{ex.slater.g} \le 0$.
+  \item \textbf{Hyperplane} $\{x:\ a^\top x = b\}$ and, more generally, an \textbf{affine set} $\{x:\ Ax = b\}$. The line $x_1 + 2x_2 = \val{home.H3.rhs}$ contains $\val{home.H3.xFree}$: $\val{home.H3.xFree.1} + 2 \cdot \val{home.H3.xFree.2} = \val{home.H3.rhs}$.
+  \item \textbf{Ball} $\{x:\ \|x - c\| \le r\}$ in the Euclidean norm. The point $\val{B2.steps.ball}$ lies on the boundary of the unit ball: $\val{B2.steps.ball.1}^2 + \val{B2.steps.ball.2}^2 = 1$.
+  \item \textbf{Box} $\{x:\ l_i \le x_i \le u_i \text{ for all } i\}$. The square $Q = [\val{B2.params.lo}, \val{B2.params.hi}]^2$ of B2 contains $\val{B2.steps.box}$.
+  \item \textbf{Probability simplex} $\Delta_d = \{x \in \mathbb R^d:\ x \ge 0,\ \mathbf 1^\top x = 1\}$, the set of probability distributions on $d$ outcomes. The answer of B1, $\val{B1.steps.x}$, lies in $\Delta_4$: its coordinates are nonnegative and sum to $\val{B1.steps.sumX}$.
+\end{itemize}
+
+\begin{whybox}
+Linear functions commute with averaging, and a norm grows along a segment no faster than a linear function (the triangle inequality), so all these sets survive the segment test.
+\end{whybox}
+
+\subsection{Operations that preserve convexity}\label{sub:sets-operations}
+
+Checking the definition directly is tedious. In practice a set is shown to be convex by assembling it from simple convex pieces with operations that preserve convexity:
+
+\begin{itemize}
+  \item \textbf{intersection} of any family of convex sets: if $x$ and $y$ lie in every set of the family, so does the segment between them;
+  \item \textbf{affine image and preimage}: for a convex $C$ the sets $\{Ax + b:\ x \in C\}$ and $\{x:\ Ax + b \in C\}$ are convex; for example, a half-space is the preimage of a ray;
+  \item \textbf{Cartesian product}: a box is a product of intervals.
+\end{itemize}
+
+\begin{examplebox}
+The set $T = \val{A3.tex.T}$ of A3 is the intersection of a disk and the region above a parabola, and both are convex. The point $\val{ex.T.point}$ lies in both: $x^2 + y^2 = \val{ex.T.norm2} \le \val{A3.params.radius2}$ and $x^2 - \val{A3.params.shift} = \val{ex.T.parab} \le y = 1$. Hence it lies in $T$.
+\end{examplebox}
+
+A \textbf{union} of convex sets, in contrast, is usually not convex.
+
+\begin{examplebox}
+The feasible set of demo D1 is the union of two disks of radius $\val{D1.params.radius}$ centred at $\val{D1.params.centers.1}$ and $\val{D1.params.centers.2}$. The midpoint of the centres is the origin, at distance $\val{D1.params.centers.2.1} > \val{D1.params.radius}$ from both centres: it lies in neither disk, so the union is not convex.
+\end{examplebox}
+
+\subsection{Sublevel sets and the epigraph}\label{sub:sets-sublevel}
+
+For a function $f$ and a number $\alpha$, the \textbf{sublevel set} is
+\[
+\{x:\ f(x) \le \alpha\}.
+\]
+If $f$ is convex (see the next section), every sublevel set is convex: when $f(x) \le \alpha$ and $f(y) \le \alpha$, convexity gives $f\big((1-t)x + ty\big) \le (1-t)\alpha + t\alpha = \alpha$. This is why constraints $g_i(x) \le 0$ with convex $g_i$ produce convex feasible sets.
+
+\begin{examplebox}
+Take $f(x, y) = x^2 + \val{A.widgets.sublevel.convexA}\,xy + \val{A1.params.cyy}y^2 + \val{A1.params.bx}x$, the A1 family at $a = \val{A.widgets.sublevel.convexA}$, which is convex, and $\alpha = \val{A.widgets.sublevel.levelConvex}$. The origin lies in $\{f \le \alpha\}$ because $f(0, 0) = \val{A1.steps.fp}$, and the whole sublevel set is a filled ellipse, a convex set (left panel of the figure below).
+\end{examplebox}
+
+The rule works in one direction only. A nonconvex function may have convex or nonconvex sublevel sets, so in that case the set has to be checked directly.
+
+\begin{examplebox}
+$S = \val{A3.tex.S}$ is the sublevel set of the nonconvex function $x^2y^2$ at level $\val{A.widgets.sublevel.levelNonconvex}$. The points $p = \val{A3.tex.pHalf}$ and $q = \val{A3.tex.qHalf}$ lie in $S$, but at their midpoint $\val{A3.tex.mid}$ we get $x^2y^2 = \val{A3.tex.val} > 1$. So $S$ is not convex (problem A3).
+\end{examplebox}
+
+\handoutfigure{0.78}{fig_sublevel}{Left: the sublevel sets of the convex function $f = x^2 + \val{A.widgets.sublevel.convexA}\,xy + \val{A1.params.cyy}y^2 + \val{A1.params.bx}x$ are nested ellipses; the set $\{f \le \val{A.widgets.sublevel.levelConvex} \}$ is shaded. Right: the sublevel set $\{x^2y^2 \le \val{A.widgets.sublevel.levelNonconvex} \}$ of a nonconvex function is a cross, which is not convex.}
+
+The \textbf{epigraph} of $f$ is the set of points on or above its graph:
+\[
+\operatorname{epi} f = \{(x, s):\ s \ge f(x)\}.
+\]
+A function is convex exactly when its epigraph is a convex set, so convexity of functions reduces to convexity of sets.
+
+\begin{examplebox}
+For $f(x) = x^2 - \val{A3.params.shift}$ the point $\val{ex.epi.point}$ lies in $\operatorname{epi} f$, since $f(\val{ex.epi.point.1}) = \val{ex.epi.value} \le \val{ex.epi.point.2}$. The piece $\{y \ge x^2 - \val{A3.params.shift} \}$ of the set $T$ in A3 is exactly this epigraph, which is why it is convex.
+\end{examplebox}
+
+% =====================================================================
+\section{Convex functions}\label{sec:functions}
+
+Convex functions are the functions for which local information, such as a zero gradient or a tangent plane, leads to global conclusions.
+
+\subsection{Definition and the Jensen inequality}\label{sub:functions-definition}
+
+A function $f$ defined on a convex set is \textbf{convex} if its graph lies on or below every chord:
+\[
+f\big((1-t)x + ty\big) \le (1-t)f(x) + t f(y) \quad \text{for all } x, y \text{ and } t \in [0, 1].
+\]
+The left-hand side is the value of $f$ at a point of the segment; the right-hand side is the height of the chord above that point. If the inequality is strict whenever $x \ne y$ and $t \in (0, 1)$, the function is \textbf{strictly convex}. A function $f$ is \textbf{concave} if $-f$ is convex.
+
+\begin{examplebox}
+$f(x) = \|x\|^2$ with $x = \val{ex.combo.x}$, $y = \val{ex.combo.y}$ and $t = \val{ex.combo.tex.t}$: the left-hand side is $f(z) = \val{ex.combo.tex.norm2}$, the right-hand side is $(1-t) \cdot 1 + t \cdot 1 = 1$, and indeed $\val{ex.combo.tex.norm2} \le 1$.
+\end{examplebox}
+
+The same inequality for several points is the \textbf{Jensen inequality}: for weights $\theta_i \ge 0$ with $\sum_i \theta_i = 1$,
+\[
+f\Big(\sum_i \theta_i x_i\Big) \le \sum_i \theta_i f(x_i).
+\]
+For two points it is the definition, and the general case follows by induction. With two points and $\theta_1 = \theta_2 = \tfrac12$ it becomes the midpoint test used in the seminar: one pair that violates it proves that $f$ is not convex.
+
+\begin{examplebox}
+A1 at $a = \val{A1.params.aTest}$: $f(x, y) = x^2 + \val{A1.params.aTest}\,xy + \val{A1.params.cyy}y^2 + \val{A1.params.bx}x$, $p = \val{A1.params.p}$, $q = \val{A1.params.q}$. The midpoint is $m = \val{A1.steps.m}$ with $f(m) = \val{A1.tex.fm}$, while the chord gives $\tfrac12\big(f(p) + f(q)\big) = \tfrac12\big(\val{A1.steps.fp} + \val{A1.steps.fq}\big) = \val{A1.steps.avg}$. Since $\val{A1.tex.fm} > \val{A1.steps.avg}$, the function is not convex.
+\end{examplebox}
+
+\handoutfigure{0.78}{fig_jensen}{The A1 family on the segment from $p = \val{A1.params.p}$ to $q = \val{A1.params.q}$ as a function of $t$, with the chord dashed. At $a = \val{A1.params.aConvex}$ the curve stays below the chord; at $a = \val{A1.params.aTest}$ the value at $t = \tfrac12$ lies above the chord, and the Jensen inequality fails.}
+
+For a quadratic function with Hessian $H$ the vertical distance between the chord and the graph has a closed form:
+\[
+(1-t)f(p) + t f(q) - f\big((1-t)p + tq\big) = \frac{t(1-t)}{2}\, d^\top H d, \qquad d = q - p.
+\]
+Hence a quadratic function is convex exactly when $d^\top H d \ge 0$ for every $d$, that is, when $H \succeq 0$.
+
+\begin{examplebox}
+A1 at $a = \val{A1.params.aTest}$ with $d = \val{A1.steps.d}$: $d^\top H d = \val{A1.steps.curv}$, and at $t = \tfrac12$ the formula gives $\tfrac18 \cdot (\val{A1.steps.curv}) = \val{A1.steps.gap}$, which is exactly $\val{A1.steps.avg} - \val{A1.tex.fm}$.
+\end{examplebox}
+
+\begin{whybox}
+Restricted to any line, a convex function is a convex function of one variable, and a single bad segment is enough to break convexity.
+\end{whybox}
+
+\subsection{The first-order test}\label{sub:functions-first-order}
+
+Let $f$ be differentiable on an open convex set. Then $f$ is convex if and only if it lies on or above all its tangent planes:
+\[
+f(y) \ge f(x) + \nabla f(x)^\top (y - x) \quad \text{for all } x, y.
+\]
+The right-hand side is the linear approximation of $f$ at $x$. For a convex function it is a global lower bound, not only a local approximation.
+
+\begin{examplebox}
+$f(x) = x^2$, $x = \val{ex.first.x}$, $y = \val{ex.first.y}$: $f(y) = \val{ex.first.fy}$ and $f(x) + f'(x)(y - x) = \val{ex.first.fx} + \val{ex.first.slope} \cdot 2 = \val{ex.first.tangent}$. Indeed $\val{ex.first.fy} \ge \val{ex.first.tangent}$.
+\end{examplebox}
+
+The key consequence: if $\nabla f(x^*) = 0$, the inequality gives $f(y) \ge f(x^*)$ for every $y$. \textbf{For a convex function every stationary point is a global minimizer}, and the condition $\nabla f = 0$ from Seminar 1 becomes sufficient.
+
+\begin{examplebox}
+$f(x) = \val{C1.tex.f}$ from C1 is convex, and its gradient $\nabla f(x) = 2(x - c)$ vanishes at $c = \val{C1.params.c}$. The tangent-plane bound at $c$ reads $f(y) \ge f(c) = 0$ for every $y$, so without constraints $c$ is the global minimizer.
+\end{examplebox}
+
+\begin{whybox}
+A convex function bends upward, so a tangent can touch its graph only from below.
+\end{whybox}
+
+\subsection{The second-order test}\label{sub:functions-second-order}
+
+Let $f$ be twice continuously differentiable on an open convex set. Then
+\[
+f \text{ is convex} \iff \nabla^2 f(x) \succeq 0 \text{ at every point } x.
+\]
+Here $H \succeq 0$ (positive semidefinite) means $d^\top H d \ge 0$ for every $d$, or equivalently, all eigenvalues of $H$ are nonnegative. If $\nabla^2 f(x) \succ 0$ everywhere, then $f$ is strictly convex; the converse fails, as $x^4$ shows at $x = 0$.
+
+For a symmetric $2 \times 2$ matrix the test reduces to minors:
+\[
+H \succeq 0 \iff H_{11} \ge 0,\ H_{22} \ge 0,\ \det H \ge 0; \qquad H \succ 0 \iff H_{11} > 0,\ \det H > 0.
+\]
+For semidefiniteness all principal minors are needed, including $H_{22}$, not only the leading ones.
+
+\begin{examplebox}
+A1 at $a = \val{ex.hess.a}$: $H = \val{ex.hess.tex.H}$, $H_{11} = \val{A1.steps.minor11} > 0$ and $\det H = \val{A1.steps.detConst} - \val{ex.hess.a}^2 = \val{ex.hess.det} > 0$. The Hessian is the same at every point and positive definite, so $f$ is strictly convex.
+\end{examplebox}
+
+\begin{examplebox}
+A2, $f(x, y) = \val{A2.tex.f}$: at the point $\val{A2.params.point}$ the Hessian is $\val{A2.tex.HPoint}$ with $\det H = \val{A2.steps.detPoint} < 0$. Its eigenvalues $\val{A2.steps.eig.1}$ and $\val{A2.steps.eig.2}$ have opposite signs, so $f$ is not convex.
+\end{examplebox}
+
+The Hessian of a quadratic function $f(x) = \tfrac12 x^\top Q x + b^\top x$ is the constant matrix $Q$. A cross term $c\,x_ix_j$ contributes $c$ to both entries $H_{ij}$ and $H_{ji}$, not $c/2$.
+
+\begin{examplebox}
+For $x^2 + \val{ex.hess.a}\,xy + \val{A1.params.cyy}y^2 + \val{A1.params.bx}x$: $\partial^2 f/\partial x^2 = 2$, $\partial^2 f/\partial y^2 = \val{A1.steps.minor22}$ and $\partial^2 f/\partial x\,\partial y = \val{ex.hess.a}$, which is the matrix $H$ above.
+\end{examplebox}
+
+Convexity of functions is preserved by \textbf{nonnegative weighted sums}, by \textbf{composition with an affine map} $x \mapsto Ax + b$ and by the \textbf{pointwise maximum}.
+
+\begin{examplebox}
+$f(x) = \val{C1.tex.f}$ is a sum of squares of affine functions, hence convex; its Hessian is $2I \succeq 0$. The constraint function $g(x) = \val{C1.tex.g}$ is affine with zero Hessian: it is both convex and concave.
+\end{examplebox}
+
+\begin{whybox}
+The Hessian measures curvature: a convex function curves upward, or at least not downward, in every direction at every point.
+\end{whybox}
+
+\subsection{Why a local minimum is global}\label{sub:functions-local-global}
+
+A \textbf{convex problem} minimizes a convex function $f$ over a convex set $X$. Let $x^*$ be a local minimizer and suppose that some $y \in X$ had $f(y) < f(x^*)$. The segment from $x^*$ to $y$ stays in $X$, and by convexity
+\[
+f\big((1-t)x^* + ty\big) \le (1-t)f(x^*) + t f(y) < f(x^*) \quad \text{for every } t \in (0, 1].
+\]
+Points with small $t$ are arbitrarily close to $x^*$ and strictly better, which contradicts local optimality. Hence \textbf{in a convex problem every local minimizer is global}, and the set of all minimizers is convex.
+
+\begin{examplebox}
+Both convexities are needed. In demo D1 the function $f(x) = \|x - c\|^2$ with $c = \val{D1.params.c}$ is convex, but the feasible set is the union of two disks. Projected gradient (a gradient step followed by a projection, see the section on projections) from $\val{D1.result.nStarts}$ starting points ends in two different places: $\val{D1.result.nGlobal}$ runs reach the global minimizer with $f = \val{ex.local.fGlobal}$, and $\val{D1.result.nLocal}$ runs stop at a local minimizer with $f = \val{ex.local.fLocal}$. On the convex hull of the two disks all runs end at the same point $\val{D1.result.capsule}$.
+\end{examplebox}
+
+\handoutfigure{0.9}{fig_pgd}{Projected gradient for $f(x) = \|x - c\|^2$, $c = \val{D1.params.c}$, with step $\val{D1.params.step}$ from the same $\val{D1.result.nStarts}$ starting points. Left: the union of two disks, where the runs end at the global minimizer or at a local one. Right: the convex hull of the disks, where every run ends at $\val{D1.result.capsule}$.}
+
+\begin{whybox}
+A convex problem has no side valleys: from any point, the straight path to a better point goes downhill right from the start.
+\end{whybox}
+
+% =====================================================================
+\section{Constrained problems}\label{sec:constrained}
+
+From now on the minimum is sought over a set described by constraints.
+
+\subsection{The feasible set}\label{sub:constrained-feasible}
+
+In the convention of this handout a constrained problem reads
+\[
+\min_x f(x) \quad \text{subject to} \quad g_i(x) \le 0,\ \ h_j(x) = 0.
+\]
+A point that satisfies all constraints is \textbf{feasible}, the set $X$ of feasible points is the \textbf{feasible set}, and $p^* = \inf_{x \in X} f(x)$ is the \textbf{optimal value}.
+
+\begin{examplebox}
+C1: $f(x) = \val{C1.tex.f}$, $g(x) = \val{C1.tex.g}$. The point $\val{ex.slater.point}$ is feasible: there $g = \val{ex.slater.g} \le 0$. The unconstrained minimizer $\val{C1.steps.xUnc}$ is infeasible: there $g = \val{C1.steps.gUnc} > 0$. The constraint pushes the solution away from it, and $p^* = \val{C1.answer.f.value}$.
+\end{examplebox}
+
+The problem is \textbf{convex} if $f$ and all $g_i$ are convex and all $h_j$ are affine. Then $X$ is convex: each $\{g_i \le 0\}$ is a sublevel set of a convex function, each $\{h_j = 0\}$ is an affine set, and $X$ is their intersection. A nonlinear equality usually destroys convexity.
+
+\begin{examplebox}
+The constraint $x_1^2 = 1$ allows only $x_1 = -1$ and $x_1 = 1$, but not their midpoint $0$. Constraints of this kind make the Boolean problem of the duality section nonconvex.
+\end{examplebox}
+
+\subsection{Active constraints}\label{sub:constrained-active}
+
+An inequality constraint is \textbf{active} at a feasible point $x$ if $g_i(x) = 0$, and \textbf{inactive} if $g_i(x) < 0$. An inactive constraint does not restrict small moves: near $x$ it still holds. Equality constraints are active at every feasible point.
+
+\begin{examplebox}
+At the solution of C1, $x^* = \val{C1.answer.x.value}$, we have $g(x^*) = \val{C1.cand.S1.g.1}$: the constraint is active. At the solution of C2, $x^* = \val{C2.answer.x.value}$, we have $g(x^*) = \val{C2.steps.gStar} < 0$: the constraint is inactive. At the solution of C3, $x^* = \val{C3.answer.x.value}$, both constraints are active: $g_1(x^*) = \val{C3.cand.S12.g.1}$ and $g_2(x^*) = \val{C3.cand.S12.g.2}$.
+\end{examplebox}
+
+\subsection{From Seminar 1: feasible directions}\label{sub:constrained-directions}
+
+Seminar 1 ended with the first-order condition on the boundary: if $x^*$ is a local minimizer, then
+\[
+s^\top \nabla f(x^*) \ge 0 \quad \text{for every feasible direction } s,
+\]
+so no direction that keeps us feasible decreases $f$ to first order. For smooth constraints, $s$ is a (first-order) feasible direction at $x$ if $\nabla g_i(x)^\top s \le 0$ for every active $i$ and $\nabla h_j(x)^\top s = 0$ for every $j$. Inactive constraints impose nothing.
+
+\begin{examplebox}
+C1 at $x^* = \val{C1.answer.x.value}$: $\nabla g = \val{ex.dir.gradG}$ and $\nabla f(x^*) = \val{ex.dir.gradF}$. The direction $s = \val{ex.dir.d}$ is feasible, since $\nabla g^\top s = \val{ex.dir.gd} \le 0$, and it does not decrease $f$: $\nabla f(x^*)^\top s = \val{ex.dir.fd} \ge 0$.
+\end{examplebox}
+
+Checking all feasible directions one by one is impossible. The KKT conditions below replace this infinite family of inequalities by finitely many equations: under a constraint qualification, the condition holds exactly when $-\nabla f(x^*)$ is a nonnegative combination of the gradients of the active inequalities plus a combination of the gradients of the equalities.
+
+\begin{examplebox}
+In C1, $-\nabla f(x^*) = \val{C1.steps.minusGrad} = \val{C1.answer.lam.value} \cdot \val{ex.dir.gradG}$. Then for every $s$ with $\nabla g^\top s \le 0$ we get $\nabla f(x^*)^\top s = -\val{C1.answer.lam.value}\, \nabla g^\top s \ge 0$: all feasible directions pass the test at once.
+\end{examplebox}
+
+\begin{whybox}
+A minimizer on the boundary is a point from which every downhill direction leads out of the feasible set.
+\end{whybox}
+
+% =====================================================================
+\section{Projections}\label{sec:projections}
+
+The projection onto a set is the simplest constrained problem and a building block of methods for constrained optimization.
+
+\subsection{Definition}\label{sub:projections-definition}
+
+The \textbf{Euclidean projection} of a point $x$ onto a set $C$ is the point of $C$ nearest to $x$:
+\[
+P_C(x) = \arg\min_{y \in C} \|y - x\|.
+\]
+For a nonempty closed convex set it exists and is unique, and $P_C(x) = x$ whenever $x \in C$. Minimizing $\|y - c\|^2$ over $C$ is the same as projecting $c$ onto $C$.
+
+\begin{examplebox}
+The opening problem of the seminar: minimize $\|x - c\|^2$ over the unit ball with $c = \val{hook.ball.c}$. Since $\|c\| = \val{hook.ball.norm} > \val{hook.ball.r}$, the point $c$ is outside, and the minimizer is its projection $x^* = \val{hook.ball.x}$ on the boundary, at squared distance $\val{hook.ball.dist2}$ from $c$.
+\end{examplebox}
+
+For a nonconvex set the nearest point need not be unique: the origin is equally close to both disks of demo D1 and has one nearest point in each of them.
+
+\begin{whybox}
+A convex set cannot have two different nearest points: their midpoint would lie in the set and be strictly closer.
+\end{whybox}
+
+\subsection{Ball and box}\label{sub:projections-ball-box}
+
+\textbf{Ball} $B = \{y:\ \|y - c\| \le r\}$: a point outside moves to the boundary along the ray from the centre,
+\[
+P_B(x) = c + r\,\frac{x - c}{\max(r,\ \|x - c\|)}.
+\]
+The maximum in the denominator leaves points inside the ball unchanged.
+
+\begin{examplebox}
+B2: $c = 0$, $r = \val{B2.params.r}$, $x = \val{B2.params.x}$. Here $\|x\|^2 = \val{B2.steps.norm2}$ and $\|x\| = \val{B2.steps.norm} > \val{B2.params.r}$, so $P_B(x) = x/\val{B2.steps.norm} = \val{B2.steps.ball}$, at distance $\val{B2.steps.distBall}$ from $x$.
+\end{examplebox}
+
+\textbf{Box} $Q = \{y:\ l_i \le y_i \le u_i\}$: the constraints on different coordinates are independent, so every coordinate is clipped separately:
+\[
+\big(P_Q(x)\big)_i = \min\big(\max(x_i,\ l_i),\ u_i\big).
+\]
+
+\begin{examplebox}
+B2: $Q = [\val{B2.params.lo}, \val{B2.params.hi}]^2$ and $x = \val{B2.params.x}$. The first coordinate is in range and stays, the second is clipped: $P_Q(x) = \val{B2.steps.box}$, at distance $\val{B2.steps.distBox}$ from $x$. The box is closer than the ball, as it must be, because $B \subset Q$.
+\end{examplebox}
+
+\subsection{The probability simplex}\label{sub:projections-simplex}
+
+The projection onto $\Delta_d$ has the form
+\[
+P_\Delta(v) = \max(v - \theta\mathbf 1,\ 0) \quad \text{coordinatewise},
+\]
+where the shift $\theta$ is the unique number for which the coordinates of the result sum to $1$. The sort-based algorithm finds $\theta$ exactly:
+
+\begin{itemize}
+  \item \textbf{sort} $v$ in decreasing order: $u_1 \ge u_2 \ge \dots \ge u_d$;
+  \item \textbf{accumulate}: $s_j = u_1 + \dots + u_j$;
+  \item \textbf{test}: $t_j = u_j - (s_j - 1)/j$, and $\rho$ is the last $j$ with $t_j > 0$ (the first test value always equals $1$);
+  \item \textbf{shift and clip}: $\theta = (s_\rho - 1)/\rho$ and $x = \max(v - \theta,\ 0)$, in the original order of the coordinates.
+\end{itemize}
+
+\begin{examplebox}
+The simplex from the opening problem: $c = \val{hook.simplex.c}$ is already sorted, the algorithm gives $\theta = \val{hook.simplex.theta}$, and $P_\Delta(c) = \val{hook.simplex.x}$. The coordinates sum to $1$, and the negative coordinate became zero. Problems B1 and B3 go through every step with a table.
+\end{examplebox}
+
+A coordinate becomes zero whenever it does not exceed $\theta$, whatever its sign.
+
+\begin{examplebox}
+B3: $v = \val{B3.params.v}$ gives $\theta = \val{B3.steps.theta}$ and $P_\Delta(v) = \val{B3.steps.x}$. The first coordinate $\val{B3.params.v.1}$ is positive but smaller than $\theta$, so it vanishes.
+\end{examplebox}
+
+\begin{whybox}
+The KKT conditions for the simplex say that all surviving coordinates are shifted by the same $\theta$ and the others are cut at zero; sorting tells how many coordinates survive.
+\end{whybox}
+
+\subsection{The obtuse-angle property}\label{sub:projections-obtuse}
+
+For a closed convex set $C$, a point $p \in C$ is the projection of $x$ if and only if
+\[
+(x - p)^\top (y - p) \le 0 \quad \text{for every } y \in C.
+\]
+The vector from $p$ back to $x$ makes an obtuse or right angle with every direction from $p$ into the set. The property is a certificate: a claimed projection can be verified without redoing the computation.
+
+\begin{examplebox}
+B2, the ball: $p = P_B(x) = \val{B2.steps.ball}$ and $y = \val{B2.steps.yBall} \in B$ give $(x - p)^\top (y - p) = \val{B2.steps.obtuseBall} \le 0$. The box: $p = P_Q(x) = \val{B2.steps.box}$ and $y = \val{B2.steps.yBox} \in Q$ give $\val{B2.steps.obtuseBox} \le 0$.
+\end{examplebox}
+
+For a polytope such as the simplex, $(x - p)^\top (y - p)$ is linear in $y$, so it is enough to check the vertices.
+
+\begin{examplebox}
+B1: $r = v - x = \val{B1.steps.r}$ and $r^\top x = \val{B1.steps.rx}$. At the vertices $e_k$ the values $r^\top (e_k - x) = r_k - r^\top x$ are $\val{B1.steps.vertex}$, all $\le 0$.
+\end{examplebox}
+
+\begin{whybox}
+If some $y \in C$ formed an acute angle, a small step from $p$ towards $y$ would stay in $C$ and come closer to $x$.
+\end{whybox}
+
+\handoutfigure{0.86}{fig_projections}{Left: the point $x = \val{B2.params.x}$, its projections $P_B(x) = \val{B2.steps.ball}$ onto the unit disk and $P_Q(x) = \val{B2.steps.box}$ onto the square $[\val{B2.params.lo}, \val{B2.params.hi}]^2$; the red segment is the simplex $\Delta_2$. Right: the triangle $\Delta_3$ in the plane $\mathbf 1^\top x = 1$, the point $v$ of B3 shifted into this plane, its projection $P(v) = \val{B3.steps.x}$ on an edge, and a point $y \in \Delta_3$: the angle between $v - P(v)$ and $y - P(v)$ is obtuse.}
+
+\subsection{Projected gradient}\label{sub:projections-pgd}
+
+Projections turn gradient descent into a method for constrained problems: take a gradient step, then project back onto the feasible set,
+\[
+x_{k+1} = P_X\big(x_k - \alpha \nabla f(x_k)\big).
+\]
+The method stops when $x = P_X\big(x - \alpha \nabla f(x)\big)$. For a convex $X$, the obtuse-angle property turns this into $\nabla f(x)^\top (y - x) \ge 0$ for every $y \in X$: the first-order condition along every feasible direction $y - x$.
+
+\begin{examplebox}
+Demo D1 runs the method with $\alpha = \val{D1.params.step}$ for $f(x) = \|x - c\|^2$, $c = \val{D1.params.c}$. On the convex hull of the two disks every run stops at $\val{D1.result.capsule}$, where $f = \val{D1.result.fCapsule}$. On the union of the disks the stopping condition holds only locally, and the runs stop at two different points, with $f = \val{ex.local.fGlobal}$ and $f = \val{ex.local.fLocal}$.
+\end{examplebox}
+
+% =====================================================================
+\section{Optimality conditions}\label{sec:optimality}
+
+Optimality conditions turn “find the minimum” into “solve a system of equations and inequalities”.
+
+\subsection{Equality constraints: Lagrange multipliers}\label{sub:optimality-lagrange}
+
+Start with equality constraints only: $\min f(x)$ subject to $h_j(x) = 0$. If $x^*$ is a local minimizer and the gradients $\nabla h_j(x^*)$ are linearly independent, there are numbers $\nu_j$, the \textbf{Lagrange multipliers}, such that
+\[
+\nabla f(x^*) + \sum_j \nu_j \nabla h_j(x^*) = 0.
+\]
+In other words, $x^*$ is a stationary point in $x$ of the Lagrangian $\mathcal L(x, \nu) = f(x) + \sum_j \nu_j h_j(x)$. Multipliers of equalities may have any sign.
+
+\begin{examplebox}
+$\min\ x_1^2 + x_2^2$ subject to $h(x) = x_1 + 2x_2 - \val{home.H3.rhs} = 0$. Stationarity gives $2x_1 + \nu = 0$ and $2x_2 + 2\nu = 0$, so $x_2 = 2x_1$. The constraint then gives $x^* = \val{home.H3.xFree}$ and $\nu = \val{home.H3.nuFree}$. Check: $\nabla f(x^*) + \nu \nabla h = 2 \cdot \val{home.H3.xFree} + (\val{home.H3.nuFree}) \cdot (1, 2) = 0$.
+\end{examplebox}
+
+Geometrically, $f$ cannot decrease to first order along the constraint surface, so $\nabla f(x^*)$ is orthogonal to the surface, that is, it is a combination of the normals $\nabla h_j(x^*)$.
+
+\begin{examplebox}
+At $x^* = \val{home.H3.xFree}$ the gradient $\nabla f = 2 \cdot \val{home.H3.xFree}$ is parallel to $\nabla h = (1, 2)$. The line $x_1 + 2x_2 = \val{home.H3.rhs}$ has direction $(2, -1)$, and $\nabla f(x^*)^\top (2, -1) = 0$.
+\end{examplebox}
+
+\subsection{Inequality constraints: the KKT conditions}\label{sub:optimality-kkt}
+
+For the general problem, the \textbf{Karush–Kuhn–Tucker (KKT) conditions} at a point $x^*$ with multipliers $\lambda^*$ and $\nu^*$ are:
+
+\begin{itemize}
+  \item \textbf{stationarity}: $\nabla f(x^*) + \sum_i \lambda_i^* \nabla g_i(x^*) + \sum_j \nu_j^* \nabla h_j(x^*) = 0$;
+  \item \textbf{primal feasibility}: $g_i(x^*) \le 0$ and $h_j(x^*) = 0$;
+  \item \textbf{dual feasibility}: $\lambda_i^* \ge 0$;
+  \item \textbf{complementary slackness}: $\lambda_i^* g_i(x^*) = 0$ for every $i$.
+\end{itemize}
+
+\begin{examplebox}
+C1 with $x^* = \val{C1.answer.x.value}$ and $\lambda^* = \val{C1.answer.lam.value}$. Stationarity: $2(x_1 - \val{C1.params.c.1}) + \lambda = 2(\val{C1.answer.x.value.1} - \val{C1.params.c.1}) + \val{C1.answer.lam.value} = 0$ and $2(x_2 - \val{C1.params.c.2}) + \lambda = 2(\val{C1.answer.x.value.2} - \val{C1.params.c.2}) + \val{C1.answer.lam.value} = 0$. Primal feasibility: $g(x^*) = \val{C1.cand.S1.g.1} \le 0$. Dual feasibility: $\lambda^* = \val{C1.answer.lam.value} \ge 0$. Complementary slackness: $\lambda^* g(x^*) = \val{C1.answer.lam.value} \cdot \val{C1.cand.S1.g.1} = 0$.
+\end{examplebox}
+
+Complementary slackness has two cases: an inactive constraint ($g_i < 0$) must have $\lambda_i = 0$, and a positive multiplier forces its constraint to be active. An active constraint may still have $\lambda_i = 0$. By hand, a KKT system is solved by going through the possible active sets and rejecting the candidates that are infeasible or have a negative multiplier.
+
+\begin{examplebox}
+C2: the case $\lambda = 0$ gives $x = \val{C2.answer.x.value}$ with $g = \val{C2.steps.gStar} < 0$, a KKT point with $\lambda^* = \val{C2.answer.lam.value}$. The case $g = 0$ gives $x = \val{C2.cand.S1.x}$ with $\lambda = \val{C2.cand.S1.lam.1} < 0$ and is rejected.
+\end{examplebox}
+
+\textbf{Sufficiency.} If the problem is convex, every KKT point is a global minimizer, with no further assumptions. \textbf{Necessity} is the delicate direction: a local minimizer satisfies the KKT conditions only under a constraint qualification (see below).
+
+\begin{examplebox}
+C1 and C3 are convex: a convex quadratic objective and affine constraints. So their KKT points are global minimizers: $x^* = \val{C1.answer.x.value}$ with $f^* = \val{C1.answer.f.value}$ in C1, and $x^* = \val{C3.answer.x.value}$ with $f^* = \val{C3.answer.f.value}$ in C3.
+\end{examplebox}
+
+\begin{whybox}
+In a convex problem a KKT point minimizes the Lagrangian over all $x$; on the feasible set the Lagrangian is at most $f$, and at $x^*$ it equals $f(x^*)$.
+\end{whybox}
+
+\subsection{Geometric meaning and the normal cone}\label{sub:optimality-geometry}
+
+With inequalities only, move the multiplier terms of stationarity to the right-hand side; the terms of inactive constraints vanish:
+\[
+-\nabla f(x^*) = \sum_{i\ \text{active}} \lambda_i^* \nabla g_i(x^*), \qquad \lambda_i^* \ge 0.
+\]
+The antigradient, the direction of fastest decrease, must be a nonnegative combination of the outward normals of the active constraints. Then every direction that decreases $f$ leads out of the feasible set.
+
+\begin{examplebox}
+C3 at $x^* = \val{C3.answer.x.value}$: $-\nabla f(x^*) = \val{C3.steps.minusGrad}$, $\nabla g_1 = \val{C3.params.A.1}$, $\nabla g_2 = \val{C3.params.A.2}$, and
+\[
+\val{C3.steps.minusGrad} = \val{C3.cand.S12.lam.1} \cdot \val{C3.params.A.1} + \val{C3.cand.S12.lam.2} \cdot \val{C3.params.A.2}
+\]
+with both coefficients nonnegative.
+\end{examplebox}
+
+The set of such combinations is the \textbf{normal cone}. For a convex set $X$ and a point $x \in X$ it is defined directly:
+\[
+N_X(x) = \{s:\ s^\top (y - x) \le 0 \text{ for all } y \in X\},
+\]
+the directions that make an obtuse or right angle with every move into $X$. At an interior point $N_X(x) = \{0\}$; at a boundary point it is a ray or a wider cone. When $X$ is given by constraints and a constraint qualification holds, $N_X(x)$ is the cone spanned by the active gradients. For a convex problem the optimality condition fits in one line:
+\[
+-\nabla f(x^*) \in N_X(x^*).
+\]
+
+\begin{examplebox}
+The ball from the opening problem: $f(x) = \|x - c\|^2$ with $c = \val{hook.ball.c}$ and $g(x) = \|x\|^2 - 1$. At $x^* = \val{hook.ball.x}$ we have $c - x^* = \val{hook.ball.x}$, so $-\nabla f(x^*) = 2(c - x^*) = 2 \cdot \val{hook.ball.x}$, while $\nabla g(x^*) = 2x^* = 2 \cdot \val{hook.ball.x}$. Hence $-\nabla f(x^*) = \lambda \nabla g(x^*)$ with $\lambda = \val{hook.ball.lam} \ge 0$: the antigradient lies in the normal cone, which here is the ray along $x^*$.
+\end{examplebox}
+
+The obtuse-angle property says the same about projections: $x - P_C(x) \in N_C\big(P_C(x)\big)$.
+
+\begin{examplebox}
+B2: $P_B(x) = \val{B2.steps.ball}$, and $x - P_B(x)$ points along the outward normal of the unit circle at $P_B(x)$. For $y = \val{B2.steps.yBall}$ the inner product $(x - P_B(x))^\top (y - P_B(x)) = \val{B2.steps.obtuseBall} \le 0$, as the definition of $N_B$ requires.
+\end{examplebox}
+
+\handoutfigure{1.0}{fig_kkt}{KKT geometry of C1, C2 and C3. The shaded region is the feasible set, and the circles are level lines of $f$ around the unconstrained minimizer $c$. In C1 the antigradient $-\nabla f(x^*)$ points along the normal $\nabla g$ of the active constraint. In C2 the minimizer $x^* = c$ is interior and $\lambda^* = \val{C2.answer.lam.value}$. In C3 both constraints are active, and $-\nabla f(x^*)$ lies in the shaded normal cone spanned by $\nabla g_1$ and $\nabla g_2$.}
+
+\begin{whybox}
+At the optimum the pull of $-\nabla f$ towards lower values is balanced by the walls it presses against, and a wall can only push, never pull: hence $\lambda \ge 0$.
+\end{whybox}
+
+\subsection{Constraint qualifications and Slater's condition}\label{sub:optimality-cq}
+
+The KKT conditions are necessary only if the constraints describe the feasible set faithfully near $x^*$. An assumption that guarantees this is called a \textbf{constraint qualification}. Without one, a minimizer may have no multipliers at all.
+
+\begin{examplebox}
+Demo D2: $\min x$ subject to $x^2 \le 0$. The only feasible point is $x^* = \val{D2.xStar}$, so $p^* = \val{D2.pStar}$. Stationarity requires $1 + 2\lambda x^* = 0$, but at $x^* = \val{D2.xStar}$ the left-hand side equals $1$ for every $\lambda$. No multiplier exists, although $x^*$ is the minimizer.
+\end{examplebox}
+
+Two common constraint qualifications:
+
+\begin{itemize}
+  \item \textbf{LICQ}: the gradients of the active constraints at $x^*$ are linearly independent;
+  \item \textbf{Slater's condition}, for convex problems: there is a strictly feasible point $\bar x$, that is, $g_i(\bar x) < 0$ for every $i$ and $h_j(\bar x) = 0$ for every $j$.
+\end{itemize}
+
+\begin{examplebox}
+C3: the active gradients $\val{C3.params.A.1}$ and $\val{C3.params.A.2}$ are linearly independent, so LICQ holds. C1: at $\bar x = \val{ex.slater.point}$ we have $g(\bar x) = \val{ex.slater.g} < 0$, so Slater's condition holds. D2: $\nabla g(x^*) = 2x^* = 0$ violates LICQ, and no $x$ satisfies $x^2 < 0$, so Slater's condition fails as well.
+\end{examplebox}
+
+For a convex problem with Slater's condition the KKT conditions are \textbf{necessary and sufficient}: a feasible point is a global minimizer exactly when suitable multipliers exist.
+
+\begin{examplebox}
+C1 is convex and has the Slater point $\val{ex.slater.point}$. So the minimizer is guaranteed to be among the KKT points, and the case analysis of C1, which finds the single KKT point $\val{C1.answer.x.value}$ with $\lambda^* = \val{C1.answer.lam.value}$, solves the problem completely.
+\end{examplebox}
+
+% =====================================================================
+\section{Duality basics}\label{sec:duality}
+
+Duality turns the multipliers into the variables of a new problem, whose value bounds the value of the original problem from below.
+
+\subsection{The Lagrangian and the dual function}\label{sub:duality-dual-function}
+
+The Lagrangian $\mathcal L(x, \lambda, \nu) = f(x) + \sum_i \lambda_i g_i(x) + \sum_j \nu_j h_j(x)$ replaces hard constraints by prices: with $\lambda_i \ge 0$, violating $g_i \le 0$ is penalized and keeping a margin is rewarded. The \textbf{dual function} is the smallest value of the Lagrangian over all $x$, with no constraints on $x$:
+\[
+q(\lambda, \nu) = \inf_x \mathcal L(x, \lambda, \nu).
+\]
+It may equal $-\infty$. As an infimum of functions that are affine in $(\lambda, \nu)$, it is always concave, even when the original problem is not convex.
+
+\begin{examplebox}
+C1: $\mathcal L(x, \lambda) = \val{C1.tex.f} + \lambda\,(\val{C1.tex.g})$. The condition $\nabla_x \mathcal L = 0$ gives $x(\lambda) = \val{D3.convex.tex.xLam}$, and substituting it back,
+\[
+q(\lambda) = \val{D3.convex.tex.q}.
+\]
+For example, $q(\val{D3.convex.samples.lam.2}) = \val{D3.convex.samples.q.2}$ and $q(\val{D3.convex.samples.lam.5}) = \val{D3.convex.samples.q.5}$.
+\end{examplebox}
+
+\subsection{Weak duality}\label{sub:duality-weak}
+
+For every feasible $x$, every $\lambda \ge 0$ and every $\nu$,
+\[
+q(\lambda, \nu) \le f(x).
+\]
+Indeed, on the feasible set $\lambda_i g_i(x) \le 0$ and $h_j(x) = 0$, so $\mathcal L(x, \lambda, \nu) \le f(x)$, and the infimum over all $x$ is smaller still. Taking the best bound gives \textbf{weak duality} $d^* \le p^*$, where
+\[
+d^* = \sup_{\lambda \ge 0,\ \nu} q(\lambda, \nu)
+\]
+is the value of the \textbf{dual problem}. Weak duality holds for every problem, convex or not, and the difference $p^* - d^* \ge 0$ is called the \textbf{duality gap}.
+
+\begin{examplebox}
+C1: $q(\val{ex.weak.lam}) = \val{ex.weak.q} \le p^* = \val{C1.answer.f.value}$. Every $\lambda \ge 0$ gives a lower bound on the optimal value without solving the problem.
+\end{examplebox}
+
+\begin{whybox}
+Prices can only help a feasible point: its constraint terms are nonpositive, so the priced objective never exceeds the true one.
+\end{whybox}
+
+\subsection{Strong duality under Slater's condition}\label{sub:duality-strong}
+
+If the problem is convex and satisfies Slater's condition, \textbf{strong duality} holds: $d^* = p^*$, and the maximum of the dual function is attained. If the primal minimum is attained too, a maximizer $\lambda^*$ of $q$ is a KKT multiplier, and it measures sensitivity: when the constraint $g_i(x) \le 0$ is relaxed to $g_i(x) \le u$ and the optimal value depends smoothly on $u$, it changes at the rate
+\[
+\frac{\partial p^*}{\partial u}\Big|_{u = 0} = -\lambda_i^*.
+\]
+
+\begin{examplebox}
+C1 is convex with the Slater point $\val{ex.slater.point}$. The maximum of $q(\lambda) = \val{D3.convex.tex.q}$ is attained at $\lambda = \val{D3.convex.lamStar}$, the multiplier found in C1, and equals $d^* = \val{D3.convex.dStar} = p^*$: the gap is zero. Relaxing the constraint to $x_1 + x_2 \le \val{C1.params.b.1} + u$ changes $f^*$ at the rate $-\lambda^* = \val{C1.steps.sensitivity}$.
+\end{examplebox}
+
+\handoutfigure{1.0}{fig_duality}{Left: the dual function $q(\lambda) = \val{D3.convex.tex.q}$ of C1 reaches $p^* = \val{D3.convex.pStar}$ at $\lambda = \val{D3.convex.lamStar}$, a zero gap. Middle: the dual function $q(\lambda) = \val{D2.tex.q}$ of D2 approaches $p^* = \val{D2.pStar}$ but never attains it. Right: on feasible points the Boolean objective takes only the values $\val{D3.bool.values.1}$ and $\val{D3.bool.values.2}$; $d^* = \val{D3.bool.tex.dStar}$ lies strictly below $p^* = \val{D3.bool.pStar}$, and the bracket marks the gap.}
+
+\begin{whybox}
+Under Slater's condition the prices can be tuned so that the unconstrained minimum of the Lagrangian lands exactly on the constrained optimum.
+\end{whybox}
+
+\subsection{When duality breaks}\label{sub:duality-gap}
+
+Without Slater's condition even a convex problem can misbehave. In D2, $\min x$ subject to $x^2 \le 0$, the Lagrangian $x + \lambda x^2$ with $\lambda > 0$ is minimized at $x = \val{D2.tex.xMin}$, which gives
+\[
+q(\lambda) = \val{D2.tex.q}.
+\]
+As $\lambda \to \infty$ we get $q(\lambda) \to p^*$, so the gap is zero, but no $\lambda$ attains $d^*$. This is the dual view of the missing KKT multiplier.
+
+\begin{examplebox}
+$q(\val{D2.samples.lam.1}) = \val{D2.samples.q.1}$, $q(\val{D2.samples.lam.3}) = \val{D2.samples.q.3}$, $q(\val{D2.samples.lam.5}) = \val{D2.samples.q.5}$: the values approach $p^* = \val{D2.pStar}$ from below and never reach it.
+\end{examplebox}
+
+Without convexity the gap can be positive. Consider the Boolean problem
+\[
+\min\ x_1x_2 + x_2x_3 + x_1x_3 \quad \text{subject to} \quad x_i^2 = 1 \text{ for every } i.
+\]
+Its eight feasible points are the sign vectors $x \in \{-1, 1\}^3$. The objective equals $\val{D3.bool.values.2}$ when all signs agree and $\val{D3.bool.values.1}$ otherwise, so $p^* = \val{D3.bool.pStar}$, attained at $\val{D3.bool.nOptimal}$ points. Write the objective as $x^\top A x$ with $A = \tfrac12(\mathbf 1\mathbf 1^\top - I)$. Then
+\[
+\mathcal L(x, \nu) = x^\top\big(A + \operatorname{diag}(\nu)\big)x - \mathbf 1^\top \nu, \qquad q(\nu) = \begin{cases} -\mathbf 1^\top \nu, & A + \operatorname{diag}(\nu) \succeq 0, \\ -\infty & \text{otherwise}. \end{cases}
+\]
+
+\begin{examplebox}
+The best dual point is $\nu^* = \val{D3.bool.tex.nuStar}$: the matrix $A + \operatorname{diag}(\nu^*) = \tfrac12\mathbf 1\mathbf 1^\top$ is positive semidefinite, and $d^* = q(\nu^*) = \val{D3.bool.tex.dStar}$. The gap is $p^* - d^* = \val{D3.bool.pStar} - \big(\val{D3.bool.tex.dStar}\big) = \val{D3.bool.tex.gap} > 0$.
+\end{examplebox}
+
+\begin{whybox}
+No dual point does better: testing $A + \operatorname{diag}(\nu) \succeq 0$ on $x = e_i - e_j$ gives $\nu_i + \nu_j \ge 1$, and adding the three such inequalities gives $\mathbf 1^\top \nu \ge \tfrac32$.
+\end{whybox}
+
+Why the example needs three constraints: with a \textbf{single} quadratic constraint and a strictly feasible point, the gap is zero even for a nonconvex quadratic objective. This is the S-lemma.
+
+\begin{examplebox}
+$\min\ -x^2$ subject to $x^2 \le 1$: the objective is concave, and $p^* = \val{D3.slemma.pStar}$. The Lagrangian $(\lambda - 1)x^2 - \lambda$ is bounded below only for $\lambda \ge 1$, where $q(\lambda) = -\lambda$. Hence $d^* = q(1) = \val{D3.slemma.pStar} = p^*$.
+\end{examplebox}
+
+The four examples side by side:
+
+\begin{center}\small
+\begin{tabular}{@{}lllccc@{}}
+\toprule
+\textbf{Problem} & \textbf{Convex} & \textbf{Strictly feasible point} & \textbf{$p^*$} & \textbf{$d^*$} & \textbf{Gap} \\
+\midrule
+C1 & yes & yes, $\val{ex.slater.point}$ & $\val{D3.convex.pStar}$ & $\val{D3.convex.dStar}$ & $0$ \\
+D2 & yes & no & $\val{D2.pStar}$ & $\val{D2.pStar}$, not attained & $0$ \\
+Boolean & no & equalities only & $\val{D3.bool.pStar}$ & $\val{D3.bool.tex.dStar}$ & $\val{D3.bool.tex.gap}$ \\
+S-lemma & no & yes, $x = 0$ & $\val{D3.slemma.pStar}$ & $\val{D3.slemma.pStar}$ & $0$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{whybox}
+The dual problem is always the maximization of a concave function. When the original problem is not convex, the dual sees only a convexified version of it, and the difference shows up as the gap.
+\end{whybox}
+
+% =====================================================================
+\section{Seminar problems}\label{sec:problems}
+
+All nine problems of the seminar with complete solutions. In each block the first problem is solved on the board, and the other two are solved by the students on a timer.
+
+\subsection{A. Convexity of sets and functions}\label{sub:problems-a}
+
+\problemhead{A1}{Convexity of a quadratic family}{The Hessian test, principal minors and a Jensen spot check}
+\textbf{Statement.} Let $f(x,y) = \val{A1.tex.f}$. \textbf{(a)} For which $a$ is $f$ convex on $\mathbb R^2$, and for which is it strictly convex? \textbf{(b)} Take $a = \val{A1.params.aTest}$ and check the Jensen inequality at the midpoint of $p = \val{A1.params.p}$ and $q = \val{A1.params.q}$.
+
+\textbf{Solution.}
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item The linear term $\val{A1.params.bx}x$ has zero second derivatives, and the cross term $a\,xy$ puts $a$ into \textbf{both} off-diagonal entries:
+\[
+H = \val{A1.tex.H}.
+\]
+The Hessian is the same at every point.
+  \item Convex $\iff H \succeq 0$. For semidefiniteness check \textbf{all} principal minors: $H_{11} = \val{A1.steps.minor11} \ge 0$, $H_{22} = \val{A1.steps.minor22} \ge 0$, $\det H = \val{A1.tex.det} \ge 0$. So $f$ is convex exactly when $|a| \le \val{A1.params.aEdge}$.
+  \item Strict convexity: $H \succ 0$, and for definiteness the leading minors are enough: $H_{11} > 0$ and $\val{A1.tex.det} > 0$, so $|a| < \val{A1.params.aEdge}$. For a quadratic function, strictly convex means exactly $H \succ 0$.
+  \item The boundary case $a = \val{A1.params.aEdge}$: $f = \val{A1.tex.fEdge}$, the eigenvalues of $H$ are $\val{A1.steps.eigEdge.1}$ and $\val{A1.steps.eigEdge.2}$, and along $d = \val{A1.steps.nullDir}$ the function is linear: $f(sd) = \val{A1.steps.lineSlope}s$. Convex, but not strictly.
+  \item Jensen at $a = \val{A1.params.aTest}$: $f(p) = \val{A1.steps.fp}$, $f(q) = \val{A1.steps.fq}$, and at the midpoint $m = \val{A1.steps.m}$ we get $f(m) = \val{A1.tex.fm}$. The chord gives $\tfrac12\big(f(p) + f(q)\big) = \val{A1.steps.avg} < f(m)$: the inequality fails, so $f$ is not convex, as step 2 predicts.
+  \item Why it fails: for a quadratic, $(1-t)f(p) + t f(q) - f\big((1-t)p + tq\big) = \frac{t(1-t)}{2}\, d^\top H d$ with $d = q - p$. Here $d^\top H d = \val{A1.steps.curv} < 0$: along $d$ the function is concave.
+\end{enumerate}
+\begin{answerbox}
+Convex for $|a| \le \val{A1.params.aEdge}$, strictly convex for $|a| < \val{A1.params.aEdge}$. At $a = \val{A1.params.aTest}$ Jensen fails: $f(m) = \val{A1.tex.fm} > \val{A1.steps.avg}$.
+\end{answerbox}
+
+\problemhead{A2}{A product of squares is not convex}{Hessian test at a point and a Jensen counterexample}
+\textbf{Statement.} Show in two independent ways that $f(x,y) = \val{A2.tex.f}$ is not convex on $\mathbb R^2$: \textbf{(a)} compute the Hessian and its determinant at the point $\val{A2.params.point}$; \textbf{(b)} check the Jensen inequality for $p = \val{A2.params.p}$ and $q = \val{A2.params.q}$ at their midpoint.
+
+\textbf{Solution.}
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item Differentiate twice:
+\[
+H(x,y) = \val{A2.tex.H}.
+\]
+Unlike A1, the Hessian changes from point to point.
+  \item $\det H = \val{A2.tex.detGeneral} < 0$ whenever $xy \ne 0$, so the eigenvalues have opposite signs and $H$ is indefinite. At $\val{A2.params.point}$: $H = \val{A2.tex.HPoint}$, $\det H = \val{A2.steps.detPoint}$, eigenvalues $\val{A2.steps.eig.1}$ and $\val{A2.steps.eig.2}$.
+  \item A convex $C^2$ function needs $H \succeq 0$ \textbf{everywhere}, so $f$ is not convex.
+  \item Jensen: $f(p) = f(q) = 0$, the midpoint is $m = \val{A2.steps.m}$, and $f(m) = \val{A2.tex.fm} > 0 = \tfrac12\big(f(p) + f(q)\big)$. The inequality fails: a second proof that needs no derivatives.
+  \item On the axes $xy = 0$ the Hessian is $\operatorname{diag}(2y^2,\ 2x^2) \succeq 0$: a test at a single point of an axis would miss the problem.
+\end{enumerate}
+\begin{answerbox}
+$\det H = \val{A2.steps.detPoint}$ at $\val{A2.params.point}$, so $H$ is indefinite there; $f(m) = \val{A2.tex.fm} > 0$ violates Jensen. Not convex.
+\end{answerbox}
+
+\problemhead{A3}{Sublevel sets and intersections}{Convexity of sets: a counterexample pair, sublevel sets, intersections}
+\textbf{Statement.} Which of the sets are convex: $S = \val{A3.tex.S}$ and $T = \val{A3.tex.T}$? For a set that is not convex, give two of its points whose midpoint lies outside it; for a convex set, justify the answer in one line.
+
+\textbf{Solution.}
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item $S = \{|xy| \le 1\}$ is the region between the four branches of the hyperbolas $xy = \pm 1$. It contains both axes and looks like a cross.
+  \item Take two points on the branch $xy = 1$: $p = \val{A3.tex.pHalf}$ and $q = \val{A3.tex.qHalf}$. Both lie in $S$.
+  \item The midpoint is $m = \val{A3.tex.mid}$, where $xy = \val{A3.tex.xyMid}$ and $x^2y^2 = \val{A3.tex.val} > 1$. So $m \notin S$, and $S$ is not convex.
+  \item $S$ is a sublevel set of $x^2y^2$, which is not convex (A2). A sublevel set of a nonconvex function may or may not be convex, so the set itself has to be checked.
+  \item $T$: the disk is a sublevel set of the convex function $x^2 + y^2$, and $\{y \ge x^2 - \val{A3.params.shift}\}$ is the epigraph of the convex function $x^2 - \val{A3.params.shift}$. Both are convex, and an intersection of convex sets is convex.
+\end{enumerate}
+\begin{answerbox}
+$T$ is convex, $S$ is not: $p = \val{A3.tex.pHalf}$ and $q = \val{A3.tex.qHalf}$ lie in $S$, their midpoint does not.
+\end{answerbox}
+
+\subsection{B. Projections onto a ball, a box and the simplex}\label{sub:problems-b}
+
+\problemhead{B1}{Projection onto the simplex, step by step}{The sort-based algorithm for the probability simplex and the obtuse-angle check}
+\textbf{Statement.} Project $v = \val{B1.params.v}$ onto the probability simplex $\Delta_4 = \{x \in \mathbb R^4:\ x \ge 0,\ \mathbf 1^\top x = 1\}$ with the sort-based algorithm. Then check the sum of the result and the obtuse-angle property.
+
+\textbf{Solution.}
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item Sort in decreasing order: $u = \val{B1.steps.u}$.
+  \item Cumulative sums $s_j = u_1 + \dots + u_j$: $s = \val{B1.steps.s}$.
+  \item Test values $t_j = u_j - \dfrac{s_j - 1}{j}$; the first one always equals $1$.
+\begin{center}\small
+\begin{tabular}{@{}cccc@{}}
+\toprule
+$j$ & $u_j$ & $s_j$ & $t_j$ \\
+\midrule
+$1$ & $\val{B1.steps.u.1}$ & $\val{B1.steps.s.1}$ & $\val{B1.steps.tests.1}$ \\
+$2$ & $\val{B1.steps.u.2}$ & $\val{B1.steps.s.2}$ & $\val{B1.steps.tests.2}$ \\
+$3$ & $\val{B1.steps.u.3}$ & $\val{B1.steps.s.3}$ & $\val{B1.steps.tests.3}$ \\
+$4$ & $\val{B1.steps.u.4}$ & $\val{B1.steps.s.4}$ & $\val{B1.steps.tests.4}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+  \item $\rho$ is the last $j$ with $t_j > 0$: $\rho = \val{B1.steps.rho}$. The shift is $\theta = \dfrac{s_\rho - 1}{\rho} = \val{B1.steps.theta}$.
+  \item Subtract and clip, in the \textbf{original} order: $x = \max(v - \theta,\ 0) = \val{B1.steps.x}$.
+  \item Checks: $\mathbf 1^\top x = \val{B1.steps.sumX}$. With $r = v - x = \val{B1.steps.r}$, the expression $r^\top(y - x)$ is linear in $y$, so it is enough to test the vertices $e_k$: $r^\top(e_k - x) = r_k - r^\top x$ with $r^\top x = \val{B1.steps.rx}$ gives $\val{B1.steps.vertex}$, all $\le 0$.
+\end{enumerate}
+\begin{answerbox}
+$\theta = \val{B1.steps.theta}$ and $P_{\Delta}(v) = \val{B1.steps.x}$.
+\end{answerbox}
+
+\problemhead{B2}{One point, a ball and a box}{Closed-form projections onto a ball and a box}
+\textbf{Statement.} Project $x = \val{B2.params.x}$ onto the ball $B = \{z:\ \|z\| \le \val{B2.params.r}\}$ and onto the box $Q = [\val{B2.params.lo},\ \val{B2.params.hi}]^2$. Which projection is closer to $x$, and could you predict that without computing?
+
+\textbf{Solution.}
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item Ball: $\|x\|^2 = \val{B2.steps.norm2}$, so $\|x\| = \val{B2.steps.norm} > \val{B2.params.r}$, the point is outside, and $P_B(x) = \dfrac{x}{\|x\|} = \val{B2.steps.ball}$.
+  \item Box: clip every coordinate to $[\val{B2.params.lo},\ \val{B2.params.hi}]$ independently: $P_Q(x) = \val{B2.steps.box}$. Only the coordinate that is out of range changes.
+  \item Distances: $\|x - P_B(x)\| = \val{B2.steps.distBall}$ and $\|x - P_Q(x)\| = \val{B2.steps.distBox}$.
+  \item The prediction: $B \subset Q$, so the distance to $Q$ cannot exceed the distance to $B$. The projections themselves differ: the ball moves both coordinates, the box only one.
+  \item Obtuse-angle check: for $y = \val{B2.steps.yBall} \in B$, $(x - P_B(x))^\top(y - P_B(x)) = \val{B2.steps.obtuseBall} \le 0$; for $y = \val{B2.steps.yBox} \in Q$, $(x - P_Q(x))^\top(y - P_Q(x)) = \val{B2.steps.obtuseBox} \le 0$.
+\end{enumerate}
+\begin{answerbox}
+$P_B(x) = \val{B2.steps.ball}$, $P_Q(x) = \val{B2.steps.box}$. The box is closer: $\val{B2.steps.distBox} < \val{B2.steps.distBall}$, because $B \subset Q$.
+\end{answerbox}
+
+\problemhead{B3}{A positive coordinate can vanish}{The sort-based simplex projection on your own}
+\textbf{Statement.} Project $v = \val{B3.params.v}$ onto $\Delta_3$. Which coordinate becomes zero, although it is positive in $v$?
+
+\textbf{Solution.}
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item Sort: $u = \val{B3.steps.u}$; cumulative sums $s = \val{B3.steps.s}$.
+  \item Test values $t_j = u_j - \dfrac{s_j - 1}{j}$:
+\begin{center}\small
+\begin{tabular}{@{}cccc@{}}
+\toprule
+$j$ & $u_j$ & $s_j$ & $t_j$ \\
+\midrule
+$1$ & $\val{B3.steps.u.1}$ & $\val{B3.steps.s.1}$ & $\val{B3.steps.tests.1}$ \\
+$2$ & $\val{B3.steps.u.2}$ & $\val{B3.steps.s.2}$ & $\val{B3.steps.tests.2}$ \\
+$3$ & $\val{B3.steps.u.3}$ & $\val{B3.steps.s.3}$ & $\val{B3.steps.tests.3}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+  \item $\rho = \val{B3.steps.rho}$ and $\theta = \dfrac{s_\rho - 1}{\rho} = \val{B3.steps.theta}$.
+  \item In the original order: $x = \max(v - \theta,\ 0) = \val{B3.steps.x}$, and $\mathbf 1^\top x = \val{B3.steps.sumX}$. The first coordinate is positive in $v$ but zero in $x$: it is smaller than $\theta$.
+  \item Obtuse angle at the vertices: $r = v - x = \val{B3.steps.r}$, $r^\top x = \val{B3.steps.rx}$, and $r_k - r^\top x = \val{B3.steps.vertex}$, all $\le 0$.
+  \item The sum $\mathbf 1^\top v = \val{B3.steps.sumV}$ is not $1$, but that does not matter: shifting $v$ along $\mathbf 1$ into the plane $\mathbf 1^\top x = 1$ gives $\val{B3.steps.inPlane}$ with the same projection.
+\end{enumerate}
+\begin{answerbox}
+$\theta = \val{B3.steps.theta}$, $P_\Delta(v) = \val{B3.steps.x}$; the first coordinate becomes zero.
+\end{answerbox}
+
+\subsection{C. KKT conditions for 2D problems}\label{sub:problems-c}
+
+\problemhead{C1}{KKT with one active constraint}{Writing the KKT conditions, the case split, and the geometric check}
+\textbf{Statement.} Solve $\min\ \val{C1.tex.f}$ subject to $g(x) = \val{C1.tex.g} \le 0$ with the KKT conditions. Find $x^*$, $\lambda^*$ and $f^*$, and draw $-\nabla f(x^*)$ and $\nabla g(x^*)$.
+
+\textbf{Solution.}
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item The Lagrangian is $\mathcal L(x, \lambda) = \val{C1.tex.f} + \lambda\,(\val{C1.tex.g})$.
+  \item KKT: stationarity $2(x_1 - \val{C1.params.c.1}) + \lambda = 0$ and $2(x_2 - \val{C1.params.c.2}) + \lambda = 0$; primal feasibility $g(x) \le 0$; dual feasibility $\lambda \ge 0$; complementary slackness $\lambda\, g(x) = 0$.
+  \item Case $\lambda = 0$: stationarity gives $x = \val{C1.steps.xUnc}$, but $g = \val{C1.steps.gUnc} > 0$. Infeasible, rejected.
+  \item Case $g = 0$: stationarity gives $x_1 - \val{C1.params.c.1} = x_2 - \val{C1.params.c.2}$; together with $x_1 + x_2 = \val{C1.params.b.1}$ this gives $x^* = \val{C1.answer.x.value}$ and $\lambda^* = \val{C1.answer.lam.value} \ge 0$.
+  \item The objective and the constraint are convex, so the KKT point is the global minimizer: $f^* = \val{C1.answer.f.value}$.
+  \item Geometry: $-\nabla f(x^*) = \val{C1.steps.minusGrad} = \lambda^* \nabla g = \val{C1.answer.lam.value} \cdot \val{C1.params.A.1}$. The antigradient points along the outward normal of the active constraint. Relaxing the constraint to $x_1 + x_2 \le R$ changes $f^*$ at the rate $-\lambda^* = \val{C1.steps.sensitivity}$.
+\end{enumerate}
+\begin{answerbox}
+$x^* = \val{C1.answer.x.value}$, $\lambda^* = \val{C1.answer.lam.value}$, $f^* = \val{C1.answer.f.value}$; the constraint is active.
+\end{answerbox}
+
+\problemhead{C2}{An inactive constraint}{Complementary slackness: an inactive constraint has a zero multiplier}
+\textbf{Statement.} Solve $\min\ \val{C2.tex.f}$ subject to $g(x) = \val{C2.tex.g} \le 0$. Is the constraint active at the optimum, and what is $\lambda^*$?
+
+\textbf{Solution.}
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item Stationarity is the same as in C1: $2(x_1 - \val{C2.params.c.1}) + \lambda = 0$, $2(x_2 - \val{C2.params.c.2}) + \lambda = 0$.
+  \item Case $\lambda = 0$: $x = \val{C2.answer.x.value}$ and $g = \val{C2.steps.gStar} < 0$. Feasible, so this is a KKT point.
+  \item Case $g = 0$ for completeness: $x = \val{C2.cand.S1.x}$ with $\lambda = \val{C2.cand.S1.lam.1} < 0$. Rejected by the sign of the multiplier.
+  \item Answer: $x^* = \val{C2.answer.x.value}$, $\lambda^* = \val{C2.answer.lam.value}$, $f^* = \val{C2.answer.f.value}$. The constraint is inactive, and complementary slackness $\lambda^* g(x^*) = 0$ with $g(x^*) < 0$ forces $\lambda^* = 0$.
+\end{enumerate}
+\begin{answerbox}
+$x^* = \val{C2.answer.x.value}$, $\lambda^* = \val{C2.answer.lam.value}$; the constraint is inactive.
+\end{answerbox}
+
+\problemhead{C3}{Two constraints and the active-set table}{Enumerating active sets and rejecting candidates by feasibility or by the sign of the multipliers}
+\textbf{Statement.} Solve $\min\ \val{C3.tex.f}$ subject to $g_1(x) = \val{C3.tex.g1} \le 0$ and $g_2(x) = \val{C3.tex.g2} \le 0$. Enumerate the active sets, reject the wrong candidates, and find $x^*$, $\lambda_1^*$ and $\lambda_2^*$.
+
+\textbf{Solution.}
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item Stationarity with $\nabla g_1 = \val{C3.params.A.1}$ and $\nabla g_2 = \val{C3.params.A.2}$: $2(x_1 - \val{C3.params.c.1}) + \lambda_1 - \lambda_2 = 0$, $2(x_2 - \val{C3.params.c.2}) + \lambda_1 = 0$.
+  \item Active set $\varnothing$: $x = \val{C3.cand.S0.x}$, $g_1 = \val{C3.cand.S0.g.1} > 0$. Infeasible.
+  \item Active set $\{1\}$: $x = \val{C3.cand.S1.x}$, $\lambda_1 = \val{C3.cand.S1.lam.1}$, but $g_2 = \val{C3.cand.S1.g.2} > 0$, since $x_1 < 0$. Infeasible.
+  \item Active set $\{2\}$: $x = \val{C3.cand.S2.x}$, $\lambda_2 = \val{C3.cand.S2.lam.2} < 0$, and also $g_1 = \val{C3.cand.S2.g.1} > 0$. Rejected on both counts.
+  \item Active set $\{1, 2\}$: $x = \val{C3.cand.S12.x}$; stationarity gives $\lambda_1 = \val{C3.cand.S12.lam.1}$ and $\lambda_2 = \val{C3.cand.S12.lam.2}$, both nonnegative. This is the KKT point, and $f^* = \val{C3.answer.f.value}$.
+  \item Geometry: $-\nabla f(x^*) = \val{C3.steps.minusGrad} = \val{C3.cand.S12.lam.1}\,\nabla g_1 + \val{C3.cand.S12.lam.2}\,\nabla g_2$. The antigradient lies inside the normal cone spanned by the two active gradients.
+\end{enumerate}
+\begin{answerbox}
+$x^* = \val{C3.answer.x.value}$, $\lambda^* = \val{C3.answer.lam.value}$, $f^* = \val{C3.answer.f.value}$; both constraints are active.
+\end{answerbox}
+
+% =====================================================================
+\section{Common mistakes}\label{sec:mistakes}
+
+Mistakes that come up again and again: first by topic, then from the seminar problems.
+
+\subsection{Convexity}\label{sub:mistakes-a}
+
+\begin{itemize}[label=\textcolor{hseaccent}{\textbullet}]
+  \item A cross term $c\,x_ix_j$ puts $c$ into both entries $H_{ij}$ and $H_{ji}$; the value $c/2$ is the entry of $A$ in $f = x^\top A x$.
+  \item Leading principal minors decide only $H \succ 0$. For $H \succeq 0$ all principal minors must be nonnegative: $\operatorname{diag}(0, -1)$ has zero leading minors and is not semidefinite.
+  \item Classifying eigenvalues with an absolute tolerance: a tiny positive definite matrix becomes zero. Use a tolerance relative to the largest eigenvalue.
+  \item Treating random pairs that satisfy Jensen as a proof of convexity: only a violation proves something.
+\end{itemize}
+
+From the problems:
+
+\begin{itemize}
+  \item \textbf{A1.} Putting $a/2$ into the Hessian. The entry $a/2$ belongs to the matrix $A$ in $f = z^\top A z$; the Hessian entry is $\partial^2 f/\partial x\,\partial y = a$.
+  \item \textbf{A1.} Deciding semidefiniteness by the leading minors only. They decide $H \succ 0$; for $H \succeq 0$ every principal minor must be nonnegative.
+  \item \textbf{A2.} Evaluating the Hessian only at the origin, where it is the zero matrix, and concluding convexity.
+  \item \textbf{A2.} Treating one pair that satisfies Jensen as a proof of convexity: only a violation proves something.
+  \item \textbf{A3.} Calling $S$ convex because it is a sublevel set: the rule needs a convex function.
+  \item \textbf{A3.} Testing the pair $\val{A3.params.pairs.p2.p}$, $\val{A3.params.pairs.p2.q}$: its midpoint is the origin, which lies in $S$, so it proves nothing.
+\end{itemize}
+
+\subsection{Projections}\label{sub:mistakes-b}
+
+\begin{itemize}[label=\textcolor{hseaccent}{\textbullet}]
+  \item Mixing the formulas: clipping coordinates for a ball or normalizing for a box.
+  \item Returning the sorted vector: the sort is only used to find $\theta$, the result keeps the original order.
+  \item Expecting only negative coordinates to vanish: any coordinate not larger than $\theta$ becomes zero.
+  \item Projecting onto a nonconvex set as if the projection were unique: for a union of disks a point can have two nearest points.
+\end{itemize}
+
+From the problems:
+
+\begin{itemize}
+  \item \textbf{B1.} Returning the sorted vector instead of restoring the original order of the coordinates.
+  \item \textbf{B1.} Subtracting $\theta$ without clipping at zero, which leaves negative coordinates.
+  \item \textbf{B2.} Mixing the formulas: clipping coordinates for the ball, or dividing by $\|x\|$ for the box.
+  \item \textbf{B2.} Normalizing a point that is already inside the ball.
+  \item \textbf{B3.} Believing that only negative coordinates are set to zero: here $v_1 > 0$ but $x_1 = 0$.
+  \item \textbf{B3.} Using the total sum $s_n$ instead of $s_\rho$ in $\theta$.
+\end{itemize}
+
+\subsection{KKT conditions}\label{sub:mistakes-c}
+
+\begin{itemize}[label=\textcolor{hseaccent}{\textbullet}]
+  \item Mixing sign conventions: the course uses $g(x) \le 0$ with $+\lambda g$ and $\lambda \ge 0$, while SciPy writes inequalities as $c(x) \ge 0$.
+  \item Accepting a candidate with a negative multiplier. A plausible $\lambda < 0$ means the active set is wrong.
+  \item Assuming that an active constraint must have $\lambda > 0$: an active constraint may have $\lambda = 0$, an inactive one must.
+  \item Applying KKT without a constraint qualification: at the optimum of D2 no multiplier exists.
+\end{itemize}
+
+From the problems:
+
+\begin{itemize}
+  \item \textbf{C1.} Writing the constraint as $\ge 0$, as SciPy does, but keeping $+\lambda g$ and $\lambda \ge 0$: the sign of the multiplier flips.
+  \item \textbf{C1.} Stopping after stationarity without checking that the candidate is feasible.
+  \item \textbf{C2.} Assuming the constraint is active and reporting $\lambda = \val{C2.cand.S1.lam.1}$.
+  \item \textbf{C2.} Thinking that $\lambda = 0$ means the constraint was forgotten: it is exactly what complementary slackness requires.
+  \item \textbf{C3.} Forgetting the sign in $\nabla g_2 = \val{C3.params.A.2}$ for the constraint $x_1 \ge 0$ written as $-x_1 \le 0$.
+  \item \textbf{C3.} Accepting the active set $\{1\}$ because its $\lambda_1$ is positive, without checking $g_2$.
+\end{itemize}
+
+\subsection{Duality}\label{sub:mistakes-d}
+
+\begin{itemize}
+  \item Expecting $d^* = p^*$ for every problem. Weak duality $d^* \le p^*$ always holds, but equality needs extra structure such as convexity together with Slater's condition; the Boolean problem has a gap of $\val{D3.bool.tex.gap}$.
+  \item Maximizing $q(\lambda)$ over all $\lambda$ instead of $\lambda \ge 0$: for a negative multiplier the bound $q(\lambda) \le p^*$ is no longer guaranteed.
+  \item Forgetting that $q$ can equal $-\infty$: in the Boolean problem $q(\nu) = -\infty$ whenever $A + \operatorname{diag}(\nu)$ is not positive semidefinite, and such $\nu$ must be excluded before maximizing.
+  \item Reading a zero gap as a proof of convexity: $\min\ -x^2$ subject to $x^2 \le 1$ has a zero gap and a concave objective.
+\end{itemize}
+
+% =====================================================================
+\section{Glossary}\label{sec:glossary}
+
+The terms of the seminar with short definitions. The Russian equivalents are listed in the Russian version of this handout and on the web page.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.3\linewidth}>{\raggedright\arraybackslash}p{0.66\linewidth}@{}}
+\toprule
+\textbf{Term} & \textbf{Meaning} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+convex combination & a weighted average $(1-t)x + ty$ with $t \in [0, 1]$, or $\sum_i \theta_i x_i$ with $\theta_i \ge 0$ and $\sum_i \theta_i = 1$ \\
+convex set & a set that contains the segment between any two of its points \\
+convex function & a function whose graph lies on or below every chord; equivalently, its epigraph is convex \\
+strictly convex function & the chord inequality is strict for $x \ne y$ and $t \in (0, 1)$ \\
+concave function & a function $f$ such that $-f$ is convex \\
+Jensen inequality & $f\big(\sum_i \theta_i x_i\big) \le \sum_i \theta_i f(x_i)$ for a convex $f$ and weights of a convex combination \\
+sublevel set & the set $\{x:\ f(x) \le \alpha\}$ \\
+epigraph & the set of points on or above the graph, $\{(x, s):\ s \ge f(x)\}$ \\
+convex hull & the smallest convex set that contains a given set \\
+Hessian & the matrix $\nabla^2 f$ of second partial derivatives \\
+positive semidefinite matrix & a symmetric $H$ with $d^\top H d \ge 0$ for all $d$; all eigenvalues are nonnegative \\
+principal minor & the determinant of the submatrix on a set of rows and the same set of columns \\
+leading principal minor & a principal minor on the first $k$ rows and columns \\
+local minimum, global minimum & the best value in a neighbourhood of the point; the best value on the whole feasible set \\
+convex problem & minimization of a convex function subject to convex inequalities $g_i \le 0$ and affine equalities \\
+feasible set & the set of points that satisfy all constraints \\
+feasible direction & a direction in which one can move a little from a point and stay feasible \\
+active constraint & an inequality that holds with equality at the point, $g_i(x) = 0$ \\
+projection & the nearest point of a set, $P_C(x) = \arg\min_{y \in C} \|y - x\|$ \\
+box & the set $\{x:\ l_i \le x_i \le u_i\}$, a product of intervals \\
+probability simplex & $\Delta_d = \{x \in \mathbb R^d:\ x \ge 0,\ \mathbf 1^\top x = 1\}$ \\
+obtuse-angle property & $(x - P_C(x))^\top (y - P_C(x)) \le 0$ for all $y \in C$; it characterizes the projection onto a closed convex set \\
+projected gradient method & $x_{k+1} = P_X\big(x_k - \alpha \nabla f(x_k)\big)$: a gradient step followed by a projection \\
+Lagrangian & $\mathcal L(x, \lambda, \nu) = f(x) + \sum_i \lambda_i g_i(x) + \sum_j \nu_j h_j(x)$ \\
+Lagrange multipliers & the coefficients $\lambda_i \ge 0$ and $\nu_j$ of the constraints in the Lagrangian \\
+Karush–Kuhn–Tucker (KKT) conditions & stationarity, primal feasibility, dual feasibility and complementary slackness \\
+stationarity & $\nabla_x \mathcal L(x^*, \lambda^*, \nu^*) = 0$ \\
+primal feasibility & $g_i(x^*) \le 0$ and $h_j(x^*) = 0$ \\
+dual feasibility & $\lambda_i^* \ge 0$ \\
+complementary slackness & $\lambda_i^* g_i(x^*) = 0$ for every $i$ \\
+constraint qualification & an assumption on the constraints under which every local minimizer satisfies the KKT conditions \\
+linear independence constraint qualification (LICQ) & the gradients of the active constraints are linearly independent \\
+Slater's condition & a convex problem has a point with $g_i(\bar x) < 0$ for all $i$ and $h_j(\bar x) = 0$ for all $j$ \\
+normal cone & $N_X(x) = \{s:\ s^\top (y - x) \le 0 \text{ for all } y \in X\}$ \\
+dual function & $q(\lambda, \nu) = \inf_x \mathcal L(x, \lambda, \nu)$, always concave \\
+dual problem & maximize $q(\lambda, \nu)$ subject to $\lambda \ge 0$; its value is $d^*$ \\
+weak duality & $d^* \le p^*$, true for every problem \\
+strong duality & $d^* = p^*$, true for convex problems with Slater's condition \\
+duality gap & the difference $p^* - d^* \ge 0$ \\
+\end{longtable}
+
+% =====================================================================
+\section{References}\label{sec:references}
+
+\begin{enumerate}[label={[\arabic*]}, leftmargin=*]
+  \item S.~Boyd, L.~Vandenberghe. \emph{Convex Optimization}. Cambridge University Press, 2004. Chapters 2–5: convex sets, convex functions, convex optimization problems, duality.
+  \item Andrey Ignatov. Lectures of the course \emph{Optimization Methods}, HSE University, Faculty of Computer Science, academic year 2026–2027: the lecture “Convexity, Constraints, and Optimality Conditions”.
+\end{enumerate}
+
+\end{document}

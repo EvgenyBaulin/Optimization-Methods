@@ -1,0 +1,37 @@
+# Files the Mac never packs, and the server drops again, in every published folder.
+# rsync style: a pattern without '/' matches a file or folder name at any depth; a trailing
+# '/' matches folders only; '#' starts a comment. Always excluded as well: .*, __MACOSX/,
+# __pycache__/, *.bak, *.swp, *~. License files (LICENSE*, COPYING*, NOTICE*) are always kept.
+
+# Notes and READMEs
+*.md
+
+# LaTeX sources and leftovers
+*.tex
+*.sty
+*.cls
+*.bib
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.nav
+*.out
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+*.xdv
+
+# Printable handouts and LaTeX figures
+*.pdf
+
+# Notebooks and instructor-only material
+*.ipynb
+Speech*
+Checks*
+
+# Slides of the colleagues' seminars
+*.pptx

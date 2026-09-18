@@ -1,0 +1,15 @@
+[Unit]
+Description=Publish scheduled course site entries
+Wants=network-online.target
+After=network-online.target nginx.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/course-deploy
+TimeoutStartSec=10min
+Nice=10
+IOSchedulingClass=idle
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=full
+ProtectHome=read-only

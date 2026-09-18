@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Evgeny Baulin
 /* ==========================================================================
    Optimization Atlas - discrete.js
    Section E: seven independent widgets, each running the real algorithm one

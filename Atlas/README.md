@@ -16,17 +16,38 @@ Double-click `index.html`. That is the whole procedure.
 There is no build step, no package manager, no server and no network access of any kind.
 The page works from the `file://` protocol in Chrome, Safari and Firefox, and from any static
 web server; the public copy lives at <https://optimization-methods.tarakan-tuc.ru>. No
-cookies are set. The browser keeps exactly two small entries: the chosen language
-(`localStorage`, key `atlas.lang`) and, for the current tab only, the open section
-(`sessionStorage`, key `atlas.section`). Everything else, runs, sliders and selections, is
-discarded when the tab is closed.
+cookies are set. The browser keeps two small things: the chosen language (`localStorage`, key
+`atlas.lang`, and the same value under `om.lang`, the course-wide key of the seminar pages)
+and, for the current tab only, the open section (`sessionStorage`, key `atlas.section`).
+Everything else, runs, sliders and selections, is discarded when the tab is closed. On the site
+the atlas and the seminar pages share one origin and therefore one `localStorage`. Both sides
+write the language under both keys, so each opens in the language chosen last, on either side.
+The seminar pages read `om.lang` first and fall back to `atlas.lang`.
+
+The **Seminars** button in the top bar leads to the seminar pages of the course. It is an
+ordinary link that the reader follows; the atlas itself still loads nothing. On the site it
+points to `/seminars/`. Opened from the repository (a double-clicked `index.html`, or a local
+server whose root is the repository) it points to `../Seminars/Evgeny Baulin/web/index.html`,
+so it needs the whole checkout, not the `Atlas` folder alone. There the link also carries the
+current language and theme as `?lang=…&theme=…`, because browsers may keep the storage of local
+files apart. `js/ui.js` sets the link's target when the page starts and again after every
+switch of the language or the theme; the `href` written in `index.html` is the site's.
 
 The whole atlas is available in English and in Russian: the **EN / RU** switch sits in the top
-bar, next to the theme button. It changes every text on the page, including canvas labels,
-method cards and the messages of runs already in progress, and it never restarts anything.
-Атлас целиком доступен на русском языке: переключатель **EN / RU** находится в верхней панели.
+bar, between the **Seminars** link and the theme button. It changes every text on the page,
+including canvas labels, method cards and the messages of runs already in progress, and it
+never restarts anything.
+Атлас целиком доступен на русском языке: переключатель **EN / RU** находится в верхней панели,
+рядом с кнопкой **Семинары**, которая ведёт к страницам семинаров курса.
 
-The layout is designed for 1024 px and wider and degrades acceptably to 768 px.
+The layout is designed for 1024 px and wider and degrades acceptably to 768 px. The top bar
+stays one row down to 901 px. The subtitle gives way below 1500 px (1720 px in Russian), and
+below about 1140 px (about 1275 px in Russian) the six section tabs scroll sideways inside the
+bar, while the Seminars link, the language switch and the theme button stay in view. At the
+design width of 1024 px this is a known visual cost: the last tab in English, and the last two
+or three in Russian, are out of view until the bar is scrolled. That is accepted as it is: the
+tabs are not squeezed, although narrower tab padding would bring them back. At 900 px and below
+the bar wraps onto more rows.
 
 ## What is in it
 
@@ -35,17 +56,43 @@ The layout is designed for 1024 px and wider and degrades acceptably to 768 px.
 | **A. Landscape**   | Contours and a hill-shaded view of seven test functions, with the gradient, the Hessian eigenvalues and the local condition number under the cursor.                                                               |
 | **B. Continuous**  | The main playground. Twelve methods from gradient descent to L-BFGS, run together on one landscape, with a convergence chart, theoretical rate overlays, method cards and five presets that break them on purpose. |
 | **C. Stochastic**  | A sum of 200 quadratic terms. Eight optimizers from full-batch gradient descent to AdamW, four step-size schedules, the noise ball with its radius predicted exactly, and a saddle that only noise escapes.        |
-| **D. Constraints** | Projections onto five feasible sets, Frank-Wolfe, ISTA, FISTA and the subgradient method, a KKT panel with real multipliers, and the L1 sparsity widget.                                                           |
+| **D. Constraints** | Projections onto five feasible sets, Frank–Wolfe, ISTA, FISTA and the subgradient method, a KKT panel with real multipliers, and the L1 sparsity widget.                                                           |
 | **E. Discrete**    | Seven independent widgets: linear programming, integrality, branch and bound, dynamic programming, network flow, TSP local search, and constraint propagation.                                                     |
 | **F. Cheat sheet** | Every method in one filterable table. Clicking a row opens its widget with a matching setup applied.                                                                                                               |
 
-The address always stays clean: `https://optimization-methods.tarakan-tuc.ru`, never
-`…/#/C`, `…/index.html` or `…?utm_source=…`, whatever the reader clicks. Sections are switched
-in place; each switch is recorded in the browser history under the same address, so Back and
-Forward still step through the sections, and a reload reopens the section that was open. Old
-links of the form `#/C` (stochastic section) or `#/C/ru` (the same, in Russian) keep working:
-they open that section and language, and the address is cleaned at once. A first visit opens
-section A in English.
+The address of the atlas always stays clean: `https://optimization-methods.tarakan-tuc.ru`,
+never `…/#/C`, `…/index.html` or `…?utm_source=…`, whatever the reader clicks. This concerns the
+atlas page alone; the seminar pages under `/seminars/` are separate pages with addresses of
+their own. Sections are switched in place; each switch is recorded in the browser history under
+the same address, so Back and Forward still step through the sections, and a reload reopens the
+section that was open. A first visit opens section A in English.
+
+A link into the atlas may still name a section and a language. Both are read as the page
+starts, the language is remembered, and the address is cleaned at once:
+
+- `#/C` opens the stochastic section, `#/C/ru` the same in Russian. Old links of this form keep
+  working, and it is the supported format for a deep link from any other page: `/#/D/ru` on
+  the site, `…/Atlas/index.html#/D` from the repository. Such a link opens its section even when
+  the reader last had another one open. The seminar pages do not use it; their links name no
+  section.
+- `?lang=en` or `?lang=ru` sets the language alone. The seminar pages add it when they are
+  opened from the repository, where the two sides may not share `localStorage`; on the site
+  they link to the atlas without any parameters. A language in the hash wins over the query.
+
+## Where it is served
+
+The site is published from the Mac by `Deploy/publish.py` (see `Deploy/README.md`): the atlas at
+the root `/`, the seminar pages at `/seminars/`. nginx serves `/var/www/optimization-methods`, a
+link to the live release on the server; the PDF handouts are not on the site. Three things there
+matter for the atlas:
+
+- `/` is served with `root`, never rewritten to `/Atlas/index.html`: the atlas loads
+  `styles.css` and `js/…` relative to itself. `index index.html` must stay, because the atlas
+  cleans its own address from `/index.html` to `/`.
+- Nothing falls back to `index.html`. Sections live in the page and never reach the server, and
+  a fallback would answer a mistyped `/seminars/…` address with the atlas.
+- The atlas has no cache-busting, so `*.js` and `*.css` must not get long `expires` times; the
+  site sends `Cache-Control: no-cache`.
 
 ## Adding a new method
 
@@ -104,7 +151,7 @@ A few rules that the framework relies on:
   `this.message = Atlas.L('line search failed', 'линейный поиск не удался')`, so it follows a
   later switch of the language.
 - Set `this.rejected = true` when staying at the same point is intentional, as
-  Levenberg-Marquardt does when it rejects a trial step and raises the damping. Without it
+  Levenberg–Marquardt does when it rejects a trial step and raises the damping. Without it
   the driver would report a stall.
 - In `card.formula`, write `&nbsp;` for spaces inside a clause and a plain space only where
   a line break is acceptable. The card wraps between clauses and never inside one.
@@ -129,7 +176,7 @@ those fields: the contour renderer, the "theoretical step 1/L" button, the conve
 and the rate overlays.
 
 **Feasible sets** go in `js/functions.js` via `Atlas.registerSet({...})`. A set provides an
-exact Euclidean `project`, a linear oracle `lmo` for Frank-Wolfe, a `boundary` polyline to
+exact Euclidean `project`, a linear oracle `lmo` for Frank–Wolfe, a `boundary` polyline to
 draw, and its `constraints` with gradients so the KKT panel can build the multipliers.
 
 **Discrete widgets** go in `js/discrete.js` via `Atlas.registerWidget({...})`. Declare the
@@ -141,14 +188,20 @@ framework owns the Step, Auto and Reset buttons, the sliders and the redraw loop
 English and Russian are written side by side, at the place where each text is defined, so a
 translation cannot drift away from the sentence it translates. English is the reference; a
 missing Russian text falls back to it. The machinery is `js/i18n.js`, about a hundred and
-fifty lines; it also remembers the reader's choice in `localStorage`, since the address
-carries nothing.
+seventy lines; it also remembers the reader's choice in `localStorage` under `atlas.lang`, and
+under `om.lang` for the seminar pages, since the address carries nothing. On the site the
+seminar pages share both entries; from the repository they hand the language over as `?lang=`,
+which `js/i18n.js` reads before the page is painted.
 
 - **Static markup** in `index.html` holds both languages, and the stylesheet hides the one
   that is not current:
   `<button id="b-run"><span lang="en">Run</span><span lang="ru">Запуск</span></button>`.
   The `lang` attribute is reserved for these pairs. An attribute gets a Russian twin, which
-  `i18n.js` swaps in: `<nav aria-label="Sections" data-ru-aria-label="Разделы">`.
+  `i18n.js` swaps in: `<nav aria-label="Sections" data-ru-aria-label="Разделы">`. Only
+  `aria-label`, `title` and `placeholder` are swapped. The Seminars link is an example:
+  `<a id="seminars-link" title="Seminar pages for every topic of the course"
+  data-ru-title="Страницы семинаров по всем темам курса">`; its `href` is not translated but set
+  by `js/ui.js`.
 - **Text written by code right now** uses `Atlas.t('iteration k', 'итерация k')`, which returns
   a plain string in the current language.
 - **Text that is stored and shown later** uses `Atlas.L(english, russian)`: every field of a
@@ -176,7 +229,8 @@ js/functions.js     test functions, the stochastic dataset, feasible sets
 js/methods.js       all 25 continuous, stochastic and constrained methods
 js/discrete.js      the widget framework and the seven discrete widgets
 js/cheatsheet.js    section F, generated from the registries above
-js/ui.js            tabs, theme, language switch, controls, sections A to D, wiring
+js/ui.js            tabs, theme, language switch, the link to the seminar pages, controls,
+                    sections A to D, wiring
 ```
 
 Scripts are plain classic `<script>` tags, deliberately not ES modules, because

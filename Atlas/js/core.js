@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Evgeny Baulin
 /* ==========================================================================
    Optimization Atlas - core.js
    Registries, small numeric library, line searches, canvas engine,

@@ -1,0 +1,10 @@
+# One line ending everywhere: the notebooks write LF and compare the files they generate byte for byte
+* text=auto eol=lf
+
+*.pdf binary
+*.pptx binary
+*.png binary
+*.jpg binary
+*.woff binary
+*.woff2 binary
+*.ttf binary

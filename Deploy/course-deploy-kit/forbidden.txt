@@ -1,0 +1,19 @@
+# Files the server never accepts, whatever the Mac sends: basename patterns, checked by pre-receive.
+# Any path segment starting with '.' is rejected as well. Every pattern here is also in Deploy/exclude.txt.
+*.tex
+*.sty
+*.cls
+*.bib
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.nav
+*.out
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+*.ipynb

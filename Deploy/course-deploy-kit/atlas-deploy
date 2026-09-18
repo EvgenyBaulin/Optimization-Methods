@@ -1,0 +1,13 @@
+#!/bin/bash
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Evgeny Baulin
+# Replaces the old manual deploy script; the site is published from the Mac now.
+cat <<'EOF'
+atlas-deploy is retired. Publish from the Mac:
+  python3 Deploy/publish.py
+On the server:
+  course-deploy status            what is live
+  course-deploy rollback course   go back one release
+The old script is kept at /root/atlas-deploy.old
+EOF
+exit 1

@@ -1,0 +1,183 @@
+/* SPDX-License-Identifier: MIT */
+/* Copyright (c) 2026 Evgeny Baulin */
+/* Printing: no controls, solutions expanded, light colors; the cheat sheet on one A4 page. */
+
+@media print {
+  /* color-scheme too: a dark scheme would print dark page margins */
+  :root,
+  :root[data-theme="dark"] {
+    color-scheme: light;
+    --bg: #ffffff;
+    --panel: #ffffff;
+    --panel-2: #f1f3f7;
+    --fg: #000000;
+    --fg-soft: #1d2331;
+    --muted: #3f4654;
+    --line: #c9ced8;
+    --line-strong: #7f8795;
+    --accent: #102d69;
+    --accent-2: #b3261e;
+    --ok: #1b6b3a;
+    --bad: #b3261e;
+  }
+  html,
+  .is-present {
+    font-size: 11pt;
+  }
+  /* no sidebar beside the page, and an open drawer does not lock the body */
+  body {
+    background: #ffffff;
+    padding-left: 0 !important;
+    overflow: visible !important;
+  }
+  .course-nav,
+  .course-nav-scrim,
+  .tool-topics,
+  .toolbar,
+  .skip-link,
+  .instructor-badge,
+  .dialog,
+  .btn,
+  .stepper-controls,
+  .answers,
+  .hints > .btn,
+  .widget,
+  .locked,
+  .own-bar,
+  .selftest,
+  .pdf-link,
+  .code-block .btn-copy {
+    display: none !important;
+  }
+  .is-present .block {
+    display: block !important;
+  }
+  .step,
+  .step-text,
+  .solution,
+  .answer-text,
+  .review,
+  .hint,
+  .exit-a,
+  .review-answers {
+    display: block !important;
+  }
+  .step {
+    display: list-item !important;
+  }
+  .planned-time,
+  .instructor-only {
+    display: none !important;
+  }
+  .block,
+  .handout-section {
+    break-before: auto;
+    border-top-width: 2px;
+  }
+  .problem,
+  .handout-problem,
+  .figure,
+  .note {
+    break-inside: avoid;
+  }
+  /* a long proof may continue on the next page; a label or a question stays with what follows it */
+  .note-proof {
+    break-inside: auto;
+  }
+  .note-label,
+  .faq-q {
+    break-after: avoid;
+  }
+  /* the answer of a self-check prints open (start.js opens it too), under a plain "Answer" line */
+  details.selfcheck-answer::details-content {
+    content-visibility: visible;
+  }
+  details.selfcheck-answer > summary {
+    list-style: none;
+    color: var(--fg-soft);
+    font-weight: 700;
+    cursor: auto;
+  }
+  details.selfcheck-answer > summary::-webkit-details-marker {
+    display: none;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  pre.code {
+    white-space: pre-wrap;
+  }
+
+  /* The cheat sheet: exactly one A4 page. */
+  .page-cheatsheet .site-header,
+  .page-cheatsheet .site-footer {
+    display: none !important;
+  }
+  .page-cheatsheet {
+    font-size: 7.6pt;
+    line-height: 1.28;
+  }
+  .page-cheatsheet .content {
+    max-width: none;
+    padding: 0;
+  }
+  .page-cheatsheet .cheatsheet {
+    margin: 0;
+  }
+  .page-cheatsheet .cs-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 12px;
+  }
+  .page-cheatsheet .cs-title {
+    display: block;
+    font-size: 12pt;
+  }
+  .page-cheatsheet .cs-subtitle {
+    margin: 0;
+    font-size: 8pt;
+  }
+  .page-cheatsheet .cs-grid {
+    column-count: 3;
+    column-gap: 4.5mm;
+    margin-top: 2mm;
+  }
+  .page-cheatsheet .cs-section {
+    margin-bottom: 2mm;
+    padding-top: 1mm;
+    border-top-width: 1.2pt;
+  }
+  .page-cheatsheet .cs-section h3 {
+    font-size: 8.4pt;
+  }
+  .page-cheatsheet .cs-section ul {
+    font-size: 7.6pt;
+    padding-left: 3mm;
+  }
+  .page-cheatsheet .cs-section li {
+    margin: 0.4mm 0;
+  }
+  .page-cheatsheet .katex {
+    font-size: 1em;
+    --katex-scale: 1;
+  }
+  .page-cheatsheet .math-display .katex-display {
+    margin: 0.5mm 0;
+  }
+  .page-cheatsheet .cs-print-footer {
+    display: block;
+    margin-top: 1mm;
+    font-size: 6.8pt;
+    color: #3f4654;
+  }
+  .page-cheatsheet .cs-print-footer p {
+    margin: 0;
+  }
+}
+
+@page {
+  size: A4;
+  margin: 12mm;
+}

@@ -1,0 +1,10 @@
+[Unit]
+Description=Check scheduled course site entries every minute
+
+[Timer]
+OnCalendar=minutely
+AccuracySec=5s
+RandomizedDelaySec=10s
+
+[Install]
+WantedBy=timers.target

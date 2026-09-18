@@ -1,9 +1,14 @@
+// SPDX-License-Identifier: MIT
+// Copyright (c) 2026 Evgeny Baulin
 /* ==========================================================================
    Optimization Atlas - ui.js
-   Shell (tabs, theme), shared control widgets, section A (landscape) and
-   section B (continuous optimization playground).
+   Shell (tabs, theme, language switch, the link to the seminar pages),
+   shared control widgets, section A (landscape), section B (continuous
+   optimization playground), sections C and D.
 
-   All state lives in this closure.  Nothing is persisted anywhere.
+   All state lives in this closure.  The only thing kept outside it is the
+   open section, in sessionStorage for this tab alone; the language is
+   remembered by i18n.js.
    ========================================================================== */
 (function () {
   'use strict';
@@ -101,7 +106,7 @@
   }
 
   /* =======================================================================
-     Shell: tabs and theme
+     Shell: tabs, theme, language and the link to the seminar pages
      ===================================================================== */
 
   var sections = {};
@@ -110,9 +115,11 @@
   /* The address stays clean, https://optimization-methods.tarakan-tuc.ru and
      never …/#/B, whatever the user does.  Opening a section records a history
      entry with the SAME address, so Back still steps through the sections,
-     and sessionStorage brings the open section back after a reload.  An old
-     link of the form #/C or #/C/ru still opens that section (and language);
-     the address is cleaned right after. */
+     and sessionStorage brings the open section back after a reload.  A link
+     of the form #/C or #/C/ru (old links, or a deep link from another page)
+     still opens that section (and language), and ?lang=ru from a seminar
+     page sets the language (i18n.js reads both); the address is cleaned
+     right after. */
   var SECTION_KEY = 'atlas.section';
 
   function sectionFromHash() {
@@ -199,6 +206,27 @@
       relabelAll();
     });
     syncLang();
+
+    /* The seminar pages.  On the site they are /seminars/, beside this page.
+       Opened from the repository - file://, or a local server whose root is
+       the repository, so that this page is …/Atlas/ - they are the sibling
+       folder Seminars/Evgeny Baulin/web, named down to index.html because a
+       folder does not open under file://.  There the two pages may not share
+       localStorage, so the language and the theme travel in the link. */
+    var SEMINARS_SITE = '/seminars/';
+    var SEMINARS_REPO = '../Seminars/Evgeny%20Baulin/web/index.html';
+    var seminars = $('#seminars-link');
+    function syncSeminars() {
+      if (!seminars) return;
+      var fromRepo = window.location.protocol === 'file:' ||
+                     /\/Atlas\/(?:index\.html?)?$/.test(window.location.pathname);
+      seminars.setAttribute('href', fromRepo
+        ? SEMINARS_REPO + '?lang=' + Atlas.i18n.lang + '&theme=' + Atlas.theme.name
+        : SEMINARS_SITE);
+    }
+    Atlas.i18n.onChange(syncSeminars);
+    Atlas.theme.onChange(syncSeminars);
+    syncSeminars();
 
     Atlas.theme.onChange(function () {
       A.dirty = true;

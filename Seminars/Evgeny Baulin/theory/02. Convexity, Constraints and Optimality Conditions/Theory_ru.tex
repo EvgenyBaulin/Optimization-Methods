@@ -1,0 +1,1037 @@
+% SPDX-License-Identifier: MIT
+% Copyright (c) 2026 Evgeny Baulin
+% Optimization Methods, Seminar 02: theory handout (Russian).
+% The section structure mirrors web/02/js/content-handout.js (web/02/theory.html); every number comes from values.tex.
+% Compile with: latexmk -xelatex Theory_ru.tex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\setmainfont{cmunrm.otf}[BoldFont=cmunbx.otf, ItalicFont=cmunti.otf, BoldItalicFont=cmunbi.otf]
+\setsansfont{cmunss.otf}[BoldFont=cmunsx.otf, ItalicFont=cmunsi.otf, BoldItalicFont=cmunso.otf]
+\setmonofont{cmuntt.otf}[BoldFont=cmuntb.otf, ItalicFont=cmunit.otf, BoldItalicFont=cmuntx.otf]
+\usepackage{polyglossia}
+\setdefaultlanguage{russian}
+\setotherlanguage{english}
+\newfontfamily\cyrillicfont{cmunrm.otf}[Ligatures=TeX, BoldFont=cmunbx.otf, ItalicFont=cmunti.otf, BoldItalicFont=cmunbi.otf]
+\newfontfamily\cyrillicfontsf{cmunss.otf}[Ligatures=TeX, BoldFont=cmunsx.otf, ItalicFont=cmunsi.otf, BoldItalicFont=cmunso.otf]
+\newfontfamily\cyrillicfonttt{cmuntt.otf}[BoldFont=cmuntb.otf, ItalicFont=cmunit.otf, BoldItalicFont=cmuntx.otf]
+
+\usepackage[a4paper,left=2.3cm,right=2.3cm,top=2.4cm,bottom=2.4cm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{array,booktabs,longtable}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[expansion=false]{microtype}
+\usepackage[colorlinks=true,linkcolor=hseblue,urlcolor=hseblue,citecolor=hseblue]{hyperref}
+
+\definecolor{hseblue}{RGB}{16,45,105}
+\definecolor{hseaccent}{RGB}{198,40,40}
+\definecolor{hsegray}{RGB}{108,114,126}
+\definecolor{hselight}{RGB}{240,243,248}
+\definecolor{hsewarm}{RGB}{253,244,232}
+
+\def\valuelang{ru}
+\input{values}
+
+\hypersetup{pdftitle={Методы оптимизации. Семинар 2. Конспект теории}, pdfauthor={Евгений Баулин}}
+
+\titleformat{\section}{\color{hseblue}\Large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\color{hseblue}\large\bfseries}{\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{16pt plus 4pt minus 2pt}{8pt plus 2pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 3pt minus 2pt}{6pt plus 2pt}
+
+\tcbset{handoutbox/.style={enhanced, breakable, sharp corners, boxrule=0pt, left=7pt, right=7pt, top=5pt, bottom=5pt, before skip=8pt plus 2pt, after skip=8pt plus 2pt}}
+\newtcolorbox{examplebox}{handoutbox, colback=hselight, colframe=hselight, before upper={\textcolor{hseblue}{\bfseries Пример.}\ }}
+\newtcolorbox{whybox}{handoutbox, colback=white, colframe=hseblue, leftrule=2.5pt, top=3pt, bottom=3pt, before upper={\textcolor{hseaccent}{\bfseries Почему.}\ }}
+\newtcolorbox{answerbox}{handoutbox, colback=hsewarm, colframe=hsewarm, before upper={\textcolor{hseaccent}{\bfseries Ответ.}\ }}
+\newtcolorbox{conventionbox}{handoutbox, colback=hselight, colframe=hseblue, leftrule=2.5pt, before upper={\textcolor{hseblue}{\bfseries Соглашение о знаках.}\par\smallskip}}
+
+\newcommand{\handoutfigure}[3]{\par\medskip\noindent\begin{minipage}{\linewidth}\centering
+  \includegraphics[width=#1\linewidth]{figures/#2.pdf}\par\smallskip
+  \begin{minipage}{0.94\linewidth}\small\textcolor{hseblue}{\bfseries Рисунок.}\ #3\end{minipage}\end{minipage}\par\medskip}
+\newcommand{\problemhead}[3]{\par\bigskip\noindent{\color{hseblue}\large\bfseries #1.\ #2}\par\nopagebreak
+  \noindent{\small\itshape\color{hsegray}#3}\par\nopagebreak\smallskip}
+
+\setlist[itemize]{itemsep=3pt,topsep=4pt}
+\setlist[enumerate]{itemsep=3pt,topsep=4pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\setcounter{tocdepth}{2}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{hsegray}Методы оптимизации}
+\fancyhead[R]{\small\color{hsegray}Семинар 2}
+\fancyfoot[L]{\small\color{hsegray}Евгений Баулин}
+\fancyfoot[C]{\small\thepage}
+\fancyfoot[R]{\small\color{hsegray}MIT License}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\pagestyle{fancy}}
+
+\begin{document}
+
+\begin{center}
+  {\large\color{hsegray}Методы оптимизации\par}
+  \vspace{4pt}
+  {\large\bfseries\color{hseaccent}Семинар 2\par}
+  \vspace{8pt}
+  {\LARGE\bfseries\color{hseblue}Выпуклость, ограничения и условия оптимальности\par}
+  \vspace{8pt}
+  {\Large Конспект теории\par}
+  \vspace{12pt}
+  НИУ ВШЭ, факультет компьютерных наук\par
+  2026–2027 учебный год\par
+  \vspace{8pt}
+  Лектор курса: Андрей Игнатов\par
+  Евгений Баулин\par
+  Telegram: \href{https://t.me/tarakan_tuc}{@tarakan\_tuc}\par
+\end{center}
+
+\noindent{\color{hseblue}\rule{\linewidth}{0.6pt}}
+
+\tableofcontents
+
+\clearpage
+
+Этот конспект собирает теорию второго семинара: выпуклые множества и функции, проекции, условия ККТ и основы двойственности. Читать его можно с первой строки: достаточно знать производные, векторы и матрицы. После каждой формулы идёт небольшой пример с числами; примеры взяты из задач семинара, поэтому одни и те же точки и функции встречаются снова и снова. В разделе «Задачи семинара» разобраны все девять задач с полными решениями.
+
+\begin{conventionbox}
+Везде, как и в лекциях курса, задача с ограничениями записывается в виде
+\[
+\min_x f(x) \quad \text{при} \quad g_i(x) \le 0,\ \ i = 1, \dots, m, \qquad h_j(x) = 0,\ \ j = 1, \dots, p.
+\]
+Функция Лагранжа: $\mathcal L(x, \lambda, \nu) = f(x) + \sum_i \lambda_i g_i(x) + \sum_j \nu_j h_j(x)$, где $\lambda \ge 0$, а знак $\nu$ любой; двойственная функция: $q(\lambda, \nu) = \inf_x \mathcal L(x, \lambda, \nu)$. Ограничение вида $x_1 \ge 0$ сначала переписывается как $-x_1 \le 0$: в задаче C3 это даёт $g_2(x) = -x_1$ и $\nabla g_2 = \val{C3.params.A.2}$. Вероятностный симплекс: $\Delta_d = \{x \in \mathbb R^d:\ x \ge 0,\ \mathbf 1^\top x = 1\}$; выпуклая комбинация двух точек: $(1-t)x + ty$, где $t \in [0, 1]$.
+\end{conventionbox}
+
+% =====================================================================
+\section{Выпуклые множества}\label{sec:sets}
+
+Выпуклость — то свойство, которое делает задачи оптимизации решаемыми. Сначала она определяется для множеств, через отрезки, а затем для функций.
+
+\subsection{Отрезки и выпуклые множества}\label{sub:sets-definition}
+
+Возьмём две точки $x, y \in \mathbb R^d$ и число $t \in [0, 1]$. Точка
+\[
+z = (1-t)x + ty
+\]
+называется \textbf{выпуклой комбинацией} точек $x$ и $y$. При $t = 0$ это $x$, при $t = 1$ — $y$, а когда $t$ пробегает отрезок $[0, 1]$, точка $z$ пробегает отрезок от $x$ до $y$. Веса $1-t$ и $t$ неотрицательны и в сумме дают $1$, так что $z$ — взвешенное среднее двух точек.
+
+\begin{examplebox}
+$x = \val{ex.combo.x}$, $y = \val{ex.combo.y}$, $t = \val{ex.combo.tex.t}$: $z = (1-t)x + ty = \val{ex.combo.tex.z}$ — середина отрезка.
+\end{examplebox}
+
+Множество $C \subseteq \mathbb R^d$ \textbf{выпукло}, если вместе с любыми двумя своими точками оно содержит весь отрезок между ними:
+\[
+(1-t)x + ty \in C \quad \text{для всех } x, y \in C \text{ и } t \in [0, 1].
+\]
+Чтобы доказать выпуклость, нужно проверить все пары точек; чтобы опровергнуть, достаточно одной пары и одного $t$.
+
+\begin{examplebox}
+Единичный круг $\{\|x\| \le 1\}$ содержит точки $x = \val{ex.combo.x}$ и $y = \val{ex.combo.y}$ (норма каждой равна $1$), а их середина $z = \val{ex.combo.tex.z}$ имеет $\|z\|^2 = \val{ex.combo.tex.norm2} \le 1$ и тоже лежит в круге, как и требует выпуклость. Кольцо $\{ \val{A.widgets.sets.annulus.1} \le \|x\| \le \val{A.widgets.sets.annulus.2} \}$ тоже содержит $x$ и $y$, но не содержит $z$, ведь $\|z\|^2 = \val{ex.combo.tex.norm2} < 1$: кольцо не выпукло.
+\end{examplebox}
+
+\handoutfigure{1.0}{fig_sets}{Слева направо: круг $\|x\| \le r$ и множество $T$ из задачи A3 выпуклы, и отрезок остаётся внутри. Кольцо $\val{A.widgets.sets.annulus.1} \le \|x\| \le \val{A.widgets.sets.annulus.2}$ и множество $S$ из задачи A3 не выпуклы: часть отрезка, вышедшая из множества, выделена красным.}
+
+\subsection{Основные выпуклые множества}\label{sub:sets-examples}
+
+Следующие множества выпуклы. Для каждого указана точка из семинара, которая ему принадлежит.
+
+\begin{itemize}
+  \item \textbf{Полупространство} $\{x:\ a^\top x \le b\}$. Допустимое множество задачи C1 — полуплоскость $\{x_1 + x_2 \le \val{C1.params.b.1} \}$; она содержит точку $\val{ex.slater.point}$: $x_1 + x_2 - \val{C1.params.b.1} = \val{ex.slater.g} \le 0$.
+  \item \textbf{Гиперплоскость} $\{x:\ a^\top x = b\}$ и, в более общем случае, \textbf{аффинное множество} $\{x:\ Ax = b\}$. Прямая $x_1 + 2x_2 = \val{home.H3.rhs}$ содержит точку $\val{home.H3.xFree}$: $\val{home.H3.xFree.1} + 2 \cdot \val{home.H3.xFree.2} = \val{home.H3.rhs}$.
+  \item \textbf{Шар} $\{x:\ \|x - c\| \le r\}$ в евклидовой норме. Точка $\val{B2.steps.ball}$ лежит на границе единичного шара: $\val{B2.steps.ball.1}^2 + \val{B2.steps.ball.2}^2 = 1$.
+  \item \textbf{Брус} $\{x:\ l_i \le x_i \le u_i \text{ для всех } i\}$. Квадрат $Q = [\val{B2.params.lo};\ \val{B2.params.hi}]^2$ из задачи B2 содержит точку $\val{B2.steps.box}$.
+  \item \textbf{Вероятностный симплекс} $\Delta_d = \{x \in \mathbb R^d:\ x \ge 0,\ \mathbf 1^\top x = 1\}$ — множество распределений вероятностей на $d$ исходах. Ответ задачи B1, точка $\val{B1.steps.x}$, лежит в $\Delta_4$: её координаты неотрицательны и в сумме дают $\val{B1.steps.sumX}$.
+\end{itemize}
+
+\begin{whybox}
+Линейные функции перестановочны с усреднением, а норма вдоль отрезка растёт не быстрее линейной функции (неравенство треугольника), поэтому все эти множества выдерживают проверку отрезками.
+\end{whybox}
+
+\subsection{Операции, сохраняющие выпуклость}\label{sub:sets-operations}
+
+Проверять определение напрямую утомительно. На практике выпуклость множества доказывают, собирая его из простых выпуклых частей с помощью операций, сохраняющих выпуклость:
+
+\begin{itemize}
+  \item \textbf{пересечение} любого семейства выпуклых множеств: если $x$ и $y$ лежат в каждом множестве семейства, то и отрезок между ними тоже;
+  \item \textbf{аффинный образ и прообраз}: для выпуклого $C$ множества $\{Ax + b:\ x \in C\}$ и $\{x:\ Ax + b \in C\}$ выпуклы; например, полупространство — прообраз луча;
+  \item \textbf{декартово произведение}: брус — произведение отрезков.
+\end{itemize}
+
+\begin{examplebox}
+Множество $T = \val{A3.tex.T}$ из задачи A3 — пересечение круга и области над параболой, и оба множества выпуклы. Точка $\val{ex.T.point}$ лежит в обоих: $x^2 + y^2 = \val{ex.T.norm2} \le \val{A3.params.radius2}$ и $x^2 - \val{A3.params.shift} = \val{ex.T.parab} \le y = 1$. Значит, она лежит в $T$.
+\end{examplebox}
+
+\textbf{Объединение} выпуклых множеств, напротив, как правило, не выпукло.
+
+\begin{examplebox}
+Допустимое множество демонстрации D1 — объединение двух кругов радиуса $\val{D1.params.radius}$ с центрами $\val{D1.params.centers.1}$ и $\val{D1.params.centers.2}$. Середина отрезка между центрами — начало координат; оно удалено от обоих центров на $\val{D1.params.centers.2.1} > \val{D1.params.radius}$ и не лежит ни в одном круге, так что объединение не выпукло.
+\end{examplebox}
+
+\subsection{Множества подуровня и надграфик}\label{sub:sets-sublevel}
+
+Для функции $f$ и числа $\alpha$ \textbf{множество подуровня} — это
+\[
+\{x:\ f(x) \le \alpha\}.
+\]
+Если $f$ выпукла (см. следующий раздел), то любое её множество подуровня выпукло: при $f(x) \le \alpha$ и $f(y) \le \alpha$ выпуклость даёт $f\big((1-t)x + ty\big) \le (1-t)\alpha + t\alpha = \alpha$. Именно поэтому ограничения $g_i(x) \le 0$ с выпуклыми $g_i$ задают выпуклые допустимые множества.
+
+\begin{examplebox}
+Возьмём $f(x, y) = x^2 + \val{A.widgets.sublevel.convexA}\,xy + \val{A1.params.cyy}y^2 + \val{A1.params.bx}x$ — выпуклую функцию из семейства A1 при $a = \val{A.widgets.sublevel.convexA}$ — и $\alpha = \val{A.widgets.sublevel.levelConvex}$. Начало координат лежит в $\{f \le \alpha\}$, так как $f(0, 0) = \val{A1.steps.fp}$, а всё множество подуровня — заполненный эллипс, выпуклое множество (левая часть рисунка ниже).
+\end{examplebox}
+
+Правило работает только в одну сторону. У невыпуклой функции множества подуровня могут оказаться как выпуклыми, так и невыпуклыми, поэтому в этом случае множество нужно проверять напрямую.
+
+\begin{examplebox}
+$S = \val{A3.tex.S}$ — множество подуровня невыпуклой функции $x^2y^2$ на уровне $\val{A.widgets.sublevel.levelNonconvex}$. Точки $p = \val{A3.tex.pHalf}$ и $q = \val{A3.tex.qHalf}$ лежат в $S$, а в их середине $\val{A3.tex.mid}$ получаем $x^2y^2 = \val{A3.tex.val} > 1$. Значит, $S$ не выпукло (задача A3).
+\end{examplebox}
+
+\handoutfigure{0.78}{fig_sublevel}{Слева: множества подуровня выпуклой функции $f = x^2 + \val{A.widgets.sublevel.convexA}\,xy + \val{A1.params.cyy}y^2 + \val{A1.params.bx}x$ — вложенные эллипсы; множество $\{f \le \val{A.widgets.sublevel.levelConvex} \}$ закрашено. Справа: множество подуровня $\{x^2y^2 \le \val{A.widgets.sublevel.levelNonconvex} \}$ невыпуклой функции — крест, и оно не выпукло.}
+
+\textbf{Надграфик} функции $f$ — множество точек на её графике и над ним:
+\[
+\operatorname{epi} f = \{(x, s):\ s \ge f(x)\}.
+\]
+Функция выпукла ровно тогда, когда её надграфик — выпуклое множество, так что выпуклость функций сводится к выпуклости множеств.
+
+\begin{examplebox}
+Для $f(x) = x^2 - \val{A3.params.shift}$ точка $\val{ex.epi.point}$ лежит в $\operatorname{epi} f$, так как $f(\val{ex.epi.point.1}) = \val{ex.epi.value} \le \val{ex.epi.point.2}$. Часть $\{y \ge x^2 - \val{A3.params.shift} \}$ множества $T$ из задачи A3 — в точности этот надграфик, поэтому она выпукла.
+\end{examplebox}
+
+% =====================================================================
+\section{Выпуклые функции}\label{sec:functions}
+
+Выпуклые функции — это функции, для которых локальная информация, например нулевой градиент или касательная плоскость, позволяет делать глобальные выводы.
+
+\subsection{Определение и неравенство Йенсена}\label{sub:functions-definition}
+
+Функция $f$, заданная на выпуклом множестве, \textbf{выпукла}, если её график лежит не выше любой хорды:
+\[
+f\big((1-t)x + ty\big) \le (1-t)f(x) + t f(y) \quad \text{для всех } x, y \text{ и } t \in [0, 1].
+\]
+Слева стоит значение $f$ в точке отрезка, справа — высота хорды над этой точкой. Если при $x \ne y$ и $t \in (0, 1)$ неравенство строгое, функция \textbf{строго выпукла}. Функция $f$ \textbf{вогнута}, если функция $-f$ выпукла.
+
+\begin{examplebox}
+$f(x) = \|x\|^2$, $x = \val{ex.combo.x}$, $y = \val{ex.combo.y}$, $t = \val{ex.combo.tex.t}$: левая часть равна $f(z) = \val{ex.combo.tex.norm2}$, правая — $(1-t) \cdot 1 + t \cdot 1 = 1$, и действительно $\val{ex.combo.tex.norm2} \le 1$.
+\end{examplebox}
+
+То же неравенство для нескольких точек называется \textbf{неравенством Йенсена}: для весов $\theta_i \ge 0$ с $\sum_i \theta_i = 1$
+\[
+f\Big(\sum_i \theta_i x_i\Big) \le \sum_i \theta_i f(x_i).
+\]
+Для двух точек это определение, а общий случай получается по индукции. При двух точках и $\theta_1 = \theta_2 = \tfrac12$ получается проверка в середине отрезка, которой мы пользуемся на семинаре: одна нарушающая пара доказывает, что $f$ не выпукла.
+
+\begin{examplebox}
+A1 при $a = \val{A1.params.aTest}$: $f(x, y) = x^2 + \val{A1.params.aTest}\,xy + \val{A1.params.cyy}y^2 + \val{A1.params.bx}x$, $p = \val{A1.params.p}$, $q = \val{A1.params.q}$. Середина отрезка $m = \val{A1.steps.m}$, в ней $f(m) = \val{A1.tex.fm}$, а хорда даёт $\tfrac12\big(f(p) + f(q)\big) = \tfrac12\big(\val{A1.steps.fp} + \val{A1.steps.fq}\big) = \val{A1.steps.avg}$. Так как $\val{A1.tex.fm} > \val{A1.steps.avg}$, функция не выпукла.
+\end{examplebox}
+
+\handoutfigure{0.78}{fig_jensen}{Семейство из A1 на отрезке от $p = \val{A1.params.p}$ до $q = \val{A1.params.q}$ как функция от $t$; хорда показана пунктиром. При $a = \val{A1.params.aConvex}$ кривая не поднимается выше хорды, при $a = \val{A1.params.aTest}$ значение в точке $t = \tfrac12$ лежит выше хорды, и неравенство Йенсена нарушено.}
+
+Для квадратичной функции с гессианом $H$ расстояние по вертикали между хордой и графиком выписывается явно:
+\[
+(1-t)f(p) + t f(q) - f\big((1-t)p + tq\big) = \frac{t(1-t)}{2}\, d^\top H d, \qquad d = q - p.
+\]
+Поэтому квадратичная функция выпукла ровно тогда, когда $d^\top H d \ge 0$ для всех $d$, то есть когда $H \succeq 0$.
+
+\begin{examplebox}
+A1 при $a = \val{A1.params.aTest}$ и $d = \val{A1.steps.d}$: $d^\top H d = \val{A1.steps.curv}$, и при $t = \tfrac12$ формула даёт $\tfrac18 \cdot (\val{A1.steps.curv}) = \val{A1.steps.gap}$ — ровно $\val{A1.steps.avg} - \val{A1.tex.fm}$.
+\end{examplebox}
+
+\begin{whybox}
+На любой прямой выпуклая функция — выпуклая функция одной переменной, и одного «плохого» отрезка достаточно, чтобы выпуклость пропала.
+\end{whybox}
+
+\subsection{Критерий первого порядка}\label{sub:functions-first-order}
+
+Пусть $f$ дифференцируема на открытом выпуклом множестве. Тогда $f$ выпукла в том и только в том случае, когда она лежит не ниже всех своих касательных плоскостей:
+\[
+f(y) \ge f(x) + \nabla f(x)^\top (y - x) \quad \text{для всех } x, y.
+\]
+Правая часть — линейное приближение $f$ в точке $x$. Для выпуклой функции это глобальная оценка снизу, а не только локальное приближение.
+
+\begin{examplebox}
+$f(x) = x^2$, $x = \val{ex.first.x}$, $y = \val{ex.first.y}$: $f(y) = \val{ex.first.fy}$, а $f(x) + f'(x)(y - x) = \val{ex.first.fx} + \val{ex.first.slope} \cdot 2 = \val{ex.first.tangent}$. Действительно, $\val{ex.first.fy} \ge \val{ex.first.tangent}$.
+\end{examplebox}
+
+Главное следствие: если $\nabla f(x^*) = 0$, неравенство даёт $f(y) \ge f(x^*)$ для всех $y$. \textbf{У выпуклой функции любая стационарная точка — точка глобального минимума}, и условие $\nabla f = 0$ из семинара 1 становится достаточным.
+
+\begin{examplebox}
+$f(x) = \val{C1.tex.f}$ из задачи C1 выпукла, и её градиент $\nabla f(x) = 2(x - c)$ обращается в нуль в точке $c = \val{C1.params.c}$. Оценка через касательную плоскость в $c$ даёт $f(y) \ge f(c) = 0$ для всех $y$, так что без ограничений $c$ — точка глобального минимума.
+\end{examplebox}
+
+\begin{whybox}
+Выпуклая функция изгибается вверх, поэтому касательная может касаться её графика только снизу.
+\end{whybox}
+
+\subsection{Критерий второго порядка}\label{sub:functions-second-order}
+
+Пусть $f$ дважды непрерывно дифференцируема на открытом выпуклом множестве. Тогда
+\[
+f \text{ выпукла} \iff \nabla^2 f(x) \succeq 0 \text{ во всех точках } x.
+\]
+Здесь $H \succeq 0$ (положительная полуопределённость) означает, что $d^\top H d \ge 0$ для любого $d$, или, что то же самое, все собственные значения $H$ неотрицательны. Если $\nabla^2 f(x) \succ 0$ всюду, то $f$ строго выпукла; обратное неверно, как показывает $x^4$ в точке $x = 0$.
+
+Для симметричной матрицы $2 \times 2$ проверка сводится к минорам:
+\[
+H \succeq 0 \iff H_{11} \ge 0,\ H_{22} \ge 0,\ \det H \ge 0; \qquad H \succ 0 \iff H_{11} > 0,\ \det H > 0.
+\]
+Для полуопределённости нужны все главные миноры, в том числе $H_{22}$, а не только угловые.
+
+\begin{examplebox}
+A1 при $a = \val{ex.hess.a}$: $H = \val{ex.hess.tex.H}$, $H_{11} = \val{A1.steps.minor11} > 0$ и $\det H = \val{A1.steps.detConst} - \val{ex.hess.a}^2 = \val{ex.hess.det} > 0$. Гессиан одинаков во всех точках и положительно определён, поэтому $f$ строго выпукла.
+\end{examplebox}
+
+\begin{examplebox}
+A2, $f(x, y) = \val{A2.tex.f}$: в точке $\val{A2.params.point}$ гессиан равен $\val{A2.tex.HPoint}$, $\det H = \val{A2.steps.detPoint} < 0$. Его собственные значения $\val{A2.steps.eig.1}$ и $\val{A2.steps.eig.2}$ разных знаков, поэтому $f$ не выпукла.
+\end{examplebox}
+
+Гессиан квадратичной функции $f(x) = \tfrac12 x^\top Q x + b^\top x$ — постоянная матрица $Q$. Смешанное слагаемое $c\,x_ix_j$ даёт $c$ в оба элемента $H_{ij}$ и $H_{ji}$, а не $c/2$.
+
+\begin{examplebox}
+Для $x^2 + \val{ex.hess.a}\,xy + \val{A1.params.cyy}y^2 + \val{A1.params.bx}x$: $\partial^2 f/\partial x^2 = 2$, $\partial^2 f/\partial y^2 = \val{A1.steps.minor22}$ и $\partial^2 f/\partial x\,\partial y = \val{ex.hess.a}$ — это и есть матрица $H$ выше.
+\end{examplebox}
+
+Выпуклость функций сохраняется при \textbf{неотрицательных взвешенных суммах}, при \textbf{композиции с аффинным отображением} $x \mapsto Ax + b$ и при \textbf{поточечном максимуме}.
+
+\begin{examplebox}
+$f(x) = \val{C1.tex.f}$ — сумма квадратов аффинных функций, поэтому выпукла; её гессиан равен $2I \succeq 0$. Функция ограничения $g(x) = \val{C1.tex.g}$ аффинна, её гессиан нулевой: она одновременно выпукла и вогнута.
+\end{examplebox}
+
+\begin{whybox}
+Гессиан измеряет кривизну: выпуклая функция в каждой точке и в каждом направлении изгибается вверх или хотя бы не вниз.
+\end{whybox}
+
+\subsection{Почему локальный минимум глобален}\label{sub:functions-local-global}
+
+\textbf{Выпуклая задача} — это минимизация выпуклой функции $f$ на выпуклом множестве $X$. Пусть $x^*$ — точка локального минимума, и предположим, что нашлась точка $y \in X$ с $f(y) < f(x^*)$. Отрезок от $x^*$ до $y$ лежит в $X$, и по выпуклости
+\[
+f\big((1-t)x^* + ty\big) \le (1-t)f(x^*) + t f(y) < f(x^*) \quad \text{для всех } t \in (0, 1].
+\]
+Точки с малым $t$ сколь угодно близки к $x^*$ и строго лучше неё, а это противоречит локальной оптимальности. Значит, \textbf{в выпуклой задаче любой локальный минимум глобален}, а множество всех точек минимума выпукло.
+
+\begin{examplebox}
+Нужны обе выпуклости. В демонстрации D1 функция $f(x) = \|x - c\|^2$ с $c = \val{D1.params.c}$ выпукла, но допустимое множество — объединение двух кругов. Проекционный градиентный спуск (шаг по антиградиенту и проекция, см. раздел о проекциях) из $\val{D1.result.nStarts}$ начальных точек приходит в два разных места: $\val{D1.result.nGlobal}$ запусков находят глобальный минимум с $f = \val{ex.local.fGlobal}$, а $\val{D1.result.nLocal}$ останавливаются в локальном минимуме с $f = \val{ex.local.fLocal}$. На выпуклой оболочке двух кругов все запуски приходят в одну и ту же точку $\val{D1.result.capsule}$.
+\end{examplebox}
+
+\handoutfigure{0.9}{fig_pgd}{Проекционный градиентный спуск для $f(x) = \|x - c\|^2$, $c = \val{D1.params.c}$, с шагом $\val{D1.params.step}$ из одних и тех же $\val{D1.result.nStarts}$ начальных точек. Слева — объединение двух кругов: запуски заканчиваются в глобальном или в локальном минимуме. Справа — выпуклая оболочка кругов: все запуски приходят в $\val{D1.result.capsule}$.}
+
+\begin{whybox}
+У выпуклой задачи нет боковых впадин: из любой точки прямой путь к лучшей точке сразу идёт вниз.
+\end{whybox}
+
+% =====================================================================
+\section{Задачи с ограничениями}\label{sec:constrained}
+
+Дальше минимум ищется на множестве, заданном ограничениями.
+
+\subsection{Допустимое множество}\label{sub:constrained-feasible}
+
+В принятом соглашении задача с ограничениями имеет вид
+\[
+\min_x f(x) \quad \text{при} \quad g_i(x) \le 0,\ \ h_j(x) = 0.
+\]
+Точка, удовлетворяющая всем ограничениям, называется \textbf{допустимой}, множество $X$ допустимых точек — \textbf{допустимым множеством}, а $p^* = \inf_{x \in X} f(x)$ — \textbf{оптимальным значением}.
+
+\begin{examplebox}
+C1: $f(x) = \val{C1.tex.f}$, $g(x) = \val{C1.tex.g}$. Точка $\val{ex.slater.point}$ допустима: в ней $g = \val{ex.slater.g} \le 0$. Безусловный минимум $\val{C1.steps.xUnc}$ недопустим: в нём $g = \val{C1.steps.gUnc} > 0$. Ограничение уводит решение от этой точки, и $p^* = \val{C1.answer.f.value}$.
+\end{examplebox}
+
+Задача \textbf{выпукла}, если $f$ и все $g_i$ выпуклы, а все $h_j$ аффинны. Тогда $X$ выпукло: каждое $\{g_i \le 0\}$ — множество подуровня выпуклой функции, каждое $\{h_j = 0\}$ — аффинное множество, а $X$ — их пересечение. Нелинейное равенство, как правило, выпуклость разрушает.
+
+\begin{examplebox}
+Ограничение $x_1^2 = 1$ допускает только $x_1 = -1$ и $x_1 = 1$, но не их середину $0$. Именно такие ограничения делают невыпуклой булеву задачу из раздела о двойственности.
+\end{examplebox}
+
+\subsection{Активные ограничения}\label{sub:constrained-active}
+
+Ограничение-неравенство \textbf{активно} в допустимой точке $x$, если $g_i(x) = 0$, и \textbf{неактивно}, если $g_i(x) < 0$. Неактивное ограничение не мешает малым сдвигам: вблизи $x$ оно по-прежнему выполнено. Ограничения-равенства активны в любой допустимой точке.
+
+\begin{examplebox}
+В решении задачи C1, $x^* = \val{C1.answer.x.value}$, имеем $g(x^*) = \val{C1.cand.S1.g.1}$: ограничение активно. В решении задачи C2, $x^* = \val{C2.answer.x.value}$, имеем $g(x^*) = \val{C2.steps.gStar} < 0$: ограничение неактивно. В решении задачи C3, $x^* = \val{C3.answer.x.value}$, активны оба ограничения: $g_1(x^*) = \val{C3.cand.S12.g.1}$ и $g_2(x^*) = \val{C3.cand.S12.g.2}$.
+\end{examplebox}
+
+\subsection{Из семинара 1: допустимые направления}\label{sub:constrained-directions}
+
+Семинар 1 закончился условием первого порядка на границе: если $x^*$ — точка локального минимума, то
+\[
+s^\top \nabla f(x^*) \ge 0 \quad \text{для любого допустимого направления } s,
+\]
+то есть ни одно направление, не выводящее из допустимого множества, не уменьшает $f$ в первом порядке. Для гладких ограничений $s$ — допустимое (в первом порядке) направление в точке $x$, если $\nabla g_i(x)^\top s \le 0$ для всех активных $i$ и $\nabla h_j(x)^\top s = 0$ для всех $j$. Неактивные ограничения ничего не требуют.
+
+\begin{examplebox}
+C1 в точке $x^* = \val{C1.answer.x.value}$: $\nabla g = \val{ex.dir.gradG}$, $\nabla f(x^*) = \val{ex.dir.gradF}$. Направление $s = \val{ex.dir.d}$ допустимо, так как $\nabla g^\top s = \val{ex.dir.gd} \le 0$, и не уменьшает $f$: $\nabla f(x^*)^\top s = \val{ex.dir.fd} \ge 0$.
+\end{examplebox}
+
+Перебрать все допустимые направления невозможно. Условия ККТ, о которых речь пойдёт ниже, заменяют это бесконечное семейство неравенств конечным числом уравнений: при условии регулярности неравенство выполнено ровно тогда, когда $-\nabla f(x^*)$ — сумма неотрицательной комбинации градиентов активных неравенств и какой-то комбинации градиентов равенств.
+
+\begin{examplebox}
+В C1 $-\nabla f(x^*) = \val{C1.steps.minusGrad} = \val{C1.answer.lam.value} \cdot \val{ex.dir.gradG}$. Тогда для любого $s$ с $\nabla g^\top s \le 0$ получаем $\nabla f(x^*)^\top s = -\val{C1.answer.lam.value}\, \nabla g^\top s \ge 0$: все допустимые направления проходят проверку сразу.
+\end{examplebox}
+
+\begin{whybox}
+Минимум на границе — это точка, из которой любое направление спуска ведёт за пределы допустимого множества.
+\end{whybox}
+
+% =====================================================================
+\section{Проекции}\label{sec:projections}
+
+Проекция на множество — простейшая задача с ограничениями и строительный блок методов условной оптимизации.
+
+\subsection{Определение}\label{sub:projections-definition}
+
+\textbf{Евклидова проекция} точки $x$ на множество $C$ — ближайшая к $x$ точка множества $C$:
+\[
+P_C(x) = \arg\min_{y \in C} \|y - x\|.
+\]
+Для непустого замкнутого выпуклого множества она существует и единственна, и $P_C(x) = x$, если $x \in C$. Минимизировать $\|y - c\|^2$ на $C$ — то же самое, что проецировать $c$ на $C$.
+
+\begin{examplebox}
+Задача из начала семинара: минимизировать $\|x - c\|^2$ на единичном шаре при $c = \val{hook.ball.c}$. Так как $\|c\| = \val{hook.ball.norm} > \val{hook.ball.r}$, точка $c$ лежит вне шара, и минимум — её проекция $x^* = \val{hook.ball.x}$ на границе; квадрат расстояния до $c$ равен $\val{hook.ball.dist2}$.
+\end{examplebox}
+
+Для невыпуклого множества ближайшая точка может быть не единственной: начало координат одинаково близко к обоим кругам демонстрации D1 и имеет по ближайшей точке в каждом из них.
+
+\begin{whybox}
+Двух разных ближайших точек у выпуклого множества быть не может: их середина лежала бы в множестве и была бы строго ближе.
+\end{whybox}
+
+\subsection{Шар и брус}\label{sub:projections-ball-box}
+
+\textbf{Шар} $B = \{y:\ \|y - c\| \le r\}$: внешняя точка сдвигается на границу вдоль луча из центра,
+\[
+P_B(x) = c + r\,\frac{x - c}{\max(r,\ \|x - c\|)}.
+\]
+Максимум в знаменателе оставляет точки внутри шара на месте.
+
+\begin{examplebox}
+B2: $c = 0$, $r = \val{B2.params.r}$, $x = \val{B2.params.x}$. Здесь $\|x\|^2 = \val{B2.steps.norm2}$ и $\|x\| = \val{B2.steps.norm} > \val{B2.params.r}$, поэтому $P_B(x) = x/\val{B2.steps.norm} = \val{B2.steps.ball}$; расстояние до $x$ равно $\val{B2.steps.distBall}$.
+\end{examplebox}
+
+\textbf{Брус} $Q = \{y:\ l_i \le y_i \le u_i\}$: ограничения на разные координаты независимы, поэтому каждая координата обрезается отдельно:
+\[
+\big(P_Q(x)\big)_i = \min\big(\max(x_i,\ l_i),\ u_i\big).
+\]
+
+\begin{examplebox}
+B2: $Q = [\val{B2.params.lo};\ \val{B2.params.hi}]^2$, $x = \val{B2.params.x}$. Первая координата в допустимых пределах и не меняется, вторая обрезается: $P_Q(x) = \val{B2.steps.box}$, расстояние до $x$ равно $\val{B2.steps.distBox}$. Брус ближе шара, как и должно быть: $B \subset Q$.
+\end{examplebox}
+
+\subsection{Вероятностный симплекс}\label{sub:projections-simplex}
+
+Проекция на $\Delta_d$ имеет вид
+\[
+P_\Delta(v) = \max(v - \theta\mathbf 1,\ 0) \quad \text{покоординатно},
+\]
+где сдвиг $\theta$ — единственное число, при котором координаты результата в сумме дают $1$. Сортировочный алгоритм находит $\theta$ точно:
+
+\begin{itemize}
+  \item \textbf{сортируем} $v$ по убыванию: $u_1 \ge u_2 \ge \dots \ge u_d$;
+  \item \textbf{накапливаем} суммы: $s_j = u_1 + \dots + u_j$;
+  \item \textbf{проверяем}: $t_j = u_j - (s_j - 1)/j$, и $\rho$ — последний номер $j$ с $t_j > 0$ (первое пробное значение всегда равно $1$);
+  \item \textbf{сдвигаем и обрезаем}: $\theta = (s_\rho - 1)/\rho$ и $x = \max(v - \theta,\ 0)$ в исходном порядке координат.
+\end{itemize}
+
+\begin{examplebox}
+Симплекс из начала семинара: вектор $c = \val{hook.simplex.c}$ уже отсортирован, алгоритм даёт $\theta = \val{hook.simplex.theta}$ и $P_\Delta(c) = \val{hook.simplex.x}$. Координаты в сумме дают $1$, отрицательная координата обнулилась. В задачах B1 и B3 все шаги проделаны с таблицей.
+\end{examplebox}
+
+Координата обнуляется всякий раз, когда она не больше $\theta$, независимо от её знака.
+
+\begin{examplebox}
+B3: для $v = \val{B3.params.v}$ получаем $\theta = \val{B3.steps.theta}$ и $P_\Delta(v) = \val{B3.steps.x}$. Первая координата $\val{B3.params.v.1}$ положительна, но меньше $\theta$, поэтому обнуляется.
+\end{examplebox}
+
+\begin{whybox}
+Условия ККТ для симплекса говорят, что все «выжившие» координаты сдвигаются на одно и то же $\theta$, а остальные обрезаются до нуля; сортировка показывает, сколько координат выживет.
+\end{whybox}
+
+\subsection{Свойство тупого угла}\label{sub:projections-obtuse}
+
+Для замкнутого выпуклого множества $C$ точка $p \in C$ является проекцией $x$ тогда и только тогда, когда
+\[
+(x - p)^\top (y - p) \le 0 \quad \text{для всех } y \in C.
+\]
+Вектор из $p$ обратно в $x$ образует тупой или прямой угол с любым направлением из $p$ внутрь множества. Это свойство — сертификат: предъявленную проекцию можно проверить, не повторяя вычислений.
+
+\begin{examplebox}
+B2, шар: $p = P_B(x) = \val{B2.steps.ball}$ и $y = \val{B2.steps.yBall} \in B$ дают $(x - p)^\top (y - p) = \val{B2.steps.obtuseBall} \le 0$. Брус: $p = P_Q(x) = \val{B2.steps.box}$ и $y = \val{B2.steps.yBox} \in Q$ дают $\val{B2.steps.obtuseBox} \le 0$.
+\end{examplebox}
+
+Для многогранника, например симплекса, выражение $(x - p)^\top (y - p)$ линейно по $y$, поэтому достаточно проверить вершины.
+
+\begin{examplebox}
+B1: $r = v - x = \val{B1.steps.r}$ и $r^\top x = \val{B1.steps.rx}$. В вершинах $e_k$ значения $r^\top (e_k - x) = r_k - r^\top x$ равны $\val{B1.steps.vertex}$, все $\le 0$.
+\end{examplebox}
+
+\begin{whybox}
+Если бы какая-то точка $y \in C$ давала острый угол, малый шаг из $p$ в сторону $y$ остался бы в $C$ и приблизил бы нас к $x$.
+\end{whybox}
+
+\handoutfigure{0.86}{fig_projections}{Слева: точка $x = \val{B2.params.x}$, её проекции $P_B(x) = \val{B2.steps.ball}$ на единичный круг и $P_Q(x) = \val{B2.steps.box}$ на квадрат $[\val{B2.params.lo};\ \val{B2.params.hi}]^2$; красный отрезок — симплекс $\Delta_2$. Справа: треугольник $\Delta_3$ в плоскости $\mathbf 1^\top x = 1$, точка $v$ из задачи B3, сдвинутая в эту плоскость, её проекция $P(v) = \val{B3.steps.x}$ на сторону и точка $y \in \Delta_3$: угол между $v - P(v)$ и $y - P(v)$ тупой.}
+
+\subsection{Проекционный градиентный спуск}\label{sub:projections-pgd}
+
+Проекции превращают градиентный спуск в метод для задач с ограничениями: делаем шаг по антиградиенту и проецируем обратно на допустимое множество,
+\[
+x_{k+1} = P_X\big(x_k - \alpha \nabla f(x_k)\big).
+\]
+Метод останавливается, когда $x = P_X\big(x - \alpha \nabla f(x)\big)$. Для выпуклого $X$ свойство тупого угла превращает это равенство в $\nabla f(x)^\top (y - x) \ge 0$ для всех $y \in X$ — условие первого порядка вдоль любого допустимого направления $y - x$.
+
+\begin{examplebox}
+В демонстрации D1 метод запускается с $\alpha = \val{D1.params.step}$ для $f(x) = \|x - c\|^2$, $c = \val{D1.params.c}$. На выпуклой оболочке двух кругов все запуски останавливаются в $\val{D1.result.capsule}$, где $f = \val{D1.result.fCapsule}$. На объединении кругов условие остановки выполняется лишь локально, и запуски останавливаются в двух разных точках: с $f = \val{ex.local.fGlobal}$ и с $f = \val{ex.local.fLocal}$.
+\end{examplebox}
+
+% =====================================================================
+\section{Условия оптимальности}\label{sec:optimality}
+
+Условия оптимальности превращают задачу «найти минимум» в задачу «решить систему уравнений и неравенств».
+
+\subsection{Ограничения-равенства: множители Лагранжа}\label{sub:optimality-lagrange}
+
+Начнём с ограничений-равенств: $\min f(x)$ при $h_j(x) = 0$. Если $x^*$ — точка локального минимума и градиенты $\nabla h_j(x^*)$ линейно независимы, то найдутся числа $\nu_j$ — \textbf{множители Лагранжа}, для которых
+\[
+\nabla f(x^*) + \sum_j \nu_j \nabla h_j(x^*) = 0.
+\]
+Иначе говоря, $x^*$ — стационарная по $x$ точка функции Лагранжа $\mathcal L(x, \nu) = f(x) + \sum_j \nu_j h_j(x)$. Знак множителей равенств может быть любым.
+
+\begin{examplebox}
+$\min\ x_1^2 + x_2^2$ при $h(x) = x_1 + 2x_2 - \val{home.H3.rhs} = 0$. Из стационарности $2x_1 + \nu = 0$ и $2x_2 + 2\nu = 0$, откуда $x_2 = 2x_1$. Ограничение даёт $x^* = \val{home.H3.xFree}$ и $\nu = \val{home.H3.nuFree}$. Проверка: $\nabla f(x^*) + \nu \nabla h = 2 \cdot \val{home.H3.xFree} + (\val{home.H3.nuFree}) \cdot (1;\ 2) = 0$.
+\end{examplebox}
+
+Геометрически: вдоль поверхности ограничений $f$ не убывает в первом порядке, поэтому $\nabla f(x^*)$ ортогонален поверхности, то есть является комбинацией нормалей $\nabla h_j(x^*)$.
+
+\begin{examplebox}
+В точке $x^* = \val{home.H3.xFree}$ градиент $\nabla f = 2 \cdot \val{home.H3.xFree}$ параллелен $\nabla h = (1;\ 2)$. Направляющий вектор прямой $x_1 + 2x_2 = \val{home.H3.rhs}$ равен $(2;\ -1)$, и $\nabla f(x^*)^\top (2;\ -1) = 0$.
+\end{examplebox}
+
+\subsection{Ограничения-неравенства: условия ККТ}\label{sub:optimality-kkt}
+
+Для общей задачи \textbf{условия Каруша — Куна — Таккера (ККТ)} в точке $x^*$ с множителями $\lambda^*$ и $\nu^*$ таковы:
+
+\begin{itemize}
+  \item \textbf{стационарность}: $\nabla f(x^*) + \sum_i \lambda_i^* \nabla g_i(x^*) + \sum_j \nu_j^* \nabla h_j(x^*) = 0$;
+  \item \textbf{допустимость}: $g_i(x^*) \le 0$ и $h_j(x^*) = 0$;
+  \item \textbf{неотрицательность множителей} (двойственная допустимость): $\lambda_i^* \ge 0$;
+  \item \textbf{условие дополняющей нежёсткости}: $\lambda_i^* g_i(x^*) = 0$ для всех $i$.
+\end{itemize}
+
+\begin{examplebox}
+C1: $x^* = \val{C1.answer.x.value}$, $\lambda^* = \val{C1.answer.lam.value}$. Стационарность: $2(x_1 - \val{C1.params.c.1}) + \lambda = 2(\val{C1.answer.x.value.1} - \val{C1.params.c.1}) + \val{C1.answer.lam.value} = 0$ и $2(x_2 - \val{C1.params.c.2}) + \lambda = 2(\val{C1.answer.x.value.2} - \val{C1.params.c.2}) + \val{C1.answer.lam.value} = 0$. Допустимость: $g(x^*) = \val{C1.cand.S1.g.1} \le 0$. Неотрицательность множителя: $\lambda^* = \val{C1.answer.lam.value} \ge 0$. Дополняющая нежёсткость: $\lambda^* g(x^*) = \val{C1.answer.lam.value} \cdot \val{C1.cand.S1.g.1} = 0$.
+\end{examplebox}
+
+У дополняющей нежёсткости два случая: у неактивного ограничения ($g_i < 0$) обязательно $\lambda_i = 0$, а положительный множитель делает своё ограничение активным. У активного ограничения тоже может быть $\lambda_i = 0$. Вручную систему ККТ решают перебором активных множеств, отбрасывая недопустимых кандидатов и кандидатов с отрицательным множителем.
+
+\begin{examplebox}
+C2: случай $\lambda = 0$ даёт $x = \val{C2.answer.x.value}$ с $g = \val{C2.steps.gStar} < 0$ — точку ККТ с $\lambda^* = \val{C2.answer.lam.value}$. Случай $g = 0$ даёт $x = \val{C2.cand.S1.x}$ с $\lambda = \val{C2.cand.S1.lam.1} < 0$ и отбрасывается.
+\end{examplebox}
+
+\textbf{Достаточность.} Если задача выпукла, любая точка ККТ — глобальный минимум, без дополнительных предположений. \textbf{Необходимость} — более тонкое направление: точка локального минимума удовлетворяет условиям ККТ лишь при условии регулярности (см. ниже).
+
+\begin{examplebox}
+Задачи C1 и C3 выпуклы: выпуклая квадратичная целевая функция и аффинные ограничения. Поэтому их точки ККТ — глобальные минимумы: $x^* = \val{C1.answer.x.value}$ с $f^* = \val{C1.answer.f.value}$ в C1 и $x^* = \val{C3.answer.x.value}$ с $f^* = \val{C3.answer.f.value}$ в C3.
+\end{examplebox}
+
+\begin{whybox}
+В выпуклой задаче точка ККТ минимизирует функцию Лагранжа по всем $x$; на допустимом множестве функция Лагранжа не больше $f$, а в $x^*$ она равна $f(x^*)$.
+\end{whybox}
+
+\subsection{Геометрический смысл и нормальный конус}\label{sub:optimality-geometry}
+
+Если есть только неравенства, перенесём слагаемые с множителями в правую часть; слагаемые неактивных ограничений пропадают:
+\[
+-\nabla f(x^*) = \sum_{i\ \text{акт.}} \lambda_i^* \nabla g_i(x^*), \qquad \lambda_i^* \ge 0.
+\]
+Антиградиент — направление наискорейшего убывания — должен быть неотрицательной комбинацией внешних нормалей активных ограничений. Тогда любое направление, уменьшающее $f$, выводит из допустимого множества.
+
+\begin{examplebox}
+C3 в точке $x^* = \val{C3.answer.x.value}$: $-\nabla f(x^*) = \val{C3.steps.minusGrad}$, $\nabla g_1 = \val{C3.params.A.1}$, $\nabla g_2 = \val{C3.params.A.2}$, и
+\[
+\val{C3.steps.minusGrad} = \val{C3.cand.S12.lam.1} \cdot \val{C3.params.A.1} + \val{C3.cand.S12.lam.2} \cdot \val{C3.params.A.2}
+\]
+с неотрицательными коэффициентами.
+\end{examplebox}
+
+Множество таких комбинаций — \textbf{нормальный конус}. Для выпуклого множества $X$ и точки $x \in X$ его можно определить напрямую:
+\[
+N_X(x) = \{s:\ s^\top (y - x) \le 0 \text{ для всех } y \in X\}
+\]
+— это направления, образующие тупой или прямой угол с любым сдвигом внутрь $X$. Во внутренней точке $N_X(x) = \{0\}$, в граничной — луч или более широкий конус. Если $X$ задано ограничениями и выполнено условие регулярности, $N_X(x)$ — конус, натянутый на градиенты активных ограничений. Для выпуклой задачи условие оптимальности умещается в одну строку:
+\[
+-\nabla f(x^*) \in N_X(x^*).
+\]
+
+\begin{examplebox}
+Шар из начала семинара: $f(x) = \|x - c\|^2$ с $c = \val{hook.ball.c}$ и $g(x) = \|x\|^2 - 1$. В точке $x^* = \val{hook.ball.x}$ имеем $c - x^* = \val{hook.ball.x}$, поэтому $-\nabla f(x^*) = 2(c - x^*) = 2 \cdot \val{hook.ball.x}$, а $\nabla g(x^*) = 2x^* = 2 \cdot \val{hook.ball.x}$. Значит, $-\nabla f(x^*) = \lambda \nabla g(x^*)$ с $\lambda = \val{hook.ball.lam} \ge 0$: антиградиент лежит в нормальном конусе, который здесь является лучом вдоль $x^*$.
+\end{examplebox}
+
+Свойство тупого угла говорит то же самое о проекциях: $x - P_C(x) \in N_C\big(P_C(x)\big)$.
+
+\begin{examplebox}
+B2: $P_B(x) = \val{B2.steps.ball}$, и вектор $x - P_B(x)$ направлен по внешней нормали единичной окружности в точке $P_B(x)$. Для $y = \val{B2.steps.yBall}$ скалярное произведение $(x - P_B(x))^\top (y - P_B(x)) = \val{B2.steps.obtuseBall} \le 0$, как и требует определение $N_B$.
+\end{examplebox}
+
+\handoutfigure{1.0}{fig_kkt}{Геометрия ККТ в задачах C1, C2 и C3. Закрашена допустимая область, окружности — линии уровня $f$ вокруг безусловного минимума $c$. В C1 антиградиент $-\nabla f(x^*)$ направлен вдоль нормали $\nabla g$ активного ограничения. В C2 минимум $x^* = c$ лежит внутри области и $\lambda^* = \val{C2.answer.lam.value}$. В C3 активны оба ограничения, и $-\nabla f(x^*)$ лежит в закрашенном нормальном конусе, натянутом на $\nabla g_1$ и $\nabla g_2$.}
+
+\begin{whybox}
+В оптимуме «сила» $-\nabla f$, тянущая к меньшим значениям, уравновешена стенками, в которые она упирается, а стенка может только толкать, но не тянуть: отсюда $\lambda \ge 0$.
+\end{whybox}
+
+\subsection{Условия регулярности и условие Слейтера}\label{sub:optimality-cq}
+
+Условия ККТ необходимы, только если ограничения правильно описывают допустимое множество вблизи $x^*$. Предположение, которое это гарантирует, называется \textbf{условием регулярности}. Без него у точки минимума может не оказаться никаких множителей.
+
+\begin{examplebox}
+Демонстрация D2: $\min x$ при $x^2 \le 0$. Единственная допустимая точка $x^* = \val{D2.xStar}$, поэтому $p^* = \val{D2.pStar}$. Стационарность требует $1 + 2\lambda x^* = 0$, но при $x^* = \val{D2.xStar}$ левая часть равна $1$ при любом $\lambda$. Множителя не существует, хотя $x^*$ — точка минимума.
+\end{examplebox}
+
+Два распространённых условия регулярности:
+
+\begin{itemize}
+  \item \textbf{LICQ}: градиенты активных ограничений в точке $x^*$ линейно независимы;
+  \item \textbf{условие Слейтера} для выпуклых задач: существует строго допустимая точка $\bar x$, то есть $g_i(\bar x) < 0$ для всех $i$ и $h_j(\bar x) = 0$ для всех $j$.
+\end{itemize}
+
+\begin{examplebox}
+C3: градиенты активных ограничений $\val{C3.params.A.1}$ и $\val{C3.params.A.2}$ линейно независимы, так что LICQ выполнено. C1: в точке $\bar x = \val{ex.slater.point}$ имеем $g(\bar x) = \val{ex.slater.g} < 0$, так что выполнено условие Слейтера. D2: $\nabla g(x^*) = 2x^* = 0$ нарушает LICQ, а неравенству $x^2 < 0$ не удовлетворяет ни одна точка, так что нарушено и условие Слейтера.
+\end{examplebox}
+
+Для выпуклой задачи, в которой выполнено условие Слейтера, условия ККТ \textbf{необходимы и достаточны}: допустимая точка является глобальным минимумом ровно тогда, когда для неё существуют подходящие множители.
+
+\begin{examplebox}
+Задача C1 выпукла, и в ней есть точка Слейтера $\val{ex.slater.point}$. Поэтому минимум гарантированно находится среди точек ККТ, и разбор случаев в C1, дающий единственную точку ККТ $\val{C1.answer.x.value}$ с $\lambda^* = \val{C1.answer.lam.value}$, решает задачу полностью.
+\end{examplebox}
+
+% =====================================================================
+\section{Основы двойственности}\label{sec:duality}
+
+Двойственность превращает множители в переменные новой задачи, значение которой оценивает значение исходной задачи снизу.
+
+\subsection{Функция Лагранжа и двойственная функция}\label{sub:duality-dual-function}
+
+Функция Лагранжа $\mathcal L(x, \lambda, \nu) = f(x) + \sum_i \lambda_i g_i(x) + \sum_j \nu_j h_j(x)$ заменяет жёсткие ограничения ценами: при $\lambda_i \ge 0$ нарушение $g_i \le 0$ штрафуется, а запас поощряется. \textbf{Двойственная функция} — наименьшее значение функции Лагранжа по всем $x$, без ограничений на $x$:
+\[
+q(\lambda, \nu) = \inf_x \mathcal L(x, \lambda, \nu).
+\]
+Она может равняться $-\infty$. Как инфимум функций, аффинных по $(\lambda, \nu)$, она всегда вогнута, даже если исходная задача невыпукла.
+
+\begin{examplebox}
+C1: $\mathcal L(x, \lambda) = \val{C1.tex.f} + \lambda\,(\val{C1.tex.g})$. Условие $\nabla_x \mathcal L = 0$ даёт $x(\lambda) = \val{D3.convex.tex.xLam}$, и после подстановки
+\[
+q(\lambda) = \val{D3.convex.tex.q}.
+\]
+Например, $q(\val{D3.convex.samples.lam.2}) = \val{D3.convex.samples.q.2}$ и $q(\val{D3.convex.samples.lam.5}) = \val{D3.convex.samples.q.5}$.
+\end{examplebox}
+
+\subsection{Слабая двойственность}\label{sub:duality-weak}
+
+Для любой допустимой точки $x$, любого $\lambda \ge 0$ и любого $\nu$
+\[
+q(\lambda, \nu) \le f(x).
+\]
+Действительно, на допустимом множестве $\lambda_i g_i(x) \le 0$ и $h_j(x) = 0$, поэтому $\mathcal L(x, \lambda, \nu) \le f(x)$, а инфимум по всем $x$ ещё меньше. Взяв наилучшую оценку, получаем \textbf{слабую двойственность} $d^* \le p^*$, где
+\[
+d^* = \sup_{\lambda \ge 0,\ \nu} q(\lambda, \nu)
+\]
+— значение \textbf{двойственной задачи}. Слабая двойственность верна для любой задачи, выпуклой или нет, а разность $p^* - d^* \ge 0$ называется \textbf{зазором двойственности}.
+
+\begin{examplebox}
+C1: $q(\val{ex.weak.lam}) = \val{ex.weak.q} \le p^* = \val{C1.answer.f.value}$. Любое $\lambda \ge 0$ даёт оценку оптимального значения снизу, не требуя решать задачу.
+\end{examplebox}
+
+\begin{whybox}
+Цены допустимой точке могут только помочь: её слагаемые с ограничениями неположительны, поэтому «оценённая» целевая функция не превосходит настоящую.
+\end{whybox}
+
+\subsection{Сильная двойственность при условии Слейтера}\label{sub:duality-strong}
+
+Если задача выпукла и выполнено условие Слейтера, имеет место \textbf{сильная двойственность}: $d^* = p^*$, и максимум двойственной функции достигается. Если достигается и минимум исходной задачи, то точка максимума $\lambda^*$ функции $q$ — множитель ККТ, и он измеряет чувствительность: если ослабить ограничение $g_i(x) \le 0$ до $g_i(x) \le u$ и оптимальное значение гладко зависит от $u$, то оно меняется со скоростью
+\[
+\frac{\partial p^*}{\partial u}\Big|_{u = 0} = -\lambda_i^*.
+\]
+
+\begin{examplebox}
+Задача C1 выпукла, и у неё есть точка Слейтера $\val{ex.slater.point}$. Максимум $q(\lambda) = \val{D3.convex.tex.q}$ достигается при $\lambda = \val{D3.convex.lamStar}$ — это множитель из C1 — и равен $d^* = \val{D3.convex.dStar} = p^*$: зазор нулевой. Если ослабить ограничение до $x_1 + x_2 \le \val{C1.params.b.1} + u$, то $f^*$ меняется со скоростью $-\lambda^* = \val{C1.steps.sensitivity}$.
+\end{examplebox}
+
+\handoutfigure{1.0}{fig_duality}{Слева: двойственная функция $q(\lambda) = \val{D3.convex.tex.q}$ задачи C1 достигает $p^* = \val{D3.convex.pStar}$ при $\lambda = \val{D3.convex.lamStar}$, зазор нулевой. В центре: двойственная функция $q(\lambda) = \val{D2.tex.q}$ задачи D2 приближается к $p^* = \val{D2.pStar}$, но не достигает его. Справа: на допустимых точках булева целевая функция принимает только значения $\val{D3.bool.values.1}$ и $\val{D3.bool.values.2}$; $d^* = \val{D3.bool.tex.dStar}$ лежит строго ниже $p^* = \val{D3.bool.pStar}$, скобка отмечает зазор.}
+
+\begin{whybox}
+При условии Слейтера цены можно подобрать так, что безусловный минимум функции Лагранжа попадает ровно в условный оптимум.
+\end{whybox}
+
+\subsection{Когда двойственность ломается}\label{sub:duality-gap}
+
+Без условия Слейтера даже выпуклая задача может вести себя плохо. В D2, $\min x$ при $x^2 \le 0$, функция Лагранжа $x + \lambda x^2$ при $\lambda > 0$ минимизируется в точке $x = \val{D2.tex.xMin}$, откуда
+\[
+q(\lambda) = \val{D2.tex.q}.
+\]
+При $\lambda \to \infty$ получаем $q(\lambda) \to p^*$, так что зазор нулевой, но ни при каком $\lambda$ значение $d^*$ не достигается. Так в двойственной задаче проявляется отсутствие множителя ККТ.
+
+\begin{examplebox}
+$q(\val{D2.samples.lam.1}) = \val{D2.samples.q.1}$, $q(\val{D2.samples.lam.3}) = \val{D2.samples.q.3}$, $q(\val{D2.samples.lam.5}) = \val{D2.samples.q.5}$: значения приближаются к $p^* = \val{D2.pStar}$ снизу и никогда его не достигают.
+\end{examplebox}
+
+Без выпуклости зазор может быть положительным. Рассмотрим булеву задачу
+\[
+\min\ x_1x_2 + x_2x_3 + x_1x_3 \quad \text{при} \quad x_i^2 = 1 \text{ для всех } i.
+\]
+Её восемь допустимых точек — векторы знаков $x \in \{-1, 1\}^3$. Целевая функция равна $\val{D3.bool.values.2}$, когда все знаки совпадают, и $\val{D3.bool.values.1}$ в остальных случаях, поэтому $p^* = \val{D3.bool.pStar}$, и этот минимум достигается в $\val{D3.bool.nOptimal}$ точках. Запишем целевую функцию как $x^\top A x$, где $A = \tfrac12(\mathbf 1\mathbf 1^\top - I)$. Тогда
+\[
+\mathcal L(x, \nu) = x^\top\big(A + \operatorname{diag}(\nu)\big)x - \mathbf 1^\top \nu, \qquad q(\nu) = \begin{cases} -\mathbf 1^\top \nu, & A + \operatorname{diag}(\nu) \succeq 0, \\ -\infty & \text{иначе}. \end{cases}
+\]
+
+\begin{examplebox}
+Лучшая двойственная точка — $\nu^* = \val{D3.bool.tex.nuStar}$: матрица $A + \operatorname{diag}(\nu^*) = \tfrac12\mathbf 1\mathbf 1^\top$ положительно полуопределена, и $d^* = q(\nu^*) = \val{D3.bool.tex.dStar}$. Зазор равен $p^* - d^* = \val{D3.bool.pStar} - \big(\val{D3.bool.tex.dStar}\big) = \val{D3.bool.tex.gap} > 0$.
+\end{examplebox}
+
+\begin{whybox}
+Лучшей двойственной точки нет: проверка $A + \operatorname{diag}(\nu) \succeq 0$ на векторе $x = e_i - e_j$ даёт $\nu_i + \nu_j \ge 1$, а сумма трёх таких неравенств даёт $\mathbf 1^\top \nu \ge \tfrac32$.
+\end{whybox}
+
+Почему в примере три ограничения: при \textbf{одном} квадратичном ограничении и строго допустимой точке зазор нулевой даже для невыпуклой квадратичной целевой функции. Это S-лемма.
+
+\begin{examplebox}
+$\min\ -x^2$ при $x^2 \le 1$: целевая функция вогнута, и $p^* = \val{D3.slemma.pStar}$. Функция Лагранжа $(\lambda - 1)x^2 - \lambda$ ограничена снизу только при $\lambda \ge 1$, и там $q(\lambda) = -\lambda$. Значит, $d^* = q(1) = \val{D3.slemma.pStar} = p^*$.
+\end{examplebox}
+
+Четыре примера рядом:
+
+\begin{center}\small
+\begin{tabular}{@{}lllccc@{}}
+\toprule
+\textbf{Задача} & \textbf{Выпуклая} & \textbf{Строго допустимая точка} & \textbf{$p^*$} & \textbf{$d^*$} & \textbf{Зазор} \\
+\midrule
+C1 & да & да, $\val{ex.slater.point}$ & $\val{D3.convex.pStar}$ & $\val{D3.convex.dStar}$ & $0$ \\
+D2 & да & нет & $\val{D2.pStar}$ & $\val{D2.pStar}$, не достигается & $0$ \\
+Булева & нет & только равенства & $\val{D3.bool.pStar}$ & $\val{D3.bool.tex.dStar}$ & $\val{D3.bool.tex.gap}$ \\
+S-лемма & нет & да, $x = 0$ & $\val{D3.slemma.pStar}$ & $\val{D3.slemma.pStar}$ & $0$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{whybox}
+Двойственная задача — всегда максимизация вогнутой функции. Если исходная задача невыпукла, двойственная «видит» лишь её выпуклое упрощение, и разница проявляется в виде зазора.
+\end{whybox}
+
+% =====================================================================
+\section{Задачи семинара}\label{sec:problems}
+
+Все девять задач семинара с полными решениями. В каждом блоке первая задача решается у доски, а две другие студенты решают самостоятельно, на время.
+
+\subsection{A. Выпуклость множеств и функций}\label{sub:problems-a}
+
+\problemhead{A1}{Выпуклость семейства квадратичных функций}{Критерий через гессиан, главные миноры и проверка неравенства Йенсена}
+\textbf{Условие.} Пусть $f(x,y) = \val{A1.tex.f}$. \textbf{а)} При каких $a$ функция $f$ выпукла на $\mathbb R^2$, а при каких строго выпукла? \textbf{б)} Возьмите $a = \val{A1.params.aTest}$ и проверьте неравенство Йенсена в середине отрезка с концами $p = \val{A1.params.p}$ и $q = \val{A1.params.q}$.
+
+\textbf{Решение.}
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item Линейное слагаемое $\val{A1.params.bx}x$ не даёт вторых производных, а смешанное слагаемое $a\,xy$ записывает $a$ в \textbf{оба} внедиагональных элемента:
+\[
+H = \val{A1.tex.H}.
+\]
+Гессиан одинаков во всех точках.
+  \item Выпуклость $\iff H \succeq 0$. Для полуопределённости проверяем \textbf{все} главные миноры: $H_{11} = \val{A1.steps.minor11} \ge 0$, $H_{22} = \val{A1.steps.minor22} \ge 0$, $\det H = \val{A1.tex.det} \ge 0$. Значит, $f$ выпукла ровно при $|a| \le \val{A1.params.aEdge}$.
+  \item Строгая выпуклость: $H \succ 0$, а для определённости достаточно угловых миноров: $H_{11} > 0$ и $\val{A1.tex.det} > 0$, то есть $|a| < \val{A1.params.aEdge}$. Для квадратичной функции строгая выпуклость равносильна $H \succ 0$.
+  \item Граничный случай $a = \val{A1.params.aEdge}$: $f = \val{A1.tex.fEdge}$, собственные значения $H$ равны $\val{A1.steps.eigEdge.1}$ и $\val{A1.steps.eigEdge.2}$, а вдоль $d = \val{A1.steps.nullDir}$ функция линейна: $f(sd) = \val{A1.steps.lineSlope}s$. Выпукла, но не строго.
+  \item Йенсен при $a = \val{A1.params.aTest}$: $f(p) = \val{A1.steps.fp}$, $f(q) = \val{A1.steps.fq}$, а в середине $m = \val{A1.steps.m}$ получаем $f(m) = \val{A1.tex.fm}$. Хорда даёт $\tfrac12\big(f(p) + f(q)\big) = \val{A1.steps.avg} < f(m)$: неравенство нарушено, $f$ не выпукла, как и предсказывал второй шаг.
+  \item Почему так: для квадратичной функции $(1-t)f(p) + t f(q) - f\big((1-t)p + tq\big) = \frac{t(1-t)}{2}\, d^\top H d$, где $d = q - p$. Здесь $d^\top H d = \val{A1.steps.curv} < 0$: вдоль $d$ функция вогнута.
+\end{enumerate}
+\begin{answerbox}
+Выпукла при $|a| \le \val{A1.params.aEdge}$, строго выпукла при $|a| < \val{A1.params.aEdge}$. При $a = \val{A1.params.aTest}$ неравенство Йенсена нарушено: $f(m) = \val{A1.tex.fm} > \val{A1.steps.avg}$.
+\end{answerbox}
+
+\problemhead{A2}{Произведение квадратов не выпукло}{Гессиан в точке и контрпример к неравенству Йенсена}
+\textbf{Условие.} Покажите двумя независимыми способами, что $f(x,y) = \val{A2.tex.f}$ не выпукла на $\mathbb R^2$: \textbf{а)} найдите гессиан и его определитель в точке $\val{A2.params.point}$; \textbf{б)} проверьте неравенство Йенсена для $p = \val{A2.params.p}$ и $q = \val{A2.params.q}$ в их середине.
+
+\textbf{Решение.}
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item Дифференцируем дважды:
+\[
+H(x,y) = \val{A2.tex.H}.
+\]
+В отличие от A1, гессиан меняется от точки к точке.
+  \item $\det H = \val{A2.tex.detGeneral} < 0$ при $xy \ne 0$, поэтому собственные значения разных знаков и $H$ знаконеопределён. В точке $\val{A2.params.point}$: $H = \val{A2.tex.HPoint}$, $\det H = \val{A2.steps.detPoint}$, собственные значения $\val{A2.steps.eig.1}$ и $\val{A2.steps.eig.2}$.
+  \item У выпуклой функции класса $C^2$ гессиан $H \succeq 0$ \textbf{всюду}, значит, $f$ не выпукла.
+  \item Йенсен: $f(p) = f(q) = 0$, середина $m = \val{A2.steps.m}$, и $f(m) = \val{A2.tex.fm} > 0 = \tfrac12\big(f(p) + f(q)\big)$. Неравенство нарушено: второе доказательство, уже без производных.
+  \item На осях $xy = 0$ гессиан равен $\operatorname{diag}(2y^2,\ 2x^2) \succeq 0$: проверка в одной точке на оси не заметила бы невыпуклости.
+\end{enumerate}
+\begin{answerbox}
+В точке $\val{A2.params.point}$ $\det H = \val{A2.steps.detPoint}$, гессиан знаконеопределён; $f(m) = \val{A2.tex.fm} > 0$ нарушает неравенство Йенсена. Функция не выпукла.
+\end{answerbox}
+
+\problemhead{A3}{Множества подуровня и пересечения}{Выпуклость множеств: контрпример из двух точек, множества подуровня, пересечения}
+\textbf{Условие.} Какие из множеств выпуклы: $S = \val{A3.tex.S}$ и $T = \val{A3.tex.T}$? Для невыпуклого множества укажите две его точки, середина между которыми лежит вне множества; для выпуклого обоснуйте ответ одной строкой.
+
+\textbf{Решение.}
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item $S = \{|xy| \le 1\}$ — область между четырьмя ветвями гипербол $xy = \pm 1$. Она содержит обе оси и похожа на крест.
+  \item Возьмём две точки на ветви $xy = 1$: $p = \val{A3.tex.pHalf}$ и $q = \val{A3.tex.qHalf}$. Обе лежат в $S$.
+  \item Середина $m = \val{A3.tex.mid}$, в ней $xy = \val{A3.tex.xyMid}$ и $x^2y^2 = \val{A3.tex.val} > 1$. Значит, $m \notin S$ и $S$ не выпукло.
+  \item $S$ — множество подуровня функции $x^2y^2$, которая не выпукла (A2). Множество подуровня невыпуклой функции может оказаться как выпуклым, так и невыпуклым, поэтому проверять нужно само множество.
+  \item $T$: круг — множество подуровня выпуклой функции $x^2 + y^2$, а $\{y \ge x^2 - \val{A3.params.shift}\}$ — надграфик выпуклой функции $x^2 - \val{A3.params.shift}$. Оба множества выпуклы, а пересечение выпуклых множеств выпукло.
+\end{enumerate}
+\begin{answerbox}
+$T$ выпукло, $S$ — нет: $p = \val{A3.tex.pHalf}$ и $q = \val{A3.tex.qHalf}$ лежат в $S$, а их середина нет.
+\end{answerbox}
+
+\subsection{B. Проекции на шар, брус и симплекс}\label{sub:problems-b}
+
+\problemhead{B1}{Проекция на симплекс по шагам}{Сортировочный алгоритм проекции на вероятностный симплекс и проверка тупого угла}
+\textbf{Условие.} Спроецируйте $v = \val{B1.params.v}$ на вероятностный симплекс $\Delta_4 = \{x \in \mathbb R^4:\ x \ge 0,\ \mathbf 1^\top x = 1\}$ сортировочным алгоритмом. Затем проверьте сумму координат результата и свойство тупого угла.
+
+\textbf{Решение.}
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item Сортируем по убыванию: $u = \val{B1.steps.u}$.
+  \item Накопленные суммы $s_j = u_1 + \dots + u_j$: $s = \val{B1.steps.s}$.
+  \item Пробные значения $t_j = u_j - \dfrac{s_j - 1}{j}$; первое всегда равно $1$.
+\begin{center}\small
+\begin{tabular}{@{}cccc@{}}
+\toprule
+$j$ & $u_j$ & $s_j$ & $t_j$ \\
+\midrule
+$1$ & $\val{B1.steps.u.1}$ & $\val{B1.steps.s.1}$ & $\val{B1.steps.tests.1}$ \\
+$2$ & $\val{B1.steps.u.2}$ & $\val{B1.steps.s.2}$ & $\val{B1.steps.tests.2}$ \\
+$3$ & $\val{B1.steps.u.3}$ & $\val{B1.steps.s.3}$ & $\val{B1.steps.tests.3}$ \\
+$4$ & $\val{B1.steps.u.4}$ & $\val{B1.steps.s.4}$ & $\val{B1.steps.tests.4}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+  \item $\rho$ — последний номер с $t_j > 0$: $\rho = \val{B1.steps.rho}$. Сдвиг $\theta = \dfrac{s_\rho - 1}{\rho} = \val{B1.steps.theta}$.
+  \item Вычитаем и обрезаем по нулю в \textbf{исходном} порядке: $x = \max(v - \theta,\ 0) = \val{B1.steps.x}$.
+  \item Проверки: $\mathbf 1^\top x = \val{B1.steps.sumX}$. Пусть $r = v - x = \val{B1.steps.r}$. Выражение $r^\top(y - x)$ линейно по $y$, поэтому достаточно проверить вершины $e_k$: $r^\top(e_k - x) = r_k - r^\top x$, где $r^\top x = \val{B1.steps.rx}$, даёт $\val{B1.steps.vertex}$, все $\le 0$.
+\end{enumerate}
+\begin{answerbox}
+$\theta = \val{B1.steps.theta}$ и $P_{\Delta}(v) = \val{B1.steps.x}$.
+\end{answerbox}
+
+\problemhead{B2}{Одна точка, шар и брус}{Проекции на шар и на брус в явном виде}
+\textbf{Условие.} Спроецируйте $x = \val{B2.params.x}$ на шар $B = \{z:\ \|z\| \le \val{B2.params.r}\}$ и на брус $Q = [\val{B2.params.lo};\ \val{B2.params.hi}]^2$. Какая проекция ближе к $x$ и можно ли было предсказать это без вычислений?
+
+\textbf{Решение.}
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item Шар: $\|x\|^2 = \val{B2.steps.norm2}$, значит, $\|x\| = \val{B2.steps.norm} > \val{B2.params.r}$, точка снаружи и $P_B(x) = \dfrac{x}{\|x\|} = \val{B2.steps.ball}$.
+  \item Брус: обрезаем каждую координату до $[\val{B2.params.lo};\ \val{B2.params.hi}]$ независимо: $P_Q(x) = \val{B2.steps.box}$. Меняется только координата, вышедшая за границы.
+  \item Расстояния: $\|x - P_B(x)\| = \val{B2.steps.distBall}$ и $\|x - P_Q(x)\| = \val{B2.steps.distBox}$.
+  \item Предсказание: $B \subset Q$, поэтому расстояние до $Q$ не больше расстояния до $B$. Сами проекции разные: шар сдвигает обе координаты, брус — одну.
+  \item Проверка тупого угла: для $y = \val{B2.steps.yBall} \in B$ имеем $(x - P_B(x))^\top(y - P_B(x)) = \val{B2.steps.obtuseBall} \le 0$; для $y = \val{B2.steps.yBox} \in Q$ имеем $(x - P_Q(x))^\top(y - P_Q(x)) = \val{B2.steps.obtuseBox} \le 0$.
+\end{enumerate}
+\begin{answerbox}
+$P_B(x) = \val{B2.steps.ball}$, $P_Q(x) = \val{B2.steps.box}$. Брус ближе: $\val{B2.steps.distBox} < \val{B2.steps.distBall}$, потому что $B \subset Q$.
+\end{answerbox}
+
+\problemhead{B3}{Положительная координата может обнулиться}{Сортировочный алгоритм проекции на симплекс самостоятельно}
+\textbf{Условие.} Спроецируйте $v = \val{B3.params.v}$ на $\Delta_3$. Какая координата обнулится, хотя в $v$ она положительна?
+
+\textbf{Решение.}
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item Сортируем: $u = \val{B3.steps.u}$; накопленные суммы $s = \val{B3.steps.s}$.
+  \item Пробные значения $t_j = u_j - \dfrac{s_j - 1}{j}$:
+\begin{center}\small
+\begin{tabular}{@{}cccc@{}}
+\toprule
+$j$ & $u_j$ & $s_j$ & $t_j$ \\
+\midrule
+$1$ & $\val{B3.steps.u.1}$ & $\val{B3.steps.s.1}$ & $\val{B3.steps.tests.1}$ \\
+$2$ & $\val{B3.steps.u.2}$ & $\val{B3.steps.s.2}$ & $\val{B3.steps.tests.2}$ \\
+$3$ & $\val{B3.steps.u.3}$ & $\val{B3.steps.s.3}$ & $\val{B3.steps.tests.3}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+  \item $\rho = \val{B3.steps.rho}$ и $\theta = \dfrac{s_\rho - 1}{\rho} = \val{B3.steps.theta}$.
+  \item В исходном порядке: $x = \max(v - \theta,\ 0) = \val{B3.steps.x}$, и $\mathbf 1^\top x = \val{B3.steps.sumX}$. Первая координата в $v$ положительна, а в $x$ равна нулю: она меньше $\theta$.
+  \item Тупой угол в вершинах: $r = v - x = \val{B3.steps.r}$, $r^\top x = \val{B3.steps.rx}$, и $r_k - r^\top x = \val{B3.steps.vertex}$, все $\le 0$.
+  \item Сумма $\mathbf 1^\top v = \val{B3.steps.sumV}$ не равна $1$, но это не важно: сдвиг $v$ вдоль $\mathbf 1$ в плоскость $\mathbf 1^\top x = 1$ даёт $\val{B3.steps.inPlane}$ с той же проекцией.
+\end{enumerate}
+\begin{answerbox}
+$\theta = \val{B3.steps.theta}$, $P_\Delta(v) = \val{B3.steps.x}$; обнуляется первая координата.
+\end{answerbox}
+
+\subsection{C. Условия ККТ для двумерных задач}\label{sub:problems-c}
+
+\problemhead{C1}{ККТ с одним активным ограничением}{Запись условий ККТ, разбор случаев и геометрическая проверка}
+\textbf{Условие.} Решите задачу $\min\ \val{C1.tex.f}$ при ограничении $g(x) = \val{C1.tex.g} \le 0$ с помощью условий ККТ. Найдите $x^*$, $\lambda^*$ и $f^*$, изобразите $-\nabla f(x^*)$ и $\nabla g(x^*)$.
+
+\textbf{Решение.}
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item Функция Лагранжа: $\mathcal L(x, \lambda) = \val{C1.tex.f} + \lambda\,(\val{C1.tex.g})$.
+  \item ККТ: стационарность $2(x_1 - \val{C1.params.c.1}) + \lambda = 0$ и $2(x_2 - \val{C1.params.c.2}) + \lambda = 0$; допустимость $g(x) \le 0$; неотрицательность множителя $\lambda \ge 0$; дополняющая нежёсткость $\lambda\, g(x) = 0$.
+  \item Случай $\lambda = 0$: из стационарности $x = \val{C1.steps.xUnc}$, но $g = \val{C1.steps.gUnc} > 0$. Точка недопустима, отбрасываем.
+  \item Случай $g = 0$: из стационарности $x_1 - \val{C1.params.c.1} = x_2 - \val{C1.params.c.2}$; вместе с $x_1 + x_2 = \val{C1.params.b.1}$ получаем $x^* = \val{C1.answer.x.value}$ и $\lambda^* = \val{C1.answer.lam.value} \ge 0$.
+  \item Целевая функция и ограничение выпуклы, поэтому точка ККТ — глобальный минимум: $f^* = \val{C1.answer.f.value}$.
+  \item Геометрия: $-\nabla f(x^*) = \val{C1.steps.minusGrad} = \lambda^* \nabla g = \val{C1.answer.lam.value} \cdot \val{C1.params.A.1}$. Антиградиент направлен по внешней нормали активного ограничения. Если ослабить ограничение до $x_1 + x_2 \le R$, то $f^*$ меняется со скоростью $-\lambda^* = \val{C1.steps.sensitivity}$.
+\end{enumerate}
+\begin{answerbox}
+$x^* = \val{C1.answer.x.value}$, $\lambda^* = \val{C1.answer.lam.value}$, $f^* = \val{C1.answer.f.value}$; ограничение активно.
+\end{answerbox}
+
+\problemhead{C2}{Неактивное ограничение}{Дополняющая нежёсткость: у неактивного ограничения множитель равен нулю}
+\textbf{Условие.} Решите задачу $\min\ \val{C2.tex.f}$ при ограничении $g(x) = \val{C2.tex.g} \le 0$. Активно ли ограничение в оптимуме и чему равен $\lambda^*$?
+
+\textbf{Решение.}
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item Условие стационарности то же, что в C1: $2(x_1 - \val{C2.params.c.1}) + \lambda = 0$, $2(x_2 - \val{C2.params.c.2}) + \lambda = 0$.
+  \item Случай $\lambda = 0$: $x = \val{C2.answer.x.value}$ и $g = \val{C2.steps.gStar} < 0$. Точка допустима, это точка ККТ.
+  \item Для полноты случай $g = 0$: $x = \val{C2.cand.S1.x}$ и $\lambda = \val{C2.cand.S1.lam.1} < 0$. Отбрасываем по знаку множителя.
+  \item Ответ: $x^* = \val{C2.answer.x.value}$, $\lambda^* = \val{C2.answer.lam.value}$, $f^* = \val{C2.answer.f.value}$. Ограничение неактивно, и дополняющая нежёсткость $\lambda^* g(x^*) = 0$ при $g(x^*) < 0$ даёт $\lambda^* = 0$.
+\end{enumerate}
+\begin{answerbox}
+$x^* = \val{C2.answer.x.value}$, $\lambda^* = \val{C2.answer.lam.value}$; ограничение неактивно.
+\end{answerbox}
+
+\problemhead{C3}{Два ограничения и таблица активных множеств}{Перебор активных множеств и отбраковка кандидатов по допустимости и по знаку множителей}
+\textbf{Условие.} Решите задачу $\min\ \val{C3.tex.f}$ при ограничениях $g_1(x) = \val{C3.tex.g1} \le 0$ и $g_2(x) = \val{C3.tex.g2} \le 0$. Переберите активные множества, отбросьте лишних кандидатов и найдите $x^*$, $\lambda_1^*$ и $\lambda_2^*$.
+
+\textbf{Решение.}
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item Стационарность при $\nabla g_1 = \val{C3.params.A.1}$ и $\nabla g_2 = \val{C3.params.A.2}$: $2(x_1 - \val{C3.params.c.1}) + \lambda_1 - \lambda_2 = 0$, $2(x_2 - \val{C3.params.c.2}) + \lambda_1 = 0$.
+  \item Активное множество $\varnothing$: $x = \val{C3.cand.S0.x}$, $g_1 = \val{C3.cand.S0.g.1} > 0$. Недопустимо.
+  \item Активное множество $\{1\}$: $x = \val{C3.cand.S1.x}$, $\lambda_1 = \val{C3.cand.S1.lam.1}$, но $g_2 = \val{C3.cand.S1.g.2} > 0$, так как $x_1 < 0$. Недопустимо.
+  \item Активное множество $\{2\}$: $x = \val{C3.cand.S2.x}$, $\lambda_2 = \val{C3.cand.S2.lam.2} < 0$, и к тому же $g_1 = \val{C3.cand.S2.g.1} > 0$. Отбрасываем по обеим причинам.
+  \item Активное множество $\{1, 2\}$: $x = \val{C3.cand.S12.x}$; из стационарности $\lambda_1 = \val{C3.cand.S12.lam.1}$ и $\lambda_2 = \val{C3.cand.S12.lam.2}$, оба неотрицательны. Это точка ККТ, $f^* = \val{C3.answer.f.value}$.
+  \item Геометрия: $-\nabla f(x^*) = \val{C3.steps.minusGrad} = \val{C3.cand.S12.lam.1}\,\nabla g_1 + \val{C3.cand.S12.lam.2}\,\nabla g_2$. Антиградиент лежит внутри нормального конуса, натянутого на градиенты двух активных ограничений.
+\end{enumerate}
+\begin{answerbox}
+$x^* = \val{C3.answer.x.value}$, $\lambda^* = \val{C3.answer.lam.value}$, $f^* = \val{C3.answer.f.value}$; активны оба ограничения.
+\end{answerbox}
+
+% =====================================================================
+\section{Типичные ошибки}\label{sec:mistakes}
+
+Ошибки, которые повторяются из раза в раз: сначала по темам, затем из задач семинара.
+
+\subsection{Выпуклость}\label{sub:mistakes-a}
+
+\begin{itemize}[label=\textcolor{hseaccent}{\textbullet}]
+  \item Смешанное слагаемое $c\,x_ix_j$ даёт $c$ в оба элемента $H_{ij}$ и $H_{ji}$; значение $c/2$ — это элемент $A$ в записи $f = x^\top A x$.
+  \item Угловые миноры решают только вопрос о $H \succ 0$. Для $H \succeq 0$ неотрицательными должны быть все главные миноры: у $\operatorname{diag}(0, -1)$ угловые миноры нулевые, а матрица не полуопределена.
+  \item Классифицировать собственные значения с абсолютным допуском: крошечная положительно определённая матрица превращается в нулевую. Допуск нужен относительный, от наибольшего собственного значения.
+  \item Считать случайные пары, для которых выполнено неравенство Йенсена, доказательством выпуклости: доказывает только нарушение.
+\end{itemize}
+
+Из задач:
+
+\begin{itemize}
+  \item \textbf{A1.} Записать в гессиан $a/2$. Число $a/2$ стоит в матрице $A$ из записи $f = z^\top A z$, а элемент гессиана равен $\partial^2 f/\partial x\,\partial y = a$.
+  \item \textbf{A1.} Судить о полуопределённости только по угловым минорам. Они решают вопрос о $H \succ 0$, а для $H \succeq 0$ неотрицательными должны быть все главные миноры.
+  \item \textbf{A2.} Посчитать гессиан только в начале координат, где он нулевой, и объявить функцию выпуклой.
+  \item \textbf{A2.} Считать одну пару, для которой Йенсен выполнен, доказательством выпуклости: доказывает только нарушение.
+  \item \textbf{A3.} Объявить $S$ выпуклым, потому что это множество подуровня: правило работает только для выпуклой функции.
+  \item \textbf{A3.} Проверять пару $\val{A3.params.pairs.p2.p}$, $\val{A3.params.pairs.p2.q}$: её середина — начало координат, оно лежит в $S$, и пара ничего не доказывает.
+\end{itemize}
+
+\subsection{Проекции}\label{sub:mistakes-b}
+
+\begin{itemize}[label=\textcolor{hseaccent}{\textbullet}]
+  \item Перепутать формулы: обрезать координаты для шара или нормировать для бруса.
+  \item Выдать отсортированный вектор: сортировка нужна только для нахождения $\theta$, результат сохраняет исходный порядок.
+  \item Ожидать, что обнуляются только отрицательные координаты: обнуляется любая координата, не превосходящая $\theta$.
+  \item Проецировать на невыпуклое множество так, будто проекция единственна: у объединения кругов точка может иметь две ближайшие.
+\end{itemize}
+
+Из задач:
+
+\begin{itemize}
+  \item \textbf{B1.} Выдать отсортированный вектор вместо того, чтобы вернуть координаты в исходный порядок.
+  \item \textbf{B1.} Вычесть $\theta$ и забыть обрезать по нулю: остаются отрицательные координаты.
+  \item \textbf{B2.} Перепутать формулы: обрезать координаты для шара или делить на $\|x\|$ для бруса.
+  \item \textbf{B2.} Нормировать точку, которая уже лежит внутри шара.
+  \item \textbf{B3.} Считать, что обнуляются только отрицательные координаты: здесь $v_1 > 0$, а $x_1 = 0$.
+  \item \textbf{B3.} Подставить в $\theta$ полную сумму $s_n$ вместо $s_\rho$.
+\end{itemize}
+
+\subsection{Условия ККТ}\label{sub:mistakes-c}
+
+\begin{itemize}[label=\textcolor{hseaccent}{\textbullet}]
+  \item Смешать соглашения о знаках: в курсе $g(x) \le 0$, $+\lambda g$ и $\lambda \ge 0$, а SciPy записывает неравенства как $c(x) \ge 0$.
+  \item Принять кандидата с отрицательным множителем. Правдоподобный $\lambda < 0$ означает, что активное множество выбрано неверно.
+  \item Считать, что у активного ограничения обязательно $\lambda > 0$: у активного ограничения может быть $\lambda = 0$, а у неактивного — обязательно.
+  \item Применять ККТ без условия регулярности: в оптимуме задачи D2 множителя не существует.
+\end{itemize}
+
+Из задач:
+
+\begin{itemize}
+  \item \textbf{C1.} Записать ограничение в виде $\ge 0$, как в SciPy, но оставить $+\lambda g$ и $\lambda \ge 0$: знак множителя меняется на противоположный.
+  \item \textbf{C1.} Решить уравнения стационарности и не проверить допустимость кандидата.
+  \item \textbf{C2.} Считать ограничение активным и выдать $\lambda = \val{C2.cand.S1.lam.1}$.
+  \item \textbf{C2.} Думать, что $\lambda = 0$ означает забытое ограничение: этого и требует дополняющая нежёсткость.
+  \item \textbf{C3.} Потерять знак в $\nabla g_2 = \val{C3.params.A.2}$ для ограничения $x_1 \ge 0$, записанного как $-x_1 \le 0$.
+  \item \textbf{C3.} Принять активное множество $\{1\}$, потому что $\lambda_1$ положителен, и не проверить $g_2$.
+\end{itemize}
+
+\subsection{Двойственность}\label{sub:mistakes-d}
+
+\begin{itemize}
+  \item Ожидать $d^* = p^*$ для любой задачи. Слабая двойственность $d^* \le p^*$ верна всегда, а для равенства нужна дополнительная структура, например выпуклость вместе с условием Слейтера; у булевой задачи зазор равен $\val{D3.bool.tex.gap}$.
+  \item Максимизировать $q(\lambda)$ по всем $\lambda$, а не по $\lambda \ge 0$: при отрицательном множителе оценка $q(\lambda) \le p^*$ уже не гарантирована.
+  \item Забыть, что $q$ может равняться $-\infty$: в булевой задаче $q(\nu) = -\infty$, если матрица $A + \operatorname{diag}(\nu)$ не является положительно полуопределённой, и такие $\nu$ нужно исключить до максимизации.
+  \item Считать нулевой зазор доказательством выпуклости: у задачи $\min\ -x^2$ при $x^2 \le 1$ зазор нулевой, а целевая функция вогнута.
+\end{itemize}
+
+% =====================================================================
+\section{Глоссарий}\label{sec:glossary}
+
+Английские термины семинара и их русские эквиваленты.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.44\linewidth}>{\raggedright\arraybackslash}p{0.52\linewidth}@{}}
+\toprule
+\textbf{English} & \textbf{Русский} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+\textenglish{convex combination} & выпуклая комбинация \\
+\textenglish{convex set} & выпуклое множество \\
+\textenglish{convex function} & выпуклая функция \\
+\textenglish{strictly convex function} & строго выпуклая функция \\
+\textenglish{concave function} & вогнутая функция \\
+\textenglish{Jensen inequality} & неравенство Йенсена \\
+\textenglish{sublevel set} & множество подуровня \\
+\textenglish{epigraph} & надграфик \\
+\textenglish{convex hull} & выпуклая оболочка \\
+\textenglish{Hessian} & гессиан \\
+\textenglish{positive semidefinite matrix} & положительно полуопределённая матрица \\
+\textenglish{principal minor} & главный минор \\
+\textenglish{leading principal minor} & угловой минор \\
+\textenglish{local minimum, global minimum} & локальный минимум, глобальный минимум \\
+\textenglish{convex problem} & выпуклая задача \\
+\textenglish{feasible set} & допустимое множество \\
+\textenglish{feasible direction} & допустимое направление \\
+\textenglish{active constraint} & активное ограничение \\
+\textenglish{projection} & проекция \\
+\textenglish{box} & брус \\
+\textenglish{probability simplex} & вероятностный симплекс \\
+\textenglish{obtuse-angle property} & свойство тупого угла \\
+\textenglish{projected gradient method} & проекционный градиентный спуск \\
+\textenglish{Lagrangian} & функция Лагранжа \\
+\textenglish{Lagrange multipliers} & множители Лагранжа \\
+\textenglish{Karush–Kuhn–Tucker (KKT) conditions} & условия Каруша — Куна — Таккера (ККТ) \\
+\textenglish{stationarity} & стационарность \\
+\textenglish{primal feasibility} & допустимость \\
+\textenglish{dual feasibility} & неотрицательность множителей (двойственная допустимость) \\
+\textenglish{complementary slackness} & условие дополняющей нежёсткости \\
+\textenglish{constraint qualification} & условие регулярности \\
+\textenglish{linear independence constraint qualification (LICQ)} & условие линейной независимости градиентов активных ограничений (LICQ) \\
+\textenglish{Slater's condition} & условие Слейтера \\
+\textenglish{normal cone} & нормальный конус \\
+\textenglish{dual function} & двойственная функция \\
+\textenglish{dual problem} & двойственная задача \\
+\textenglish{weak duality} & слабая двойственность \\
+\textenglish{strong duality} & сильная двойственность \\
+\textenglish{duality gap} & зазор двойственности \\
+\end{longtable}
+
+% =====================================================================
+\section{Литература}\label{sec:references}
+
+\begin{enumerate}[label={[\arabic*]}, leftmargin=*]
+  \item \textenglish{S.~Boyd, L.~Vandenberghe. \emph{Convex Optimization}. Cambridge University Press, 2004.} Главы 2–5: выпуклые множества, выпуклые функции, выпуклые задачи оптимизации, двойственность.
+  \item Андрей Игнатов. Лекции курса «Методы оптимизации», НИУ ВШЭ, факультет компьютерных наук, 2026–2027 учебный год: лекция «Выпуклость, ограничения и условия оптимальности».
+\end{enumerate}
+
+\end{document}

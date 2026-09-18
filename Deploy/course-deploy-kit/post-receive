@@ -1,0 +1,18 @@
+#!/bin/bash
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Evgeny Baulin
+#
+# post-receive of /srv/course-deploy/site.git, run as the deploy user after a push.
+# Publishes through the one root command the deploy user may run; its output reaches the
+# Mac as "remote:" lines, and publish.py reads the "course-deploy:" result lines.
+
+updated=no
+while read -r _old _new ref; do
+    if [[ $ref == refs/heads/site ]]; then
+        updated=yes
+    fi
+done
+
+if [[ $updated == yes ]]; then
+    exec sudo -n /usr/local/bin/course-deploy hook
+fi

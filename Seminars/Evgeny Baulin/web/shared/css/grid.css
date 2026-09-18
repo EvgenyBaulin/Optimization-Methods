@@ -1,0 +1,303 @@
+/* SPDX-License-Identifier: MIT */
+/* Copyright (c) 2026 Evgeny Baulin */
+/* Page layout: header, toolbar, blocks, responsive columns, present and instructor modes. */
+
+.site-header,
+.content,
+.site-footer .footer-lines {
+  max-width: var(--column);
+  margin: 0 auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+.site-header {
+  padding-top: 26px;
+  padding-bottom: 14px;
+}
+.brand-course {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.brand-title {
+  margin: 0.15em 0 0.1em;
+  font-size: 1.85rem;
+}
+.brand-label {
+  color: var(--accent);
+  margin-right: 0.35em;
+}
+.brand-page {
+  margin: 0.1em 0 0;
+  font-size: 1.15rem;
+  color: var(--fg-soft);
+}
+.byline {
+  margin-top: 0.4em;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.byline p {
+  margin: 0;
+}
+
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px 18px;
+  padding: 8px max(var(--gutter), calc((100% - var(--column)) / 2 + var(--gutter)));
+  background: var(--panel);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+/* the Topics toggle first, the page links take the free space, the tools stay on the right */
+.toolbar-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 4px;
+  margin-right: auto;
+}
+.nav-link {
+  padding: 4px 6px;
+  font-size: 0.95rem;
+  border-radius: var(--radius);
+  color: var(--fg-soft);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+}
+.nav-link:hover {
+  color: var(--accent);
+}
+.nav-link[aria-current="true"] {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  font-weight: 700;
+}
+.toolbar-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.content {
+  padding-bottom: 48px;
+}
+
+.block {
+  margin: 34px 0 54px;
+  padding-top: 26px;
+  border-top: 3px solid var(--accent);
+  scroll-margin-top: calc(var(--toolbar-h) + 10px);
+}
+.block-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 16px;
+}
+.block-title {
+  font-size: 1.75rem;
+}
+
+.subblock {
+  margin: 30px 0;
+}
+.subblock-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+  margin-bottom: 8px;
+}
+.subblock > p,
+.subblock > ul,
+.subblock > ol,
+.handout-section > p,
+.handout-subsection > p,
+.handout-section > ul,
+.handout-subsection > ul {
+  max-width: var(--measure);
+}
+
+.problem-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+.home-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+.widget-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(250px, 1fr);
+  gap: 18px 24px;
+  align-items: start;
+}
+.widget-body.is-stacked {
+  grid-template-columns: minmax(0, 1fr);
+}
+.widget-grid.two {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
+}
+.widget-grid.three {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
+}
+
+/* One equal column per block that has problems, however many blocks the seminar has. */
+.overview-grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 20px;
+}
+/* Many blocks: two rows of columns instead of one wide row. */
+.overview-grid.two {
+  grid-auto-flow: row;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.footer-lines {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 48px;
+  padding-top: 18px;
+  padding-bottom: 22px;
+}
+.footer-lines p {
+  margin: 0;
+}
+
+.instructor-badge {
+  display: none;
+  padding: 3px 10px;
+  border: 1px solid var(--accent-2);
+  border-radius: var(--radius);
+  background: var(--panel);
+  color: var(--accent-2);
+  font-size: 0.85rem;
+}
+
+/* ---------------------------------------------------------------- instructor mode */
+.planned-time,
+.instructor-only {
+  display: none;
+}
+.is-instructor .planned-time {
+  display: inline-block;
+}
+.is-instructor .instructor-only {
+  display: block;
+}
+.is-instructor .instructor-badge {
+  display: block;
+}
+
+/* ---------------------------------------------------------------- present mode */
+.is-present {
+  font-size: 23px;
+}
+.is-present .site-header {
+  padding-top: 10px;
+  padding-bottom: 6px;
+}
+.is-present .brand-course,
+.is-present .byline,
+.is-present .site-footer,
+.is-present .self-study,
+.is-present .check-ref,
+.is-present .tool-instructor,
+.is-present .toolbar .tool:not(.tool-present):not(.timer-display):not(.timer-step):not(.timer-reset):not(.tool-lang) {
+  display: none;
+}
+.is-present .brand-title {
+  font-size: 1.2rem;
+}
+:root.is-present {
+  --column: 1500px;
+}
+.is-present .block {
+  display: none;
+  margin-top: 8px;
+  border-top-width: 0;
+}
+.is-present .block.is-current {
+  display: block;
+}
+.is-present .timer-display {
+  font-size: 1.6rem;
+  padding: 0 0.4em;
+}
+.is-present.timer-active .timer-display {
+  font-size: 2.1rem;
+}
+
+/* ---------------------------------------------------------------- responsive */
+@media (max-width: 1150px) {
+  .problem-pair,
+  .home-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 900px) {
+  .widget-body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .widget-grid.three {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .overview-grid {
+    grid-auto-flow: row;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .overview-grid.two {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 700px) {
+  :root {
+    --gutter: 16px;
+  }
+  html {
+    font-size: 16px;
+  }
+  .widget-grid.two {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .brand-title {
+    font-size: 1.45rem;
+  }
+  .block-title {
+    font-size: 1.4rem;
+  }
+  .toolbar {
+    position: static;
+  }
+  .tool-label {
+    font-size: 0.9rem;
+  }
+}

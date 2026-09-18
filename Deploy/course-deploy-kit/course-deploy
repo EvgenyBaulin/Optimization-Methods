@@ -1,0 +1,15 @@
+#!/usr/bin/python3 -I
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Evgeny Baulin
+"""Launcher installed as /usr/local/bin/course-deploy; the code is in /usr/local/lib/course-deploy."""
+
+import os
+import sys
+
+# COURSE_DEPLOY_ROOT is a test-only prefix for every absolute path; sudo never passes it on
+prefix = "" if os.environ.get("SUDO_USER") else os.environ.get("COURSE_DEPLOY_ROOT", "").rstrip("/")
+sys.path.insert(0, prefix + "/usr/local/lib/course-deploy")
+
+from course_deploy.cli import main  # noqa: E402
+
+sys.exit(main())

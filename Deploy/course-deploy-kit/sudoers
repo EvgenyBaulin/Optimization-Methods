@@ -1,0 +1,2 @@
+# /etc/sudoers.d/course-deploy: after a push, the deploy user may run this one command as root.
+deploy ALL=(root) NOPASSWD: /usr/local/bin/course-deploy hook

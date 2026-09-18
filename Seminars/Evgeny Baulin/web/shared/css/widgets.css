@@ -1,0 +1,172 @@
+/* SPDX-License-Identifier: MIT */
+/* Copyright (c) 2026 Evgeny Baulin */
+/* The live geometry widgets: panels, canvases, controls and readouts. */
+
+.widget {
+  margin: 18px 0 30px;
+  padding: 14px 16px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+.widget-head {
+  margin-bottom: 10px;
+}
+.widget-title {
+  font-size: 1.08rem;
+  color: var(--accent);
+}
+.widget-caption {
+  margin: 0.25em 0 0;
+  color: var(--fg-soft);
+  max-width: 90ch;
+}
+.widget-subtitle {
+  margin: 0 0 6px;
+  font-size: 1rem;
+  color: var(--fg-soft);
+}
+.widget-side {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+.widget-body.is-stacked .widget-side {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+.widget-col {
+  min-width: 0;
+}
+.widget-body.is-stacked .widget-side > .side-grid {
+  flex: 1 1 100%;
+}
+.side-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.widget-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.widget-legend,
+.widget-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.widget-problem {
+  font-size: 0.98rem;
+}
+
+.plot {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.25;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--panel);
+}
+.plot-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.segmented {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+}
+.segmented-input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.segmented-label {
+  padding: 0.3em 0.75em;
+  border: 1px solid var(--line-strong);
+  margin: 0 -1px -1px 0;
+  background: var(--panel);
+  color: var(--fg-soft);
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+.segmented-input:checked + .segmented-label {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+.segmented-input:focus-visible + .segmented-label {
+  outline: 3px solid var(--focus);
+  outline-offset: 1px;
+  position: relative;
+  z-index: 1;
+}
+
+.slider {
+  min-width: 220px;
+}
+.slider-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: baseline;
+}
+.slider input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.readout {
+  min-width: 0;
+}
+.readout-line {
+  margin: 0.2em 0;
+}
+.readout-line.is-ok {
+  color: var(--ok);
+}
+.readout-line.is-bad {
+  color: var(--bad);
+}
+.readout-line.is-strong {
+  font-weight: 700;
+}
+.readout-line.key-ball,
+.readout-line.key-box,
+.readout-line.key-simplex {
+  padding-left: 10px;
+  border-left: 4px solid var(--w-ball);
+}
+.readout-line.key-box {
+  border-left-color: var(--w-box);
+}
+.readout-line.key-simplex {
+  border-left-color: var(--w-simplex);
+}
+
+.predict-box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  margin: 0 0 8px;
+}
+.predict-box .predict {
+  margin: 0;
+}
+.answer-reveal {
+  margin: 0.5em 0;
+  padding: 0.3em 0.7em;
+  border-left: 3px solid var(--ok);
+  background: var(--panel-2);
+}

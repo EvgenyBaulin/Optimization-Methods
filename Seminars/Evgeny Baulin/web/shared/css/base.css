@@ -1,0 +1,290 @@
+/* SPDX-License-Identifier: MIT */
+/* Copyright (c) 2026 Evgeny Baulin */
+/* Fonts, color tokens for both themes, and typography. */
+
+@font-face {
+  font-family: "PT Serif";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(../vendor/pt-serif/pt-serif-latin-400-normal.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "PT Serif";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(../vendor/pt-serif/pt-serif-cyrillic-400-normal.woff2) format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "PT Serif";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(../vendor/pt-serif/pt-serif-latin-400-italic.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "PT Serif";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(../vendor/pt-serif/pt-serif-cyrillic-400-italic.woff2) format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "PT Serif";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(../vendor/pt-serif/pt-serif-latin-700-normal.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "PT Serif";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(../vendor/pt-serif/pt-serif-cyrillic-700-normal.woff2) format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "PT Serif";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url(../vendor/pt-serif/pt-serif-latin-700-italic.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "PT Serif";
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: url(../vendor/pt-serif/pt-serif-cyrillic-700-italic.woff2) format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+/* Light theme: the HSE identity of Seminar 1 (hseblue #102D69, hseaccent #C62828). */
+:root {
+  color-scheme: light;
+  --bg: #f5f6f8;
+  --panel: #ffffff;
+  --panel-2: #ebeff6;
+  --fg: #121a2b;
+  --fg-soft: #2b3446;
+  --muted: #4f5767;
+  --line: #d3d9e3;
+  --line-strong: #8f98a8;
+  --accent: #102d69;
+  --accent-2: #b3261e;
+  --ok: #1b6b3a;
+  --bad: #b3261e;
+  --focus: #1c58c9;
+  --on-accent: #ffffff;
+  --w-grid: #e8ecf2;
+  --w-axis: #9aa3b2;
+  --w-set: rgba(16, 45, 105, 0.15);
+  --w-set-line: #102d69;
+  --w-contour: #b7bfcb;
+  --w-point: #102d69;
+  --w-ball: #102d69;
+  --w-box: #8a5700;
+  --w-simplex: #c62828;
+  --w-bad: #c62828;
+  --w-good: #102d69;
+  --w-cone: rgba(198, 40, 40, 0.18);
+  --w-label: #374052;
+  --w-halo: rgba(255, 255, 255, 0.92);
+  --w-psd: rgba(27, 107, 58, 0.17);
+
+  --font: "PT Serif", Georgia, "Times New Roman", serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --measure: 74ch;
+  --radius: 3px;
+  --gutter: 28px;
+  /* the width of the page column: the header, the toolbar, the content and the footer share it */
+  --column: 1240px;
+  --sidebar-w: 256px;
+  /* the height of the toolbar that stays on top of the page; app.js measures it, 0 where the toolbar scrolls away */
+  --toolbar-h: 54px;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0c111a;
+  --panel: #131a26;
+  --panel-2: #1a2231;
+  --fg: #e7ebf2;
+  --fg-soft: #cad2de;
+  --muted: #a4aebd;
+  --line: #2a3446;
+  --line-strong: #5a667c;
+  --accent: #a3c0ff;
+  --accent-2: #ff8f85;
+  --ok: #82d69f;
+  --bad: #ff8f85;
+  --focus: #a3c0ff;
+  --on-accent: #0c111a;
+  --w-grid: #1d2533;
+  --w-axis: #56627a;
+  --w-set: rgba(163, 192, 255, 0.2);
+  --w-set-line: #a3c0ff;
+  --w-contour: #3e4a60;
+  --w-point: #f1f4f9;
+  --w-ball: #a3c0ff;
+  --w-box: #f2c14e;
+  --w-simplex: #ff8f85;
+  --w-bad: #ff8f85;
+  --w-good: #a3c0ff;
+  --w-cone: rgba(255, 143, 133, 0.22);
+  --w-label: #cad2de;
+  --w-halo: rgba(19, 26, 38, 0.92);
+  --w-psd: rgba(130, 214, 159, 0.2);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 17px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font);
+  line-height: 1.55;
+  font-kerning: normal;
+  font-variant-numeric: lining-nums;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: var(--font);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--fg);
+  margin: 0;
+}
+h1 { font-size: 1.9rem; }
+h2 { font-size: 1.6rem; }
+h3 { font-size: 1.25rem; }
+h4 { font-size: 1.08rem; }
+h5 { font-size: 1rem; }
+
+p {
+  margin: 0.6em 0;
+}
+
+a {
+  color: var(--accent);
+  text-underline-offset: 0.18em;
+}
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+code,
+kbd,
+pre {
+  font-family: var(--mono);
+  font-size: 0.86em;
+}
+kbd {
+  display: inline-block;
+  min-width: 1.7em;
+  padding: 0.05em 0.45em;
+  border: 1px solid var(--line-strong);
+  border-bottom-width: 2px;
+  border-radius: var(--radius);
+  background: var(--panel);
+  text-align: center;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: 8px;
+  top: -60px;
+  padding: 8px 12px;
+  background: var(--panel);
+  border: 1px solid var(--line-strong);
+  z-index: 50;
+}
+.skip-link:focus {
+  top: 8px;
+}
+
+/* Math is as large as the text around it. --katex-scale carries that factor to .math-punct below;
+   any rule that changes the .katex size (see print.css) changes both in the same place. */
+.katex {
+  font-size: 1.06em;
+  --katex-scale: 1.06;
+}
+.math-display {
+  display: block;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.1em 0;
+}
+.math-display .katex-display {
+  margin: 0.45em 0;
+}
+.nowrap {
+  white-space: nowrap;
+}
+/* Punctuation that render.js keeps inside the last box of an inline formula. The box is inside
+   .katex, whose `font` shorthand resets family, size, slant and weight, so the mark restores the
+   four from the text around it: the body font, the size that --katex-scale undoes, and the slant
+   and weight that a rule changing font-style or font-weight hands down in --punct-style and
+   --punct-weight, each written beside the property it belongs to. No rule sets --punct-weight
+   today: no formula sits in bold text yet. */
+.math-punct {
+  font-family: var(--font);
+  font-size: calc(1em / var(--katex-scale, 1));
+  font-style: var(--punct-style, normal);
+  font-weight: var(--punct-weight, normal);
+}
+.math-error {
+  color: var(--bad);
+  font-family: var(--mono);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}

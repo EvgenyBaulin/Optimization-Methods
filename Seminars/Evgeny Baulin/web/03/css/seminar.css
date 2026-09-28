@@ -224,6 +224,11 @@
 .is-present .demo-text {
   font-weight: 500;
 }
+/* the instructor's notes and timing stay on the second device */
+.is-present .teacher-note,
+.is-present .teacher-timing {
+  display: none;
+}
 .is-present .access-badge {
   bottom: 8px;
   left: 8px;

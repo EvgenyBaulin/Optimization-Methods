@@ -301,6 +301,9 @@
     badge.textContent = SEM.tu(access.hideAnswers ? 'access.badgeHidden' : 'access.badge');
     badge.title = SEM.tu('access.sessionTitle');
   }
+  SEM.on('lang', function () {
+    if (badge) syncBadge();
+  });
 
   function saveKeys(raw) {
     SEM.store.set(KEYS, JSON.stringify({ students: SEM.crypto.b64encode(raw.students), teacher: SEM.crypto.b64encode(raw.teacher) }), 'session');

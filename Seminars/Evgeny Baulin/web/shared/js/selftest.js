@@ -61,7 +61,7 @@
 
   function walkPairs(node, path, out) {
     if (!node || typeof node !== 'object') return out;
-    if (!Array.isArray(node) && typeof node.en === 'string' && typeof node.ru === 'string') {
+    if (SEM.i18n.isPair(node)) {
       out.push([path, node]);
       // a pair may carry more keys, as a glossary item carries its note: those are walked too
       Object.keys(node).forEach(function (key) {
@@ -81,7 +81,7 @@
     var tokenMissing = {};
     var katexErrors = [];
     pairs.forEach(function (entry) {
-      ['en', 'ru'].forEach(function (lang) {
+      SEM.i18n.langs.forEach(function (lang) {
         var s = entry[1][lang];
         if (!s || !s.trim()) missingLang.push(entry[0] + '.' + lang);
         render.missingTokens = {};
@@ -102,13 +102,35 @@
     });
     results.push({ group: 'content', name: 'strings checked: ' + pairs.length, ok: pairs.length > 0 });
     results.push({ group: 'content', name: 'every token resolves', ok: Object.keys(tokenMissing).length === 0, detail: Object.keys(tokenMissing).join(', ') });
-    results.push({ group: 'content', name: 'both languages have every string', ok: missingLang.length === 0, detail: missingLang.join(', ') });
+    results.push({ group: 'content', name: SEM.i18n.single ? 'every string is filled in' : 'both languages have every string', ok: missingLang.length === 0, detail: missingLang.join(', ') });
     results.push({ group: 'content', name: 'KaTeX renders every formula', ok: katexErrors.length === 0, detail: katexErrors.join('; ') });
     render.missingTokens = {};
   };
 
   // Render the page in the other language and back, and report missing UI strings and render errors.
+  // A page in one language has nothing to switch: its own content has strings in that language only, and
+  // the page rendered without a missing string or a KaTeX error.
   T.languageChecks = function (results) {
+    if (SEM.i18n.single) {
+      var only = SEM.i18n.langs[0];
+      var foreign = [];
+      Object.keys(SEM.content).forEach(function (top) {
+        // the course-wide strings (content-common.js) serve both kinds of pages
+        if (top === 'ui' || top === 'course') return;
+        (function walk(node, path) {
+          if (!node || typeof node !== 'object') return;
+          Object.keys(node).forEach(function (key) {
+            var p = path + '.' + key;
+            if ((key === 'en' || key === 'ru') && key !== only && typeof node[key] === 'string') foreign.push(p);
+            else walk(node[key], p);
+          });
+        })(SEM.content[top], top);
+      });
+      results.push({ group: 'languages', name: 'the seminar content is in ' + only + ' only', ok: foreign.length === 0, detail: foreign.slice(0, 5).join(', ') });
+      var missingNow = Object.keys(SEM.i18n.missing);
+      results.push({ group: 'languages', name: 'no missing strings and no KaTeX errors in ' + only, ok: missingNow.length === 0 && render.errors.length === 0, detail: missingNow.concat(render.errors.map(function (e) { return e.tex; })).join('; ') });
+      return;
+    }
     var original = SEM.i18n.lang;
     var other = original === 'en' ? 'ru' : 'en';
     render.errors.length = 0;

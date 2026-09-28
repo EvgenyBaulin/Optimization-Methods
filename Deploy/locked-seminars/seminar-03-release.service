@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Evgeny Baulin
+# Copies the students key, release.json, into the live release of the course site; started by
+# seminar-03-release.timer. /usr/local/sbin/seminar-03-release is the installed copy of release.sh, and the
+# settings of the seminar (key file, folder, id, unlock time) are the defaults at its top.
+#
+# No network is needed: the check after copying fetches the file from nginx on 127.0.0.1, as course-deploy
+# does, so the unit only waits for nginx when both start at boot.
+
+[Unit]
+Description=Seminar 3: put the students key into the live course site
+After=nginx.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/seminar-03-release
+SyslogIdentifier=seminar-03-release
+TimeoutStartSec=2min
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=full
+ProtectHome=read-only

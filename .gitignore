@@ -25,3 +25,12 @@ out/
 .mypy_cache/
 __pycache__/
 .ipynb_checkpoints/
+
+# Locked seminars (3 on): the instructor envelope never leaves the Mac, and the release key reaches the server
+# only through Deploy/locked-seminars/release.sh
+Seminars/Evgeny Baulin/theory/*/content/teacher.json
+Deploy/locked-seminars/release/
+Seminars/Evgeny Baulin/web/*/release.json
+# Seminar 3 answers stay off GitHub until its class is over (28.09.2026, 14:20); delete these two lines then
+Seminars/Evgeny Baulin/theory/03. Gradient Descent and Automatic Differentiation/
+Seminars/Evgeny Baulin/checks/03. Gradient Descent and Automatic Differentiation.ipynb

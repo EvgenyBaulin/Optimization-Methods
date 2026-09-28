@@ -55,6 +55,7 @@
     if (current && PAGES.indexOf(page) >= 0) {
       var sub = el('ul', { class: 'course-nav-pages' });
       PAGES.forEach(function (p) {
+        if (!SEM.course.hasPage(topic, p)) return;
         sub.appendChild(el('li', null, text('a', { href: SEM.course.pageHref(topic, p), 'aria-current': p === page ? 'page' : null }, 'courseNav.pages.' + p)));
       });
       li.appendChild(sub);

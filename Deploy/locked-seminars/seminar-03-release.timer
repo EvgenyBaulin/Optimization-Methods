@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Evgeny Baulin
+# Starts seminar-03-release.service at the end of the class (the first OnCalendar, in UTC) and every two
+# minutes, so that a copy lost to a later publish or rollback comes back within two minutes. Before the
+# unlock time the service exits at once; afterwards it prints nothing while the live release holds the file.
+# Leave the timer on for as long as the seminar page should stay open.
+
+[Unit]
+Description=Seminar 3: release the students key at the end of the class and keep it on the site
+
+[Timer]
+OnCalendar=2026-09-28 11:20:00 UTC
+OnCalendar=*-*-* *:00/2:00 UTC
+AccuracySec=1s
+Persistent=true
+Unit=seminar-03-release.service
+
+[Install]
+WantedBy=timers.target

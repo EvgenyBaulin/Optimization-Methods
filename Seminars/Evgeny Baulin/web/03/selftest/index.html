@@ -1,0 +1,54 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: MIT -->
+<!-- Copyright (c) 2026 Evgeny Baulin -->
+<html lang="en" data-langs="en" data-result="idle">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Evgeny Baulin" />
+    <meta name="description" content="Optimization Methods, Seminar 3: checks that this browser can open the encrypted seminar material." />
+    <meta name="robots" content="noindex" />
+    <title>Seminar 3: browser crypto check</title>
+    <script src="../../shared/js/boot.js"></script>
+    <link rel="stylesheet" href="../../shared/css/base.css" />
+    <link rel="stylesheet" href="../../shared/css/grid.css" />
+    <link rel="stylesheet" href="../../shared/css/components.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <p class="brand-course">Optimization Methods</p>
+      <h1 class="brand-title">Seminar 3: browser crypto check</h1>
+      <p class="brand-page">
+        The seminar page opens its answers with PBKDF2-SHA256 and AES-256-GCM in the browser. This check runs the same
+        code on a public test envelope and tells whether this browser, opened this way, can do it.
+      </p>
+    </header>
+    <main class="content">
+      <noscript><p>This check needs JavaScript.</p></noscript>
+      <p><button type="button" class="btn btn-primary" id="run" disabled>Run the check</button></p>
+      <p class="feedback" id="verdict" role="status" aria-live="polite">Loading.</p>
+      <div class="table-wrap">
+        <table class="data-table">
+          <tbody>
+            <tr><th scope="row">Result</th><td id="out-result">not run</td></tr>
+            <tr><th scope="row">Secure context</th><td id="out-secure"></td></tr>
+            <tr><th scope="row">crypto.subtle</th><td id="out-subtle"></td></tr>
+            <tr><th scope="row">Address</th><td id="out-protocol"></td></tr>
+            <tr><th scope="row">Key derivation</th><td id="out-derive"></td></tr>
+            <tr><th scope="row">Decryption</th><td id="out-decrypt"></td></tr>
+            <tr><th scope="row">Text and SHA-256</th><td id="out-compare"></td></tr>
+            <tr><th scope="row">Time</th><td id="out-time"></td></tr>
+            <tr><th scope="row">Browser</th><td id="out-agent"></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        The test password and envelope are public and open nothing else. Add <code>?auto=1</code> to the address to
+        run the check on load.
+      </p>
+    </main>
+    <script src="../js/crypto.js"></script>
+    <script src="fixture.js"></script>
+    <script src="selftest.js"></script>
+  </body>
+</html>

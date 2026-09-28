@@ -660,16 +660,16 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
     "ru": "Семинар {n}. {title}"
    },
    "text": {
-    "en": "The seminar page, the theory handout and the cheat sheet will appear here after the class.",
-    "ru": "Страница семинара, конспект теории и шпаргалка появятся здесь после занятия."
+    "en": "The seminar page and its materials will appear here as soon as they are ready.",
+    "ru": "Страница семинара и материалы к нему появятся здесь, как только будут готовы."
    },
    "genericTitle": {
     "en": "This seminar is not out yet",
     "ru": "Этого семинара пока нет"
    },
    "genericText": {
-    "en": "Each seminar page appears here after its class, together with the theory handout and the cheat sheet.",
-    "ru": "Страница семинара появляется здесь после занятия, вместе с конспектом теории и шпаргалкой."
+    "en": "Each seminar page appears here as soon as it is ready, together with its materials.",
+    "ru": "Страница семинара появляется здесь, как только она готова, вместе с материалами к ней."
    },
    "home": {
     "en": "All seminars",
@@ -886,7 +886,7 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
    {
     "n": 3,
     "dir": "03",
-    "available": false,
+    "available": true,
     "title": {
      "en": "Gradient Descent and Automatic Differentiation",
      "ru": "Градиентный спуск и автоматическое дифференцирование"

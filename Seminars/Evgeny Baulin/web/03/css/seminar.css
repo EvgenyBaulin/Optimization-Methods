@@ -1,0 +1,239 @@
+/* SPDX-License-Identifier: MIT */
+/* Copyright (c) 2026 Evgeny Baulin */
+/* Seminar 3 on top of the shared styles: the locked parts, the access notices and the instructor's badge, the
+   instructor's notes and timing table, block 0 and D, the projector clock and the projector contrast. */
+
+/* ---------------------------------------------------------------- locked parts */
+.lock-note {
+  max-width: var(--measure);
+  margin: 0.7em 0;
+  padding: 0.45em 0.8em;
+  border-left: 3px solid var(--line-strong);
+  background: var(--panel-2);
+  color: var(--muted);
+  font-style: italic;
+  --punct-style: italic;
+}
+.handout-locked .handout-head {
+  max-width: var(--measure);
+}
+
+/* ---------------------------------------------------------------- notices */
+.access-notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin: 16px 0 4px;
+  padding: 10px 14px;
+  border: 1px solid var(--line-strong);
+  border-left-width: 4px;
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+.access-notice p {
+  flex: 1 1 22rem;
+  margin: 0;
+}
+.access-notice.is-open {
+  border-left-color: var(--ok);
+}
+.access-notice.is-later {
+  border-left-color: var(--accent-2);
+}
+
+/* ---------------------------------------------------------------- sign-in and session dialogs */
+#access-login .dialog-inner,
+#access-session .dialog-inner {
+  width: min(460px, 100%);
+}
+.access-form {
+  display: grid;
+  gap: 12px;
+}
+.access-field {
+  display: grid;
+  gap: 4px;
+}
+.access-field input {
+  font: inherit;
+  padding: 6px 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--fg);
+}
+.access-field input:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+.access-form .btn-primary {
+  justify-self: start;
+}
+.access-message {
+  min-height: 1.4em;
+  margin: 0;
+  color: var(--bad);
+}
+.access-note,
+.access-status {
+  margin: 0.6em 0;
+  color: var(--muted);
+  font-size: 0.94rem;
+}
+.access-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0.8em 0;
+}
+
+/* the discreet mark of an instructor session, in a corner */
+.access-badge {
+  position: fixed;
+  left: 12px;
+  bottom: 12px;
+  z-index: 40;
+  padding: 3px 10px;
+  border: 1px solid var(--accent-2);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--accent-2);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  opacity: 0.85;
+}
+.access-badge:hover,
+.access-badge:focus-visible {
+  opacity: 1;
+}
+.access-badge[hidden] {
+  display: none;
+}
+
+/* ---------------------------------------------------------------- the instructor's notes and timing */
+.teacher-note {
+  max-width: var(--measure);
+  margin: 0.8em 0;
+  padding: 0.5em 0.9em;
+  border-left: 3px solid var(--accent-2);
+  background: var(--panel-2);
+  font-size: 0.95rem;
+}
+.teacher-label {
+  margin: 0 0 0.3em;
+  color: var(--accent-2);
+  font-weight: 700;
+}
+.teacher-part {
+  margin: 0.5em 0 0.1em;
+  font-weight: 700;
+}
+.teacher-list {
+  margin: 0.1em 0 0.3em;
+  padding-left: 1.3em;
+}
+.teacher-timing {
+  margin: 24px 0 8px;
+}
+.teacher-line {
+  max-width: var(--measure);
+}
+.timing-table td:nth-child(2),
+.timing-table td:nth-child(3) {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------- block 0 and D */
+.jensen-points {
+  max-width: var(--measure);
+  padding-left: 1.4em;
+}
+.jensen-point {
+  margin: 0.8em 0;
+}
+.jensen-title {
+  margin: 0 0 0.2em;
+  font-weight: 700;
+}
+.sandwich {
+  max-width: var(--measure);
+  overflow-x: auto;
+}
+.demo-text {
+  max-width: var(--measure);
+}
+.takeaway {
+  max-width: var(--measure);
+  font-style: italic;
+  --punct-style: italic;
+}
+.home-check {
+  color: var(--muted);
+  font-size: 0.94rem;
+}
+
+/* ---------------------------------------------------------------- the projector */
+.big-timer {
+  display: none;
+}
+.is-present .big-timer {
+  display: block;
+  position: fixed;
+  right: 18px;
+  bottom: 14px;
+  z-index: 45;
+  padding: 0 0.25em;
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--panel);
+  color: var(--accent);
+  font-size: clamp(3.5rem, 13vh, 9rem);
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.is-present .big-timer[hidden] {
+  display: none;
+}
+.is-present .big-timer.is-ended {
+  border-color: var(--accent-2);
+  background: var(--accent-2);
+  color: var(--on-accent);
+}
+/* the projector washes out greys: the text, the lines and the muted notes are darker (lighter in the dark theme) */
+:root.is-present[data-theme="light"] {
+  --fg: #000000;
+  --fg-soft: #121a2b;
+  --muted: #2b3446;
+  --line: #8f98a8;
+  --line-strong: #4f5767;
+  --panel-2: #e4e9f2;
+}
+:root.is-present[data-theme="dark"] {
+  --fg: #ffffff;
+  --fg-soft: #e7ebf2;
+  --muted: #cad2de;
+  --line: #5a667c;
+  --line-strong: #a4aebd;
+}
+.is-present .problem-statement,
+.is-present .jensen-text,
+.is-present .demo-text {
+  font-weight: 500;
+}
+.is-present .access-badge {
+  bottom: 8px;
+  left: 8px;
+  font-size: 0.6rem;
+}
+
+@media print {
+  .access-badge,
+  .access-notice,
+  .big-timer {
+    display: none !important;
+  }
+}

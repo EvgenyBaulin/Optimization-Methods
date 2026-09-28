@@ -33,7 +33,7 @@
   // The LaTeX PDF of the current seminar, in the theory folder next to web/. The site publishes
   // no PDFs, so the button is there only when the pages are opened from the repository.
   function pdfLink(parent, base) {
-    if (!SEM.course.inRepository()) return;
+    if (!SEM.course.inRepository() || !SEM.course.hasPdf(SEM.course.topic())) return;
     var p = el('p', { class: 'pdf-link' });
     var a = el('a', { class: 'btn' });
     SEM.i18n.bind(function (lang) {
@@ -190,8 +190,10 @@
       }
       case 'figure': {
         var fig = el('figure', { class: 'figure' });
-        // src is given from the seminar folder ('figures/fig_sets.svg')
-        var img = el('img', { src: SEM.course.localHref(b.src), loading: 'lazy' });
+        // src is given from the seminar folder ('figures/fig_sets.svg'), or names a figure that a locked seminar
+        // carries inside its envelope (SEM.figureUrl gives its address once the envelope is open)
+        var inside = SEM.figureUrl ? SEM.figureUrl(b.src) : null;
+        var img = el('img', { src: inside || SEM.course.localHref(b.src), loading: 'lazy' });
         SEM.i18n.bind(function () {
           img.setAttribute('alt', render.plain(b.alt));
         });
@@ -459,13 +461,15 @@
     if (topic.available) {
       var web = el('ul', { class: 'topic-links' });
       ['main', 'theory', 'cheatsheet'].forEach(function (p) {
-        web.appendChild(el('li', null, text('a', { href: SEM.course.pageHref(topic, p) }, 'courseNav.pages.' + p)));
+        if (SEM.course.hasPage(topic, p)) web.appendChild(el('li', null, text('a', { href: SEM.course.pageHref(topic, p) }, 'courseNav.pages.' + p)));
       });
       foot.appendChild(web);
       // the PDFs are in the repository only; the site does not have them
-      if (SEM.course.inRepository()) {
+      if (SEM.course.inRepository() && SEM.course.hasPdf(topic)) {
         var pdf = el('ul', { class: 'topic-links is-pdf' });
-        [['Theory', 'home.theoryPdf'], ['Cheatsheet', 'home.cheatsheetPdf']].forEach(function (d) {
+        [['Theory', 'home.theoryPdf'], ['Cheatsheet', 'home.cheatsheetPdf']].filter(function (d) {
+          return d[0] === 'Theory' || SEM.course.hasPage(topic, 'cheatsheet');
+        }).forEach(function (d) {
           var a = text('a', { type: 'application/pdf' }, d[1]);
           SEM.i18n.bind(function (lang) {
             a.setAttribute('href', SEM.course.pdfHref(topic, d[0], lang));

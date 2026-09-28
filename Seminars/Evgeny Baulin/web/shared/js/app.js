@@ -69,8 +69,18 @@
     SEM.state.set('mode.' + name, !!on);
     SEM.emit('mode', name);
   }
+  // A locked seminar puts its access layer in front of the mode (app.hooks.instructor): the key and the button
+  // then open its sign-in, and the layer switches the mode itself through app.setInstructor.
+  app.hooks = {};
   app.instructor = function (on) {
+    if (app.hooks.instructor) {
+      app.hooks.instructor(on);
+      return;
+    }
     setMode('instructor', on === undefined ? !root.classList.contains('is-instructor') : on);
+  };
+  app.setInstructor = function (on) {
+    setMode('instructor', on);
   };
   app.present = function (on) {
     var next = on === undefined ? !root.classList.contains('is-present') : on;
@@ -241,9 +251,10 @@
       });
     } else if (!ofCourse) {
       // the other pages of this seminar, from its folder
+      var topic = SEM.course.topic();
       nav.appendChild(text('a', { href: SEM.course.localHref('index.html'), class: 'nav-link' }, 'controls.toSeminar'));
-      if (page !== 'theory') nav.appendChild(text('a', { href: SEM.course.localHref('theory/index.html'), class: 'nav-link' }, 'controls.toTheory'));
-      if (page !== 'cheatsheet') nav.appendChild(text('a', { href: SEM.course.localHref('cheatsheet/index.html'), class: 'nav-link' }, 'controls.toCheatsheet'));
+      if (page !== 'theory' && SEM.course.hasPage(topic, 'theory')) nav.appendChild(text('a', { href: SEM.course.localHref('theory/index.html'), class: 'nav-link' }, 'controls.toTheory'));
+      if (page !== 'cheatsheet' && SEM.course.hasPage(topic, 'cheatsheet')) nav.appendChild(text('a', { href: SEM.course.localHref('cheatsheet/index.html'), class: 'nav-link' }, 'controls.toCheatsheet'));
     }
     // the landing and upcoming pages have no page links: the topics are in the sidebar
     if (!ofCourse) bar.appendChild(nav);
@@ -295,7 +306,8 @@
       SEM.timer.onChange(updateTimer);
       tool('controls.overview', 'O', function () { app.openDialog('overview'); });
     }
-    tool('controls.language', 'L', function () { SEM.i18n.toggle(); }, 'tool-lang');
+    // a seminar in one language has no switch
+    if (!SEM.i18n.single) tool('controls.language', 'L', function () { SEM.i18n.toggle(); }, 'tool-lang');
     tool('controls.theme', 'D', app.toggleTheme);
     if (page === 'main') {
       tool('controls.present', 'F', function () { app.present(); }, 'tool-present');
@@ -488,28 +500,36 @@
         });
         review.appendChild(cut);
       }
-      var answers = el('div', { class: 'review-answers' });
-      students.forEach(function (pid) {
-        var line = el('p', { class: 'review-line' });
-        dom.append(line, [el('strong', { text: pid }), ' ', render.el('span', null, SEM.content.problems[pid].answerText)]);
-        answers.appendChild(line);
+      // the answers of the problems that have them (a locked seminar has none until it opens)
+      var answered = students.filter(function (pid) {
+        return !!SEM.content.problems[pid].answerText;
       });
-      var reveals = SEM.state.section('reveals');
-      var key = 'review.' + block;
-      var toggle = el('button', { type: 'button', class: 'btn btn-quiet' });
-      var sync = function () {
-        var open = !!reveals[key] || SEM.param('reveal') === 'all';
-        answers.hidden = !open;
-        toggle.textContent = SEM.tu(open ? 'blocks.hideAnswers' : 'blocks.showAnswers');
-        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      };
-      toggle.addEventListener('click', function () {
-        reveals[key] = !reveals[key];
-        SEM.state.touch();
-        sync();
-      });
-      SEM.i18n.bind(sync);
-      dom.append(review, [toggle, answers]);
+      if (answered.length) {
+        var answers = el('div', { class: 'review-answers' });
+        answered.forEach(function (pid) {
+          var line = el('p', { class: 'review-line' });
+          dom.append(line, [el('strong', { text: pid }), ' ', render.el('span', null, SEM.content.problems[pid].answerText)]);
+          answers.appendChild(line);
+        });
+        var reveals = SEM.state.section('reveals');
+        var key = 'review.' + block;
+        var toggle = el('button', { type: 'button', class: 'btn btn-quiet' });
+        var sync = function () {
+          var open = !!reveals[key] || SEM.param('reveal') === 'all';
+          answers.hidden = !open;
+          toggle.textContent = SEM.tu(open ? 'blocks.hideAnswers' : 'blocks.showAnswers');
+          toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        };
+        toggle.addEventListener('click', function () {
+          reveals[key] = !reveals[key];
+          SEM.state.touch();
+          sync();
+        });
+        SEM.i18n.bind(sync);
+        dom.append(review, [toggle, answers]);
+      } else if (spec && spec.reviewLocked) {
+        review.appendChild(rich('p', { class: 'lock-note' }, spec.reviewLocked));
+      }
     }
 
     var blockMistakes = SEM.content.main.mistakes && SEM.content.main.mistakes[block];
@@ -708,7 +728,13 @@
 
   function onKey(ev) {
     if (ev.defaultPrevented || ev.ctrlKey || ev.metaKey || ev.altKey) return;
-    if (dom.isTyping(ev.target)) return;
+    if (dom.isTyping(ev.target)) {
+      // a text field keeps its keys, except that Esc still closes the dialog it is in
+      if (ev.key === 'Escape' && !ev.isComposing && ev.target.closest && ev.target.closest('.dialog') && app.closeDialogs()) {
+        ev.preventDefault();
+      }
+      return;
+    }
     var key = ev.key;
     var drawer = SEM.courseNav && SEM.courseNav.isOpen();
     if (key === 'Escape') {
@@ -771,7 +797,7 @@
         if (page === 'main') SEM.timer.reset(); else handled = false;
         break;
       case 'l': case 'L':
-        SEM.i18n.toggle();
+        if (!SEM.i18n.single) SEM.i18n.toggle(); else handled = false;
         break;
       case 'd': case 'D':
         app.toggleTheme();
@@ -830,7 +856,9 @@
 
   app.startMain = function () {
     SEM.i18n.setTitle(SEM.ui('meta.pageTitle.main'));
-    if (SEM.param('instructor') === '1') root.classList.add('is-instructor');
+    // on a locked seminar the access layer alone decides (boot.js, app.hooks.instructor)
+    if (root.hasAttribute('data-lock')) root.classList.remove('is-instructor');
+    else if (SEM.param('instructor') === '1') root.classList.add('is-instructor');
     else if (SEM.param('instructor') === '0') root.classList.remove('is-instructor');
     else root.classList.toggle('is-instructor', !!SEM.state.get('mode.instructor', false));
     if (SEM.param('present') === '1') root.classList.add('is-present');
@@ -878,6 +906,31 @@
       }
     }
     if (SEM.param('selftest') === '1' && SEM.selftest) SEM.selftest.run(selftestSlot);
+  };
+
+  // Build the content of the page again after its content has changed (a locked seminar that has just been
+  // opened): everything in <main> but the self-test slot is replaced. The answers typed, the steps shown and the
+  // hints opened are in the page state, so the new cards show them again.
+  function clearMain() {
+    var main = document.getElementById('content');
+    if (!main) return null;
+    dom.qsa(':scope > *', main).forEach(function (child) {
+      if (child.id !== 'selftest-slot') main.removeChild(child);
+    });
+    return main;
+  }
+  app.rebuildMain = function () {
+    var main = clearMain();
+    if (!main) return;
+    problemIds = {};
+    SEM.problems.steppers = {};
+    SEM.problems.active = null;
+    if (SEM.seminar && SEM.seminar.buildMain) SEM.seminar.buildMain(main, app);
+    app.goBlock(app.current(), false);
+  };
+  app.rebuildPage = function (page, build) {
+    var main = clearMain();
+    if (main) build(main);
   };
 
   app.startPage = function (page, build) {

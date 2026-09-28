@@ -105,8 +105,8 @@
         /* the in-memory copy is enough */
       }
     },
-    getJSON: function (key, fallback) {
-      var raw = this.get(key);
+    getJSON: function (key, fallback, area) {
+      var raw = this.get(key, area);
       if (raw === null) return fallback;
       try {
         var v = JSON.parse(raw);
@@ -115,9 +115,9 @@
         return fallback;
       }
     },
-    setJSON: function (key, value) {
+    setJSON: function (key, value, area) {
       try {
-        this.set(key, JSON.stringify(value));
+        this.set(key, JSON.stringify(value), area);
       } catch (e) {
         /* ignore values that cannot be serialized */
       }
@@ -149,10 +149,12 @@
   // the upcoming page in upcoming/theory/ and upcoming/cheatsheet/ stands in for that page of a seminar
   var standsFor = document.documentElement.getAttribute('data-for') || '';
   var STATE_KEY = seminar ? 'om.s' + seminar + '.state.' + page : 'om.' + page + '.state';
-  var state = SEM.store.getJSON(STATE_KEY, {});
+  // <html data-storage="session">: the state lives as long as the tab (sessionStorage), not in localStorage
+  var STATE_AREA = document.documentElement.getAttribute('data-storage') === 'session' ? 'session' : 'local';
+  var state = SEM.store.getJSON(STATE_KEY, {}, STATE_AREA);
   if (typeof state !== 'object' || state === null) state = {};
   var saveNow = function () {
-    SEM.store.setJSON(STATE_KEY, state);
+    SEM.store.setJSON(STATE_KEY, state, STATE_AREA);
   };
   var saveSoon = util.debounce(saveNow, 150);
   SEM.state = {
@@ -205,6 +207,16 @@
     var list = course.topics();
     for (var i = 0; i < list.length; i++) if (list[i].dir === d) return list[i];
     return null;
+  };
+
+  // Whether a topic has a page ('main', 'theory', 'cheatsheet'): all three unless its entry lists its pages.
+  course.hasPage = function (topic, which) {
+    return !!topic && (!Array.isArray(topic.pages) || topic.pages.indexOf(which) >= 0);
+  };
+
+  // Whether a topic has the LaTeX PDFs in its theory folder: yes unless its entry says "pdf": false.
+  course.hasPdf = function (topic) {
+    return !!topic && topic.pdf !== false;
   };
 
   // The topic with the number n (a number or a string of digits), or null.
@@ -289,7 +301,9 @@
     var atlas = (SEM.content.course && SEM.content.course.atlas) || {};
     var prefix = up(course.depth());
     if (!course.inRepository()) return prefix + (atlas.site || '');
-    var lang = SEM.i18n ? SEM.i18n.lang : SEM.boot.lang;
+    // a page in one language hands on the language chosen elsewhere in the course, not its own
+    var lang = SEM.i18n && SEM.i18n.single ? SEM.boot.chosen : SEM.i18n ? SEM.i18n.lang : SEM.boot.lang;
+    if (SEM.i18n && SEM.i18n.single && lang !== 'en' && lang !== 'ru') return prefix + (atlas.repo || '');
     return prefix + (atlas.repo || '') + '?lang=' + (lang === 'ru' ? 'ru' : 'en');
   };
 

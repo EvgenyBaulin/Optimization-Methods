@@ -8,13 +8,14 @@ Course materials for the optimization methods seminars at HSE University, Facult
 - `Seminars/<teacher>` — the seminar materials of that teacher, named by topic
 - `Seminars/Evgeny Baulin` — my seminars, split into three folders:
   - `web` — one site for all my seminars: the topics are chosen in the sidebar on the left, and each seminar has an interactive page, a theory handout and a cheat sheet, in English and Russian. Open `web/index.html` in a browser; nothing has to be installed
-  - `theory` — the LaTeX sources and the PDF of the handout and the cheat sheet of each topic
+  - `theory` — the LaTeX sources and the PDF of the handout and the cheat sheet of each topic; from seminar 3 on also its texts in `content/`
   - `checks` — one notebook per seminar. It recomputes every number of the materials and writes the data, the figures, the LaTeX values and, for seminar 01, the LaTeX sources of the handout and the cheat sheet
+- `Deploy/locked-seminars` — the scripts that lock seminars 3 on and release them at the end of the class. The answers, hints, solutions, handout and cheat sheet of such a seminar stay locked until then, so its checks notebook and its theory folder come to GitHub only after the class
 - `Atlas` — the interactive atlas of optimization methods, a separate site. Open `Atlas/index.html`
 
 ## Published site
 
-<https://optimization-methods.tarakan-tuc.ru> serves the atlas, and <https://optimization-methods.tarakan-tuc.ru/seminars/> the seminar pages: the landing page with the topics, and each seminar from the end of its class at `/seminars/1/`, `/seminars/2/` and so on, with its handout at `/seminars/1/theory/` and its cheat sheet at `/seminars/1/cheatsheet/`. Until then the address of a seminar shows a page saying that it comes later. The handout and cheat-sheet PDFs are not on the site; they are in the `theory` folders of this repository, and the seminar pages show their PDF buttons only when opened from here
+<https://optimization-methods.tarakan-tuc.ru> serves the atlas, and <https://optimization-methods.tarakan-tuc.ru/seminars/> the seminar pages: the landing page with the topics, and each seminar as soon as it is ready at `/seminars/1/`, `/seminars/2/` and so on, with its handout at `/seminars/1/theory/` and its cheat sheet at `/seminars/1/cheatsheet/`. From seminar 3 on, the statements, the timer, the warm-up block and the problems I solve at the board are there at once, and checking, hints, the other solutions, the handout and the cheat sheet open at the end of the class, without reloading the page. Until a seminar is ready its address shows a page saying that it comes later. The handout and cheat-sheet PDFs are not on the site; they are in the `theory` folders of this repository, and the seminar pages show their PDF buttons only when opened from here
 
 The site is published from my Mac by `Deploy/publish.py`, which sends the server only the finished pages listed in `Deploy/publish.conf`; nothing is deployed from GitHub. `Deploy/README.md` describes how it works, the setup of the server and what to do when something goes wrong
 

@@ -663,6 +663,15 @@
 
     var btn = el('button', { type: 'button', class: 'btn', onclick: submit });
     bindText(btn, 'problem.check');
+    // no answer spec yet: a locked seminar keeps its answers encrypted until it opens (P.lockedTitle says when)
+    if (!spec) {
+      btn.disabled = true;
+      if (P.lockedTitle) {
+        SEM.i18n.bind(function () {
+          btn.title = P.lockedTitle();
+        });
+      }
+    }
     row.appendChild(btn);
     root.appendChild(row);
     var feedback = el('p', { class: 'feedback', role: 'status', 'aria-live': 'polite' });
@@ -739,6 +748,24 @@
     card.appendChild(head);
     if (prob.skill) card.appendChild(render.el('p', { class: 'problem-skill' }, prob.skill));
     card.appendChild(render.el('div', { class: 'problem-statement' }, prob.statement));
+
+    // A locked problem (prob.locked, the text that says when it opens) has its statement and answer fields, and
+    // a placeholder where the hints and the solution go.
+    if (prob.locked) {
+      if (prob.answers && prob.answers.length && kind !== 'board') {
+        var lockedAnswers = el('div', { class: 'answers' });
+        var lockedTitle = el('h5', { class: 'answers-title' });
+        bindText(lockedTitle, 'problem.yourAnswers');
+        lockedAnswers.appendChild(lockedTitle);
+        prob.answers.forEach(function (part) {
+          lockedAnswers.appendChild(P.answerPart(pid, part, null));
+        });
+        card.appendChild(lockedAnswers);
+      }
+      card.appendChild(render.el('p', { class: 'lock-note' }, prob.locked));
+      container.appendChild(card);
+      return { card: card, stepper: null };
+    }
 
     var answersBox = el('div', { class: 'answers' });
     var solution = el('section', { class: 'solution' });

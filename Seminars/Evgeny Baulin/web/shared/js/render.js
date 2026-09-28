@@ -19,7 +19,11 @@
   // One data value as text or as TeX.
   render.value = function (value, lang, inMath) {
     if (util.isNum(value)) return fmt.num(value, lang, inMath);
-    if (typeof value === 'string') return inMath ? fmt.tex(value, lang) : value;
+    if (typeof value === 'string') {
+      if (inMath) return fmt.tex(value, lang);
+      // a decimal given as text ("0.960784") reads with a comma in Russian, as numbers do
+      return lang === 'ru' && /^-?\d+\.\d+$/.test(value) ? value.replace('.', ',').replace(/^-/, '−') : value;
+    }
     if (util.isNumArray(value)) return fmt.vector(value, lang, inMath);
     if (Array.isArray(value) && value.length && value.every(util.isNumArray)) {
       return inMath ? fmt.matrix(value, lang) : value.map(function (r) { return fmt.vector(r, lang, false); }).join(' ');

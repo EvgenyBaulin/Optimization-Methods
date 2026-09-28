@@ -8,10 +8,21 @@
   var binders = [];
   var missing = {};
 
+  // The languages of the page: both, or the one of a seminar written in one language (boot.js, data-langs).
+  var langs = SEM.boot.langs && SEM.boot.langs.length ? SEM.boot.langs.slice() : ['en', 'ru'];
   var i18n = (SEM.i18n = {
-    lang: SEM.boot.lang === 'ru' ? 'ru' : 'en',
+    lang: langs.indexOf(SEM.boot.lang) >= 0 ? SEM.boot.lang : langs[0],
+    langs: langs,
+    single: langs.length === 1,
     missing: missing
   });
+
+  // A string pair has a string in every language of the page; on a page in one language, {en} alone is a pair.
+  i18n.isPair = function (node) {
+    if (!node || typeof node !== 'object' || Array.isArray(node)) return false;
+    for (var i = 0; i < langs.length; i++) if (typeof node[langs[i]] !== 'string') return false;
+    return true;
+  };
 
   // The string of a pair {en, ru} in the current (or given) language.
   SEM.t = function (pair, lang) {
@@ -25,7 +36,7 @@
 
   function pairAt(root, path) {
     var pair = root ? SEM.util.get(root, path) : undefined;
-    return pair && typeof pair.en === 'string' && typeof pair.ru === 'string' ? pair : null;
+    return i18n.isPair(pair) ? pair : null;
   }
 
   // The UI pair at a dotted path: the seminar's own strings (content.seminar) first,
@@ -198,7 +209,7 @@
   }
 
   i18n.set = function (lang, persist) {
-    if (lang !== 'en' && lang !== 'ru') return;
+    if (langs.indexOf(lang) < 0) return;
     var changed = lang !== i18n.lang;
     i18n.lang = lang;
     root.setAttribute('lang', lang);
@@ -236,6 +247,7 @@
   };
 
   i18n.toggle = function () {
+    if (i18n.single) return;
     i18n.set(i18n.lang === 'en' ? 'ru' : 'en', true);
   };
 
@@ -243,7 +255,7 @@
   // idle, so that the first switch does not wait for them. A Russian page has the Latin ones already.
   window.addEventListener('load', function () {
     window.setTimeout(function () {
-      if (i18n.lang !== 'en' || !document.fonts || !document.fonts.load) return;
+      if (i18n.single || i18n.lang !== 'en' || !document.fonts || !document.fonts.load) return;
       ['400', 'italic 400', '700', 'italic 700'].forEach(function (face) {
         document.fonts.load(face + ' 1em "PT Serif"', '\u0416').catch(function () {});
       });

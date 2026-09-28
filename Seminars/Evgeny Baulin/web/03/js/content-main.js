@@ -175,7 +175,95 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
     "short": {
      "en": "D. Failures",
      "ru": "D. Сбои"
-    }
+    },
+    "intro": {
+     "en": "Four demonstrations of two minutes each, no student work. Each one breaks a rule from today and shows what the failure looks like.",
+     "ru": "Четыре демонстрации по две минуты, студенты только смотрят. Каждая нарушает одно из сегодняшних правил и показывает, как выглядит сбой."
+    },
+    "demos": [
+     {
+      "id": "D1",
+      "title": {
+       "en": "A step exactly at the boundary",
+       "ru": "Шаг ровно на границе"
+      },
+      "text": {
+       "en": "A1's problem, $f(x) = \\tfrac{1}{2} x^\\top \\operatorname{diag}{{A1.params.lam}}\\, x$ from $x_0 = {{A1.params.x0}}$, with $\\alpha = 2/L = {{D1.alpha}}$. The factors are $1 - \\alpha\\lambda_1 = {{A1.factors.3.1}}$ and $1 - \\alpha\\lambda_2 = {{A1.factors.3.2}}$. The flat coordinate shrinks; the stiff one flips between ${{D1.coord}}$ and $-{{D1.coord}}$ without end, and on its own it adds $\\tfrac{1}{2} \\lambda_2 \\cdot {{D1.coord}}^2 = {{D1.limit}}$ to $f$. Hence $$f(x_k) = {{D1.limit}} + 2 \\cdot {{D1.ratio}}^k,$$ so $f$ decreases towards {{D1.limit}} and never goes below it. After ten steps $f = {{D1.f10}}$, after fifty the excess over {{D1.limit}} is ${{D1.f50}}$, and in double precision $f$ soon equals {{D1.limit}} exactly.",
+       "ru": "Функция из задачи A1, $f(x) = \\tfrac{1}{2} x^\\top \\operatorname{diag}{{A1.params.lam}}\\, x$, начальная точка $x_0 = {{A1.params.x0}}$, шаг $\\alpha = 2/L = {{D1.alpha}}$. Множители равны $1 - \\alpha\\lambda_1 = {{A1.factors.3.1}}$ и $1 - \\alpha\\lambda_2 = {{A1.factors.3.2}}$. Пологая координата затухает, а жёсткая бесконечно перескакивает между ${{D1.coord}}$ и $-{{D1.coord}}$ и сама по себе вносит в $f$ вклад $\\tfrac{1}{2} \\lambda_2 \\cdot {{D1.coord}}^2 = {{D1.limit}}$. Поэтому $$f(x_k) = {{D1.limit}} + 2 \\cdot {{D1.ratio}}^k,$$ то есть $f$ убывает к {{D1.limit}} но ниже этого уровня не опускается. После десяти шагов $f = {{D1.f10}}$, после пятидесяти превышение над {{D1.limit}} равно ${{D1.f50}}$, а в арифметике двойной точности $f$ вскоре становится ровно равной {{D1.limit}}."
+      },
+      "figure": {
+       "src": "fig_stability",
+       "alt": {
+        "en": "Four curves of the function value against the iteration number on a logarithmic vertical axis: two fall, one levels off at a positive value and one rises.",
+        "ru": "Четыре кривые значения функции в зависимости от номера итерации, вертикальная ось логарифмическая: две убывают, одна выходит на постоянное положительное значение, а одна растёт."
+       },
+       "caption": {
+        "en": "$f(x_k)$ on a logarithmic axis for the four steps of A1 on $\\operatorname{diag}{{A1.params.lam}}$. The curve for $\\alpha = 2/L = {{D1.alpha}}$ flattens at {{D1.limit}}; below the boundary the curves fall, above it the curve rises.",
+        "ru": "$f(x_k)$ в логарифмическом масштабе для четырёх значений шага из A1 и матрицы $\\operatorname{diag}{{A1.params.lam}}$. Кривая для $\\alpha = 2/L = {{D1.alpha}}$ выходит на уровень {{D1.limit}}; ниже границы кривые убывают, выше неё кривая растёт."
+       }
+      },
+      "takeaway": {
+       "en": "$2/L$ is where convergence stops, not a step to use. On a quadratic every $0 < \\alpha < 2/L$ converges; at $2/L$ the stiff coordinate keeps its size, and beyond it that coordinate grows.",
+       "ru": "$2/L$ — это граница, на которой сходимость пропадает, а не рабочий шаг. На квадратичной функции любой шаг $0 < \\alpha < 2/L$ даёт сходимость; при $2/L$ жёсткая координата не меняется по модулю, а за границей она растёт."
+      }
+     },
+     {
+      "id": "D2",
+      "title": {
+       "en": "Assignment instead of accumulation",
+       "ru": "Присваивание вместо накопления"
+      },
+      "text": {
+       "en": "Take $z = x^2 + x^3$ at $x = {{D2.x}}$ with the nodes $a = x^2$, $b = x^3$, $z = a + b$. The node $x$ feeds both $a$ and $b$. The reverse pass starts from $\\bar z = 1$, gives $\\bar a = \\bar b = 1$, and sends two contributions to $\\bar x$: $\\bar a \\cdot 2x = {{D2.viaSquare}}$ through $a$ and $\\bar b \\cdot 3x^2 = {{D2.viaCube}}$ through $b$. What ends up in $\\bar x$ depends on how each contribution is written: $$\\begin{array}{lll} \\text{update} & \\text{visit order} & \\bar x \\\\ \\hline \\bar x \\mathrel{+}= \\dots & \\text{either} & {{D2.correct}} \\\\ \\bar x = \\dots & b \\text{ then } a & {{D2.viaSquare}} \\\\ \\bar x = \\dots & a \\text{ then } b & {{D2.viaCube}} \\end{array}$$ Only accumulation gives $2x + 3x^2 = {{D2.correct}}$. With assignment the second write erases the first, so the result is wrong in either order and even changes with the order of the sweep.",
+       "ru": "Возьмём $z = x^2 + x^3$ в точке $x = {{D2.x}}$ с вершинами $a = x^2$, $b = x^3$, $z = a + b$. От вершины $x$ зависят и $a$, и $b$. Обратный проход стартует с $\\bar z = 1$, даёт $\\bar a = \\bar b = 1$ и отправляет в $\\bar x$ два вклада: $\\bar a \\cdot 2x = {{D2.viaSquare}}$ через $a$ и $\\bar b \\cdot 3x^2 = {{D2.viaCube}}$ через $b$. Что окажется в $\\bar x$, зависит от того, как записан каждый вклад: $$\\begin{array}{lll} \\text{обновление} & \\text{порядок обхода} & \\bar x \\\\ \\hline \\bar x \\mathrel{+}= \\dots & \\text{любой} & {{D2.correct}} \\\\ \\bar x = \\dots & b \\text{, затем } a & {{D2.viaSquare}} \\\\ \\bar x = \\dots & a \\text{, затем } b & {{D2.viaCube}} \\end{array}$$ Только накопление даёт $2x + 3x^2 = {{D2.correct}}$. При присваивании вторая запись стирает первую, поэтому результат неверен при любом порядке и к тому же меняется вместе с порядком обхода."
+      },
+      "takeaway": {
+       "en": "An adjoint is a sum over all paths from the node to the output. Every adjoint starts at $0$ and collects its contributions with $\\bar u \\mathrel{+}= \\bar v\\, \\partial v/\\partial u$, as in the lecture.",
+       "ru": "Сопряжённая переменная — это сумма по всем путям от вершины к выходу. Каждая сопряжённая переменная сначала равна $0$ и накапливает вклады по правилу $\\bar u \\mathrel{+}= \\bar v\\, \\partial v/\\partial u$, как в лекции."
+      }
+     },
+     {
+      "id": "D3",
+      "title": {
+       "en": "The finite-difference floor",
+       "ru": "Предел точности конечных разностей"
+      },
+      "text": {
+       "en": "Central differences for $\\partial z/\\partial x$ of C1, $z = \\sin(xy) + x^2$ at ${{C1.params.point}}$: $$g_h = \\frac{z(x + h, y) - z(x - h, y)}{2h},$$ compared with the exact value from the reverse pass for $h = {{D3.hFirst}}, \\dots, {{D3.hLast}}$. The relative error falls from ${{D3.first}}$ to its minimum ${{D3.best}}$ at $h = {{D3.hBest}}$ and then rises again, to ${{D3.last}}$ at $h = {{D3.hLast}}$. Two errors compete. Truncation: by Taylor's formula $g_h$ differs from the derivative by $O(h^2)$, which dominates for large $h$. Round-off: each value of $z$ carries a relative error of order $\\varepsilon$, the machine precision, and the difference of two nearly equal numbers divided by $2h$ turns it into an error of order $\\varepsilon/h$, which dominates for small $h$. The two balance at $h \\sim \\varepsilon^{1/3} \\approx {{D3.epsCubeRoot}}$, and the measured minimum sits at the nearest power of ten, ${{D3.hBest}}$.",
+       "ru": "Центральную разность для $\\partial z/\\partial x$ из задачи C1, $z = \\sin(xy) + x^2$, в точке ${{C1.params.point}}$ $$g_h = \\frac{z(x + h, y) - z(x - h, y)}{2h}$$ сравниваем с точным значением из обратного прохода при $h = {{D3.hFirst}}, \\dots, {{D3.hLast}}$. Относительная ошибка падает с ${{D3.first}}$ до минимума ${{D3.best}}$ при $h = {{D3.hBest}}$, а затем снова растёт, до ${{D3.last}}$ при $h = {{D3.hLast}}$. Здесь конкурируют две ошибки. Ошибка отбрасывания: по формуле Тейлора $g_h$ отличается от производной на $O(h^2)$, и при больших $h$ преобладает она. Ошибка округления: каждое значение $z$ вычислено с относительной ошибкой порядка $\\varepsilon$ (машинная точность), а разность двух почти равных чисел, делённая на $2h$, превращает её в ошибку порядка $\\varepsilon/h$, которая преобладает при малых $h$. Две ошибки уравновешиваются при $h \\sim \\varepsilon^{1/3} \\approx {{D3.epsCubeRoot}}$, и измеренный минимум приходится на ближайшую степень десяти, ${{D3.hBest}}$."
+      },
+      "figure": {
+       "src": "fig_fd_error",
+       "alt": {
+        "en": "The relative error of the central difference against the step h on log–log axes: a V-shaped curve with its lowest point in the middle of the range.",
+        "ru": "Относительная ошибка центральной разности в зависимости от шага h, обе оси логарифмические: V-образная кривая с минимумом в середине диапазона."
+       },
+       "caption": {
+        "en": "Accuracy of the central difference for $\\partial z/\\partial x$ of C1: its relative error against $h$, both axes logarithmic. The minimum ${{D3.best}}$ is at $h = {{D3.hBest}}$; larger $h$ is limited by truncation, smaller $h$ by round-off.",
+        "ru": "Точность центральной разности для $\\partial z/\\partial x$ из C1: её относительная ошибка в зависимости от $h$, обе оси логарифмические. Минимум ${{D3.best}}$ достигается при $h = {{D3.hBest}}$; при больших $h$ точность ограничена ошибкой отбрасывания, при малых $h$ — ошибкой округления."
+       }
+      },
+      "takeaway": {
+       "en": "A finite difference is a check, not a way to compute gradients: even at the best $h$ it loses digits, and a smaller $h$ makes it worse. Reverse mode gives the derivative to machine precision with no $h$ to choose.",
+       "ru": "Конечная разность — это проверка, а не способ вычислять градиенты: даже при лучшем $h$ она теряет значащие цифры, а при меньшем $h$ становится только хуже. Обратный режим даёт производную с машинной точностью, и никакое $h$ выбирать не нужно."
+      }
+     },
+     {
+      "id": "D4",
+      "title": {
+       "en": "Sampling does not prove convexity",
+       "ru": "Проверка на выборке не доказывает выпуклость"
+      },
+      "text": {
+       "en": "Run the random-pair Jensen test of Seminar 2 on $f(x) = x^3$ with {{D4.pairs}} pairs $x, y \\in [0, 2]$ and random $t \\in [0, 1]$: {{D4.violations}} violations. Every pair passes because $x^3$ is convex on $[0, \\infty)$. On $\\mathbb R$ it is not: the single pair $x = {{D4.x}}$, $y = {{D4.y}}$ with $t = {{D4.t}}$ from block 0 gives ${{D4.lhs}} > {{D4.rhs}}$. On the symmetric range $[-2, 2]$, like the boxes Seminar 2 sampled from, the same test fails on about half of the pairs. A sample says nothing about the region it did not visit.",
+       "ru": "Запустим проверку неравенства Йенсена из семинара 2 для $f(x) = x^3$ на {{D4.pairs}} случайных парах $x, y \\in [0, 2]$ со случайным $t \\in [0, 1]$: {{D4.violations}} нарушений. Все пары проходят проверку, потому что $x^3$ выпукла на $[0, \\infty)$. На $\\mathbb R$ это не так: одна-единственная пара $x = {{D4.x}}$, $y = {{D4.y}}$ с $t = {{D4.t}}$ из блока 0 даёт ${{D4.lhs}} > {{D4.rhs}}$. На симметричном отрезке $[-2, 2]$, как у брусов, из которых на семинаре 2 брались точки, та же проверка не проходит примерно на половине пар. Выборка ничего не говорит об области, в которую она не попала."
+      },
+      "takeaway": {
+       "en": "One counterexample is a proof; {{D4.pairs}} successes are not. Convexity is proved by an argument that covers the whole domain and disproved by one pair.",
+       "ru": "Один контрпример — это доказательство, а {{D4.pairs}} успешных проверок — нет. Выпуклость доказывают рассуждением, которое охватывает всю область определения, а опровергают одной парой."
+      }
+     }
+    ]
    },
    "E": {
     "title": {

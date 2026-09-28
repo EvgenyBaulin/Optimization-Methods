@@ -35,10 +35,6 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
    "ownNote": {
     "en": "Solve both problems on paper. Hints open one level at a time; a solution opens after your first answer.",
     "ru": "Решите обе задачи на бумаге. Подсказки открываются по одной; решение откроется после первого ответа."
-   },
-   "cutDemos": {
-    "en": "Running late: skip the second demo ({d2}) first, then run the first demo without discussion ({d1}).",
-    "ru": "Если не успеваем: сначала пропустите второе демо ({d2}), затем покажите первое без обсуждения ({d1})."
    }
   },
   "problem": {

@@ -221,18 +221,6 @@
   margin: 0;
 }
 
-/* ---------------------------------------------------------------- instructor mode */
-.planned-time,
-.instructor-only {
-  display: none;
-}
-.is-instructor .planned-time {
-  display: inline-block;
-}
-.is-instructor .instructor-only {
-  display: block;
-}
-
 /* ---------------------------------------------------------------- present mode */
 .is-present {
   font-size: 23px;
@@ -248,11 +236,6 @@
 .is-present .check-ref,
 .is-present:not(.is-instructor) .tool-instructor,
 .is-present .toolbar .tool:not(.tool-present):not(.timer-display):not(.timer-step):not(.timer-reset):not(.tool-lang):not(.tool-instructor) {
-  display: none;
-}
-/* the projector shows the class, not the instructor's plan: no planned times and no cut notes */
-.is-present .planned-time,
-.is-present .instructor-only {
   display: none;
 }
 .is-present .brand-title {

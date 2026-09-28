@@ -723,7 +723,7 @@
   };
 
   // Render a problem (one of the nine, or a home-practice item) into container.
-  // opts: {kind: 'board'|'students'|'home', time: timeline path, headingLevel}
+  // opts: {kind: 'board'|'students'|'home', headingLevel}
   P.card = function (container, pid, prob, opts) {
     var o = opts || {};
     var kind = o.kind || prob.who;
@@ -740,11 +740,6 @@
       head.appendChild(kindTag);
     }
     head.appendChild(render.el('h' + (o.headingLevel || 4), { class: 'problem-title' }, prob.title));
-    if (o.time) {
-      var time = el('span', { class: 'planned-time' });
-      bindText(time, 'blocks.planned', function () { return { time: util.data(o.time) }; });
-      head.appendChild(time);
-    }
     card.appendChild(head);
     if (prob.skill) card.appendChild(render.el('p', { class: 'problem-skill' }, prob.skill));
     card.appendChild(render.el('div', { class: 'problem-statement' }, prob.statement));

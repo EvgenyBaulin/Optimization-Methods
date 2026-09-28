@@ -64,10 +64,6 @@
   .step {
     display: list-item !important;
   }
-  .planned-time,
-  .instructor-only {
-    display: none !important;
-  }
   .block,
   .handout-section {
     break-before: auto;

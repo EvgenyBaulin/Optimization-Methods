@@ -70,7 +70,7 @@
     // idle, file, waiting, polling, stopped, done
     polling: 'idle',
     payload: { students: null, teacher: null },
-    view: { teaching: false, solutions: false, handout: false, teacher: false }
+    view: { teaching: false, solutions: false, handout: false }
   });
 
   var figureUrls = {};
@@ -96,16 +96,14 @@
     });
   }
 
-  // The data and content the page shows now: the public part, the students envelope once it is open (without
-  // the solutions while the instructor hides them for projecting), and the instructor's notes.
+  // The data and content the page shows now: the public part and the students envelope once it is open (without
+  // the solutions while the instructor hides them for projecting).
   function applyView() {
     var s = access.payload.students;
-    var t = access.payload.teacher;
     var teacher = access.state === 'teacher';
     var v = {
       teaching: !!s && (teacher || access.state === 'open'),
-      solutions: !!s && (teacher ? !access.hideAnswers : access.state === 'open'),
-      teacher: teacher && !!t && !access.hideAnswers
+      solutions: !!s && (teacher ? !access.hideAnswers : access.state === 'open')
     };
     v.handout = v.solutions;
     access.view = v;
@@ -130,10 +128,6 @@
         }
       }
       merge(content, sc);
-    }
-    if (v.teacher) {
-      merge(data, t.data || {});
-      merge(content, t.content || {});
     }
     // a problem without its solution says when it opens (or that the instructor hid it); the board problems
     // carry their solutions in the clear

@@ -1,19 +1,14 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Evgeny Baulin
-// Seminar 3: the composition of the seminar page (blocks 0, A-E), the problems overview, the instructor's timing
-// table and notes, and the projector clock. It has no numerics of its own: this file is public, so code that
-// recomputed the answers would give them away; the checks notebook and Deploy/locked-seminars/roundtrip_test.py check the numbers.
+// Seminar 3: the composition of the seminar page (blocks 0, A-E), the problems overview and the projector
+// clock. It has no numerics of its own: this file is public, so code that recomputed the answers would give
+// them away; the checks notebook and Deploy/locked-seminars/roundtrip_test.py check the numbers.
 (function () {
   'use strict';
   var SEM = window.SEM;
-  var util = SEM.util;
   var dom = SEM.dom;
   var el = dom.el;
   var render = SEM.render;
-
-  function view() {
-    return (SEM.access && SEM.access.view) || {};
-  }
 
   function lockNote(parent, path) {
     parent.appendChild(render.el('p', { class: 'lock-note' }, SEM.ui(path)));
@@ -40,76 +35,8 @@
     return fig;
   }
 
-  /* ------------------------------------------------------------------ the instructor's view */
-
-  // The plan of the class with the clock time of every block: shown only to the signed-in instructor.
-  function buildTiming(main, app) {
-    var T = SEM.content.teacher;
-    if (!T) return;
-    var d = util.data;
-    var box = el('section', { class: 'teacher-timing', 'aria-labelledby': 'teacher-timing-title' });
-    box.appendChild(render.el('h2', { class: 'block-title', id: 'teacher-timing-title' }, (T.timing && T.timing.title) || SEM.ui('timing.title')));
-    var wrap = el('div', { class: 'table-wrap' });
-    var table = el('table', { class: 'data-table timing-table' });
-    var head = el('tr');
-    ['timing.block', 'timing.from', 'timing.length', 'timing.parts'].forEach(function (path) {
-      head.appendChild(app.text('th', { scope: 'col' }, path));
-    });
-    table.appendChild(el('thead', null, head));
-    var body = el('tbody');
-    function row(label, from, length, parts) {
-      var tr = el('tr');
-      tr.appendChild(render.el('td', null, label));
-      tr.appendChild(el('td', { text: from }));
-      tr.appendChild(el('td', { text: length }));
-      tr.appendChild(el('td', { text: parts }));
-      body.appendChild(tr);
-    }
-    (d('timeline.blocks') || []).forEach(function (b) {
-      var parts = d('timeline.' + b) || {};
-      var text = Object.keys(parts)
-        .filter(function (k) {
-          return k !== 'total';
-        })
-        .map(function (k) {
-          return SEM.tu('timing.part.' + k) + ' ' + parts[k];
-        })
-        .join(' · ');
-      row(SEM.content.main.blocks[b].short, d('timeline.clock.' + b), parts.total, text);
-    });
-    row(SEM.ui('timing.buffer'), d('timeline.clock.buffer'), d('timeline.buffer'), '');
-    row(SEM.ui('timing.total'), d('timeline.clock.0') + '–' + d('timeline.clock.end'), d('timeline.total'), '');
-    table.appendChild(body);
-    wrap.appendChild(table);
-    box.appendChild(wrap);
-    if (T.timing && T.timing.note) box.appendChild(render.el('p', { class: 'teacher-line' }, T.timing.note));
-    main.appendChild(box);
-  }
-
-  var NOTE_PARTS = [['script', 'teacher.script'], ['board', 'teacher.board'], ['cues', 'teacher.cues'], ['say', 'teacher.say'], ['watch', 'teacher.watch']];
-
-  function teacherNote(notes) {
-    if (!notes) return null;
-    var box = el('aside', { class: 'teacher-note' });
-    box.appendChild(render.el('p', { class: 'teacher-label' }, SEM.ui('teacher.notes')));
-    NOTE_PARTS.forEach(function (p) {
-      var items = notes[p[0]];
-      if (!items || !items.length) return;
-      box.appendChild(render.el('p', { class: 'teacher-part' }, SEM.ui(p[1])));
-      box.appendChild(list(p[0] === 'script' ? 'ol' : 'ul', 'teacher-list', items));
-    });
-    return box;
-  }
-
-  // The notes of every block under its heading and of every problem under its card; the figures of the
-  // solutions inside the solutions, so that they open with them.
-  function decorate(main) {
-    var T = SEM.content.teacher;
-    dom.qsa('.block', main).forEach(function (sec) {
-      var note = T && T.blocks ? teacherNote(T.blocks[sec.dataset.block]) : null;
-      var head = dom.qs('.block-head', sec);
-      if (note && head) head.parentNode.insertBefore(note, head.nextSibling);
-    });
+  // The figures of the solutions inside the solutions, so that they open with them.
+  function decorate() {
     Object.keys(SEM.content.problems || {}).forEach(function (pid) {
       var card = document.getElementById('problem-' + pid);
       if (!card) return;
@@ -119,8 +46,6 @@
         var solution = dom.qs('.solution', card);
         if (solution) solution.appendChild(fig);
       }
-      var note = T && T.problems ? teacherNote(T.problems[pid]) : null;
-      if (note) card.appendChild(note);
     });
   }
 
@@ -131,7 +56,7 @@
     var Z = SEM.content.main.blocks['0'] || {};
     var sec = app.blockSection('0');
     if (Z.jensen && Z.constants) {
-      var j = app.sub(sec, null, 'timeline.0.jensen', Z.jensen.title);
+      var j = app.sub(sec, null, Z.jensen.title);
       if (Z.jensen.intro) j.appendChild(app.rich('p', { class: 'lead' }, Z.jensen.intro));
       var ol = el('ol', { class: 'jensen-points' });
       Z.jensen.points.forEach(function (p) {
@@ -142,7 +67,7 @@
       });
       j.appendChild(ol);
       var C = Z.constants;
-      var c = app.sub(sec, null, 'timeline.0.constants', C.title);
+      var c = app.sub(sec, null, C.title);
       if (C.text) c.appendChild(app.rich('p', null, C.text));
       if (C.sandwich) c.appendChild(app.rich('div', { class: 'sandwich' }, C.sandwich));
       if (C.items) c.appendChild(list('ul', 'recap', C.items));
@@ -159,7 +84,7 @@
     if (D.demos) {
       if (D.intro) sec.appendChild(app.rich('p', { class: 'lead' }, D.intro));
       D.demos.forEach(function (demo) {
-        var box = app.sub(sec, null, 'timeline.D.' + demo.id, demo.title);
+        var box = app.sub(sec, null, demo.title);
         box.appendChild(render.el('div', { class: 'demo-text' }, demo.text));
         var fig = figure(demo.figure);
         if (fig) box.appendChild(fig);
@@ -177,7 +102,7 @@
     var sec = app.blockSection('E');
 
     var sumTitle = E.summary ? E.summary.title : SEM.ui('blocks.summary');
-    var sum = app.sub(sec, null, 'timeline.E.summary', sumTitle);
+    var sum = app.sub(sec, null, sumTitle);
     if (E.summary && E.summary.items) sum.appendChild(list('ol', 'summary', E.summary.items));
     else lockNote(sum, 'access.lockedBlock');
     var links = el('p', { class: 'link-row' });
@@ -185,7 +110,7 @@
     sum.appendChild(links);
 
     var X = E.exit || { items: [] };
-    var ex = app.sub(sec, null, 'timeline.E.exit', X.title);
+    var ex = app.sub(sec, null, X.title);
     if (X.text) ex.appendChild(app.rich('p', null, X.text));
     var items = el('ol', { class: 'exit-list' });
     var answers = [];
@@ -223,7 +148,7 @@
     }
 
     var H = E.home || { items: [] };
-    var home = app.sub(sec, null, 'timeline.E.home', H.title);
+    var home = app.sub(sec, null, H.title);
     if (H.text) home.appendChild(app.rich('p', null, H.text));
     var grid = el('div', { class: 'home-list' });
     H.items.forEach(function (item) {
@@ -239,14 +164,10 @@
     });
     home.appendChild(grid);
 
-    var buffer = el('p', { class: 'cut-note instructor-only' });
-    buffer.textContent = SEM.tuf('blocks.buffer', { time: util.data('timeline.buffer'), total: util.data('timeline.total') });
-    sec.appendChild(buffer);
     main.appendChild(sec);
   }
 
   function buildMain(main, app) {
-    if (view().teacher) buildTiming(main, app);
     buildCatchup(main, app);
     var locked = SEM.ui('access.lockedReview');
     app.buildProblemBlock(main, 'A', { board: ['A1'], students: ['A2', 'A3'], ownTime: 'P23', reviewLocked: locked });
@@ -254,7 +175,7 @@
     app.buildProblemBlock(main, 'C', { board: ['C1'], students: ['C2', 'C3'], ownTime: 'P23', reviewLocked: locked });
     buildBreaks(main, app);
     buildWrap(main, app);
-    decorate(main);
+    decorate();
   }
 
   // The overview: every statement at once, for a photograph.

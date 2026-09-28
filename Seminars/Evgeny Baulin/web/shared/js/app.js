@@ -31,17 +31,6 @@
   function rich(tag, attrs, pair) {
     return render.el(tag, attrs, pair);
   }
-  // startPath, when given, adds the minute of the session the block starts at
-  function planned(path, startPath) {
-    var node = el('span', { class: 'planned-time' });
-    SEM.i18n.bind(function () {
-      var start = startPath ? util.data(startPath) : null;
-      node.textContent = start
-        ? SEM.tuf('blocks.plannedFrom', { time: util.data(path) || '', start: start })
-        : SEM.tuf('blocks.planned', { time: util.data(path) || '' });
-    });
-    return node;
-  }
 
   /* ------------------------------------------------------------------ theme */
 
@@ -421,23 +410,21 @@
   function sectionHead(block) {
     var head = el('header', { class: 'block-head' });
     head.appendChild(rich('h2', { class: 'block-title' }, SEM.content.main.blocks[block].title));
-    head.appendChild(planned('timeline.' + block + '.total', 'timeline.start.' + block));
     return head;
   }
 
-  function sub(parent, titlePath, timePath, titlePair) {
+  function sub(parent, titlePath, titlePair) {
     var box = el('div', { class: 'subblock' });
     var h = titlePair ? rich('h3', { class: 'subblock-title' }, titlePair) : text('h3', { class: 'subblock-title' }, titlePath);
     var head = el('div', { class: 'subblock-head' });
     head.appendChild(h);
-    if (timePath) head.appendChild(planned(timePath));
     box.appendChild(head);
     parent.appendChild(box);
     return box;
   }
 
   function recap(parent, block) {
-    var box = sub(parent, 'blocks.recap', 'timeline.' + block + '.recap');
+    var box = sub(parent, 'blocks.recap');
     var ul = el('ul', { class: 'recap' });
     SEM.content.main.blocks[block].recap.forEach(function (item) {
       ul.appendChild(rich('li', null, item));
@@ -445,11 +432,10 @@
     box.appendChild(ul);
   }
 
-  // The problems of a block. spec: {board: ['A1'], students: ['A2', 'A3'], ownTime, ownNote, reviewNote}.
+  // The problems of a block. spec: {board: ['A1'], students: ['A2', 'A3'], ownTime, ownNote}.
   // The worked examples on the board, the problems solved alone with their timer and the review of their
   // answers, then the common mistakes. ownTime names the time keys of the "On your own" subblock and
-  // defaults to 'P' + the numbers of the student problems; ownNote is its note; reviewNote, when given,
-  // is an extra instructor line under the head of the review.
+  // defaults to 'P' + the numbers of the student problems; ownNote is its note.
   function problemsGroup(parent, block, spec) {
     var board = (spec && spec.board) || [];
     var students = (spec && spec.students) || [];
@@ -457,14 +443,14 @@
     var ownNote = (spec && spec.ownNote) || 'blocks.ownNote';
     problemIds[block] = { board: board.slice(), students: students.slice() };
     if (board.length) {
-      var P1 = sub(parent, 'blocks.worked', 'timeline.' + block + '.P1');
+      var P1 = sub(parent, 'blocks.worked');
       board.forEach(function (pid) {
         SEM.problems.card(P1, pid, SEM.content.problems[pid], { kind: 'board' });
       });
     }
 
     if (students.length) {
-      var own = sub(parent, 'blocks.own', 'timeline.' + block + '.' + ownTime);
+      var own = sub(parent, 'blocks.own');
       var ownBar = el('div', { class: 'own-bar' });
       var start = el('button', { type: 'button', class: 'btn btn-primary' });
       SEM.i18n.bind(function () {
@@ -483,23 +469,7 @@
         SEM.problems.card(grid, pid, SEM.content.problems[pid], { kind: 'students' });
       });
 
-      var review = sub(parent, 'blocks.review', 'timeline.' + block + '.review');
-      if (spec && spec.reviewNote) {
-        var note = el('p', { class: 'cut-note instructor-only' });
-        SEM.i18n.bind(function () {
-          note.textContent = SEM.tu(spec.reviewNote);
-        });
-        review.appendChild(note);
-      }
-      var cut = el('p', { class: 'cut-note instructor-only' });
-      var cutPath = 'timeline.cut.' + block + 'review';
-      // a review that is planned but never cut carries "0:00" and needs no note
-      if (util.data(cutPath) && util.data(cutPath) !== '0:00') {
-        SEM.i18n.bind(function () {
-          cut.textContent = SEM.tuf('blocks.cutReview', { time: util.data(cutPath) });
-        });
-        review.appendChild(cut);
-      }
+      var review = sub(parent, 'blocks.review');
       // the answers of the problems that have them (a locked seminar has none until it opens)
       var answered = students.filter(function (pid) {
         return !!SEM.content.problems[pid].answerText;
@@ -534,7 +504,7 @@
 
     var blockMistakes = SEM.content.main.mistakes && SEM.content.main.mistakes[block];
     if (blockMistakes) {
-      var mistakes = sub(parent, 'blocks.mistakes', null);
+      var mistakes = sub(parent, 'blocks.mistakes');
       var ul = el('ul', { class: 'mistake-list' });
       blockMistakes.forEach(function (m) {
         ul.appendChild(rich('li', null, m));
@@ -557,8 +527,7 @@
     var sec = blockSection(block);
     if (B.recap) recap(sec, block);
     if (spec.widgets && spec.widgets.length) {
-      var explore = sub(sec, 'blocks.explore', null);
-      explore.appendChild(text('p', { class: 'cut-note instructor-only' }, 'blocks.exploreNote'));
+      var explore = sub(sec, 'blocks.explore');
       spec.widgets.forEach(function (w) {
         SEM.widgets[w](explore);
       });
@@ -566,7 +535,6 @@
     problemsGroup(sec, block, spec);
     if (spec.code && B.code && SEM.kit) {
       SEM.kit.code(sec, spec.code, B.code.title, B.code.text);
-      sec.appendChild(text('p', { class: 'cut-note instructor-only' }, 'blocks.codeNote'));
     }
     main.appendChild(sec);
     return sec;
@@ -577,14 +545,14 @@
     var id = block || 'E';
     var E = SEM.content.main.blocks[id];
     var sec = blockSection(id);
-    var sum = sub(sec, null, 'timeline.' + id + '.summary', E.summary.title);
+    var sum = sub(sec, null, E.summary.title);
     var ol = el('ol', { class: 'summary' });
     E.summary.items.forEach(function (it) {
       ol.appendChild(rich('li', null, it));
     });
     sum.appendChild(ol);
 
-    var cs = sub(sec, null, 'timeline.' + id + '.cheatsheet', E.cheatsheet.title);
+    var cs = sub(sec, null, E.cheatsheet.title);
     cs.appendChild(rich('p', null, E.cheatsheet.text));
     var links = el('p', { class: 'link-row' });
     // the content gives each link from the seminar folder ('theory/index.html')
@@ -597,7 +565,7 @@
     });
     cs.appendChild(links);
 
-    var ex = sub(sec, null, 'timeline.' + id + '.exit', E.exit.title);
+    var ex = sub(sec, null, E.exit.title);
     ex.appendChild(rich('p', null, E.exit.text));
     var list = el('ol', { class: 'exit-list' });
     var answers = [];
@@ -627,7 +595,7 @@
     SEM.i18n.bind(syncExit);
     dom.append(ex, [list, exitBtn]);
 
-    var home = sub(sec, null, 'timeline.' + id + '.home', E.home.title);
+    var home = sub(sec, null, E.home.title);
     home.appendChild(rich('p', null, E.home.text));
     var homeGrid = el('div', { class: 'home-list' });
     E.home.items.forEach(function (item) {
@@ -635,17 +603,12 @@
     });
     home.appendChild(homeGrid);
 
-    var br = sub(sec, null, 'timeline.' + id + '.bridge', E.bridge.title);
+    var br = sub(sec, null, E.bridge.title);
     var ul = el('ul', { class: 'bridge' });
     E.bridge.items.forEach(function (it) {
       ul.appendChild(rich('li', null, it));
     });
     br.appendChild(ul);
-    var buffer = el('p', { class: 'cut-note instructor-only' });
-    SEM.i18n.bind(function () {
-      buffer.textContent = SEM.tuf('blocks.buffer', { time: util.data('timeline.buffer'), total: util.data('timeline.total') });
-    });
-    sec.appendChild(buffer);
     main.appendChild(sec);
     return sec;
   }
@@ -653,7 +616,6 @@
   // The templates, for the seminar's js/seminar.js.
   app.text = text;
   app.rich = rich;
-  app.planned = planned;
   app.dialog = dialog;
   app.overviewGrid = overviewGrid;
   app.sectionHead = sectionHead;

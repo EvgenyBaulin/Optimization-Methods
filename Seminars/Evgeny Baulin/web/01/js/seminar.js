@@ -10,29 +10,29 @@
 
   /* ------------------------------------------------------------------ blocks of the seminar page */
 
-  // The problem blocks: F1 specs, plus the instructor cut note placed right after the block head.
+  // The problem blocks: F1 specs.
   var GROUPS = {
     A: { board: ['A1'], students: ['A2', 'A3'], ownTime: 'P23', ownNote: 'blocks.ownNote', widgets: ['probe'], code: 'centralDiff' },
-    B: { board: ['B1'], students: ['B2', 'B3', 'B4'], ownTime: 'P234', ownNote: 'blocks.ownNoteThree', reviewNote: 'blocks.reviewB', widgets: ['definiteness', 'lines'], code: ['classify', 'minors'], cut: { note: 'blocks.cutB', time: 'timeline.cut.BP1' } },
-    C: { board: ['C1'], students: ['C2'], ownTime: 'P2', ownNote: 'blocks.ownNoteOne', widgets: ['convexSets', 'family'], code: 'convexity', cut: { note: 'blocks.cutC', time: 'timeline.cut.CP1' } },
-    D: { board: ['D1'], students: ['D2'], ownTime: 'P2', ownNote: 'blocks.ownNoteOne', widgets: ['feasible', 'secant'], code: ['feasible', 'dirDeriv'], cut: { note: 'blocks.cutD', time: 'timeline.cut.DP2' } }
+    B: { board: ['B1'], students: ['B2', 'B3', 'B4'], ownTime: 'P234', ownNote: 'blocks.ownNoteThree', widgets: ['definiteness', 'lines'], code: ['classify', 'minors'] },
+    C: { board: ['C1'], students: ['C2'], ownTime: 'P2', ownNote: 'blocks.ownNoteOne', widgets: ['convexSets', 'family'], code: 'convexity' },
+    D: { board: ['D1'], students: ['D2'], ownTime: 'P2', ownNote: 'blocks.ownNoteOne', widgets: ['feasible', 'secant'], code: ['feasible', 'dirDeriv'] }
   };
 
   // O: training is minimization, the hook widget, and today's problems.
   function buildOpening(main, app) {
     var O = SEM.content.main.blocks.O;
     var sec = app.blockSection('O');
-    var goals = app.sub(sec, null, 'timeline.O.goals', O.goals.title);
+    var goals = app.sub(sec, null, O.goals.title);
     goals.appendChild(app.rich('p', { class: 'lead' }, O.goals.text));
     var ol = el('ol', { class: 'summary' });
     O.goals.items.forEach(function (it) {
       ol.appendChild(app.rich('li', null, it));
     });
     goals.appendChild(ol);
-    var hook = app.sub(sec, null, 'timeline.O.hook', O.hook.title);
+    var hook = app.sub(sec, null, O.hook.title);
     hook.appendChild(app.rich('p', null, O.hook.text));
     SEM.widgets.hook(hook);
-    var ov = app.sub(sec, null, 'timeline.O.overview', O.overview.title);
+    var ov = app.sub(sec, null, O.overview.title);
     ov.appendChild(app.rich('p', null, O.overview.text));
     var btn = app.text('button', { type: 'button', class: 'btn btn-primary' }, 'blocks.openOverview');
     btn.addEventListener('click', function () {
@@ -42,20 +42,10 @@
     main.appendChild(sec);
   }
 
-  // An instructor-only cut note right after the block head (children[0] is the head).
-  function cutNote(sec, cut) {
-    var p = el('p', { class: 'cut-note instructor-only' });
-    SEM.i18n.bind(function () {
-      p.textContent = SEM.tuf(cut.note, { time: util.data(cut.time) });
-    });
-    sec.insertBefore(p, sec.children[1] || null);
-  }
-
   function buildMain(main, app) {
     buildOpening(main, app);
     ['A', 'B', 'C', 'D'].forEach(function (b) {
-      var sec = app.buildProblemBlock(main, b, GROUPS[b]);
-      if (GROUPS[b].cut) cutNote(sec, GROUPS[b].cut);
+      app.buildProblemBlock(main, b, GROUPS[b]);
     });
     app.buildWrap(main, 'E');
   }

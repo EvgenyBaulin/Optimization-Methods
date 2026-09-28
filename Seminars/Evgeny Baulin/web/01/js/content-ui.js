@@ -43,22 +43,6 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
    "ownNoteOne": {
     "en": "Solve the problem on paper. Hints open one level at a time; the solution opens after your first answer.",
     "ru": "Решите задачу на бумаге. Подсказки открываются по одной; решение откроется после первого ответа."
-   },
-   "cutB": {
-    "en": "Running late: on the board, write only the answer lines of B1 ({time}). Never skip B3: it is the point of the block.",
-    "ru": "Если не успеваем: у доски запишите только строки ответа B1 ({time}). B3 не пропускайте никогда: в ней смысл блока."
-   },
-   "cutC": {
-    "en": "Running late: write the proof of C1 as the norm chain with a reason on each step, without the generalizations ({time}).",
-    "ru": "Если не успеваем: запишите доказательство C1 как цепочку для нормы с обоснованием каждого шага, без обобщений ({time})."
-   },
-   "cutD": {
-    "en": "Running late: move D2 together with its review to the home practice. Never skip D1.",
-    "ru": "Если не успеваем: перенесите D2 вместе с разбором в домашнюю практику. D1 не пропускайте никогда."
-   },
-   "reviewB": {
-    "en": "Review B3 first and in full, with the case split; for B2 and B4 give the answers only.",
-    "ru": "Сначала разберите B3 полностью, с перебором случаев; для B2 и B4 — только ответы."
    }
   },
   "problem": {

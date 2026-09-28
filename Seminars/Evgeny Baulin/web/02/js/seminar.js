@@ -6,7 +6,6 @@
   'use strict';
   var SEM = window.SEM;
   var util = SEM.util;
-  var el = SEM.dom.el;
 
   /* ------------------------------------------------------------------ blocks of the seminar page */
 
@@ -14,12 +13,12 @@
   function buildOpening(main, app) {
     var O = SEM.content.main.blocks.O;
     var sec = app.blockSection('O');
-    var bridge = app.sub(sec, null, 'timeline.O.bridge', O.bridge.title);
+    var bridge = app.sub(sec, null, O.bridge.title);
     bridge.appendChild(app.rich('p', { class: 'lead' }, O.bridge.text));
-    var hook = app.sub(sec, null, 'timeline.O.hook', O.hook.title);
+    var hook = app.sub(sec, null, O.hook.title);
     hook.appendChild(app.rich('p', null, O.hook.text));
     SEM.widgets.hook(hook);
-    var ov = app.sub(sec, null, 'timeline.O.overview', O.overview.title);
+    var ov = app.sub(sec, null, O.overview.title);
     ov.appendChild(app.rich('p', null, O.overview.text));
     var btn = app.text('button', { type: 'button', class: 'btn btn-primary' }, 'blocks.openOverview');
     btn.addEventListener('click', function () {
@@ -33,16 +32,11 @@
   function buildDemos(main, app) {
     var D = SEM.content.main.blocks.D;
     var sec = app.blockSection('D');
-    var cutOrder = el('p', { class: 'cut-note instructor-only' });
-    SEM.i18n.bind(function () {
-      cutOrder.textContent = SEM.tuf('blocks.cutDemos', { d2: util.data('timeline.D.D2'), d1: util.data('timeline.cut.DD1') });
-    });
-    sec.appendChild(cutOrder);
-    var d1 = app.sub(sec, null, 'timeline.D.D1', D.D1.title);
+    var d1 = app.sub(sec, null, D.D1.title);
     SEM.widgets.pgd(d1);
-    var d2 = app.sub(sec, null, 'timeline.D.D2', D.D2.title);
+    var d2 = app.sub(sec, null, D.D2.title);
     SEM.widgets.dualD2(d2);
-    var d3 = app.sub(sec, null, 'timeline.D.D3', D.D3.title);
+    var d3 = app.sub(sec, null, D.D3.title);
     SEM.widgets.dualD3(d3);
     SEM.kit.code(sec, 'pgd', D.code.title, D.code.text);
     main.appendChild(sec);

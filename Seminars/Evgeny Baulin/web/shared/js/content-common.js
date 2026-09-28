@@ -171,14 +171,6 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
    }
   },
   "blocks": {
-   "planned": {
-    "en": "Planned: {time}",
-    "ru": "План: {time}"
-   },
-   "plannedFrom": {
-    "en": "Planned: {time}, from {start}",
-    "ru": "План: {time}, с {start}"
-   },
    "recap": {
     "en": "Recap",
     "ru": "Напоминание"
@@ -186,14 +178,6 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
    "explore": {
     "en": "Explore",
     "ru": "Исследование"
-   },
-   "exploreNote": {
-    "en": "Shown during the recap and the review: the plan gives it no time of its own.",
-    "ru": "Показывается по ходу напоминания и разбора: отдельного времени в плане у него нет."
-   },
-   "codeNote": {
-    "en": "Reference to open after the seminar: it is not part of the planned time.",
-    "ru": "Справочный материал: читается после семинара, в план занятия не входит."
    },
    "worked": {
     "en": "Worked example on the board",
@@ -218,14 +202,6 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
    "hideAnswers": {
     "en": "Hide the answers",
     "ru": "Скрыть ответы"
-   },
-   "cutReview": {
-    "en": "Running late: answers only, {time}.",
-    "ru": "Если не успеваем: только ответы, {time}."
-   },
-   "buffer": {
-    "en": "Buffer: {time}. Total: {total}.",
-    "ru": "Запас: {time}. Всего: {total}."
    },
    "mistakes": {
     "en": "Common mistakes",

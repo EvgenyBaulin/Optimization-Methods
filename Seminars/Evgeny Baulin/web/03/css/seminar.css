@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MIT */
 /* Copyright (c) 2026 Evgeny Baulin */
-/* Seminar 3 on top of the shared styles: the locked parts, the access notices and the instructor's badge, the
-   instructor's notes and timing table, block 0 and D, the projector clock and the projector contrast. */
+/* Seminar 3 on top of the shared styles: the locked parts, the access notices and the instructor's badge, block 0
+   and D, the projector clock and the projector contrast. */
 
 /* ---------------------------------------------------------------- locked parts */
 .lock-note {
@@ -112,40 +112,6 @@
   display: none;
 }
 
-/* ---------------------------------------------------------------- the instructor's notes and timing */
-.teacher-note {
-  max-width: var(--measure);
-  margin: 0.8em 0;
-  padding: 0.5em 0.9em;
-  border-left: 3px solid var(--accent-2);
-  background: var(--panel-2);
-  font-size: 0.95rem;
-}
-.teacher-label {
-  margin: 0 0 0.3em;
-  color: var(--accent-2);
-  font-weight: 700;
-}
-.teacher-part {
-  margin: 0.5em 0 0.1em;
-  font-weight: 700;
-}
-.teacher-list {
-  margin: 0.1em 0 0.3em;
-  padding-left: 1.3em;
-}
-.teacher-timing {
-  margin: 24px 0 8px;
-}
-.teacher-line {
-  max-width: var(--measure);
-}
-.timing-table td:nth-child(2),
-.timing-table td:nth-child(3) {
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-}
-
 /* ---------------------------------------------------------------- block 0 and D */
 .jensen-points {
   max-width: var(--measure);
@@ -223,11 +189,6 @@
 .is-present .jensen-text,
 .is-present .demo-text {
   font-weight: 500;
-}
-/* the instructor's notes and timing stay on the second device */
-.is-present .teacher-note,
-.is-present .teacher-timing {
-  display: none;
 }
 .is-present .access-badge {
   bottom: 8px;

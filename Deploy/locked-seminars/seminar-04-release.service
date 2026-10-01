@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Evgeny Baulin
+# Copies the students key, release.json, into the live release of the course site; started by
+# seminar-04-release.timer. /usr/local/sbin/seminar-04-release is the installed copy of release.sh, with
+# the seminar 4 paths, id and unlock time substituted as described in README.md.
+
+[Unit]
+Description=Seminar 4: put the students key into the live course site
+After=nginx.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/seminar-04-release
+SyslogIdentifier=seminar-04-release
+TimeoutStartSec=2min
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=full
+ProtectHome=read-only

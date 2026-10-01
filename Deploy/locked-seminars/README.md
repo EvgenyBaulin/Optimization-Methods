@@ -33,6 +33,8 @@ per shell (or once in `~/.zshrc`). A rebuild without changes prints `unchanged` 
 | `release.sh` | installed on the server as `/usr/local/sbin/seminar-03-release`. Before the unlock time it exits at once. Afterwards it checks the key file, copies it into `seminars/3/` of the release that `/var/www/optimization-methods` points to (owned by the nginx user, mode 0644, written under a hidden name and renamed in one step), fetches it back over HTTPS and prints one line per action. It prints nothing when the file is already there. `--check` reports and changes nothing; `--force` skips the time check. |
 | `seminar-03-release.service` | runs the script once, as root. |
 | `seminar-03-release.timer` | starts the service at 11:20:00 UTC on 28.09.2026 and every two minutes. Every publish, scheduled switch or rollback points the web root at a release folder without the key; the next run puts it back, so it is missing for two minutes at most. |
+| `seminar-04-release.service` | runs the seminar 4 script once, as root. |
+| `seminar-04-release.timer` | starts the seminar 4 service at 11:20:00 UTC on 05.10.2026 and every two minutes. |
 | `release/` | the keys, one folder per seminar. Never committed and never in a publish. |
 | `README.md` | this page. |
 

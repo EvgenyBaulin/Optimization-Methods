@@ -240,7 +240,7 @@ def read_marked_json(path):
     """The object between the JSON markers of a generated file, or None when it is missing or unreadable."""
     try:
         text = path.read_text(encoding="utf-8")
-    except OSError, UnicodeDecodeError:
+    except (OSError, UnicodeDecodeError):
         return None, None
     match = MARKERS.search(text)
     if not match:
@@ -314,7 +314,7 @@ def write_release(sem, key):
     text = json.dumps({"id": sem.id, "key": sc.b64e(key)}) + "\n"
     try:
         same = path.read_text(encoding="utf-8") == text
-    except OSError, UnicodeDecodeError:
+    except (OSError, UnicodeDecodeError):
         same = False
     if same:
         os.chmod(str(path), 0o600)

@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2026 Evgeny Baulin
+# Starts seminar-04-release.service at the end of the class and every two minutes, so that a key lost to a
+# later publish or rollback returns within two minutes. Leave the timer enabled while the page should stay open.
+
+[Unit]
+Description=Seminar 4: release the students key at the end of the class and keep it on the site
+
+[Timer]
+OnCalendar=2026-10-05 11:20:00 UTC
+OnCalendar=*-*-* *:00/2:00 UTC
+AccuracySec=1s
+Persistent=true
+Unit=seminar-04-release.service
+
+[Install]
+WantedBy=timers.target

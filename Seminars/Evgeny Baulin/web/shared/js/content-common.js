@@ -871,7 +871,7 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
    {
     "n": 4,
     "dir": "04",
-    "available": false,
+    "available": true,
     "title": {
      "en": "Accelerated Gradient Methods",
      "ru": "Ускоренные градиентные методы"

@@ -454,6 +454,40 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
     "ru": "Скопировано"
    }
   },
+  "livecode": {
+   "run": {
+    "en": "Run",
+    "ru": "Запустить"
+   },
+   "restore": {
+    "en": "Restore the code",
+    "ru": "Вернуть исходный код"
+   },
+   "loading": {
+    "en": "Loading Python with NumPy and Matplotlib. The first time takes a while, then the browser keeps it.",
+    "ru": "Загружается Python с NumPy и Matplotlib. В первый раз это занимает время, потом браузер помнит."
+   },
+   "running": {
+    "en": "Running…",
+    "ru": "Выполняется…"
+   },
+   "done": {
+    "en": "Done.",
+    "ru": "Готово."
+   },
+   "failed": {
+    "en": "Python could not start.",
+    "ru": "Python не запустился."
+   },
+   "fileNote": {
+    "en": "The code runs on the course site; a page opened from a file cannot load Python.",
+    "ru": "Код запускается на сайте курса; со страницы, открытой из файла, Python не загрузить."
+   },
+   "preloaded": {
+    "en": "Real Python in your browser. `numpy as np` and `matplotlib.pyplot as plt` are already imported; edit anything and run again.",
+    "ru": "Настоящий Python в браузере. `numpy as np` и `matplotlib.pyplot as plt` уже импортированы; меняйте что угодно и запускайте снова."
+   }
+  },
   "selftest": {
    "title": {
     "en": "Self-test",

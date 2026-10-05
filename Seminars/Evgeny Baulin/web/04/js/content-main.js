@@ -48,7 +48,17 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
       "en": "With look-ahead, evaluate the gradient at $y=x+\\beta(x-x^-)$ and set $x^+=y-\\alpha\\nabla f(y)$. This changes the characteristic polynomial.",
       "ru": "В методе с опережением вычисляйте градиент в $y=x+\\beta(x-x^-)$ и задавайте $x^+=y-\\alpha\\nabla f(y)$. Это меняет характеристический многочлен."
      }
-    ]
+    ],
+    "live": {
+     "title": {
+      "en": "Live code: gradient descent, heavy ball and Nesterov",
+      "ru": "Живой код: градиентный спуск, тяжёлый шар и Нестеров"
+     },
+     "text": {
+      "en": "A stretched quadratic with its own $\\mu$ and $L$. Change $L$, the step or $\\beta$ and see when momentum pays off and when it starts to oscillate.",
+      "ru": "Вытянутая квадратичная функция со своими $\\mu$ и $L$. Меняйте $L$, шаг или $\\beta$ и смотрите, когда инерция окупается, а когда начинает раскачивать."
+     }
+    }
    },
    "B": {
     "title": {
@@ -68,7 +78,17 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
       "en": "CG uses $A$-conjugate directions to solve an SPD system. Reuse $Ap_k$ and compare matrix-vector products; report a relative residual.",
       "ru": "CG решает положительно определённую систему с помощью $A$-сопряжённых направлений. Переиспользуйте $Ap_k$ и сравнивайте число произведений матрицы на вектор; указывайте относительную невязку."
      }
-    ]
+    ],
+    "live": {
+     "title": {
+      "en": "Live code: conjugate gradients against gradient descent",
+      "ru": "Живой код: сопряжённые градиенты против градиентного спуска"
+     },
+     "text": {
+      "en": "A random symmetric positive definite system. Change its size and condition number: conjugate gradients finish in about $n$ steps, gradient descent slows down as $\\kappa$ grows.",
+      "ru": "Случайная система с симметричной положительно определённой матрицей. Меняйте размер и число обусловленности: сопряжённые градиенты сходятся примерно за $n$ шагов, а градиентный спуск замедляется с ростом $\\kappa$."
+     }
+    }
    },
    "C": {
     "title": {
@@ -88,7 +108,17 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
       "en": "Shuffle every epoch, include the final short batch, and log full loss at epoch boundaries. Use the same seeds and sample-gradient budget when comparing schedules.",
       "ru": "Перемешивайте каждую эпоху, включайте последний короткий батч и записывайте полную потерю в конце эпохи. Для сравнения расписаний используйте одинаковые seed и бюджеты градиентов объектов."
      }
-    ]
+    ],
+    "live": {
+     "title": {
+      "en": "Live code: SGD with different batches",
+      "ru": "Живой код: SGD с разными батчами"
+     },
+     "text": {
+      "en": "Least squares on synthetic data. With a constant step the loss stalls at a noise floor that depends on the batch; a decaying step goes below it. Try other steps and batches.",
+      "ru": "Наименьшие квадраты на синтетических данных. С постоянным шагом лосс застревает на уровне шума, который зависит от батча; убывающий шаг опускается ниже. Попробуйте другие шаги и батчи."
+     }
+    }
    },
    "D": {
     "title": {

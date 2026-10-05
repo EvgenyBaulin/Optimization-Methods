@@ -961,3 +961,40 @@ pre.code {
     width: 6.2em;
   }
 }
+
+/* ---------------------------------------------------------------- live code */
+.live-editor {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 8px 0 0;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel-2);
+  color: var(--fg);
+  font-family: var(--mono, ui-monospace, Menlo, Consolas, monospace);
+  font-size: 0.86rem;
+  line-height: 1.45;
+  tab-size: 4;
+  white-space: pre;
+  overflow-x: auto;
+  resize: vertical;
+}
+.live-buttons {
+  align-items: center;
+}
+.live-status {
+  color: var(--muted);
+}
+.live-output.is-error {
+  color: var(--bad, #b3261e);
+}
+.live-figures img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 10px 0 0;
+  border-radius: var(--radius);
+  background: #fff;
+}

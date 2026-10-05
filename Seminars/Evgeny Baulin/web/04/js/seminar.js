@@ -148,12 +148,21 @@
     main.appendChild(sec);
   }
 
+  // A live Python cell at the end of a problem block (shared/js/livecode.js, sources in livecode-examples.js).
+  function liveCell(sec, block, key) {
+    var L = SEM.content.main.blocks[block].live;
+    if (L && SEM.livecode) SEM.livecode.cell(sec, key, L.title, L.text);
+  }
+
   function buildMain(main, app) {
     buildCatchup(main, app);
     var locked = SEM.ui('access.lockedReview');
-    app.buildProblemBlock(main, 'A', { board: ['A1'], students: ['A2', 'A3'], ownTime: 'P23', reviewLocked: locked });
-    app.buildProblemBlock(main, 'B', { board: ['B1'], students: ['B2', 'B3'], ownTime: 'P23', reviewLocked: locked });
-    app.buildProblemBlock(main, 'C', { board: ['C1'], students: ['C2', 'C3'], ownTime: 'P23', reviewLocked: locked });
+    var a = app.buildProblemBlock(main, 'A', { board: ['A1'], students: ['A2', 'A3'], ownTime: 'P23', reviewLocked: locked });
+    var b = app.buildProblemBlock(main, 'B', { board: ['B1'], students: ['B2', 'B3'], ownTime: 'P23', reviewLocked: locked });
+    var c = app.buildProblemBlock(main, 'C', { board: ['C1'], students: ['C2', 'C3'], ownTime: 'P23', reviewLocked: locked });
+    liveCell(a, 'A', 'momentum');
+    liveCell(b, 'B', 'cg');
+    liveCell(c, 'C', 'sgd');
     buildBreaks(main, app);
     buildWrap(main, app);
     decorate();

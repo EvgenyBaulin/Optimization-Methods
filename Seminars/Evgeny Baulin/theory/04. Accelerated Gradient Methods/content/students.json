@@ -1,0 +1,1117 @@
+{
+ "id": "seminar-04",
+ "data": {
+  "A2": {
+   "bound": 0.1875,
+   "radius": 1.3216990566028302
+  },
+  "answers": {
+   "A2": {
+    "bound": {
+     "type": "number",
+     "value": 0.1875,
+     "tol": 0.0005
+    },
+    "radius": {
+     "type": "number",
+     "value": 1.3216990566028302,
+     "tol": 0.0005
+    }
+   },
+   "A3": {
+    "hb": {
+     "type": "number",
+     "value": 0.7,
+     "tol": 0.0005
+    },
+    "nag": {
+     "type": "number",
+     "value": 0.9,
+     "tol": 0.0005
+    }
+   },
+   "B2": {
+    "coordinate": {
+     "type": "number",
+     "value": 2.0,
+     "tol": 0.0005
+    },
+    "decrease": {
+     "type": "number",
+     "value": 4.5,
+     "tol": 0.0005
+    }
+   },
+   "B3": {
+    "alpha0": {
+     "type": "number",
+     "value": 0.25,
+     "tol": 0.0005
+    },
+    "beta0": {
+     "type": "number",
+     "value": 0.0625,
+     "tol": 0.0005
+    },
+    "first": {
+     "type": "number",
+     "value": 0.09090909090909091,
+     "tol": 0.0005
+    },
+    "second": {
+     "type": "number",
+     "value": 0.6363636363636364,
+     "tol": 0.0005
+    }
+   },
+   "C2": {
+    "variance": {
+     "type": "number",
+     "value": 0.08333333333333333,
+     "tol": 0.0005
+    },
+    "gap": {
+     "type": "number",
+     "value": 0.08333333333333333,
+     "tol": 0.0005
+    }
+   },
+   "C3": {
+    "kappaBefore": {
+     "type": "number",
+     "value": 100.0,
+     "tol": 0.0005
+    },
+    "kappaAfter": {
+     "type": "number",
+     "value": 1.0,
+     "tol": 0.0005
+    },
+    "first": {
+     "type": "number",
+     "value": 2.0,
+     "tol": 0.0005
+    },
+    "second": {
+     "type": "number",
+     "value": 3.0,
+     "tol": 0.0005
+    }
+   }
+  },
+  "A3": {
+   "lookahead": 1.5,
+   "hb": 0.7,
+   "nag": 0.9,
+   "ghb": 8,
+   "gnag": 6
+  },
+  "B2": {
+   "gradient": [
+    2,
+    9
+   ],
+   "scores": [
+    2,
+    3
+   ],
+   "coordinate": 2,
+   "decrease": 4.5,
+   "fnext": 2
+  },
+  "B3": {
+   "alpha0": 0.25,
+   "x1": [
+    0.25,
+    0.5
+   ],
+   "r1": [
+    -0.5,
+    0.25
+   ],
+   "beta0": 0.0625,
+   "p1": [
+    -0.4375,
+    0.375
+   ],
+   "alpha1": 0.36363636363636365,
+   "xstar": [
+    0.09090909090909091,
+    0.6363636363636364
+   ],
+   "residualDot": 0,
+   "conjugacy": 0
+  },
+  "C2": {
+   "factor": 0.8,
+   "variance": 0.08333333333333333,
+   "rms": 0.28867513459481287,
+   "gap": 0.08333333333333333
+  },
+  "C3": {
+   "kappaBefore": 100,
+   "kappaAfter": 1,
+   "boundaryBefore": 0.02,
+   "boundaryAfter": 2,
+   "w": [
+    2,
+    3
+   ]
+  },
+  "exit": {
+   "bound": 0.375,
+   "decrease": 0.125
+  }
+ },
+ "content": {
+  "main": {
+   "blocks": {
+    "E": {
+     "summary": {
+      "title": {
+       "en": "Three takeaways",
+       "ru": "Три главных вывода"
+      },
+      "items": [
+       {
+        "en": "Quadratic momentum is controlled by characteristic roots; the objective need not be monotone.",
+        "ru": "Инерцию на квадратичной функции определяют характеристические корни; функция не обязана убывать монотонно."
+       },
+       {
+        "en": "Direction choice and the cost of a direction must be considered together.",
+        "ru": "Выбор направления нужно рассматривать вместе со стоимостью его вычисления."
+       },
+       {
+        "en": "Batch noise and feature units can dominate the behaviour of an otherwise correct implementation.",
+        "ru": "Шум батчей и единицы признаков могут определять поведение даже корректной реализации."
+       }
+      ]
+     },
+     "exit": {
+      "items": [
+       {
+        "answer": {
+         "en": "$2(1+\\beta)/\\lambda={{exit.bound}}$; equality is excluded.",
+         "ru": "$2(1+\\beta)/\\lambda={{exit.bound}}$; равенство исключается."
+        }
+       },
+       {
+        "answer": {
+         "en": "The predicted decrease halves.",
+         "ru": "Предсказанное уменьшение падает вдвое."
+        }
+       },
+       {
+        "answer": {
+         "en": "No. A nonzero stationary variance can persist at a constant step.",
+         "ru": "Нет. При постоянном шаге может сохраняться ненулевая стационарная дисперсия."
+        }
+       }
+      ]
+     }
+    }
+   }
+  },
+  "problems": {
+   "A2": {
+    "hints": [
+     {
+      "en": "Apply the three inequalities $|\\beta|<1$, $1-a+\\beta>0$, $1+a+\\beta>0$ to $r^2-ar+\\beta$.",
+      "ru": "Примените три неравенства $|\\beta|<1$, $1-a+\\beta>0$, $1+a+\\beta>0$ к $r^2-ar+\\beta$."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "For $a=1+\\beta-\\alpha\\lambda$, the root test reduces to $|\\beta|<1$, $\\alpha\\lambda>0$, and $2(1+\\beta)-\\alpha\\lambda>0$. With the stated nonnegative momentum, $0<\\alpha<2(1+\\beta)/\\lambda={{A2.bound}}$.",
+       "ru": "При $a=1+\\beta-\\alpha\\lambda$ критерий для корней сводится к $|\\beta|<1$, $\\alpha\\lambda>0$ и $2(1+\\beta)-\\alpha\\lambda>0$. При заданной неотрицательной инерции $0<\\alpha<2(1+\\beta)/\\lambda={{A2.bound}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "At the endpoint the polynomial factors as $(r+1)(r+\\beta)$, so one root is $-1$. A generic starting pair retains an oscillating component. At the proposed larger step the largest modulus is ${{A2.radius}}>1$, so some starts diverge.",
+       "ru": "На границе многочлен раскладывается в $(r+1)(r+\\beta)$, поэтому один корень равен $-1$. При обычной начальной паре сохраняется колеблющаяся компонента. Для предложенного большего шага максимальный модуль равен ${{A2.radius}}>1$, так что для некоторых начальных точек метод расходится."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "Upper endpoint: ${{A2.bound}}$; trial radius: ${{A2.radius}}$. The stable interval is open.",
+     "ru": "Верхняя граница: ${{A2.bound}}$; радиус для пробного шага: ${{A2.radius}}$. Интервал устойчивости открытый."
+    },
+    "review": {
+     "en": "Check every eigenvalue; finite progress from one start does not establish stability.",
+     "ru": "Проверяйте все собственные значения; уменьшение функции из одной точки не доказывает устойчивость."
+    },
+    "mistakes": []
+   },
+   "A3": {
+    "hints": [
+     {
+      "en": "First calculate the displacement; then mark the point at which each gradient is taken.",
+      "ru": "Сначала найдите перемещение; затем отметьте точку вычисления каждого градиента."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "The extrapolated point is $y_k={{A3.lookahead}}$. Heavy ball uses $\\nabla f(x_k)={{A3.ghb}}$ and gives $x_k+\\beta(x_k-x_{k-1})-\\alpha\\nabla f(x_k)={{A3.hb}}$.",
+       "ru": "Экстраполированная точка равна $y_k={{A3.lookahead}}$. Тяжёлый шар использует $\\nabla f(x_k)={{A3.ghb}}$ и даёт $x_k+\\beta(x_k-x_{k-1})-\\alpha\\nabla f(x_k)={{A3.hb}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "The look-ahead update takes $\\nabla f(y_k)={{A3.gnag}}$, giving $y_k-\\alpha\\nabla f(y_k)={{A3.nag}}$. Using a gradient at $x_k$ in both routines silently makes them identical.",
+       "ru": "Обновление с опережением берёт $\\nabla f(y_k)={{A3.gnag}}$ и даёт $y_k-\\alpha\\nabla f(y_k)={{A3.nag}}$. Если в обеих реализациях брать градиент в $x_k$, методы незаметно станут одинаковыми."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "Heavy ball: ${{A3.hb}}$. Look-ahead: ${{A3.nag}}$.",
+     "ru": "Тяжёлый шар: ${{A3.hb}}$. Опережение: ${{A3.nag}}$."
+    },
+    "review": {
+     "en": "The momentum coefficient alone does not specify an algorithm.",
+     "ru": "Одного коэффициента инерции недостаточно, чтобы определить алгоритм."
+    },
+    "mistakes": []
+   },
+   "B2": {
+    "hints": [
+     {
+      "en": "Compare squared gradient divided by curvature, rather than gradient magnitude alone.",
+      "ru": "Сравнивайте квадрат градиента, делённый на кривизну, а не только модуль градиента."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "The gradient is ${{B2.gradient}}$. The normalized scores are ${{B2.scores}}$, so coordinate ${{B2.coordinate}}$ gives the largest exact improvement.",
+       "ru": "Градиент равен ${{B2.gradient}}$. Нормированные показатели равны ${{B2.scores}}$, поэтому координата ${{B2.coordinate}}$ даёт наибольшее точное улучшение."
+      }
+     },
+     {
+      "text": {
+       "en": "Updating this coordinate reduces $f$ by ${{B2.decrease}}$ and leaves $f={{B2.fnext}}$. Maximizing $|g_i|/\\sqrt{Q_{ii}}$ is equivalent to maximizing its square and therefore the exact coordinate decrease.",
+       "ru": "Обновление этой координаты уменьшает $f$ на ${{B2.decrease}}$ и оставляет $f={{B2.fnext}}$. Максимизация $|g_i|/\\sqrt{Q_{ii}}$ равносильна максимизации его квадрата, а значит, и точного координатного уменьшения."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "Coordinate ${{B2.coordinate}}$; decrease ${{B2.decrease}}$; new objective ${{B2.fnext}}$.",
+     "ru": "Координата ${{B2.coordinate}}$; уменьшение ${{B2.decrease}}$; новое значение ${{B2.fnext}}$."
+    },
+    "review": {
+     "en": "A greedy choice may require the full gradient; include the selection cost in a work comparison.",
+     "ru": "Жадный выбор может требовать полного градиента; учитывайте стоимость выбора при сравнении работы."
+    },
+    "mistakes": []
+   },
+   "B3": {
+    "hints": [
+     {
+      "en": "Use $\\alpha_k=(r_k^\\top r_k)/(p_k^\\top Ap_k)$ and $\\beta_k=(r_{k+1}^\\top r_{k+1})/(r_k^\\top r_k)$.",
+      "ru": "Используйте $\\alpha_k=(r_k^\\top r_k)/(p_k^\\top Ap_k)$ и $\\beta_k=(r_{k+1}^\\top r_{k+1})/(r_k^\\top r_k)$."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "The first line minimization gives $\\alpha_0={{B3.alpha0}}$, $x_1={{B3.x1}}$, $r_1={{B3.r1}}$. Its inner product with $r_0$ is ${{B3.residualDot}}$.",
+       "ru": "Первая минимизация вдоль направления даёт $\\alpha_0={{B3.alpha0}}$, $x_1={{B3.x1}}$, $r_1={{B3.r1}}$. Скалярное произведение с $r_0$ равно ${{B3.residualDot}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "$\\beta_0={{B3.beta0}}$, $p_1=r_1+\\beta_0p_0={{B3.p1}}$. The directions satisfy $p_0^\\top Ap_1={{B3.conjugacy}}$. The next step is $\\alpha_1={{B3.alpha1}}$.",
+       "ru": "$\\beta_0={{B3.beta0}}$, $p_1=r_1+\\beta_0p_0={{B3.p1}}$. Направления удовлетворяют $p_0^\\top Ap_1={{B3.conjugacy}}$. Следующий шаг равен $\\alpha_1={{B3.alpha1}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "$x_2=x^*={{B3.xstar}}$ and $r_2=0$ in exact arithmetic. For an SPD matrix CG terminates in at most the dimension, but rounding may require more steps. The repeated matrix-vector product $Ap_k$ must be reused in the denominator and residual update.",
+       "ru": "$x_2=x^*={{B3.xstar}}$ и $r_2=0$ в точной арифметике. Для положительно определённой матрицы CG завершается не более чем за размерность шагов, но округление может потребовать дополнительных шагов. Вычисленное произведение $Ap_k$ нужно использовать и в знаменателе, и при обновлении невязки."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "$\\alpha_0={{B3.alpha0}}$, $\\beta_0={{B3.beta0}}$, $x_2={{B3.xstar}}$.",
+     "ru": "$\\alpha_0={{B3.alpha0}}$, $\\beta_0={{B3.beta0}}$, $x_2={{B3.xstar}}$."
+    },
+    "review": {
+     "en": "Residual orthogonality uses the Euclidean inner product; direction conjugacy uses the matrix $A$.",
+     "ru": "Ортогональность невязок задаётся обычным скалярным произведением; сопряжённость направлений — матрицей $A$."
+    },
+    "mistakes": []
+   },
+   "C2": {
+    "hints": [
+     {
+      "en": "Expand the squared update and use independence to remove the mixed term.",
+      "ru": "Раскройте квадрат обновления и уберите смешанный член с помощью независимости."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "$w_{k+1}=(1-\\alpha\\mu)w_k-\\alpha\\xi_k$. Independence and zero mean give $$\\mathbb E w_{k+1}^2=(1-\\alpha\\mu)^2\\mathbb E w_k^2+\\alpha^2\\sigma^2/B.$$ Here the mean contracts by ${{C2.factor}}$.",
+       "ru": "$w_{k+1}=(1-\\alpha\\mu)w_k-\\alpha\\xi_k$. Независимость и нулевое среднее дают $$\\mathbb E w_{k+1}^2=(1-\\alpha\\mu)^2\\mathbb E w_k^2+\\alpha^2\\sigma^2/B.$$ Здесь среднее сжимается с множителем ${{C2.factor}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "For $0<\\alpha\\mu<2$, solve the fixed-point equation: $$V_\\infty={\\alpha\\sigma^2\\over B\\mu(2-\\alpha\\mu)}={{C2.variance}}.$$ The limiting mean is zero, so this second moment is a variance; $\\mathbb E[F(w)-F^*]=\\mu V_\\infty/2={{C2.gap}}$.",
+       "ru": "При $0<\\alpha\\mu<2$ решите уравнение неподвижной точки: $$V_\\infty={\\alpha\\sigma^2\\over B\\mu(2-\\alpha\\mu)}={{C2.variance}}.$$ Предельное среднее равно нулю, поэтому этот второй момент — дисперсия; $\\mathbb E[F(w)-F^*]=\\mu V_\\infty/2={{C2.gap}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "A smaller step or a larger batch lowers the floor. Its RMS radius is ${{C2.rms}}$, not the variance itself. A shrinking learning rate can remove this constant floor under suitable assumptions.",
+       "ru": "Меньший шаг или больший батч понижает порог. Среднеквадратичный радиус равен ${{C2.rms}}$, а не самой дисперсии. Убывающий шаг при подходящих предположениях может убрать постоянный порог."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "$V_\\infty={{C2.variance}}$, expected gap ${{C2.gap}}$.",
+     "ru": "$V_\\infty={{C2.variance}}$, средний зазор ${{C2.gap}}$."
+    },
+    "review": {
+     "en": "The mean can converge while individual iterates keep fluctuating.",
+     "ru": "Среднее может сходиться, хотя отдельные итерации продолжают колебаться."
+    },
+    "mistakes": []
+   },
+   "C3": {
+    "hints": [
+     {
+      "en": "$Zu=Xw$ requires $w=S^{-1}u$. Transform the Hessian on both sides.",
+      "ru": "Для $Zu=Xw$ нужно $w=S^{-1}u$. Преобразуйте гессиан с обеих сторон."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "$H_Z=S^{-1}HS^{-1}=I$. Thus $\\kappa(H)={{C3.kappaBefore}}$, $\\kappa(H_Z)={{C3.kappaAfter}}$. The upper full-GD step endpoints are $2/L={{C3.boundaryBefore}}$ and ${{C3.boundaryAfter}}$, respectively; both boundaries are excluded.",
+       "ru": "$H_Z=S^{-1}HS^{-1}=I$. Поэтому $\\kappa(H)={{C3.kappaBefore}}$, $\\kappa(H_Z)={{C3.kappaAfter}}$. Верхние границы шага полного GD равны соответственно $2/L={{C3.boundaryBefore}}$ и ${{C3.boundaryAfter}}$; обе границы исключаются."
+      }
+     },
+     {
+      "text": {
+       "en": "Convert the coefficients back: $w=S^{-1}u={{C3.w}}$. For non-centred features with mean $m$, a standardized intercept $c$ becomes $c-m^\\top w$. Equal coefficients in the two coordinate systems are not expected.",
+       "ru": "Верните коэффициенты: $w=S^{-1}u={{C3.w}}$. Для нецентрированных признаков со средним $m$ стандартизированная константа $c$ превращается в $c-m^\\top w$. Совпадения коэффициентов в двух системах координат ожидать не нужно."
+      }
+     },
+     {
+      "text": {
+       "en": "Scaling fixes unequal units in this diagonal example. Strong correlations can remain after standardization, and a full-Hessian bound is not an exact stability guarantee for every individual stochastic batch.",
+       "ru": "В этом диагональном примере масштабирование исправляет разные единицы. Сильные корреляции могут остаться после стандартизации, а граница по полному гессиану не гарантирует устойчивость каждого отдельного случайного батча."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "$\\kappa$: ${{C3.kappaBefore}}\\to{{C3.kappaAfter}}$; $w={{C3.w}}$.",
+     "ru": "$\\kappa$: ${{C3.kappaBefore}}\\to{{C3.kappaAfter}}$; $w={{C3.w}}$."
+    },
+    "review": {
+     "en": "Fit centring and scaling on the training set, then apply those same statistics to validation data.",
+     "ru": "Оцените центрирование и масштаб на обучающей выборке, затем примените те же параметры к проверочной."
+    },
+    "mistakes": []
+   }
+  },
+  "handout": {
+   "intro": {
+    "en": "A slow gradient method may suffer from elongated geometry, expensive full gradients, or noisy estimates. This handout follows the lecture and computer seminar of Andrey Ignatov: momentum, coordinate descent, conjugate gradients, and stochastic least squares.",
+    "ru": "Медленный градиентный метод может страдать от вытянутой геометрии, дорогих полных градиентов или шумных оценок. Конспект следует лекции и компьютерному семинару Андрея Игнатова: инерция, координатный спуск, сопряжённые градиенты и стохастические наименьшие квадраты."
+   },
+   "convention": {
+    "en": "$Q$ and $A$ are real symmetric positive definite matrices unless stated otherwise. $\\mu$ and $L$ are their extreme eigenvalues, $\\kappa=L/\\mu$, $g=\\nabla f$, $r=b-Ax$. For regression we use the **half** mean squared error, $F(w)=\\|Xw-y\\|^2/(2N)$; plain MSE has twice its gradient and Hessian.",
+    "ru": "Матрицы $Q$ и $A$ вещественные, симметричные и положительно определённые, если не сказано иное. $\\mu$ и $L$ — крайние собственные значения, $\\kappa=L/\\mu$, $g=\\nabla f$, $r=b-Ax$. В регрессии используем **половину** средней квадратичной ошибки: $F(w)=\\|Xw-y\\|^2/(2N)$; у обычной MSE градиент и гессиан вдвое больше."
+   },
+   "sections": [
+    {
+     "id": "geometry",
+     "title": {
+      "en": "Geometry and a fair baseline",
+      "ru": "Геометрия и сравнение методов"
+     },
+     "blocks": [
+      {
+       "type": "definition",
+       "text": {
+        "en": "For $f(x)=\\tfrac{1}{2}x^\\top Qx-b^\\top x$, the minimizer is $x^*=Q^{-1}b$. The error $e=x-x^*$ has objective gap $\\tfrac{1}{2}e^\\top Qe$ and gradient $Qe$. Write $Q=U\\Lambda U^\\top$ with $U^\\top U=I$; all scalar recurrences below act on $z=U^\\top e$.",
+        "ru": "Для $f(x)=\\tfrac{1}{2}x^\\top Qx-b^\\top x$ минимум равен $x^*=Q^{-1}b$. Ошибка $e=x-x^*$ даёт зазор $\\tfrac{1}{2}e^\\top Qe$ и градиент $Qe$. Запишем $Q=U\\Lambda U^\\top$ с $U^\\top U=I$; все скалярные соотношения ниже действуют на $z=U^\\top e$."
+       }
+      },
+      {
+       "type": "theorem",
+       "text": {
+        "en": "Fixed-step GD has $z_{k+1,i}=(1-\\alpha\\lambda_i)z_{k,i}$. Convergence from every start holds precisely when $0<\\alpha<2/L$. The best constant quadratic step is $2/(L+\\mu)$ with worst error factor $(\\kappa-1)/(\\kappa+1)$.",
+        "ru": "GD с постоянным шагом даёт $z_{k+1,i}=(1-\\alpha\\lambda_i)z_{k,i}$. Сходимость из любой точки выполняется ровно при $0<\\alpha<2/L$. Лучший постоянный шаг для квадратичной функции равен $2/(L+\\mu)$, а наихудший множитель ошибки — $(\\kappa-1)/(\\kappa+1)$."
+       }
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "Each coordinate is a geometric progression. Its magnitude tends to zero iff $|1-\\alpha\\lambda_i|<1$. To minimize the largest magnitude on $[\\mu,L]$, balance the endpoint values $1-\\alpha\\mu=-(1-\\alpha L)$.",
+        "ru": "Каждая координата — геометрическая прогрессия. Её модуль стремится к нулю тогда и только тогда, когда $|1-\\alpha\\lambda_i|<1$. Чтобы минимизировать наибольший модуль на $[\\mu,L]$, уравняйте крайние значения: $1-\\alpha\\mu=-(1-\\alpha L)$."
+       }
+      },
+      {
+       "type": "intuition",
+       "text": {
+        "en": "With a large $\\kappa$, the step needed to avoid exploding in the steep direction barely changes the flat direction. Orthogonal rotation preserves eigenvalues and condition number while moving the eigenvectors away from the coordinate axes.",
+        "ru": "При большом $\\kappa$ шаг, не допускающий взрыва в крутом направлении, почти не меняет пологое. Ортогональный поворот сохраняет собственные значения и число обусловленности, но уводит собственные векторы от координатных осей."
+       }
+      },
+      {
+       "type": "trap",
+       "text": {
+        "en": "An iteration is not a common unit of work. GD uses a full gradient, a coordinate step may need only one partial derivative, CG uses a matrix-vector product, and SGD uses a batch of sample gradients. Full-loss logging also reads all samples. Report these counts separately; wall time is a secondary, machine-dependent measurement.",
+        "ru": "Итерация не является общей единицей работы. GD использует полный градиент, координатный шаг может требовать лишь одной частной производной, CG — умножения матрицы и вектора, а SGD — батча градиентов объектов. Запись полной потери также читает все объекты. Указывайте эти счётчики отдельно; время работы — дополнительная величина, зависящая от компьютера."
+       }
+      }
+     ]
+    },
+    {
+     "id": "momentum",
+     "title": {
+      "en": "Momentum on a quadratic",
+      "ru": "Инерция на квадратичной функции"
+     },
+     "blocks": [
+      {
+       "type": "definition",
+       "text": {
+        "en": "Heavy ball stores a displacement: $$v_{k+1}=\\beta v_k-\\alpha g(x_k),\\qquad x_{k+1}=x_k+v_{k+1}.$$ Set $v_0=0$, equivalently $x_{-1}=x_0$, unless the task supplies a different previous point. Eliminating $v$ gives $x_{k+1}=x_k-\\alpha g(x_k)+\\beta(x_k-x_{k-1})$.",
+        "ru": "Тяжёлый шар хранит перемещение: $$v_{k+1}=\\beta v_k-\\alpha g(x_k),\\qquad x_{k+1}=x_k+v_{k+1}.$$ Положите $v_0=0$, то есть $x_{-1}=x_0$, если задача не задаёт другую предыдущую точку. Исключив $v$, получим $x_{k+1}=x_k-\\alpha g(x_k)+\\beta(x_k-x_{k-1})$."
+       }
+      },
+      {
+       "type": "theorem",
+       "text": {
+        "en": "For each eigenvalue $\\lambda$, heavy ball has polynomial $$p_\\lambda(r)=r^2-(1+\\beta-\\alpha\\lambda)r+\\beta.$$ For $0\\le\\beta<1$ the whole SPD quadratic is stable exactly when $$0<\\alpha<{2(1+\\beta)\\over L}.$$ Stability here means convergence of the linear recurrence for every initial pair.",
+        "ru": "Для каждого собственного значения $\\lambda$ у тяжёлого шара возникает многочлен $$p_\\lambda(r)=r^2-(1+\\beta-\\alpha\\lambda)r+\\beta.$$ При $0\\le\\beta<1$ метод устойчив на всей положительно определённой квадратичной функции ровно при $$0<\\alpha<{2(1+\\beta)\\over L}.$$ Устойчивость означает сходимость линейного соотношения при любой начальной паре."
+       }
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "For a real monic quadratic $r^2-ar+\\beta$, both roots lie inside the unit circle iff $|\\beta|<1$, $1-a+\\beta>0$ and $1+a+\\beta>0$. Substitute $a=1+\\beta-\\alpha\\lambda$ to get $\\alpha\\lambda>0$ and $\\alpha\\lambda<2(1+\\beta)$. The largest eigenvalue imposes the tightest restriction.",
+        "ru": "Для вещественного приведённого многочлена $r^2-ar+\\beta$ оба корня лежат внутри единичного круга тогда и только тогда, когда $|\\beta|<1$, $1-a+\\beta>0$ и $1+a+\\beta>0$. Подстановка $a=1+\\beta-\\alpha\\lambda$ даёт $\\alpha\\lambda>0$ и $\\alpha\\lambda<2(1+\\beta)$. Самое сильное ограничение задаёт наибольшее собственное значение."
+       }
+      },
+      {
+       "type": "theorem",
+       "text": {
+        "en": "Polyak's parameters minimize the worst root radius over the spectral interval of an SPD quadratic: $$\\alpha_*={4\\over(\\sqrt L+\\sqrt\\mu)^2},\\quad \\beta_*=\\left({\\sqrt L-\\sqrt\\mu\\over\\sqrt L+\\sqrt\\mu}\\right)^2,\\quad \\rho_*={\\sqrt\\kappa-1\\over\\sqrt\\kappa+1}.$$ The resulting scale of iteration complexity is $O(\\sqrt\\kappa\\log(1/\\varepsilon))$, compared with $O(\\kappa\\log(1/\\varepsilon))$ for GD.",
+        "ru": "Параметры Поляка минимизируют наихудший радиус корней по спектральному интервалу положительно определённой квадратичной функции: $$\\alpha_*={4\\over(\\sqrt L+\\sqrt\\mu)^2},\\quad \\beta_*=\\left({\\sqrt L-\\sqrt\\mu\\over\\sqrt L+\\sqrt\\mu}\\right)^2,\\quad \\rho_*={\\sqrt\\kappa-1\\over\\sqrt\\kappa+1}.$$ Масштаб сложности равен $O(\\sqrt\\kappa\\log(1/\\varepsilon))$, в сравнении с $O(\\kappa\\log(1/\\varepsilon))$ для GD."
+       }
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "Put $s=\\sqrt{\\beta_*}=\\rho_*$. The endpoint coefficients satisfy $1+\\beta_*-\\alpha_*\\mu=2s$ and $1+\\beta_*-\\alpha_*L=-2s$. At interior eigenvalues the discriminant is nonpositive, so the complex-conjugate roots have modulus $s$. At the endpoints they are repeated. Repeated-root modes have the form $(c+dk)(\\pm s)^k$; a pure bound $\\|e_k\\|\\le s^k\\|e_0\\|$ does not follow.",
+        "ru": "Положите $s=\\sqrt{\\beta_*}=\\rho_*$. На концах спектра $1+\\beta_*-\\alpha_*\\mu=2s$ и $1+\\beta_*-\\alpha_*L=-2s$. Для внутренних собственных значений дискриминант неположителен, поэтому комплексно сопряжённые корни имеют модуль $s$. На концах они кратные. Моды с кратными корнями имеют вид $(c+dk)(\\pm s)^k$; простая оценка $\\|e_k\\|\\le s^k\\|e_0\\|$ отсюда не следует."
+       }
+      },
+      {
+       "type": "trap",
+       "text": {
+        "en": "These optimal parameters are a quadratic result. Do not transfer the same global guarantee to every smooth strongly convex nonlinear objective. Nor does a smaller root radius require the objective to decrease at each early step.",
+        "ru": "Эти оптимальные параметры относятся к квадратичным функциям. Нельзя переносить ту же глобальную гарантию на любую гладкую сильно выпуклую нелинейную функцию. Меньший радиус корней также не требует убывания функции на каждом начальном шаге."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "A1"
+      },
+      {
+       "type": "problem",
+       "id": "A2"
+      },
+      {
+       "type": "figure",
+       "src": "fig_momentum",
+       "alt": {
+        "en": "A nontrivial rotation makes the steep and flat directions visible without aligning them to the axes.",
+        "ru": "Нетривиальный поворот показывает крутое и пологое направления, не совмещая их с осями."
+       },
+       "caption": {
+        "en": "A nontrivial rotation makes the steep and flat directions visible without aligning them to the axes.",
+        "ru": "Нетривиальный поворот показывает крутое и пологое направления, не совмещая их с осями."
+       }
+      },
+      {
+       "type": "figure",
+       "src": "fig_stability",
+       "alt": {
+        "en": "The analytic boundary is strict; a finite run also depends on the reduction threshold.",
+        "ru": "Аналитическая граница строгая; конечный запуск зависит ещё и от порога уменьшения."
+       },
+       "caption": {
+        "en": "The analytic boundary is strict; a finite run also depends on the reduction threshold.",
+        "ru": "Аналитическая граница строгая; конечный запуск зависит ещё и от порога уменьшения."
+       }
+      }
+     ]
+    },
+    {
+     "id": "lookahead",
+     "title": {
+      "en": "Look-ahead and restart",
+      "ru": "Опережение и рестарт"
+     },
+     "blocks": [
+      {
+       "type": "definition",
+       "text": {
+        "en": "The constant-momentum look-ahead form is $$y_k=x_k+\\beta(x_k-x_{k-1}),\\qquad x_{k+1}=y_k-\\alpha g(y_k).$$ On a scalar quadratic it gives $$z_{k+1}=(1-\\alpha\\lambda)\\big((1+\\beta)z_k-\\beta z_{k-1}\\big).$$ Its polynomial differs from heavy ball: $r^2-(1+\\beta)(1-\\alpha\\lambda)r+\\beta(1-\\alpha\\lambda)$.",
+        "ru": "Форма с постоянной инерцией и опережением задаётся как $$y_k=x_k+\\beta(x_k-x_{k-1}),\\qquad x_{k+1}=y_k-\\alpha g(y_k).$$ На скалярной квадратичной функции $$z_{k+1}=(1-\\alpha\\lambda)\\big((1+\\beta)z_k-\\beta z_{k-1}\\big).$$ Многочлен отличается от тяжёлого шара: $r^2-(1+\\beta)(1-\\alpha\\lambda)r+\\beta(1-\\alpha\\lambda)$."
+       }
+      },
+      {
+       "type": "note",
+       "text": {
+        "en": "For a known strongly convex smooth objective, a standard accelerated choice is $\\alpha=1/L$, $\\beta=(\\sqrt L-\\sqrt\\mu)/(\\sqrt L+\\sqrt\\mu)$. In the merely convex case, acceleration uses a changing extrapolation coefficient; the $O(1/k^2)$ objective bound is not a claim about arbitrary constant momentum.",
+        "ru": "Для известной гладкой сильно выпуклой функции стандартный ускоренный выбор равен $\\alpha=1/L$, $\\beta=(\\sqrt L-\\sqrt\\mu)/(\\sqrt L+\\sqrt\\mu)$. В просто выпуклом случае ускорение использует меняющийся коэффициент экстраполяции; оценка зазора $O(1/k^2)$ не относится к произвольной постоянной инерции."
+       },
+       "title": {
+        "en": "Two acceleration settings",
+        "ru": "Два режима ускорения"
+       }
+      },
+      {
+       "type": "intuition",
+       "text": {
+        "en": "If the extrapolated step points the wrong way, discard its momentum and retry a gradient step from the current iterate. An objective restart tests whether the proposed objective exceeds the current one. Label the restarted method separately and count the additional gradient evaluation.",
+        "ru": "Если экстраполированный шаг направлен неверно, отбросьте инерцию и повторите градиентный шаг из текущей точки. Рестарт по функции проверяет, превышает ли предложенное значение текущее. Обозначайте метод с рестартом отдельно и учитывайте дополнительное вычисление градиента."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "A3"
+      }
+     ]
+    },
+    {
+     "id": "coordinates",
+     "title": {
+      "en": "Coordinate descent",
+      "ru": "Координатный спуск"
+     },
+     "blocks": [
+      {
+       "type": "definition",
+       "text": {
+        "en": "A coordinate Lipschitz constant $L_i>0$ gives $$f(x+te_i)\\le f(x)+tg_i+\\tfrac{1}{2}L_it^2.$$ Choosing $t=-g_i/L_i$ yields $$f(x^+)\\le f(x)-{g_i^2\\over2L_i}.$$ For a quadratic $L_i=Q_{ii}$ and the inequality is an equality.",
+        "ru": "Координатная константа Липшица $L_i>0$ даёт $$f(x+te_i)\\le f(x)+tg_i+\\tfrac{1}{2}L_it^2.$$ Выбор $t=-g_i/L_i$ приводит к $$f(x^+)\\le f(x)-{g_i^2\\over2L_i}.$$ Для квадратичной функции $L_i=Q_{ii}$, и неравенство становится равенством."
+       }
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "For a quadratic, expand the slice exactly: $f(x+te_i)=f(x)+tg_i+Q_{ii}t^2/2$. Differentiating in $t$ gives its unique minimizer. Substitution gives the decrease. After modifying $x_i$, the next derivative must use the modified vector.",
+        "ru": "Для квадратичной функции срез раскрывается точно: $f(x+te_i)=f(x)+tg_i+Q_{ii}t^2/2$. Дифференцирование по $t$ даёт единственный минимум. Подстановка даёт уменьшение. После изменения $x_i$ следующая производная должна использовать изменённый вектор."
+       }
+      },
+      {
+       "type": "note",
+       "text": {
+        "en": "Cyclic selection visits each coordinate in order. Uniform random selection samples one coordinate per update. Greedy selection maximizes $|g_i|/\\sqrt{L_i}$, since its square is twice the guaranteed decrease. In $d$ dimensions, $d$ coordinate updates are one equivalent pass, but a pass is not necessarily as cheap as one full gradient.",
+        "ru": "Циклический выбор проходит координаты по порядку. Равномерный случайный выбор выбирает одну координату на шаг. Жадный выбор максимизирует $|g_i|/\\sqrt{L_i}$, поскольку его квадрат равен удвоенному гарантированному уменьшению. В размерности $d$ один эквивалентный проход — это $d$ координатных обновлений, но проход не обязательно стоит столько же, сколько один полный градиент."
+       },
+       "title": {
+        "en": "Three selectors",
+        "ru": "Три правила выбора"
+       }
+      },
+      {
+       "type": "theorem",
+       "text": {
+        "en": "If $f$ is $\\mu$-strongly convex and all coordinates have $L_i\\le L_{\\max}$, uniform coordinate selection gives $$\\mathbb E[f(x^+)-f^*\\mid x]\\le\\left(1-{\\mu\\over dL_{\\max}}\\right)(f(x)-f^*).$$ This is a bound per coordinate update, under fresh independent coordinate sampling.",
+        "ru": "Если $f$ является $\\mu$-сильно выпуклой и для всех координат $L_i\\le L_{\\max}$, равномерный выбор даёт $$\\mathbb E[f(x^+)-f^*\\mid x]\\le\\left(1-{\\mu\\over dL_{\\max}}\\right)(f(x)-f^*).$$ Это оценка на одно координатное обновление при новой независимой выборке координаты."
+       }
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "Average $g_i^2/(2L_i)$ over the coordinates: the expected decrease is at least $\\|g\\|^2/(2dL_{\\max})$. Strong convexity implies $\\|g\\|^2\\ge2\\mu(f-f^*)$; substitute into the decrease estimate.",
+        "ru": "Усредните $g_i^2/(2L_i)$ по координатам: среднее уменьшение не меньше $\\|g\\|^2/(2dL_{\\max})$. Сильная выпуклость даёт $\\|g\\|^2\\ge2\\mu(f-f^*)$; подставьте это в оценку уменьшения."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "B1"
+      },
+      {
+       "type": "problem",
+       "id": "B2"
+      }
+     ]
+    },
+    {
+     "id": "cg",
+     "title": {
+      "en": "Conjugate gradients",
+      "ru": "Сопряжённые градиенты"
+     },
+     "blocks": [
+      {
+       "type": "definition",
+       "text": {
+        "en": "For $A\\succ0$, minimizing $f(x)=\\tfrac{1}{2}x^\\top Ax-b^\\top x$ is equivalent to solving $Ax=b$. Directions $p_i,p_j$ are $A$-conjugate if $p_i^\\top Ap_j=0$. The residual $r=b-Ax$ is the negative gradient.",
+        "ru": "При $A\\succ0$ минимизация $f(x)=\\tfrac{1}{2}x^\\top Ax-b^\\top x$ равносильна решению $Ax=b$. Направления $p_i,p_j$ являются $A$-сопряжёнными, если $p_i^\\top Ap_j=0$. Невязка $r=b-Ax$ равна отрицательному градиенту."
+       }
+      },
+      {
+       "type": "definition",
+       "text": {
+        "en": "Initialize $r_0=b-Ax_0$, $p_0=r_0$. At each step compute $$q_k=Ap_k,\\quad \\alpha_k={r_k^\\top r_k\\over p_k^\\top q_k},$$ $$x_{k+1}=x_k+\\alpha_kp_k,\\quad r_{k+1}=r_k-\\alpha_kq_k,$$ $$\\beta_k={r_{k+1}^\\top r_{k+1}\\over r_k^\\top r_k},\\quad p_{k+1}=r_{k+1}+\\beta_kp_k.$$ Check convergence before forming the next coefficient if the new residual is zero.",
+        "ru": "Начните с $r_0=b-Ax_0$, $p_0=r_0$. На каждом шаге вычислите $$q_k=Ap_k,\\quad \\alpha_k={r_k^\\top r_k\\over p_k^\\top q_k},$$ $$x_{k+1}=x_k+\\alpha_kp_k,\\quad r_{k+1}=r_k-\\alpha_kq_k,$$ $$\\beta_k={r_{k+1}^\\top r_{k+1}\\over r_k^\\top r_k},\\quad p_{k+1}=r_{k+1}+\\beta_kp_k.$$ Если новая невязка нулевая, проверьте завершение до вычисления следующего коэффициента."
+       }
+      },
+      {
+       "type": "theorem",
+       "text": {
+        "en": "In exact arithmetic, distinct residuals are orthogonal and search directions are $A$-conjugate. CG minimizes the quadratic over $x_0+\\mathcal K_k(A,r_0)$, where $\\mathcal K_k=\\operatorname{span}\\{r_0,Ar_0,\\ldots,A^{k-1}r_0\\}$. It terminates in at most $d$ steps in dimension $d$.",
+        "ru": "В точной арифметике разные невязки ортогональны, а направления поиска являются $A$-сопряжёнными. CG минимизирует квадратичную функцию на $x_0+\\mathcal K_k(A,r_0)$, где $\\mathcal K_k=\\operatorname{span}\\{r_0,Ar_0,\\ldots,A^{k-1}r_0\\}$. В размерности $d$ он завершается не более чем за $d$ шагов."
+       }
+      },
+      {
+       "type": "intuition",
+       "text": {
+        "en": "Minimizing along a new conjugate direction does not undo the minimizations along earlier directions: $p_i^\\top A(x+tp_j)=p_i^\\top Ax$ for $i\\ne j$. Once the search directions span the full space, the gradient is orthogonal to the entire space and must vanish.",
+        "ru": "Минимизация вдоль нового сопряжённого направления не отменяет минимизации вдоль предыдущих: $p_i^\\top A(x+tp_j)=p_i^\\top Ax$ при $i\\ne j$. Когда направления поиска порождают всё пространство, градиент ортогонален всему пространству и должен быть нулевым."
+       }
+      },
+      {
+       "type": "theorem",
+       "text": {
+        "en": "With the energy norm $\\|e\\|_A=\\sqrt{e^\\top Ae}$, $$\\|e_k\\|_A\\le2\\left({\\sqrt\\kappa-1\\over\\sqrt\\kappa+1}\\right)^k\\|e_0\\|_A.$$ Since $f(x_k)-f^*=\\|e_k\\|_A^2/2$, the corresponding objective ratio has the squared factor. Eigenvalue clustering can make the observed convergence much faster than this worst-case interval bound.",
+        "ru": "Для энергетической нормы $\\|e\\|_A=\\sqrt{e^\\top Ae}$ $$\\|e_k\\|_A\\le2\\left({\\sqrt\\kappa-1\\over\\sqrt\\kappa+1}\\right)^k\\|e_0\\|_A.$$ Так как $f(x_k)-f^*=\\|e_k\\|_A^2/2$, в отношении зазоров множитель возводится в квадрат. Группировка собственных значений может ускорить наблюдаемую сходимость по сравнению с наихудшей оценкой по интервалу."
+       }
+      },
+      {
+       "type": "trap",
+       "text": {
+        "en": "Use $\\|r\\|/\\|b\\|$ when $b\\ne0$. For $b=0$ use a documented absolute threshold. Check symmetry and positive definiteness for small dense examples; guard against nonpositive curvature, nonfinite values and a maximum iteration limit. The true final residual is $b-Ax$, and its verification costs an additional matrix-vector product.",
+        "ru": "Используйте $\\|r\\|/\\|b\\|$ при $b\\ne0$. При $b=0$ задайте явный абсолютный порог. На небольших плотных примерах проверьте симметрию и положительную определённость; предусмотрите проверки неположительной кривизны, неконечных значений и лимита итераций. Истинная конечная невязка равна $b-Ax$, и её проверка стоит ещё одного произведения матрицы на вектор."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "B3"
+      },
+      {
+       "type": "figure",
+       "src": "fig_directions",
+       "alt": {
+        "en": "GD, cyclic coordinate descent and CG on the same SPD quadratic, with their different work units.",
+        "ru": "GD, циклический координатный спуск и CG на одной положительно определённой квадратичной функции с разными единицами работы."
+       },
+       "caption": {
+        "en": "GD, cyclic coordinate descent and CG on the same SPD quadratic, with their different work units.",
+        "ru": "GD, циклический координатный спуск и CG на одной положительно определённой квадратичной функции с разными единицами работы."
+       }
+      }
+     ]
+    },
+    {
+     "id": "sgd",
+     "title": {
+      "en": "Mini-batches and the noise floor",
+      "ru": "Мини-батчи и шумовой порог"
+     },
+     "blocks": [
+      {
+       "type": "definition",
+       "text": {
+        "en": "For $F(w)=N^{-1}\\sum_i\\ell_i(w)$, a fresh uniform index gives $\\mathbb E[\\nabla\\ell_i(w)\\mid w]=\\nabla F(w)$. A batch gradient is the mean of its sample gradients. If $B$ samples are independent and each has variance $\\sigma^2$, the batch variance is $\\sigma^2/B$.",
+        "ru": "Для $F(w)=N^{-1}\\sum_i\\ell_i(w)$ новый равномерный индекс даёт $\\mathbb E[\\nabla\\ell_i(w)\\mid w]=\\nabla F(w)$. Градиент батча — среднее градиентов его объектов. Если $B$ выборок независимы и каждая имеет дисперсию $\\sigma^2$, дисперсия батча равна $\\sigma^2/B$."
+       }
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "The sample mean is linear, so its expectation is the full mean. Expand the squared centred average: independent cross terms have zero expectation, leaving $B$ diagonal terms divided by $B^2$. Without replacement, covariance terms are negative and yield the finite-population correction $(N-B)/(N-1)$.",
+        "ru": "Среднее выборки линейно, поэтому его ожидание равно полному среднему. Раскройте квадрат центрированного среднего: независимые смешанные члены имеют нулевое ожидание, остаются $B$ диагональных членов, делённых на $B^2$. Без возвращения ковариационные члены отрицательны и дают поправку конечной совокупности $(N-B)/(N-1)$."
+       }
+      },
+      {
+       "type": "note",
+       "text": {
+        "en": "Shuffling without replacement each epoch is a useful implementation choice. However, an iterate depends on the earlier batches, so conditional unbiasedness of every later batch is not automatic. State whether a theoretical argument assumes fresh independent batches or random reshuffling.",
+        "ru": "Перемешивание без возвращения в каждой эпохе удобно для реализации. Однако итерат зависит от предыдущих батчей, поэтому условная несмещённость каждого последующего батча не возникает автоматически. Указывайте, предполагает ли теоретический вывод новые независимые батчи или случайное перемешивание."
+       },
+       "title": {
+        "en": "Sampling convention",
+        "ru": "Правило выборки"
+       }
+      },
+      {
+       "type": "theorem",
+       "text": {
+        "en": "For an $L$-smooth objective and an unbiased gradient with conditional noise variance at most $\\sigma^2/B$, the descent lemma gives $$\\mathbb E[F(w^+)\\mid w]\\le F(w)-\\alpha(1-L\\alpha/2)\\|\\nabla F(w)\\|^2+{L\\alpha^2\\sigma^2\\over2B}.$$ The positive noise term explains why a constant step can leave a floor.",
+        "ru": "Для $L$-гладкой функции и несмещённого градиента с условной дисперсией шума не выше $\\sigma^2/B$ лемма о спуске даёт $$\\mathbb E[F(w^+)\\mid w]\\le F(w)-\\alpha(1-L\\alpha/2)\\|\\nabla F(w)\\|^2+{L\\alpha^2\\sigma^2\\over2B}.$$ Положительный шумовой член объясняет, почему постоянный шаг может оставлять порог."
+       }
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "Insert $w^+=w-\\alpha g$ into the smoothness upper model. Use $\\mathbb E[g\\mid w]=\\nabla F(w)$ and $\\mathbb E[\\|g\\|^2\\mid w]\\le\\|\\nabla F(w)\\|^2+\\sigma^2/B$. Collect the gradient and variance terms.",
+        "ru": "Подставьте $w^+=w-\\alpha g$ в верхнюю модель гладкости. Используйте $\\mathbb E[g\\mid w]=\\nabla F(w)$ и $\\mathbb E[\\|g\\|^2\\mid w]\\le\\|\\nabla F(w)\\|^2+\\sigma^2/B$. Соберите градиентные и дисперсионные члены."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "C1"
+      },
+      {
+       "type": "problem",
+       "id": "C2"
+      }
+     ]
+    },
+    {
+     "id": "schedules",
+     "title": {
+      "en": "Schedules and reproducible experiments",
+      "ru": "Расписания и воспроизводимые эксперименты"
+     },
+     "blocks": [
+      {
+       "type": "definition",
+       "text": {
+        "en": "Use the **update count** $k$, starting from zero, to define the schedules: constant $\\alpha_k=\\alpha_0$, inverse square root $\\alpha_k=\\alpha_0/\\sqrt{1+k}$, inverse $\\alpha_k=\\alpha_0/(1+k)$. An epoch counter defines a different schedule; do not mix the two conventions.",
+        "ru": "Определяйте расписание по **числу обновлений** $k$, начиная с нуля: постоянное $\\alpha_k=\\alpha_0$, шаг, обратно пропорциональный корню, $\\alpha_k=\\alpha_0/\\sqrt{1+k}$, и обратное расписание $\\alpha_k=\\alpha_0/(1+k)$. Счётчик эпох задаёт другое расписание; не смешивайте соглашения."
+       }
+      },
+      {
+       "type": "note",
+       "text": {
+        "en": "Under the usual stochastic-approximation assumptions, $\\sum_k\\alpha_k=\\infty$ and $\\sum_k\\alpha_k^2<\\infty$ are sufficient step conditions. Inverse steps meet both; inverse-square-root steps fail square summability. That does not make the latter unusable for finite-budget convex experiments, but it rules out quoting the same theorem without further work.",
+        "ru": "При обычных предположениях стохастической аппроксимации достаточные условия на шаг имеют вид $\\sum_k\\alpha_k=\\infty$ и $\\sum_k\\alpha_k^2<\\infty$. Обратные шаги выполняют оба условия; обратный квадратный корень не даёт суммируемости квадратов. Это не запрещает его в выпуклых экспериментах с конечным бюджетом, но не позволяет ссылаться на ту же теорему без дополнительных аргументов."
+       },
+       "title": {
+        "en": "What a schedule guarantees",
+        "ru": "Что гарантирует расписание"
+       }
+      },
+      {
+       "type": "trap",
+       "text": {
+        "en": "An inverse schedule can decay too quickly before the method traverses an elongated valley. Compare the same initial rate, update convention, data, seeds and work budget. A schedule that wins after a short run may lose after a longer one.",
+        "ru": "Обратное расписание может слишком быстро уменьшить шаг ещё до прохождения вытянутой долины. Сравнивайте одинаковые начальный шаг, счётчик обновлений, данные, seed и бюджет работы. Расписание, выигравшее на коротком запуске, может проиграть на длинном."
+       }
+      },
+      {
+       "type": "note",
+       "text": {
+        "en": "At each epoch draw a permutation, take slices of size $B$, and keep the last slice even if it is shorter. Use its actual length in the mean gradient. Log the complete objective after finishing the epoch. Repeat across ${{demo.seeds}}$ random seeds and show the median and interquartile interval.",
+        "ru": "В каждой эпохе создавайте перестановку, берите срезы размера $B$ и сохраняйте последний срез, даже если он короче. Используйте фактическую длину при усреднении градиента. Записывайте полную функцию после окончания эпохи. Повторите запуск на ${{demo.seeds}}$ случайных seed и покажите медиану и межквартильный интервал."
+       },
+       "title": {
+        "en": "Epoch protocol",
+        "ru": "Протокол эпохи"
+       }
+      },
+      {
+       "type": "figure",
+       "src": "fig_sgd",
+       "alt": {
+        "en": "Use the same sample-gradient budget for all schedules; the shaded bands show seed variability.",
+        "ru": "Используйте одинаковый бюджет градиентов объектов для всех расписаний; полосы показывают разброс по seed."
+       },
+       "caption": {
+        "en": "Use the same sample-gradient budget for all schedules; the shaded bands show seed variability.",
+        "ru": "Используйте одинаковый бюджет градиентов объектов для всех расписаний; полосы показывают разброс по seed."
+       }
+      }
+     ]
+    },
+    {
+     "id": "scaling",
+     "title": {
+      "en": "Feature standardization",
+      "ru": "Стандартизация признаков"
+     },
+     "blocks": [
+      {
+       "type": "definition",
+       "text": {
+        "en": "For centred $X$, let $S=\\operatorname{diag}(s_i)$ with positive training standard deviations and define $Z=XS^{-1}$. Its least-squares Hessian is $H_Z=S^{-1}HS^{-1}$ with $H=X^\\top X/N$. Prediction equality $Zu=Xw$ requires $w=S^{-1}u$.",
+        "ru": "Для центрированной матрицы $X$ пусть $S=\\operatorname{diag}(s_i)$ содержит положительные стандартные отклонения обучающих признаков, а $Z=XS^{-1}$. Гессиан задачи наименьших квадратов равен $H_Z=S^{-1}HS^{-1}$ при $H=X^\\top X/N$. Для равенства предсказаний $Zu=Xw$ нужно $w=S^{-1}u$."
+       }
+      },
+      {
+       "type": "intuition",
+       "text": {
+        "en": "Columns with different units stretch the quadratic. Scaling can remove this part of the condition number. It does not remove near-linear dependence between columns, so the standardized Hessian can still be ill-conditioned. Constant columns need a separate convention rather than division by zero.",
+        "ru": "Столбцы с разными единицами вытягивают квадратичную функцию. Масштабирование может убрать эту часть числа обусловленности. Оно не устраняет почти линейную зависимость столбцов, поэтому стандартизированный гессиан может остаться плохо обусловленным. Для постоянных столбцов нужно отдельное соглашение вместо деления на нуль."
+       }
+      },
+      {
+       "type": "note",
+       "text": {
+        "en": "With means $m$, standardized prediction $c+(x-m)^\\top S^{-1}u$ becomes $b+x^\\top w$, where $w=S^{-1}u$ and $b=c-m^\\top w$. Estimate $m,S$ on training data only. A grid search for the largest usable SGD step is an empirical finite-run test, distinct from the full-gradient boundary $2/\\lambda_{\\max}(H)$.",
+        "ru": "При средних $m$ стандартизированное предсказание $c+(x-m)^\\top S^{-1}u$ превращается в $b+x^\\top w$, где $w=S^{-1}u$ и $b=c-m^\\top w$. Оценивайте $m,S$ только по обучающим данным. Поиск наибольшего пригодного шага SGD по сетке — эмпирическая проверка конечного запуска, отличающаяся от границы полного градиента $2/\\lambda_{\\max}(H)$."
+       },
+       "title": {
+        "en": "Restore original units",
+        "ru": "Вернуть исходные единицы"
+       }
+      },
+      {
+       "type": "problem",
+       "id": "C3"
+      },
+      {
+       "type": "figure",
+       "src": "fig_scaling",
+       "alt": {
+        "en": "Original and standardized least-squares losses with identical SGD settings.",
+        "ru": "Потери в исходных и стандартизированных единицах при одинаковых настройках SGD."
+       },
+       "caption": {
+        "en": "Original and standardized least-squares losses with identical SGD settings.",
+        "ru": "Потери в исходных и стандартизированных единицах при одинаковых настройках SGD."
+       }
+      }
+     ]
+    },
+    {
+     "id": "implementation",
+     "title": {
+      "en": "Implementation checklist and exercises",
+      "ru": "Проверки реализации и упражнения"
+     },
+     "blocks": [
+      {
+       "type": "list",
+       "items": [
+        {
+         "en": "Return an independent copy of every saved iterate; appending the same mutable array erases the path.",
+         "ru": "Возвращайте независимую копию каждой сохранённой точки; добавление одного изменяемого массива стирает траекторию."
+        },
+        {
+         "en": "Stop on the current gradient or residual, guard nonfinite values, and document the maximum iteration limit.",
+         "ru": "Останавливайтесь по текущему градиенту или невязке, проверяйте конечность значений и указывайте лимит итераций."
+        },
+        {
+         "en": "Report initial setup, optimization and diagnostic work separately. A greedy coordinate scan computes more than the selected derivative.",
+         "ru": "Указывайте отдельно работу инициализации, оптимизации и диагностики. Жадный просмотр координат вычисляет больше, чем одну выбранную производную."
+        },
+        {
+         "en": "Compare NumPy implementations against exact small examples and direct linear algebra, then run the larger experiments.",
+         "ru": "Сравните реализации NumPy с точными маленькими примерами и прямой линейной алгеброй, затем запускайте большие эксперименты."
+        }
+       ]
+      },
+      {
+       "type": "selfcheck",
+       "question": {
+        "en": "Why can an analytically stable pair fail a finite-run speed test?",
+        "ru": "Почему аналитически устойчивая пара может не пройти проверку скорости за конечное число шагов?"
+       },
+       "answer": {
+        "en": "A root modulus close to one and an initial transient may keep the objective above the chosen finite-run threshold.",
+        "ru": "Модуль корня возле единицы и начальный переходный режим могут удерживать функцию выше заданного порога конечного запуска."
+       }
+      },
+      {
+       "type": "selfcheck",
+       "question": {
+        "en": "Why is one CG iteration not directly comparable to one coordinate update?",
+        "ru": "Почему одну итерацию CG нельзя напрямую сравнить с одним координатным обновлением?"
+       },
+       "answer": {
+        "en": "CG computes a matrix-vector product, while a coordinate update can use one partial derivative. The real cost depends on sparsity and on the implementation of coordinate selection.",
+        "ru": "CG вычисляет произведение матрицы на вектор, тогда как координатный шаг может использовать одну частную производную. Реальная стоимость зависит от разреженности и реализации выбора координаты."
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "cheatsheet": {
+   "sections": [
+    {
+     "id": "quadratic",
+     "title": {
+      "en": "SPD quadratic and GD",
+      "ru": "Квадратичная функция и GD"
+     },
+     "items": [
+      {
+       "en": "$f=\\tfrac{1}{2}x^\\top Qx-b^\\top x$, $x^*=Q^{-1}b$, $\\kappa=L/\\mu$.",
+       "ru": "$f=\\tfrac{1}{2}x^\\top Qx-b^\\top x$, $x^*=Q^{-1}b$, $\\kappa=L/\\mu$."
+      },
+      {
+       "en": "$0<\\alpha<2/L$; best fixed quadratic step $2/(L+\\mu)$.",
+       "ru": "$0<\\alpha<2/L$; лучший постоянный квадратичный шаг $2/(L+\\mu)$."
+      }
+     ]
+    },
+    {
+     "id": "hb",
+     "title": {
+      "en": "Heavy ball",
+      "ru": "Тяжёлый шар"
+     },
+     "items": [
+      {
+       "en": "$x^+=x-\\alpha g(x)+\\beta(x-x^-)$; $x_{-1}=x_0$.",
+       "ru": "$x^+=x-\\alpha g(x)+\\beta(x-x^-)$; $x_{-1}=x_0$."
+      },
+      {
+       "en": "$p_\\lambda(r)=r^2-(1+\\beta-\\alpha\\lambda)r+\\beta$.",
+       "ru": "$p_\\lambda(r)=r^2-(1+\\beta-\\alpha\\lambda)r+\\beta$."
+      },
+      {
+       "en": "For $0\\le\\beta<1$: $0<\\alpha<2(1+\\beta)/L$.",
+       "ru": "При $0\\le\\beta<1$: $0<\\alpha<2(1+\\beta)/L$."
+      },
+      {
+       "en": "$\\alpha_*={4\\over(\\sqrt L+\\sqrt\\mu)^2}$, $\\beta_*=({\\sqrt L-\\sqrt\\mu\\over\\sqrt L+\\sqrt\\mu})^2$.",
+       "ru": "$\\alpha_*={4\\over(\\sqrt L+\\sqrt\\mu)^2}$, $\\beta_*=({\\sqrt L-\\sqrt\\mu\\over\\sqrt L+\\sqrt\\mu})^2$."
+      },
+      {
+       "en": "$\\rho_*=({\\sqrt\\kappa-1})/({\\sqrt\\kappa+1})$. Quadratic result; transient growth is possible.",
+       "ru": "$\\rho_*=({\\sqrt\\kappa-1})/({\\sqrt\\kappa+1})$. Результат для квадратичной функции; возможен начальный рост."
+      }
+     ]
+    },
+    {
+     "id": "nag",
+     "title": {
+      "en": "Look-ahead",
+      "ru": "Опережение"
+     },
+     "items": [
+      {
+       "en": "$y=x+\\beta(x-x^-)$, $x^+=y-\\alpha g(y)$.",
+       "ru": "$y=x+\\beta(x-x^-)$, $x^+=y-\\alpha g(y)$."
+      },
+      {
+       "en": "Gradient at the extrapolated point. A restart discards momentum and retries.",
+       "ru": "Градиент в экстраполированной точке. Рестарт отбрасывает инерцию и повторяет шаг."
+      }
+     ]
+    },
+    {
+     "id": "cd",
+     "title": {
+      "en": "Coordinate descent",
+      "ru": "Координатный спуск"
+     },
+     "items": [
+      {
+       "en": "$L_i=Q_{ii}$, $x_i^+=x_i-g_i/L_i$. Decrease $g_i^2/(2L_i)$.",
+       "ru": "$L_i=Q_{ii}$, $x_i^+=x_i-g_i/L_i$. Уменьшение $g_i^2/(2L_i)$."
+      },
+      {
+       "en": "Greedy: maximize $|g_i|/\\sqrt{L_i}$. Cyclic and uniform random are different selectors.",
+       "ru": "Жадный выбор: максимум $|g_i|/\\sqrt{L_i}$. Циклический и равномерный случайный выбор — другие правила."
+      },
+      {
+       "en": "$d$ updates = one pass. Count the cost of a greedy scan.",
+       "ru": "$d$ обновлений = один проход. Учитывайте стоимость жадного просмотра."
+      }
+     ]
+    },
+    {
+     "id": "cg",
+     "title": {
+      "en": "CG for an SPD system",
+      "ru": "CG для положительно определённой системы"
+     },
+     "items": [
+      {
+       "en": "$r=b-Ax$, $p=r$ initially. Reuse $q=Ap$.",
+       "ru": "Вначале $r=b-Ax$, $p=r$. Переиспользуйте $q=Ap$."
+      },
+      {
+       "en": "$\\alpha={r^\\top r\\over p^\\top q}$; $x^+=x+\\alpha p$, $r^+=r-\\alpha q$.",
+       "ru": "$\\alpha={r^\\top r\\over p^\\top q}$; $x^+=x+\\alpha p$, $r^+=r-\\alpha q$."
+      },
+      {
+       "en": "$\\beta={(r^+)^\\top r^+\\over r^\\top r}$; $p^+=r^++\\beta p$.",
+       "ru": "$\\beta={(r^+)^\\top r^+\\over r^\\top r}$; $p^+=r^++\\beta p$."
+      },
+      {
+       "en": "$r_i^\\top r_j=0$, $p_i^\\top Ap_j=0$ in exact arithmetic, $i\\ne j$.",
+       "ru": "$r_i^\\top r_j=0$, $p_i^\\top Ap_j=0$ в точной арифметике, $i\\ne j$."
+      },
+      {
+       "en": "Check true $b-Ax$; relative residual uses $\\|b\\|$ if nonzero.",
+       "ru": "Проверяйте истинную $b-Ax$; относительная невязка использует $\\|b\\|$, если она ненулевая."
+      }
+     ]
+    },
+    {
+     "id": "sgd",
+     "title": {
+      "en": "SGD and variance",
+      "ru": "SGD и дисперсия"
+     },
+     "items": [
+      {
+       "en": "$F=N^{-1}\\sum_i\\ell_i$, $g_B=|B|^{-1}\\sum_{i\\in B}\\nabla\\ell_i$.",
+       "ru": "$F=N^{-1}\\sum_i\\ell_i$, $g_B=|B|^{-1}\\sum_{i\\in B}\\nabla\\ell_i$."
+      },
+      {
+       "en": "Independent draws: $\\operatorname{Var}(g_B)=\\sigma^2/B$.",
+       "ru": "Независимые выборки: $\\operatorname{Var}(g_B)=\\sigma^2/B$."
+      },
+      {
+       "en": "Scalar quadratic: $V_\\infty={\\alpha\\sigma^2\\over B\\mu(2-\\alpha\\mu)}$, $0<\\alpha\\mu<2$.",
+       "ru": "Скалярная квадратичная функция: $V_\\infty={\\alpha\\sigma^2\\over B\\mu(2-\\alpha\\mu)}$, $0<\\alpha\\mu<2$."
+      },
+      {
+       "en": "Shuffle each epoch; include and correctly normalize the last short batch.",
+       "ru": "В начале эпохи создавайте новую перестановку; включайте последний короткий батч и правильно нормируйте его."
+      }
+     ]
+    },
+    {
+     "id": "schedule",
+     "title": {
+      "en": "Schedules and work",
+      "ru": "Расписания и работа"
+     },
+     "items": [
+      {
+       "en": "$\\alpha_0$, $\\alpha_0/\\sqrt{1+k}$, $\\alpha_0/(1+k)$; $k$ counts updates.",
+       "ru": "$\\alpha_0$, $\\alpha_0/\\sqrt{1+k}$, $\\alpha_0/(1+k)$; $k$ считает обновления."
+      },
+      {
+       "en": "Compare ${{demo.seeds}}$ seeds, the central curve and the quartile interval. Count sample gradients and full-loss logging.",
+       "ru": "Сравнивайте ${{demo.seeds}}$ seed, центральную кривую и интервал между квартилями. Считайте градиенты объектов и вычисления полной потери."
+      }
+     ]
+    },
+    {
+     "id": "scale",
+     "title": {
+      "en": "Feature scaling",
+      "ru": "Масштаб признаков"
+     },
+     "items": [
+      {
+       "en": "$Z=(X-m)S^{-1}$, $H_Z=S^{-1}HS^{-1}$.",
+       "ru": "$Z=(X-m)S^{-1}$, $H_Z=S^{-1}HS^{-1}$."
+      },
+      {
+       "en": "Original coefficients $w=S^{-1}u$, intercept $b=c-m^\\top w$.",
+       "ru": "Исходные коэффициенты $w=S^{-1}u$, константа $b=c-m^\\top w$."
+      },
+      {
+       "en": "Use training statistics. Scaling does not remove correlation.",
+       "ru": "Используйте обучающие статистики. Масштабирование не устраняет корреляцию."
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

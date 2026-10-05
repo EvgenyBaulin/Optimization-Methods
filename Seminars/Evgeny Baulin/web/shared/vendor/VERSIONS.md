@@ -19,9 +19,9 @@ The seminar pages load these files locally from `web/shared/vendor/` (as `../sha
   - `pyodide.js`: `b4cb23a53aba19c221659b9fb40a2f18281d685691dc06647fb0afd0681baf98`
   - `pyodide.asm.js`: `6b4c90de5b7172873f04f21884d0e9d2274e305fe32116558fe3e4fbe3618d51`
   - `pyodide.asm.wasm`: `a50dd1843f805a0b7c45b61037ee0d7b26dfe85efe0e18ef95a34ad24e401f5f`
-  - `python_stdlib.zip`: `16611534726e5d8ac2bd8f926410b2dcb8d6f49aa24913463533b457a2115c16`
+  - `python_stdlib.bin`: `16611534726e5d8ac2bd8f926410b2dcb8d6f49aa24913463533b457a2115c16`
   - `pyodide-lock.json`: `9c45b916001a750f4102fc287494f3eab215909c7535c626a20db80fd6333e2c`
 
-  and the wheels of NumPy, Matplotlib and their dependencies (contourpy, cycler, fonttools, kiwisolver, matplotlib-pyodide, packaging, pillow, pyparsing, python-dateutil, pytz, six), each matching the `sha256` that `pyodide-lock.json` lists for it, which Pyodide checks again when it loads a wheel. `LICENSE` is the Pyodide licence from its repository at tag 0.27.7.
+  and the wheels of NumPy, Matplotlib and their dependencies (contourpy, cycler, fonttools, kiwisolver, matplotlib-pyodide, packaging, pillow, pyparsing, python-dateutil, pytz, six), each matching the `sha256` that `pyodide-lock.json` lists for it, which Pyodide checks again when it loads a wheel. `python_stdlib.zip` is renamed `python_stdlib.bin` (same bytes), because the site's server refuses `.zip`; `livecode.js` passes it as `stdLibURL`. `LICENSE` is the Pyodide licence from its repository at tag 0.27.7.
 
 No library file in this folder was modified.

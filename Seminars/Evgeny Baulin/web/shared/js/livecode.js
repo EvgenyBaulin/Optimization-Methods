@@ -57,11 +57,34 @@
     });
   }
 
+  // The site's server sends .wasm as application/octet-stream, which the streaming compilers refuse, so they
+  // compile from the whole buffer instead.
+  function bufferedWasm() {
+    var W = window.WebAssembly;
+    if (!W || W.omBuffered) return;
+    W.omBuffered = true;
+    W.compileStreaming = function (source) {
+      return Promise.resolve(source).then(function (r) {
+        return r.arrayBuffer();
+      }).then(function (bytes) {
+        return W.compile(bytes);
+      });
+    };
+    W.instantiateStreaming = function (source, imports) {
+      return Promise.resolve(source).then(function (r) {
+        return r.arrayBuffer();
+      }).then(function (bytes) {
+        return W.instantiate(bytes, imports);
+      });
+    };
+  }
+
   function python() {
     if (!ready) {
       ready = addScript(base + 'pyodide.js')
         .then(function () {
-          return window.loadPyodide({ indexURL: base });
+          bufferedWasm();
+          return window.loadPyodide({ indexURL: base, stdLibURL: base + 'python_stdlib.bin' });
         })
         .then(function (py) {
           return py.loadPackage(['numpy', 'matplotlib']).then(function () {

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Evgeny Baulin
-// Live Python cells: an editor, a Run button, the printed output and the Matplotlib figures. Python is
+// Live Python cells: an editor with highlighting, a Run button, the printed output and the Matplotlib figures. Python is
 // Pyodide from shared/vendor/pyodide, loaded on the first run and kept for the life of the page; it needs
 // http(s), so a page opened from a file shows a note instead.
 (function () {
@@ -104,51 +104,110 @@
     node.textContent = SEM.tu(path);
   }
 
-  // cell(parent, key, title, note): key names the source in SEM.livecodeSources.
-  function cell(parent, key, title, note) {
-    var original = ((SEM.livecodeSources || {})[key] || '').replace(/\s+$/, '') + '\n';
-    var details = el('details', { class: 'code-block live-code', dataset: { live: key } });
-    var summary = el('summary');
-    SEM.i18n.bind(function () {
-      render.rich(summary, title);
-    });
-    details.appendChild(summary);
-    if (note) {
-      var p = el('p', { class: 'code-note' });
-      SEM.i18n.bind(function () {
-        render.rich(p, note);
-      });
-      details.appendChild(p);
-    }
-    var pre = el('p', { class: 'code-note' });
-    SEM.i18n.bind(function () {
-      render.rich(pre, SEM.ui('livecode.preloaded'));
-    });
-    details.appendChild(pre);
-
+  // The editor: CodeMirror (shared/vendor/codemirror) when the page loads it, else a plain textarea.
+  function editor(parent, value, onChange, onRun) {
     var area = el('textarea', { class: 'live-editor', spellcheck: 'false', autocomplete: 'off' });
     area.setAttribute('autocapitalize', 'off');
-    area.value = edits[key] || original;
+    area.value = value;
+    parent.appendChild(area);
+    if (window.CodeMirror) {
+      var cm = window.CodeMirror.fromTextArea(area, {
+        mode: 'python',
+        lineNumbers: true,
+        indentUnit: 4,
+        tabSize: 4,
+        viewportMargin: Infinity,
+        extraKeys: {
+          Tab: function (c) {
+            if (c.somethingSelected()) c.indentSelection('add');
+            else c.replaceSelection('    ', 'end');
+          },
+          'Shift-Tab': function (c) {
+            c.indentSelection('subtract');
+          },
+          'Ctrl-Enter': onRun,
+          'Cmd-Enter': onRun
+        }
+      });
+      cm.on('change', function () {
+        onChange(cm.getValue());
+      });
+      // built while detached or hidden, it measures itself again once it is on screen
+      if (window.IntersectionObserver) {
+        var seen = new IntersectionObserver(function (entries) {
+          if (entries[0].isIntersecting) cm.refresh();
+        });
+        seen.observe(cm.getWrapperElement());
+      }
+      return {
+        refresh: function () {
+          cm.refresh();
+        },
+        get: function () {
+          return cm.getValue();
+        },
+        set: function (v) {
+          cm.setValue(v);
+        }
+      };
+    }
     var fit = function () {
       area.rows = Math.max(6, area.value.split('\n').length + 1);
     };
     fit();
     area.addEventListener('input', function () {
-      edits[key] = area.value;
+      onChange(area.value);
       fit();
     });
     area.addEventListener('keydown', function (ev) {
       if (ev.key === 'Tab' && !ev.shiftKey) {
         ev.preventDefault();
-        var a = area.selectionStart;
-        area.setRangeText('    ', a, area.selectionEnd, 'end');
-        edits[key] = area.value;
+        area.setRangeText('    ', area.selectionStart, area.selectionEnd, 'end');
+        onChange(area.value);
       } else if (ev.key === 'Enter' && (ev.ctrlKey || ev.metaKey)) {
         ev.preventDefault();
-        run();
+        onRun();
       }
     });
-    details.appendChild(area);
+    return {
+      refresh: function () {},
+      get: function () {
+        return area.value;
+      },
+      set: function (v) {
+        area.value = v;
+        fit();
+      }
+    };
+  }
+
+  // cell(parent, key, title, note): key names the source in SEM.livecodeSources.
+  function cell(parent, key, title, note) {
+    var original = ((SEM.livecodeSources || {})[key] || '').replace(/\s+$/, '') + '\n';
+    var box = el('div', { class: 'live-code', dataset: { live: key } });
+    var head = el('h4', { class: 'live-title' });
+    SEM.i18n.bind(function () {
+      render.rich(head, title);
+    });
+    box.appendChild(head);
+    if (note) {
+      var p = el('p', { class: 'code-note' });
+      SEM.i18n.bind(function () {
+        render.rich(p, note);
+      });
+      box.appendChild(p);
+    }
+    var pre = el('p', { class: 'code-note' });
+    SEM.i18n.bind(function () {
+      render.rich(pre, SEM.ui('livecode.preloaded'));
+    });
+    box.appendChild(pre);
+
+    var ed = editor(box, edits[key] || original, function (v) {
+      edits[key] = v;
+    }, function () {
+      run();
+    });
 
     var row = el('p', { class: 'link-row live-buttons' });
     var runBtn = el('button', { type: 'button', class: 'btn' });
@@ -161,13 +220,13 @@
     row.appendChild(restoreBtn);
     var state = el('span', { class: 'live-status', 'aria-live': 'polite' });
     row.appendChild(state);
-    details.appendChild(row);
+    box.appendChild(row);
 
     var output = el('pre', { class: 'code live-output' });
     output.hidden = true;
     var figs = el('div', { class: 'live-figures' });
-    details.appendChild(output);
-    details.appendChild(figs);
+    box.appendChild(output);
+    box.appendChild(figs);
 
     var local = location.protocol === 'file:';
     if (local) {
@@ -189,7 +248,7 @@
             setTimeout(resolve, 30);
           }).then(function () {
             var fn = py.globals.get('_om_run');
-            var res = JSON.parse(fn(area.value));
+            var res = JSON.parse(fn(ed.get()));
             fn.destroy();
             return res;
           });
@@ -218,12 +277,12 @@
 
     runBtn.addEventListener('click', run);
     restoreBtn.addEventListener('click', function () {
-      area.value = original;
+      ed.set(original);
       delete edits[key];
-      fit();
     });
-    parent.appendChild(details);
-    return details;
+    parent.appendChild(box);
+    ed.refresh();
+    return box;
   }
 
   SEM.livecode = { cell: cell };

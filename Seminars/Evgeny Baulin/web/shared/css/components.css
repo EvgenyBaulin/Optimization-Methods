@@ -962,24 +962,95 @@ pre.code {
   }
 }
 
-/* ---------------------------------------------------------------- live code */
+/* ---------------------------------------------------------------- live code and highlighting */
+:root {
+  --syn-keyword: #7a1f8f;
+  --syn-def: #1c4fb3;
+  --syn-builtin: #0d6b6b;
+  --syn-string: #1b6b3a;
+  --syn-number: #a14b00;
+  --syn-comment: #6b7280;
+  --syn-operator: #4f5767;
+}
+:root[data-theme="dark"] {
+  --syn-keyword: #d49bf0;
+  --syn-def: #8db8ff;
+  --syn-builtin: #6fd3cf;
+  --syn-string: #9bd99b;
+  --syn-number: #f2b26b;
+  --syn-comment: #8b94a5;
+  --syn-operator: #b7bfcb;
+}
+.cm-s-default .cm-keyword { color: var(--syn-keyword); font-weight: 600; }
+.cm-s-default .cm-def { color: var(--syn-def); }
+.cm-s-default .cm-builtin { color: var(--syn-builtin); }
+.cm-s-default .cm-string,
+.cm-s-default .cm-string-2 { color: var(--syn-string); }
+.cm-s-default .cm-number { color: var(--syn-number); }
+.cm-s-default .cm-comment { color: var(--syn-comment); font-style: italic; }
+.cm-s-default .cm-operator,
+.cm-s-default .cm-punctuation { color: var(--syn-operator); }
+.cm-s-default .cm-variable,
+.cm-s-default .cm-variable-2,
+.cm-s-default .cm-property { color: var(--fg); }
+.cm-s-default .cm-meta { color: var(--syn-def); }
+.cm-s-default .cm-error { color: var(--bad); }
+
+.live-code {
+  margin: 30px 0 8px;
+  padding: 16px 18px 18px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+.live-title {
+  margin: 0 0 6px;
+}
+.live-code .code-note {
+  margin: 4px 0;
+}
+.live-code .CodeMirror,
 .live-editor {
-  display: block;
   box-sizing: border-box;
   width: 100%;
-  margin: 8px 0 0;
-  padding: 12px 14px;
+  height: auto;
+  margin: 10px 0 0;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--panel-2);
   color: var(--fg);
-  font-family: var(--mono, ui-monospace, Menlo, Consolas, monospace);
+  font-family: var(--mono);
   font-size: 0.86rem;
   line-height: 1.45;
+}
+.live-editor {
+  display: block;
+  padding: 12px 14px;
   tab-size: 4;
   white-space: pre;
   overflow-x: auto;
   resize: vertical;
+}
+.live-code .CodeMirror-lines {
+  padding: 10px 0;
+}
+.live-code .CodeMirror-gutters {
+  border-right: 1px solid var(--line);
+  background: var(--panel-2);
+}
+.live-code .CodeMirror-linenumber {
+  color: var(--muted);
+}
+.live-code .CodeMirror-cursor {
+  border-left-color: var(--fg);
+}
+.live-code .CodeMirror-selected,
+.live-code .CodeMirror-focused .CodeMirror-selected {
+  background: var(--w-set);
+}
+.live-code .CodeMirror-focused {
+  outline: 2px solid var(--focus);
+  outline-offset: -1px;
 }
 .live-buttons {
   align-items: center;
@@ -988,7 +1059,7 @@ pre.code {
   color: var(--muted);
 }
 .live-output.is-error {
-  color: var(--bad, #b3261e);
+  color: var(--bad);
 }
 .live-figures img {
   display: block;

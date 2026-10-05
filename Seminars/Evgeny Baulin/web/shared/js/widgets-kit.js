@@ -186,6 +186,11 @@
     if (SEM.param('reveal') === 'all') details.open = true;
     var pre = el('pre', { class: 'code' });
     var code = el('code', { text: source });
+    // Python highlighting by the CodeMirror tokenizer, where the page loads it
+    if (window.CodeMirror && window.CodeMirror.runMode) {
+      code.classList.add('cm-s-default');
+      window.CodeMirror.runMode(source, 'python', code);
+    }
     pre.appendChild(code);
     var copy = kit.button(details, 'widgets.copy', function () {
       var done = function () {

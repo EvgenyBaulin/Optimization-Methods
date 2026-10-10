@@ -30,8 +30,8 @@ The site is published from my Mac by `Deploy/publish.py`, which sends the server
 2. Convexity, Constraints and Optimality Conditions
 3. Gradient Descent and Automatic Differentiation
 4. Accelerated Gradient Methods
-5. Stochastic Optimization and Modern ML Optimizers
-6. Second-Order and Quasi-Newton Methods
+5. Second-Order and Quasi-Newton Methods
+6. Stochastic Optimization and Modern ML Optimizers
 7. Nonsmooth, Composite and Constrained Optimization
 8. Introduction to Discrete Optimization and Mathematical Modelling
 9. Linear Programming as the Foundation of Integer Optimization

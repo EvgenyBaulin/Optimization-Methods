@@ -2,6 +2,7 @@
 Documents/
 Prompt.md
 План.md
+Personal.md
 .DS_Store
 CLAUDE.md
 .claude
@@ -31,3 +32,6 @@ __pycache__/
 Seminars/Evgeny Baulin/theory/*/content/teacher.json
 Deploy/locked-seminars/release/
 Seminars/Evgeny Baulin/web/*/release.json
+# Seminar 5 answers stay off GitHub until its class is over (12.10.2026, 14:20); delete these two lines then
+Seminars/Evgeny Baulin/theory/05. Second-Order and Quasi-Newton Methods/
+Seminars/Evgeny Baulin/checks/05. Second-Order and Quasi-Newton Methods.ipynb

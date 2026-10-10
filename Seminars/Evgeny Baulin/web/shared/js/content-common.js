@@ -914,10 +914,10 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
    {
     "n": 5,
     "dir": "05",
-    "available": false,
+    "available": true,
     "title": {
-     "en": "Stochastic Optimization and Modern ML Optimizers",
-     "ru": "Стохастическая оптимизация и современные оптимизаторы в машинном обучении"
+     "en": "Second-Order and Quasi-Newton Methods",
+     "ru": "Методы второго порядка и квазиньютоновские методы"
     }
    },
    {
@@ -925,8 +925,8 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
     "dir": "06",
     "available": false,
     "title": {
-     "en": "Second-Order and Quasi-Newton Methods",
-     "ru": "Методы второго порядка и квазиньютоновские методы"
+     "en": "Stochastic Optimization and Modern ML Optimizers",
+     "ru": "Стохастическая оптимизация и современные оптимизаторы в машинном обучении"
     }
    },
    {

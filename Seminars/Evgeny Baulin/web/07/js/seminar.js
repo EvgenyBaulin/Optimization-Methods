@@ -154,8 +154,8 @@
   function buildMain(main, app) {
     buildCatchup(main, app);
     var locked = SEM.ui('access.lockedReview');
-    var a = app.buildProblemBlock(main, 'A', { board: ['A1'], students: ['A2'], ownTime: 'P2', reviewLocked: locked });
-    var b = app.buildProblemBlock(main, 'B', { board: ['B1'], students: ['B2'], ownTime: 'P2', reviewLocked: locked });
+    var a = app.buildProblemBlock(main, 'A', { board: ['A1', 'A3'], students: ['A2', 'A4'], ownTime: 'P2', reviewLocked: locked });
+    var b = app.buildProblemBlock(main, 'B', { board: ['B1', 'B3'], students: ['B2', 'B4'], ownTime: 'P2', reviewLocked: locked });
     liveCell(a, 'A', 'quadratic_classify');
     liveCell(b, 'B', 'gd_three_steps');
     buildReview(main, app);

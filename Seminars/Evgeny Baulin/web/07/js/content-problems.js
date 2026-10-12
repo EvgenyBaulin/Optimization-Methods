@@ -147,6 +147,145 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
     }
    ]
   },
+  "A3": {
+   "who": "board",
+   "title": {
+    "en": "A quadratic form with a saddle point",
+    "ru": "Квадратичная форма с седловой точкой"
+   },
+   "statement": {
+    "en": "For $f(x,y)={{A3.params.a}}x^2{{A3.params.bSign}}{{A3.params.bAbs}}xy+{{A3.params.c}}y^2{{A3.params.dSign}}{{A3.params.dAbs}}x+{{A3.params.e}}y$, find the stationary point and show that it is a saddle. What are $\\mu$ and $L$ here?",
+    "ru": "Для $f(x,y)={{A3.params.a}}x^2{{A3.params.bSign}}{{A3.params.bAbs}}xy+{{A3.params.c}}y^2{{A3.params.dSign}}{{A3.params.dAbs}}x+{{A3.params.e}}y$ найдите стационарную точку и покажите, что это седло. Чему здесь равны $\\mu$ и $L$?"
+   },
+   "answers": [
+    {
+     "id": "xstar",
+     "ref": "answers.A3.xstar",
+     "label": {
+      "en": "First entry of the stationary point",
+      "ru": "Первая компонента стационарной точки"
+     }
+    },
+    {
+     "id": "ystar",
+     "ref": "answers.A3.ystar",
+     "label": {
+      "en": "Second entry of the stationary point",
+      "ru": "Вторая компонента стационарной точки"
+     }
+    },
+    {
+     "id": "lmin",
+     "ref": "answers.A3.lmin",
+     "label": {
+      "en": "Smaller eigenvalue of $H$",
+      "ru": "Меньшее собственное значение $H$"
+     }
+    },
+    {
+     "id": "lmax",
+     "ref": "answers.A3.lmax",
+     "label": {
+      "en": "Larger eigenvalue of $H$",
+      "ru": "Большее собственное значение $H$"
+     }
+    }
+   ],
+   "hints": [
+    {
+     "en": "The procedure is the same as in A1; the only difference is in the sign of $\\det H$.",
+     "ru": "Процедура та же, что в A1; отличие только в знаке $\\det H$."
+    }
+   ],
+   "steps": [
+    {
+     "text": {
+      "en": "$\\nabla f={{A3.grad}}$, $H={{A3.H}}$. The system $\\nabla f=0$ reads ${{A3.system}}$. The determinant of $H$ is ${{A3.det}}$: negative, so the eigenvalues have opposite signs.",
+      "ru": "$\\nabla f={{A3.grad}}$, $H={{A3.H}}$. Система $\\nabla f=0$: ${{A3.system}}$. Определитель $H$ равен ${{A3.det}}$ и отрицателен, так что у собственных значений противоположные знаки."
+     }
+    },
+    {
+     "text": {
+      "en": "Solve: $x^*={{A3.xstar}}$, $y^*={{A3.ystar}}$. Check: $\\nabla f(x^*)={{A3.gradCheck}}$ and $f(x^*)={{A3.fstar}}$.",
+      "ru": "Решение: $x^*={{A3.xstar}}$, $y^*={{A3.ystar}}$. Проверка: $\\nabla f(x^*)={{A3.gradCheck}}$ и $f(x^*)={{A3.fstar}}$."
+     }
+    },
+    {
+     "text": {
+      "en": "Eigenvalues of $H$: $\\lambda^2-{{A3.trace}}\\lambda+({{A3.det}})=0$. The roots are $\\lambda_{\\min}={{A3.lmin}}$ and $\\lambda_{\\max}={{A3.lmax}}$. The signs differ, so the stationary point is a saddle: $f$ grows along one eigenvector and shrinks along the other.",
+      "ru": "Собственные значения $H$: $\\lambda^2-{{A3.trace}}\\lambda+({{A3.det}})=0$. Корни $\\lambda_{\\min}={{A3.lmin}}$ и $\\lambda_{\\max}={{A3.lmax}}$. Знаки разные, значит, стационарная точка — седло: по одному собственному вектору $f$ растёт, по другому — убывает."
+     }
+    },
+    {
+     "text": {
+      "en": "With an indefinite Hessian the constants $\\mu$ and $L$ of strong convexity and $L$-smoothness are not defined: $f$ is neither convex nor $L$-smooth near a saddle, and the condition number does not apply.",
+      "ru": "При знаконеопределённом гессиане константы $\\mu$ и $L$ сильной выпуклости и $L$-гладкости не определены: вблизи седла $f$ ни выпукла, ни $L$-гладка, и число обусловленности здесь не имеет смысла."
+     }
+    }
+   ],
+   "answerText": {
+    "en": "Saddle at $(x^*,y^*)=({{A3.xstar}},{{A3.ystar}})$; eigenvalues ${{A3.lmin}}$ and ${{A3.lmax}}$. Neither $\\mu$ nor $L$ is defined.",
+    "ru": "Седло в $(x^*,y^*)=({{A3.xstar}},{{A3.ystar}})$; собственные значения ${{A3.lmin}}$ и ${{A3.lmax}}$. Ни $\\mu$, ни $L$ не определены."
+   },
+   "review": {
+    "en": "A negative determinant alone proves a saddle, before the eigenvalues are known.",
+    "ru": "Один отрицательный определитель уже доказывает седло, ещё до счёта собственных значений."
+   },
+   "mistakes": []
+  },
+  "A4": {
+   "who": "students",
+   "title": {
+    "en": "A quadratic form with a large condition number",
+    "ru": "Квадратичная форма с большим числом обусловленности"
+   },
+   "statement": {
+    "en": "For $f(x,y)={{A4.params.a}}x^2+{{A4.params.c}}y^2{{A4.params.dSign}}{{A4.params.dAbs}}x{{A4.params.eSign}}{{A4.params.eAbs}}y$, find the stationary point, its type, $\\mu$, $L$ and the condition number $\\kappa=L/\\mu$.",
+    "ru": "Для $f(x,y)={{A4.params.a}}x^2+{{A4.params.c}}y^2{{A4.params.dSign}}{{A4.params.dAbs}}x{{A4.params.eSign}}{{A4.params.eAbs}}y$ найдите стационарную точку, её тип, $\\mu$, $L$ и число обусловленности $\\kappa=L/\\mu$."
+   },
+   "answers": [
+    {
+     "id": "xstar",
+     "ref": "answers.A4.xstar",
+     "label": {
+      "en": "First entry of the stationary point",
+      "ru": "Первая компонента стационарной точки"
+     }
+    },
+    {
+     "id": "ystar",
+     "ref": "answers.A4.ystar",
+     "label": {
+      "en": "Second entry of the stationary point",
+      "ru": "Вторая компонента стационарной точки"
+     }
+    },
+    {
+     "id": "mu",
+     "ref": "answers.A4.mu",
+     "label": {
+      "en": "$\\mu$",
+      "ru": "$\\mu$"
+     }
+    },
+    {
+     "id": "L",
+     "ref": "answers.A4.L",
+     "label": {
+      "en": "$L$",
+      "ru": "$L$"
+     }
+    },
+    {
+     "id": "kappa",
+     "ref": "answers.A4.kappa",
+     "label": {
+      "en": "$\\kappa=L/\\mu$",
+      "ru": "$\\kappa=L/\\mu$"
+     }
+    }
+   ]
+  },
   "B1": {
    "who": "board",
    "title": {
@@ -285,6 +424,121 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
      "label": {
       "en": "Is $\\alpha<2/L$?",
       "ru": "Выполнено ли $\\alpha<2/L$?"
+     }
+    }
+   ]
+  },
+  "B3": {
+   "who": "board",
+   "title": {
+    "en": "Three steps on the border $\\alpha=2/L$",
+    "ru": "Три шага на границе $\\alpha=2/L$"
+   },
+   "statement": {
+    "en": "Let $f(x,y)=x^2+y^2$. From $x_0={{B3.params.x0}}$ take three steps of gradient descent with $\\alpha={{B3.params.alpha}}$ (which equals $2/L$). Report $x_1,x_2,x_3$, the values of $f$, and describe how the iterates behave.",
+    "ru": "Пусть $f(x,y)=x^2+y^2$. Из $x_0={{B3.params.x0}}$ сделайте три шага градиентного спуска с $\\alpha={{B3.params.alpha}}$ (это ровно $2/L$). Укажите $x_1,x_2,x_3$, значения $f$ и опишите поведение итераций."
+   },
+   "answers": [
+    {
+     "id": "f1",
+     "ref": "answers.B3.f1",
+     "label": {
+      "en": "$f(x_1)$",
+      "ru": "$f(x_1)$"
+     }
+    },
+    {
+     "id": "f3",
+     "ref": "answers.B3.f3",
+     "label": {
+      "en": "$f(x_3)$",
+      "ru": "$f(x_3)$"
+     }
+    },
+    {
+     "id": "norm3",
+     "ref": "answers.B3.norm3",
+     "label": {
+      "en": "$\\|x_3\\|/\\|x_0\\|$",
+      "ru": "$\\|x_3\\|/\\|x_0\\|$"
+     }
+    }
+   ],
+   "hints": [
+    {
+     "en": "$\\nabla f=(2x,2y)$, so $x^+=x-\\alpha(2x,2y)=(1-2\\alpha)x$ on each coordinate.",
+     "ru": "$\\nabla f=(2x,2y)$, значит, $x^+=x-\\alpha(2x,2y)=(1-2\\alpha)x$ на каждой координате."
+    }
+   ],
+   "steps": [
+    {
+     "text": {
+      "en": "$Q={{B3.Q}}$, $L={{B3.L}}$, $2/L={{B3.twoOverL}}$. Here $\\alpha={{B3.params.alpha}}=2/L$ exactly, so the per-coordinate contraction $1-\\alpha\\cdot{{B3.L}}={{B3.factor}}$.",
+      "ru": "$Q={{B3.Q}}$, $L={{B3.L}}$, $2/L={{B3.twoOverL}}$. Здесь $\\alpha={{B3.params.alpha}}=2/L$ ровно, поэтому коэффициент сжатия по каждой координате $1-\\alpha\\cdot{{B3.L}}={{B3.factor}}$."
+     }
+    },
+    {
+     "text": {
+      "en": "At $x_0={{B3.params.x0}}$: $\\nabla f(x_0)={{B3.g0}}$, $x_1=x_0-\\alpha\\nabla f(x_0)={{B3.x1}}$, $f(x_1)={{B3.f1}}$. The iterate flipped sign; the magnitude is unchanged.",
+      "ru": "В $x_0={{B3.params.x0}}$: $\\nabla f(x_0)={{B3.g0}}$, $x_1=x_0-\\alpha\\nabla f(x_0)={{B3.x1}}$, $f(x_1)={{B3.f1}}$. Знак перевернулся, модуль не изменился."
+     }
+    },
+    {
+     "text": {
+      "en": "$x_2={{B3.x2}}$, $f(x_2)={{B3.f2}}$; $x_3={{B3.x3}}$, $f(x_3)={{B3.f3}}$. The sequence oscillates between $x_0$ and $-x_0$; $\\|x_k\\|={{B3.norm0}}$ at every step and $f$ stays at ${{B3.f0}}$.",
+      "ru": "$x_2={{B3.x2}}$, $f(x_2)={{B3.f2}}$; $x_3={{B3.x3}}$, $f(x_3)={{B3.f3}}$. Последовательность колеблется между $x_0$ и $-x_0$; $\\|x_k\\|={{B3.norm0}}$ на каждом шаге, а $f$ остаётся равным ${{B3.f0}}$."
+     }
+    },
+    {
+     "text": {
+      "en": "This is the border case: $|1-\\alpha L|={{B3.absFactor}}$. The step is not safe — the method does not diverge, but it does not converge either; a strict inequality $\\alpha<2/L$ is needed.",
+      "ru": "Это граничный случай: $|1-\\alpha L|={{B3.absFactor}}$. Шаг небезопасен — метод не расходится, но и не сходится; нужно строгое неравенство $\\alpha<2/L$."
+     }
+    }
+   ],
+   "answerText": {
+    "en": "$f(x_1)=f(x_2)=f(x_3)={{B3.f0}}$; $\\|x_3\\|/\\|x_0\\|={{B3.norm3Ratio}}$. The iterates oscillate between $x_0$ and $-x_0$ with constant amplitude.",
+    "ru": "$f(x_1)=f(x_2)=f(x_3)={{B3.f0}}$; $\\|x_3\\|/\\|x_0\\|={{B3.norm3Ratio}}$. Итерации колеблются между $x_0$ и $-x_0$ с постоянной амплитудой."
+   },
+   "review": {
+    "en": "The border $\\alpha=2/L$ shows what $0<\\alpha<2/L$ asks for: a strict inequality, not $\\le$.",
+    "ru": "Граница $\\alpha=2/L$ показывает, зачем в условии $0<\\alpha<2/L$ нужно строгое неравенство, а не $\\le$."
+   },
+   "mistakes": []
+  },
+  "B4": {
+   "who": "students",
+   "title": {
+    "en": "Three steps when $\\alpha>2/L$",
+    "ru": "Три шага при $\\alpha>2/L$"
+   },
+   "statement": {
+    "en": "Let $f(x,y)=x^2+y^2$ again. From $x_0={{B4.params.x0}}$ take three steps of gradient descent with $\\alpha={{B4.params.alpha}}$ (which is above $2/L$). Report $f(x_1)$, $f(x_3)$, and the per-step growth factor $|1-\\alpha L|$ on each coordinate.",
+    "ru": "Снова $f(x,y)=x^2+y^2$. Из $x_0={{B4.params.x0}}$ сделайте три шага градиентного спуска с $\\alpha={{B4.params.alpha}}$ (это больше $2/L$). Укажите $f(x_1)$, $f(x_3)$ и шаговый коэффициент роста $|1-\\alpha L|$ на каждой координате."
+   },
+   "answers": [
+    {
+     "id": "f1",
+     "ref": "answers.B4.f1",
+     "label": {
+      "en": "$f(x_1)$",
+      "ru": "$f(x_1)$"
+     }
+    },
+    {
+     "id": "f3",
+     "ref": "answers.B4.f3",
+     "label": {
+      "en": "$f(x_3)$",
+      "ru": "$f(x_3)$"
+     }
+    },
+    {
+     "id": "growth",
+     "ref": "answers.B4.growth",
+     "label": {
+      "en": "$|1-\\alpha L|$",
+      "ru": "$|1-\\alpha L|$"
      }
     }
    ]

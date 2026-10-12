@@ -890,7 +890,7 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
    {
     "n": 6,
     "dir": "06",
-    "available": false,
+    "available": true,
     "title": {
      "en": "Second-Order Methods, Part Two",
      "ru": "Методы второго порядка, часть 2"

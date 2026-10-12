@@ -1,0 +1,1448 @@
+{
+ "id": "seminar-05",
+ "data": {
+  "A2": {
+   "g0": [
+    7,
+    3
+   ],
+   "p0": [
+    -1.5714285714285714,
+    -0.7142857142857142
+   ],
+   "x1": [
+    0.4285714285714286,
+    -0.7142857142857142
+   ],
+   "eig": [
+    1.585786437626905,
+    4.414213562373095
+   ],
+   "kappa": 2.783611624891224,
+   "rate": 0.4714045207910317
+  },
+  "A3": {
+   "iterates": [
+    0.5,
+    0.75,
+    0.9375,
+    0.99609375
+   ],
+   "errors": [
+    0.5,
+    0.25,
+    0.0625,
+    0.00390625
+   ],
+   "x3": 0.99609375,
+   "steps": 6,
+   "bound": 2,
+   "far": 2.5,
+   "outside": -1.25
+  },
+  "B2": {
+   "x1": -0.24615384615384625,
+   "x2": 0.03645668765715053,
+   "threshold": 0.4472135954999579,
+   "curvature0": -1
+  },
+  "B3": {
+   "r0": [
+    -1,
+    0
+   ],
+   "J0": [
+    2,
+    1
+   ],
+   "JtJ": 5,
+   "Jtr": -2,
+   "extra": -2,
+   "hess": 3,
+   "gn": 1.4,
+   "newton": 1.6666666666666665,
+   "lm": 1.3333333333333333,
+   "optimum": 1.3660254037844386
+  },
+  "C2": {
+   "s1": 0.5,
+   "y1": -0.375,
+   "ys1": -0.1875,
+   "y2": 2.25,
+   "s2": 1,
+   "curvature": 2.25,
+   "next": 0.6666666666666666,
+   "minimizer": 1
+  },
+  "C3": {
+   "ratio": 625,
+   "denseGB": 3.2,
+   "lbfgsMB": 1.6,
+   "gb": "10^9"
+  },
+  "exit": {
+   "next": 0.01,
+   "lam": 2
+  },
+  "answers": {
+   "A2": {
+    "first": {
+     "type": "number",
+     "value": 0.4285714285714286,
+     "tol": 0.0005
+    },
+    "second": {
+     "type": "number",
+     "value": -0.7142857142857142,
+     "tol": 0.0005
+    },
+    "kappa": {
+     "type": "number",
+     "value": 2.783611624891224,
+     "tol": 0.0005
+    }
+   },
+   "A3": {
+    "x3": {
+     "type": "number",
+     "value": 0.99609375,
+     "tol": 0.0005
+    },
+    "steps": {
+     "type": "number",
+     "value": 6,
+     "tol": 0.0005
+    },
+    "bound": {
+     "type": "number",
+     "value": 2,
+     "tol": 0.0005
+    }
+   },
+   "B2": {
+    "x1": {
+     "type": "number",
+     "value": -0.24615384615384625,
+     "tol": 0.0005
+    },
+    "x2": {
+     "type": "number",
+     "value": 0.03645668765715053,
+     "tol": 0.000182283438
+    },
+    "threshold": {
+     "type": "number",
+     "value": 0.4472135954999579,
+     "tol": 0.0005
+    }
+   },
+   "B3": {
+    "gn": {
+     "type": "number",
+     "value": 1.4,
+     "tol": 0.0005
+    },
+    "newton": {
+     "type": "number",
+     "value": 1.6666666666666665,
+     "tol": 0.0005
+    },
+    "lm": {
+     "type": "number",
+     "value": 1.3333333333333333,
+     "tol": 0.0005
+    }
+   },
+   "C2": {
+    "ys1": {
+     "type": "number",
+     "value": -0.1875,
+     "tol": 0.0005
+    },
+    "curvature": {
+     "type": "number",
+     "value": 2.25,
+     "tol": 0.0005
+    },
+    "next": {
+     "type": "number",
+     "value": 0.6666666666666666,
+     "tol": 0.0005
+    }
+   },
+   "C3": {
+    "ratio": {
+     "type": "number",
+     "value": 625,
+     "tol": 0.0005
+    },
+    "dense": {
+     "type": "number",
+     "value": 3.2,
+     "tol": 0.0005
+    },
+    "lbfgs": {
+     "type": "number",
+     "value": 1.6,
+     "tol": 0.0005
+    }
+   }
+  }
+ },
+ "content": {
+  "main": {
+   "blocks": {
+    "E": {
+     "summary": {
+      "title": {
+       "en": "Three takeaways",
+       "ru": "Три главных вывода"
+      },
+      "items": [
+       {
+        "en": "Newton minimizes a local quadratic model: one step on a quadratic, quadratic convergence near a regular minimizer, and no promise anywhere else.",
+        "ru": "Метод Ньютона минимизирует локальную квадратичную модель: один шаг на квадратичной функции, квадратичная сходимость возле невырожденного минимума и никаких обещаний в остальных случаях."
+       },
+       {
+        "en": "The safeguards are part of the method: shift the Hessian until it is positive definite, then backtrack; Gauss–Newton gets a positive semidefinite matrix for free.",
+        "ru": "Защита — часть метода: сдвигайте гессиан, пока он не станет положительно определённым, затем дробите шаг; метод Гаусса–Ньютона получает положительно полуопределённую матрицу даром."
+       },
+       {
+        "en": "Quasi-Newton methods learn curvature from gradient differences; the curvature condition keeps BFGS positive definite, and limited memory makes it scale.",
+        "ru": "Квазиньютоновские методы узнают кривизну из разностей градиентов; условие кривизны сохраняет положительную определённость BFGS, а ограниченная память позволяет решать большие задачи."
+       }
+      ]
+     },
+     "exit": {
+      "items": [
+       {
+        "answer": {
+         "en": "$e_{k+1}=e_k^2={{exit.next}}$.",
+         "ru": "$e_{k+1}=e_k^2={{exit.next}}$."
+        }
+       },
+       {
+        "answer": {
+         "en": "$\\lambda>{{exit.lam}}$: the shift must exceed the most negative eigenvalue in absolute value.",
+         "ru": "$\\lambda>{{exit.lam}}$: сдвиг должен быть больше модуля самого отрицательного собственного значения."
+        }
+       },
+       {
+        "answer": {
+         "en": "No. The pair is skipped or damped; otherwise $G$ can lose positive definiteness and $-Gg$ can point uphill.",
+         "ru": "Нет. Пару пропускают или демпфируют; иначе $G$ может потерять положительную определённость, и $-Gg$ может вести вверх."
+        }
+       }
+      ]
+     }
+    }
+   }
+  },
+  "problems": {
+   "A2": {
+    "hints": [
+     {
+      "en": "A $2\\times2$ system: $\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}^{-1}={1\\over ad-bc}\\begin{pmatrix}d&-b\\\\-c&a\\end{pmatrix}$.",
+      "ru": "Система $2\\times2$: $\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}^{-1}={1\\over ad-bc}\\begin{pmatrix}d&-b\\\\-c&a\\end{pmatrix}$."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "$g_0=Qx_0-b={{A2.g0}}$. Solving $Qp=-g_0$ gives $p_0={{A2.p0}}$ and $x_1=x_0+p_0={{A2.x1}}$.",
+       "ru": "$g_0=Qx_0-b={{A2.g0}}$. Из $Qp=-g_0$ получаем $p_0={{A2.p0}}$ и $x_1=x_0+p_0={{A2.x1}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "For any $x$ the Newton equation reads $Qp=-(Qx-b)$, so $p=Q^{-1}b-x=x^*-x$ and $x+p=x^*$. Indeed $Qx_1-b=0$.",
+       "ru": "Для любого $x$ уравнение Ньютона имеет вид $Qp=-(Qx-b)$, поэтому $p=Q^{-1}b-x=x^*-x$ и $x+p=x^*$. Действительно, $Qx_1-b=0$."
+      }
+     },
+     {
+      "text": {
+       "en": "The eigenvalues of $Q$ are ${{A2.eig}}$, so $\\kappa={{A2.kappa}}$. Gradient descent with its best fixed step would contract the error by $(\\kappa-1)/(\\kappa+1)={{A2.rate}}$ per step.",
+       "ru": "Собственные значения $Q$ равны ${{A2.eig}}$, значит, $\\kappa={{A2.kappa}}$. Градиентный спуск с лучшим постоянным шагом сжимал бы ошибку в $(\\kappa-1)/(\\kappa+1)={{A2.rate}}$ раза за шаг."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "$x_1={{A2.x1}}=Q^{-1}b$ from any start; $\\kappa={{A2.kappa}}$.",
+     "ru": "$x_1={{A2.x1}}=Q^{-1}b$ из любой точки; $\\kappa={{A2.kappa}}$."
+    },
+    "review": {
+     "en": "Newton's result does not depend on $x_0$ or on $\\kappa$; the work went into the linear solve.",
+     "ru": "Результат метода Ньютона не зависит ни от $x_0$, ни от $\\kappa$; вся работа ушла в решение линейной системы."
+    },
+    "mistakes": []
+   },
+   "A3": {
+    "hints": [
+     {
+      "en": "$f'(x)=1-1/x$ and $f''(x)=1/x^2$. Simplify $x-f'(x)/f''(x)$ first.",
+      "ru": "$f'(x)=1-1/x$ и $f''(x)=1/x^2$. Сначала упростите $x-f'(x)/f''(x)$."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "$x^+=x-(1-1/x)x^2=2x-x^2$. With $e=1-x$: $e^+=1-2x+x^2=(1-x)^2=e^2$, exactly, with $C=1$.",
+       "ru": "$x^+=x-(1-1/x)x^2=2x-x^2$. При $e=1-x$: $e^+=1-2x+x^2=(1-x)^2=e^2$, точно и с $C=1$."
+      }
+     },
+     {
+      "text": {
+       "en": "From $x_0={{A3.params.x0}}$ the iterates are ${{A3.iterates}}$, the errors ${{A3.errors}}$; $x_3={{A3.x3}}$.",
+       "ru": "Из $x_0={{A3.params.x0}}$ итерации равны ${{A3.iterates}}$, ошибки — ${{A3.errors}}$; $x_3={{A3.x3}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "$e_k=e_0^{2^k}=2^{-2^k}$. It falls below ${{A3.params.target}}$ first at $k={{A3.steps}}$: every step doubles the number of correct binary digits.",
+       "ru": "$e_k=e_0^{2^k}=2^{-2^k}$. Впервые она становится меньше ${{A3.params.target}}$ при $k={{A3.steps}}$: каждый шаг удваивает число верных двоичных знаков."
+      }
+     },
+     {
+      "text": {
+       "en": "The iteration converges exactly when $|e_0|<1$, that is $0< x_0<{{A3.bound}}$. From $x_0=2$ it lands on $0$, outside the domain; from a larger start, for example $x_0={{A3.far}}$, it jumps to ${{A3.outside}}$.",
+       "ru": "Итерация сходится ровно при $|e_0|<1$, то есть при $0< x_0<{{A3.bound}}$. Из $x_0=2$ она попадает в $0$, за пределы области определения; из большей точки, например из $x_0={{A3.far}}$, прыгает в ${{A3.outside}}$."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "$e^+=e^2$, $x_3={{A3.x3}}$, ${{A3.steps}}$ steps; convergence for $0< x_0<{{A3.bound}}$.",
+     "ru": "$e^+=e^2$, $x_3={{A3.x3}}$, шагов: ${{A3.steps}}$; сходимость при $0< x_0<{{A3.bound}}$."
+    },
+    "review": {
+     "en": "Quadratic convergence is a local statement: the same formula that squares the error near the minimizer throws a distant start out of the domain.",
+     "ru": "Квадратичная сходимость — локальное утверждение: та же формула, что возводит ошибку в квадрат возле минимума, выбрасывает далёкую начальную точку из области определения."
+    },
+    "mistakes": []
+   },
+   "B2": {
+    "hints": [
+     {
+      "en": "$f'(x)=x^3-x$, $f''(x)=3x^2-1$. A two-cycle $x\\mapsto-x$ separates the starts that go to zero.",
+      "ru": "$f'(x)=x^3-x$, $f''(x)=3x^2-1$. Цикл длины два $x\\mapsto-x$ отделяет начальные точки, которые идут в ноль."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "$\\varphi(x)=x-{x^3-x\\over 3x^2-1}={2x^3\\over 3x^2-1}$. From $x_0={{B2.params.x0}}$: $x_1={{B2.x1}}$, $x_2={{B2.x2}}$.",
+       "ru": "$\\varphi(x)=x-{x^3-x\\over 3x^2-1}={2x^3\\over 3x^2-1}$. Из $x_0={{B2.params.x0}}$: $x_1={{B2.x1}}$, $x_2={{B2.x2}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "The iterates go to $0$, where $f'(0)=0$ and $f''(0)={{B2.curvature0}}$: a local maximum. Newton looks for $f'=0$ and does not tell a maximum from a minimum; near $0$, $\\varphi(x)\\approx-2x^3$, so the convergence is even cubic.",
+       "ru": "Итерации идут в $0$, где $f'(0)=0$ и $f''(0)={{B2.curvature0}}$: это локальный максимум. Метод Ньютона ищет $f'=0$ и не отличает максимум от минимума; возле $0$ $\\varphi(x)\\approx-2x^3$, так что сходимость даже кубическая."
+      }
+     },
+     {
+      "text": {
+       "en": "$\\varphi(x)=-x$ gives $2x^2=1-3x^2$, $x^2=1/5$. For $0<|x|< a$ with $a=1/\\sqrt5={{B2.threshold}}$ one checks $|\\varphi(x)|<|x|$, so the iterates shrink to the maximum; at $|x|=a$ they cycle.",
+       "ru": "$\\varphi(x)=-x$ даёт $2x^2=1-3x^2$, $x^2=1/5$. При $0<|x|< a$, где $a=1/\\sqrt5={{B2.threshold}}$, выполнено $|\\varphi(x)|<|x|$, и итерации стягиваются к максимуму; при $|x|=a$ они зацикливаются."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "$x_1={{B2.x1}}$, $x_2={{B2.x2}}$; convergence to the maximum $x=0$ for $0<|x_0|<{{B2.threshold}}$.",
+     "ru": "$x_1={{B2.x1}}$, $x_2={{B2.x2}}$; сходимость к максимуму $x=0$ при $0<|x_0|<{{B2.threshold}}$."
+    },
+    "review": {
+     "en": "Near the maximum $f''<0$, and the step $-f'/f''$ points uphill. A safeguarded method would check $f''>0$ or $g^\\top p<0$ first.",
+     "ru": "Возле максимума $f''<0$, и шаг $-f'/f''$ направлен вверх. Защищённый метод сначала проверил бы $f''>0$ или $g^\\top p<0$."
+    },
+    "mistakes": []
+   },
+   "B3": {
+    "hints": [
+     {
+      "en": "$J=(2\\theta,\\ 1)^\\top$ and $f''=J^\\top J+\\sum_i r_i r_i''$; only $r_1''$ is nonzero.",
+      "ru": "$J=(2\\theta,\\ 1)^\\top$ и $f''=J^\\top J+\\sum_i r_i r_i''$; ненулевая только $r_1''$."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "At $\\theta_0$: $r={{B3.r0}}$, $J={{B3.J0}}$, $J^\\top J={{B3.JtJ}}$, $J^\\top r={{B3.Jtr}}$. Gauss–Newton: $\\theta_1=\\theta_0-J^\\top r/J^\\top J={{B3.gn}}$.",
+       "ru": "В $\\theta_0$: $r={{B3.r0}}$, $J={{B3.J0}}$, $J^\\top J={{B3.JtJ}}$, $J^\\top r={{B3.Jtr}}$. Гаусс–Ньютон: $\\theta_1=\\theta_0-J^\\top r/J^\\top J={{B3.gn}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "The exact second derivative adds $r_1r_1''={{B3.extra}}$, so $f''={{B3.hess}}$ and Newton gives $\\theta_1={{B3.newton}}$. Levenberg–Marquardt divides by $J^\\top J+\\lambda$: $\\theta_1={{B3.lm}}$.",
+       "ru": "Точная вторая производная добавляет $r_1r_1''={{B3.extra}}$, так что $f''={{B3.hess}}$, и метод Ньютона даёт $\\theta_1={{B3.newton}}$. Левенберг–Марквардт делит на $J^\\top J+\\lambda$: $\\theta_1={{B3.lm}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "$f'(\\theta)=2\\theta^3-3\\theta-1=(\\theta+1)(2\\theta^2-2\\theta-1)$, and the minimizer is $\\theta^*=(1+\\sqrt3)/2={{B3.optimum}}$. Gauss–Newton lands closest: at $\\theta_0$ the residual term made the exact curvature smaller and the Newton step too long.",
+       "ru": "$f'(\\theta)=2\\theta^3-3\\theta-1=(\\theta+1)(2\\theta^2-2\\theta-1)$, точка минимума $\\theta^*=(1+\\sqrt3)/2={{B3.optimum}}$. Ближе всех оказывается Гаусс–Ньютон: в $\\theta_0$ слагаемое с невязкой уменьшило точную кривизну, и шаг Ньютона вышел слишком длинным."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "Gauss–Newton ${{B3.gn}}$, Newton ${{B3.newton}}$, Levenberg–Marquardt ${{B3.lm}}$; $\\theta^*={{B3.optimum}}$.",
+     "ru": "Гаусс–Ньютон ${{B3.gn}}$, Ньютон ${{B3.newton}}$, Левенберг–Марквардт ${{B3.lm}}$; $\\theta^*={{B3.optimum}}$."
+    },
+    "review": {
+     "en": "$J^\\top J$ is never indefinite, so Gauss–Newton always gives a descent direction when $J$ has full column rank; it is accurate when the residuals at the solution are small.",
+     "ru": "$J^\\top J$ никогда не бывает знаконеопределённой, поэтому при полном столбцовом ранге $J$ метод Гаусса–Ньютона всегда даёт направление спуска; он точен, когда невязки в решении малы."
+    },
+    "mistakes": []
+   },
+   "C2": {
+    "hints": [
+     {
+      "en": "$f'(x)=x^3-x$; $s$ is the change of $x$, $y$ the change of $f'$.",
+      "ru": "$f'(x)=x^3-x$; $s$ — изменение $x$, $y$ — изменение $f'$."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "From the first point to the second: $s={{C2.s1}}$, $y={{C2.y1}}$ and $y^\\top s={{C2.ys1}}<0$. The update would have to make $G$ negative; BFGS must skip this pair.",
+       "ru": "Из первой точки во вторую: $s={{C2.s1}}$, $y={{C2.y1}}$ и $y^\\top s={{C2.ys1}}<0$. Обновление сделало бы $G$ отрицательной; BFGS должен пропустить эту пару."
+      }
+     },
+     {
+      "text": {
+       "en": "From the second to the third: $s={{C2.s2}}$, $y={{C2.y2}}$, $B=y/s={{C2.curvature}}$. By the mean value theorem this is the average of $f''$ over the step, and it is positive.",
+       "ru": "Из второй точки в третью: $s={{C2.s2}}$, $y={{C2.y2}}$, $B=y/s={{C2.curvature}}$. По теореме о среднем это среднее значение $f''$ на шаге, и оно положительно."
+      }
+     },
+     {
+      "text": {
+       "en": "From the third point, $x^+=x-f'(x)/B={{C2.next}}$. The minimizer is ${{C2.minimizer}}$; in one dimension BFGS is the secant method, which converges superlinearly near a regular minimizer.",
+       "ru": "Из третьей точки $x^+=x-f'(x)/B={{C2.next}}$. Минимум находится в ${{C2.minimizer}}$; в одномерном случае BFGS — это метод секущих, который сходится сверхлинейно возле невырожденного минимума."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "$y^\\top s={{C2.ys1}}$: skip the pair. $B={{C2.curvature}}$, $x^+={{C2.next}}$.",
+     "ru": "$y^\\top s={{C2.ys1}}$: пару нужно пропустить. $B={{C2.curvature}}$, $x^+={{C2.next}}$."
+    },
+    "review": {
+     "en": "The sign of $y^\\top s$ is the average curvature along the step. A Wolfe line search guarantees it is positive; backtracking alone does not.",
+     "ru": "Знак $y^\\top s$ — это средняя кривизна вдоль шага. Линейный поиск по Вульфу гарантирует её положительность, одно дробление шага — нет."
+    },
+    "mistakes": []
+   },
+   "C3": {
+    "hints": [
+     {
+      "en": "Divide $Nn^2$ by $k\\cdot 2Nn$. A gigabyte is ${{C3.gb}}$ bytes here.",
+      "ru": "Разделите $Nn^2$ на $k\\cdot 2Nn$. Гигабайт здесь — ${{C3.gb}}$ байт."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "$Nn^2/(2kNn)=n/(2k)={{C3.ratio}}$: the samples cancel, and the gain grows with the number of features.",
+       "ru": "$Nn^2/(2kNn)=n/(2k)={{C3.ratio}}$: число объектов сокращается, а выигрыш растёт вместе с числом признаков."
+      }
+     },
+     {
+      "text": {
+       "en": "A dense $H$ has $n^2$ entries: ${{C3.denseGB}}$ GB, before any factorization. L-BFGS stores $2m$ vectors of length $n$: ${{C3.lbfgsMB}}$ MB.",
+       "ru": "Плотная $H$ содержит $n^2$ элементов: ${{C3.denseGB}}$ ГБ ещё до какого-либо разложения. L-BFGS хранит $2m$ векторов длины $n$: ${{C3.lbfgsMB}}$ МБ."
+      }
+     },
+     {
+      "text": {
+       "en": "A Cholesky factorization would add about $n^3/3$ operations. With $n$ in the tens of thousands, Newton is possible only matrix-free, through $Hv$ and conjugate gradients.",
+       "ru": "Разложение Холецкого добавило бы около $n^3/3$ операций. При $n$ порядка десятков тысяч метод Ньютона возможен только без матрицы, через $Hv$ и сопряжённые градиенты."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "Ratio ${{C3.ratio}}$; dense $H$ ${{C3.denseGB}}$ GB; L-BFGS ${{C3.lbfgsMB}}$ MB.",
+     "ru": "Отношение ${{C3.ratio}}$; плотная $H$ — ${{C3.denseGB}}$ ГБ; L-BFGS — ${{C3.lbfgsMB}}$ МБ."
+    },
+    "review": {
+     "en": "Count the cost of a method per solve, not per iteration: one Newton step may hide hundreds of passes over the data.",
+     "ru": "Считайте стоимость метода на всё решение, а не на итерацию: за одним шагом Ньютона могут скрываться сотни проходов по данным."
+    },
+    "mistakes": []
+   }
+  },
+  "handout": {
+   "intro": {
+    "en": "Gradient descent uses only the slope and pays for it with the condition number. This handout follows the lecture and the computer seminar of Andrey Ignatov on second-order methods: the Newton step and its local theory, the safeguards that make it work far from the solution, Gauss–Newton and Levenberg–Marquardt, BFGS and L-BFGS, and the cost of curvature.",
+    "ru": "Градиентный спуск использует только наклон и расплачивается за это числом обусловленности. Конспект следует лекции и компьютерному семинару Андрея Игнатова о методах второго порядка: шаг Ньютона и его локальная теория, защита, без которой он не работает вдали от решения, методы Гаусса–Ньютона и Левенберга–Марквардта, BFGS и L-BFGS, стоимость кривизны."
+   },
+   "convention": {
+    "en": "$f:\\mathbb R^n\\to\\mathbb R$ is twice continuously differentiable, $g=\\nabla f(x)$, $H=\\nabla^2 f(x)$, $e=x-x^*$. $B$ approximates the Hessian and $G$ its inverse; $s_k=x_{k+1}-x_k$, $y_k=g_{k+1}-g_k$. $A\\succ0$ means positive definite. Armijo's constant is $c\\in(0,1)$, usually small.",
+    "ru": "$f:\\mathbb R^n\\to\\mathbb R$ дважды непрерывно дифференцируема, $g=\\nabla f(x)$, $H=\\nabla^2 f(x)$, $e=x-x^*$. $B$ приближает гессиан, $G$ — обратный к нему; $s_k=x_{k+1}-x_k$, $y_k=g_{k+1}-g_k$. $A\\succ0$ означает положительную определённость. Константа Армихо $c\\in(0,1)$, обычно малая."
+   },
+   "sections": [
+    {
+     "id": "model",
+     "title": {
+      "en": "The quadratic model and the Newton step",
+      "ru": "Квадратичная модель и шаг Ньютона"
+     },
+     "blocks": [
+      {
+       "type": "definition",
+       "text": {
+        "en": "The **quadratic model** of $f$ at $x$ is $$m_x(p)=f(x)+g^\\top p+\\tfrac{1}{2}p^\\top Hp,$$ which agrees with $f(x+p)$ up to $o(\\|p\\|^2)$. If $H$ is invertible, the **Newton direction** $p_N$ solves $Hp_N=-g$, and the full Newton step is $x^+=x+p_N$.",
+        "ru": "**Квадратичная модель** $f$ в точке $x$ — это $$m_x(p)=f(x)+g^\\top p+\\tfrac{1}{2}p^\\top Hp,$$ она совпадает с $f(x+p)$ с точностью до $o(\\|p\\|^2)$. Если $H$ обратима, **направление Ньютона** $p_N$ решает $Hp_N=-g$, а полный шаг Ньютона равен $x^+=x+p_N$."
+       }
+      },
+      {
+       "type": "p",
+       "text": {
+        "en": "$\\nabla_p m_x(p)=g+Hp$, so $p_N$ is the stationary point of the model. When $H\\succ0$ it is the unique minimizer of the model; when $H$ is indefinite it is a saddle of the model, and when $H\\prec0$ its maximizer.",
+        "ru": "$\\nabla_p m_x(p)=g+Hp$, так что $p_N$ — стационарная точка модели. При $H\\succ0$ это единственный минимум модели; при знаконеопределённой $H$ — её седло, а при $H\\prec0$ — максимум."
+       }
+      },
+      {
+       "type": "intuition",
+       "text": {
+        "en": "Gradient descent minimizes the model with $H$ replaced by $\\alpha^{-1}I$: a round bowl. Newton uses the bowl of the true shape. In the eigenbasis of $H\\succ0$ the Newton step divides each gradient component by its own curvature, so steep directions get short steps and flat directions long ones.",
+        "ru": "Градиентный спуск минимизирует модель, в которой $H$ заменён на $\\alpha^{-1}I$: круглую чашу. Ньютон использует чашу настоящей формы. В собственном базисе $H\\succ0$ шаг Ньютона делит каждую компоненту градиента на свою кривизну: крутым направлениям достаются короткие шаги, пологим — длинные."
+       }
+      },
+      {
+       "type": "theorem",
+       "text": {
+        "en": "For $f(x)=\\tfrac{1}{2}x^\\top Qx-b^\\top x+c$ with $Q\\succ0$, one full Newton step from any $x$ reaches $x^*=Q^{-1}b$.",
+        "ru": "Для $f(x)=\\tfrac{1}{2}x^\\top Qx-b^\\top x+c$ с $Q\\succ0$ один полный шаг Ньютона из любой точки $x$ попадает в $x^*=Q^{-1}b$."
+       },
+       "title": {
+        "en": "One step on a quadratic",
+        "ru": "Один шаг на квадратичной функции"
+       }
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "$g=Qx-b$ and $H=Q$. The Newton equation $Qp=-(Qx-b)$ gives $p=-x+Q^{-1}b=x^*-x$, so $x+p=x^*$.",
+        "ru": "$g=Qx-b$ и $H=Q$. Уравнение Ньютона $Qp=-(Qx-b)$ даёт $p=-x+Q^{-1}b=x^*-x$, поэтому $x+p=x^*$."
+       }
+      },
+      {
+       "type": "example",
+       "text": {
+        "en": "For $Q=\\operatorname{diag}{{zero.lam}}$, GD with $\\alpha=1/L={{zero.alpha}}$ shrinks the error along the flat axis by ${{zero.factor}}$ per step and needs ${{zero.steps}}$ steps to reduce it by a factor of ${{zero.reduction}}$. Newton's step divides the two gradient components by their curvatures and finishes in one step.",
+        "ru": "Для $Q=\\operatorname{diag}{{zero.lam}}$ GD с шагом $\\alpha=1/L={{zero.alpha}}$ уменьшает ошибку вдоль пологой оси в ${{zero.factor}}$ раза за шаг, и чтобы уменьшить её в ${{zero.reduction}}$ раз, нужно ${{zero.steps}}$ шагов. Шаг Ньютона делит две компоненты градиента на их кривизны и заканчивает за один шаг."
+       }
+      },
+      {
+       "type": "trap",
+       "text": {
+        "en": "Solve $Hp=-g$ with a Cholesky or LU factorization, `numpy.linalg.solve`, never as `inv(H) @ g`. The explicit inverse costs more and is less accurate, and a failed Cholesky factorization is the cheapest test that $H\\succ0$.",
+        "ru": "Решайте $Hp=-g$ через разложение Холецкого или LU, `numpy.linalg.solve`, но никогда как `inv(H) @ g`. Явная обратная матрица дороже и менее точна, а неудавшееся разложение Холецкого — самая дешёвая проверка того, что $H\\succ0$."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "A2"
+      }
+     ]
+    },
+    {
+     "id": "local",
+     "title": {
+      "en": "Local quadratic convergence",
+      "ru": "Локальная квадратичная сходимость"
+     },
+     "blocks": [
+      {
+       "type": "theorem",
+       "text": {
+        "en": "Let $\\nabla f(x^*)=0$, $\\nabla^2 f(x^*)\\succ0$, and let the Hessian be $M$-Lipschitz near $x^*$. Then there are a neighbourhood of $x^*$ and $m>0$ such that full Newton steps from it stay in it and satisfy $$\\|e^+\\|\\le{M\\over 2m}\\|e\\|^2.$$",
+        "ru": "Пусть $\\nabla f(x^*)=0$, $\\nabla^2 f(x^*)\\succ0$ и гессиан $M$-липшицев возле $x^*$. Тогда существуют окрестность $x^*$ и $m>0$, такие что полные шаги Ньютона из неё не выходят и $$\\|e^+\\|\\le{M\\over 2m}\\|e\\|^2.$$"
+       },
+       "title": {
+        "en": "Quadratic convergence",
+        "ru": "Квадратичная сходимость"
+       }
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "By the fundamental theorem of calculus, $g(x)=\\int_0^1 H(x^*+te)\\,e\\,dt$. Since $e^+=e-H(x)^{-1}g(x)$, $$e^+=H(x)^{-1}\\int_0^1\\bigl[H(x)-H(x^*+te)\\bigr]e\\,dt.$$ Near $x^*$ the Hessian stays positive definite, $\\|H(x)^{-1}\\|\\le1/m$, and $\\|H(x)-H(x^*+te)\\|\\le M(1-t)\\|e\\|$. Integrating $1-t$ gives the factor $\\tfrac{1}{2}$.",
+        "ru": "По формуле Ньютона–Лейбница $g(x)=\\int_0^1 H(x^*+te)\\,e\\,dt$. Так как $e^+=e-H(x)^{-1}g(x)$, $$e^+=H(x)^{-1}\\int_0^1\\bigl[H(x)-H(x^*+te)\\bigr]e\\,dt.$$ Возле $x^*$ гессиан остаётся положительно определённым, $\\|H(x)^{-1}\\|\\le1/m$, и $\\|H(x)-H(x^*+te)\\|\\le M(1-t)\\|e\\|$. Интеграл от $1-t$ даёт множитель $\\tfrac{1}{2}$."
+       }
+      },
+      {
+       "type": "p",
+       "text": {
+        "en": "Once $\\tfrac{M}{2m}\\|e\\|<1$, each step about doubles how many leading digits of $x_k$ are right. Both constants matter: a nearly singular Hessian at the solution (small $m$) or a fast-changing one (large $M$) shrinks the region where this happens.",
+        "ru": "Как только $\\tfrac{M}{2m}\\|e\\|<1$, каждый шаг примерно вдвое увеличивает количество правильных первых знаков $x_k$. Важны обе константы: почти вырожденный гессиан в решении (малое $m$) или быстро меняющийся гессиан (большое $M$) сужает область, где это происходит."
+       }
+      },
+      {
+       "type": "figure",
+       "src": "fig_digits",
+       "alt": {
+        "en": "Error of Newton's method on $x-\\ln x$ against the iteration, compared with gradient descent.",
+        "ru": "Ошибка метода Ньютона на $x-\\ln x$ по итерациям в сравнении с градиентным спуском."
+       },
+       "caption": {
+        "en": "Error of Newton's method on $x-\\ln x$ against the iteration, compared with gradient descent.",
+        "ru": "Ошибка метода Ньютона на $x-\\ln x$ по итерациям в сравнении с градиентным спуском."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "A3"
+      },
+      {
+       "type": "trap",
+       "text": {
+        "en": "For $f(x)=x^4$ the minimizer has $f''(0)=0$, and Newton gives $x^+={{demo.rate}}\\,x$: linear convergence, ${{demo.singularSteps}}$ steps per factor of ${{zero.reduction}}$. The theorem above assumes $\\nabla^2 f(x^*)\\succ0$ for a reason.",
+        "ru": "Для $f(x)=x^4$ в минимуме $f''(0)=0$, и метод Ньютона даёт $x^+={{demo.rate}}\\,x$: линейная сходимость, ${{demo.singularSteps}}$ шагов на уменьшение в ${{zero.reduction}}$ раз. Теорема выше не зря требует $\\nabla^2 f(x^*)\\succ0$."
+       }
+      }
+     ]
+    },
+    {
+     "id": "failure",
+     "title": {
+      "en": "When the full step fails",
+      "ru": "Когда полный шаг не работает"
+     },
+     "blocks": [
+      {
+       "type": "p",
+       "text": {
+        "en": "Along $p_N$, $g^\\top p_N=-g^\\top H^{-1}g$. This is negative when $H\\succ0$ and can be positive when $H$ is indefinite. Even with $H\\succ0$ the unit step can leave the region where the model describes $f$.",
+        "ru": "Вдоль $p_N$ имеем $g^\\top p_N=-g^\\top H^{-1}g$. Это отрицательно при $H\\succ0$ и может быть положительно при знаконеопределённой $H$. Даже при $H\\succ0$ единичный шаг может выйти из области, где модель описывает $f$."
+       }
+      },
+      {
+       "type": "list",
+       "items": [
+        {
+         "en": "**Uphill direction.** An indefinite $H$ may give $g^\\top p_N>0$; a line search along $p_N$ cannot help.",
+         "ru": "**Направление вверх.** Знаконеопределённая $H$ может дать $g^\\top p_N>0$; линейный поиск вдоль $p_N$ не поможет."
+        },
+        {
+         "en": "**Wrong stationary point.** Newton solves $\\nabla f=0$ and is attracted by saddles and maxima as readily as by minima.",
+         "ru": "**Не та стационарная точка.** Метод Ньютона решает $\\nabla f=0$ и притягивается к сёдлам и максимумам так же охотно, как к минимумам."
+        },
+        {
+         "en": "**Overlong step.** The model is right at $x$ and wrong where its minimizer lies.",
+         "ru": "**Слишком длинный шаг.** Модель верна в $x$ и неверна там, где лежит её минимум."
+        },
+        {
+         "en": "**Singular or ill-conditioned $H$.** The linear solve amplifies rounding errors, and the step may be huge.",
+         "ru": "**Вырожденная или плохо обусловленная $H$.** Решение линейной системы усиливает ошибки округления, и шаг может оказаться огромным."
+        }
+       ]
+      },
+      {
+       "type": "problem",
+       "id": "B2"
+      },
+      {
+       "type": "definition",
+       "text": {
+        "en": "**Damped Newton** chooses $\\alpha_k=1,\\beta,\\beta^2,\\dots$ until $$f(x_k+\\alpha_kp_k)\\le f(x_k)+c\\,\\alpha_k\\nabla f(x_k)^\\top p_k,$$ and sets $x_{k+1}=x_k+\\alpha_kp_k$. It needs $p_k$ to be a descent direction.",
+        "ru": "**Демпфированный метод Ньютона** перебирает $\\alpha_k=1,\\beta,\\beta^2,\\dots$, пока не выполнится $$f(x_k+\\alpha_kp_k)\\le f(x_k)+c\\,\\alpha_k\\nabla f(x_k)^\\top p_k,$$ и полагает $x_{k+1}=x_k+\\alpha_kp_k$. Ему нужно, чтобы $p_k$ было направлением спуска."
+       }
+      },
+      {
+       "type": "theorem",
+       "text": {
+        "en": "If the iterates of damped Newton converge to $x^*$ with $\\nabla^2 f(x^*)\\succ0$ and $c<\\tfrac{1}{2}$, then $\\alpha_k=1$ is accepted for all large $k$, and the convergence is quadratic.",
+        "ru": "Если итерации демпфированного метода Ньютона сходятся к $x^*$ с $\\nabla^2 f(x^*)\\succ0$ и $c<\\tfrac{1}{2}$, то для всех больших $k$ принимается $\\alpha_k=1$, и сходимость квадратичная."
+       },
+       "kind": "proposition"
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "Near $x^*$, $f(x+p_N)-f(x)=-\\tfrac{1}{2}g^\\top H^{-1}g+o(\\|g\\|^2)$, while the Armijo bound asks for at most $-c\\,g^\\top H^{-1}g$. Since $c<\\tfrac{1}{2}$, the first is eventually below the second.",
+        "ru": "Возле $x^*$ $f(x+p_N)-f(x)=-\\tfrac{1}{2}g^\\top H^{-1}g+o(\\|g\\|^2)$, а условие Армихо требует не больше $-c\\,g^\\top H^{-1}g$. Поскольку $c<\\tfrac{1}{2}$, первое в итоге оказывается меньше второго."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "A1"
+      }
+     ]
+    },
+    {
+     "id": "regularization",
+     "title": {
+      "en": "Shifting the Hessian",
+      "ru": "Сдвиг гессиана"
+     },
+     "blocks": [
+      {
+       "type": "definition",
+       "text": {
+        "en": "The **regularized Newton step** solves $(H+\\lambda I)p=-g$ with $\\lambda\\ge0$ chosen so that $H+\\lambda I\\succ0$, that is $\\lambda>-\\lambda_{\\min}(H)$.",
+        "ru": "**Регуляризованный шаг Ньютона** решает $(H+\\lambda I)p=-g$, где $\\lambda\\ge0$ выбрано так, что $H+\\lambda I\\succ0$, то есть $\\lambda>-\\lambda_{\\min}(H)$."
+       }
+      },
+      {
+       "type": "theorem",
+       "text": {
+        "en": "If $H+\\lambda I\\succ0$ and $g\\ne0$, then $g^\\top p=-g^\\top(H+\\lambda I)^{-1}g<0$. As $\\lambda\\to0$ the step tends to the Newton step when $H\\succ0$; as $\\lambda\\to\\infty$, $p\\approx-\\lambda^{-1}g$, a short gradient step.",
+        "ru": "Если $H+\\lambda I\\succ0$ и $g\\ne0$, то $g^\\top p=-g^\\top(H+\\lambda I)^{-1}g<0$. При $\\lambda\\to0$ шаг стремится к шагу Ньютона, если $H\\succ0$; при $\\lambda\\to\\infty$ $p\\approx-\\lambda^{-1}g$ — короткий градиентный шаг."
+       },
+       "kind": "proposition"
+      },
+      {
+       "type": "p",
+       "text": {
+        "en": "In practice $\\lambda$ starts at zero or at a small value and is multiplied by a constant until the Cholesky factorization of $H+\\lambda I$ succeeds; after a successful full step it is reduced again. In the eigenbasis the step is $p_i=-g_i/(\\lambda_i+\\lambda)$: a negative-curvature direction with $\\lambda_i+\\lambda>0$ is now followed downhill.",
+        "ru": "На практике $\\lambda$ начинают с нуля или с малого значения и умножают на константу до тех пор, пока $H+\\lambda I$ не допустит разложения Холецкого; после удачного полного шага $\\lambda$ снова уменьшают. В собственном базисе шаг равен $p_i=-g_i/(\\lambda_i+\\lambda)$: по направлению отрицательной кривизны с $\\lambda_i+\\lambda>0$ теперь идут вниз."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "B1"
+      },
+      {
+       "type": "figure",
+       "src": "fig_saddle",
+       "alt": {
+        "en": "Full Newton converges to the saddle; the regularized, damped method leaves it along the negative curvature.",
+        "ru": "Полный метод Ньютона сходится в седло; регуляризованный демпфированный метод уходит от него вдоль отрицательной кривизны."
+       },
+       "caption": {
+        "en": "Full Newton converges to the saddle; the regularized, damped method leaves it along the negative curvature.",
+        "ru": "Полный метод Ньютона сходится в седло; регуляризованный демпфированный метод уходит от него вдоль отрицательной кривизны."
+       }
+      },
+      {
+       "type": "note",
+       "text": {
+        "en": "Trust-region methods choose the step size first and the shift second: $p$ minimizes the model over $\\|p\\|\\le\\Delta$, and the solution has the form $(H+\\lambda I)p=-g$ with $\\lambda\\ge0$ fixed by $\\Delta$. They handle negative curvature without a separate test.",
+        "ru": "Методы доверительной области выбирают сначала длину шага, а потом сдвиг: $p$ минимизирует модель при $\\|p\\|\\le\\Delta$, а решение имеет вид $(H+\\lambda I)p=-g$ с $\\lambda\\ge0$, определяемым $\\Delta$. Отрицательную кривизну они обрабатывают без отдельной проверки."
+       },
+       "title": {
+        "en": "Trust regions",
+        "ru": "Доверительные области"
+       }
+      }
+     ]
+    },
+    {
+     "id": "least-squares",
+     "title": {
+      "en": "Gauss–Newton and Levenberg–Marquardt",
+      "ru": "Методы Гаусса–Ньютона и Левенберга–Марквардта"
+     },
+     "blocks": [
+      {
+       "type": "p",
+       "text": {
+        "en": "For $f(x)=\\tfrac{1}{2}\\|r(x)\\|^2$ with residuals $r:\\mathbb R^n\\to\\mathbb R^N$ and Jacobian $J$, $$\\nabla f=J^\\top r,\\qquad \\nabla^2 f=J^\\top J+\\sum_i r_i\\nabla^2 r_i.$$",
+        "ru": "Для $f(x)=\\tfrac{1}{2}\\|r(x)\\|^2$ с невязками $r:\\mathbb R^n\\to\\mathbb R^N$ и якобианом $J$ $$\\nabla f=J^\\top r,\\qquad \\nabla^2 f=J^\\top J+\\sum_i r_i\\nabla^2 r_i.$$"
+       }
+      },
+      {
+       "type": "definition",
+       "text": {
+        "en": "**Gauss–Newton** drops the second term and solves $J^\\top Jp=-J^\\top r$; it is the Newton step for the linearized residual $r+Jp$. **Levenberg–Marquardt** solves $(J^\\top J+\\lambda I)p=-J^\\top r$.",
+        "ru": "**Метод Гаусса–Ньютона** отбрасывает второе слагаемое и решает $J^\\top Jp=-J^\\top r$; это шаг Ньютона для линеаризованной невязки $r+Jp$. **Метод Левенберга–Марквардта** решает $(J^\\top J+\\lambda I)p=-J^\\top r$."
+       }
+      },
+      {
+       "type": "intuition",
+       "text": {
+        "en": "$J^\\top J\\succeq0$ needs only first derivatives, and the dropped term is small when the residuals are small near the solution. The shift $\\lambda$ handles a rank-deficient $J$ and moves the step from Gauss–Newton toward a short gradient step.",
+        "ru": "$J^\\top J\\succeq0$ требует только первых производных, а отброшенное слагаемое мало, когда невязки возле решения малы. Сдвиг $\\lambda$ справляется с неполным рангом $J$ и сдвигает шаг от Гаусса–Ньютона к короткому градиентному шагу."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "B3"
+      }
+     ]
+    },
+    {
+     "id": "cost",
+     "title": {
+      "en": "The cost of curvature",
+      "ru": "Стоимость кривизны"
+     },
+     "blocks": [
+      {
+       "type": "table",
+       "head": [
+        {
+         "en": "Operation",
+         "ru": "Операция"
+        },
+        {
+         "en": "Dense cost",
+         "ru": "Стоимость"
+        },
+        {
+         "en": "Memory",
+         "ru": "Память"
+        }
+       ],
+       "rows": [
+        [
+         {
+          "en": "Form the Hessian",
+          "ru": "Построить гессиан"
+         },
+         {
+          "en": "$O(n^2)$ derivatives; $O(Nn^2)$ for a GLM",
+          "ru": "$O(n^2)$ производных; $O(Nn^2)$ для GLM"
+         },
+         {
+          "en": "$O(n^2)$",
+          "ru": "$O(n^2)$"
+         }
+        ],
+        [
+         {
+          "en": "Cholesky factorization",
+          "ru": "Разложение Холецкого"
+         },
+         {
+          "en": "$\\approx n^3/3$",
+          "ru": "$\\approx n^3/3$"
+         },
+         {
+          "en": "$O(n^2)$",
+          "ru": "$O(n^2)$"
+         }
+        ],
+        [
+         {
+          "en": "Solve with the factor",
+          "ru": "Решение с разложением"
+         },
+         {
+          "en": "$O(n^2)$",
+          "ru": "$O(n^2)$"
+         },
+         {
+          "en": "$O(n^2)$",
+          "ru": "$O(n^2)$"
+         }
+        ],
+        [
+         {
+          "en": "Hessian-vector product",
+          "ru": "Произведение гессиана на вектор"
+         },
+         {
+          "en": "a few gradients",
+          "ru": "несколько градиентов"
+         },
+         {
+          "en": "$O(n)$ extra",
+          "ru": "$O(n)$ дополнительно"
+         }
+        ],
+        [
+         {
+          "en": "L-BFGS direction",
+          "ru": "Направление L-BFGS"
+         },
+         {
+          "en": "$\\approx 4mn$",
+          "ru": "$\\approx 4mn$"
+         },
+         {
+          "en": "$2mn$",
+          "ru": "$2mn$"
+         }
+        ]
+       ]
+      },
+      {
+       "type": "example",
+       "text": {
+        "en": "With an $\\ell_2$ penalty, the logistic loss $f(w)=N^{-1}\\sum_i\\bigl[\\log(1+e^{z_i})-y_iz_i\\bigr]+\\tfrac{\\gamma}{2}\\|w\\|^2$, $z=Xw$: $$\\nabla f=N^{-1}X^\\top(\\sigma(z)-y)+\\gamma w,\\quad Hv=N^{-1}X^\\top\\bigl(d\\odot Xv\\bigr)+\\gamma v,$$ with $d_i=\\sigma(z_i)(1-\\sigma(z_i))$. The product costs two passes over $X$ and never forms $H$.",
+        "ru": "Логистическая функция потерь со штрафом $\\ell_2$, $f(w)=N^{-1}\\sum_i\\bigl[\\log(1+e^{z_i})-y_iz_i\\bigr]+\\tfrac{\\gamma}{2}\\|w\\|^2$, $z=Xw$: $$\\nabla f=N^{-1}X^\\top(\\sigma(z)-y)+\\gamma w,\\quad Hv=N^{-1}X^\\top\\bigl(d\\odot Xv\\bigr)+\\gamma v,$$ где $d_i=\\sigma(z_i)(1-\\sigma(z_i))$. Произведение стоит двух проходов по $X$ и не строит $H$."
+       }
+      },
+      {
+       "type": "p",
+       "text": {
+        "en": "**Newton-CG** solves $Hp=-g$ approximately by conjugate gradients, which need only products $Hv$. Stopping CG early, or at negative curvature $v^\\top Hv\\le0$, still gives a descent direction.",
+        "ru": "**Newton-CG** приближённо решает $Hp=-g$ с помощью CG, которому нужны только произведения $Hv$. Ранняя остановка CG или остановка при отрицательной кривизне $v^\\top Hv\\le0$ всё равно даёт направление спуска."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "C3"
+      },
+      {
+       "type": "figure",
+       "src": "fig_cost",
+       "alt": {
+        "en": "Gradient norm against iterations and against passes over the data for gradient descent, damped Newton, BFGS and L-BFGS.",
+        "ru": "Норма градиента по итерациям и по проходам по данным для градиентного спуска, демпфированного Ньютона, BFGS и L-BFGS."
+       },
+       "caption": {
+        "en": "Gradient norm against iterations and against passes over the data for gradient descent, damped Newton, BFGS and L-BFGS.",
+        "ru": "Норма градиента по итерациям и по проходам по данным для градиентного спуска, демпфированного Ньютона, BFGS и L-BFGS."
+       }
+      }
+     ]
+    },
+    {
+     "id": "bfgs",
+     "title": {
+      "en": "Secant pairs and BFGS",
+      "ru": "Секущие пары и BFGS"
+     },
+     "blocks": [
+      {
+       "type": "p",
+       "text": {
+        "en": "By the fundamental theorem of calculus, $$y_k=\\Bigl[\\int_0^1\\nabla^2 f(x_k+ts_k)\\,dt\\Bigr]s_k:$$ $y_k$ is the action of an average Hessian on $s_k$. A quasi-Newton method keeps a matrix that reproduces it.",
+        "ru": "По формуле Ньютона–Лейбница $$y_k=\\Bigl[\\int_0^1\\nabla^2 f(x_k+ts_k)\\,dt\\Bigr]s_k:$$ $y_k$ — действие усреднённого гессиана на $s_k$. Квазиньютоновский метод хранит матрицу, которая его воспроизводит."
+       }
+      },
+      {
+       "type": "definition",
+       "text": {
+        "en": "The **secant conditions** are $B_{k+1}s_k=y_k$ and $G_{k+1}y_k=s_k$. The **BFGS update**, in Hessian and inverse form, is $$B_{k+1}=B_k-{B_ks_ks_k^\\top B_k\\over s_k^\\top B_ks_k}+{y_ky_k^\\top\\over y_k^\\top s_k},\\qquad G_{k+1}=(I-\\rho_ks_ky_k^\\top)G_k(I-\\rho_ky_ks_k^\\top)+\\rho_ks_ks_k^\\top,$$ with $\\rho_k=1/(y_k^\\top s_k)$. The direction is $p_k=-G_kg_k$, with a line search.",
+        "ru": "**Секущие условия** — это $B_{k+1}s_k=y_k$ и $G_{k+1}y_k=s_k$. **Обновление BFGS** в форме гессиана и в обратной форме: $$B_{k+1}=B_k-{B_ks_ks_k^\\top B_k\\over s_k^\\top B_ks_k}+{y_ky_k^\\top\\over y_k^\\top s_k},\\qquad G_{k+1}=(I-\\rho_ks_ky_k^\\top)G_k(I-\\rho_ky_ks_k^\\top)+\\rho_ks_ks_k^\\top,$$ где $\\rho_k=1/(y_k^\\top s_k)$. Направление $p_k=-G_kg_k$, с линейным поиском."
+       }
+      },
+      {
+       "type": "note",
+       "text": {
+        "en": "One vector equation does not determine a matrix. BFGS is the symmetric update closest to $G_k$ in a weighted norm that satisfies the secant condition; it changes $G$ by a matrix of rank at most two. DFP is the same construction with the roles of $B$ and $G$ exchanged.",
+        "ru": "Одно векторное уравнение не определяет матрицу. BFGS — симметричное обновление, ближайшее к $G_k$ в некоторой взвешенной норме среди удовлетворяющих секущему условию; оно меняет $G$ на матрицу ранга не выше двух. DFP — та же конструкция, в которой $B$ и $G$ поменялись ролями."
+       },
+       "title": {
+        "en": "Why this formula",
+        "ru": "Почему именно эта формула"
+       }
+      },
+      {
+       "type": "theorem",
+       "text": {
+        "en": "$G_{k+1}y_k=s_k$. If $G_k\\succ0$ and $y_k^\\top s_k>0$, then $G_{k+1}\\succ0$.",
+        "ru": "$G_{k+1}y_k=s_k$. Если $G_k\\succ0$ и $y_k^\\top s_k>0$, то $G_{k+1}\\succ0$."
+       }
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "$(I-\\rho ys^\\top)y=y-\\rho y(s^\\top y)=0$, so the first term vanishes on $y$, and $\\rho ss^\\top y=s$. For $z\\ne0$ put $V=I-\\rho sy^\\top$: $z^\\top G_{k+1}z=(V^\\top z)^\\top G_k(V^\\top z)+\\rho(s^\\top z)^2\\ge0$. If it were zero, then $s^\\top z=0$, hence $V^\\top z=z-\\rho y(s^\\top z)=z$, and $z^\\top G_kz=0$, so $z=0$.",
+        "ru": "$(I-\\rho ys^\\top)y=y-\\rho y(s^\\top y)=0$, поэтому первое слагаемое обращается в ноль на $y$, а $\\rho ss^\\top y=s$. Для $z\\ne0$ положим $V=I-\\rho sy^\\top$: $z^\\top G_{k+1}z=(V^\\top z)^\\top G_k(V^\\top z)+\\rho(s^\\top z)^2\\ge0$. Если бы это было нулём, то $s^\\top z=0$, откуда $V^\\top z=z-\\rho y(s^\\top z)=z$ и $z^\\top G_kz=0$, то есть $z=0$."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "C1"
+      },
+      {
+       "type": "figure",
+       "src": "fig_bfgs",
+       "alt": {
+        "en": "Gradient descent, BFGS and Newton on Rosenbrock's function: objective gap against the iteration.",
+        "ru": "Градиентный спуск, BFGS и метод Ньютона на функции Розенброка: зазор функции по итерациям."
+       },
+       "caption": {
+        "en": "Gradient descent, BFGS and Newton on Rosenbrock's function: objective gap against the iteration.",
+        "ru": "Градиентный спуск, BFGS и метод Ньютона на функции Розенброка: зазор функции по итерациям."
+       }
+      },
+      {
+       "type": "p",
+       "text": {
+        "en": "Near a regular minimizer BFGS with a line search that eventually accepts $\\alpha=1$ converges superlinearly: $\\|e_{k+1}\\|/\\|e_k\\|\\to0$. It does not reach Newton's quadratic rate, but it needs only gradients and $O(n^2)$ work per step.",
+        "ru": "Возле невырожденного минимума BFGS с линейным поиском, который в итоге принимает $\\alpha=1$, сходится сверхлинейно: $\\|e_{k+1}\\|/\\|e_k\\|\\to0$. Квадратичной скорости Ньютона он не достигает, зато ему нужны только градиенты и $O(n^2)$ работы на шаг."
+       }
+      }
+     ]
+    },
+    {
+     "id": "curvature",
+     "title": {
+      "en": "The curvature condition",
+      "ru": "Условие кривизны"
+     },
+     "blocks": [
+      {
+       "type": "p",
+       "text": {
+        "en": "$y_k^\\top s_k=s_k^\\top\\bigl[\\int_0^1\\nabla^2 f(x_k+ts_k)dt\\bigr]s_k$ is the average curvature along the step. For a $\\mu$-strongly convex $f$ it is at least $\\mu\\|s_k\\|^2>0$; for a nonconvex $f$ it can have either sign.",
+        "ru": "$y_k^\\top s_k=s_k^\\top\\bigl[\\int_0^1\\nabla^2 f(x_k+ts_k)dt\\bigr]s_k$ — средняя кривизна вдоль шага. Для $\\mu$-сильно выпуклой $f$ она не меньше $\\mu\\|s_k\\|^2>0$; для невыпуклой $f$ может иметь любой знак."
+       }
+      },
+      {
+       "type": "definition",
+       "text": {
+        "en": "The **Wolfe conditions** for a step $\\alpha$ along a descent direction $p$ are the Armijo condition and the curvature condition $\\nabla f(x+\\alpha p)^\\top p\\ge c_2\\nabla f(x)^\\top p$, with $0< c< c_2<1$.",
+        "ru": "**Условия Вульфа** для шага $\\alpha$ вдоль направления спуска $p$ — это условие Армихо и условие кривизны $\\nabla f(x+\\alpha p)^\\top p\\ge c_2\\nabla f(x)^\\top p$, где $0< c< c_2<1$."
+       }
+      },
+      {
+       "type": "theorem",
+       "text": {
+        "en": "If $\\alpha$ satisfies the Wolfe curvature condition along a descent direction $p$, then $y^\\top s>0$ for $s=\\alpha p$.",
+        "ru": "Если $\\alpha$ удовлетворяет условию кривизны Вульфа вдоль направления спуска $p$, то $y^\\top s>0$ для $s=\\alpha p$."
+       },
+       "kind": "proposition"
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "$y^\\top s=\\alpha\\bigl(\\nabla f(x+\\alpha p)-\\nabla f(x)\\bigr)^\\top p\\ge\\alpha(c_2-1)\\nabla f(x)^\\top p>0$, because $c_2<1$ and $\\nabla f(x)^\\top p<0$.",
+        "ru": "$y^\\top s=\\alpha\\bigl(\\nabla f(x+\\alpha p)-\\nabla f(x)\\bigr)^\\top p\\ge\\alpha(c_2-1)\\nabla f(x)^\\top p>0$, поскольку $c_2<1$ и $\\nabla f(x)^\\top p<0$."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "C2"
+      },
+      {
+       "type": "trap",
+       "text": {
+        "en": "Armijo backtracking alone does not guarantee $y^\\top s>0$. Implementations skip the update when $y^\\top s\\le\\varepsilon\\|y\\|\\|s\\|$ or damp $y$ toward $B s$ (Powell's damping). Without the test one update with $y^\\top s<0$ can make $G$ indefinite and the next direction an ascent direction.",
+        "ru": "Одно дробление по Армихо не гарантирует $y^\\top s>0$. Реализации пропускают обновление при $y^\\top s\\le\\varepsilon\\|y\\|\\|s\\|$ или демпфируют $y$ в сторону $Bs$ (демпфирование Пауэлла). Без этой проверки одно обновление с $y^\\top s<0$ может сделать $G$ знаконеопределённой, а следующее направление — направлением подъёма."
+       }
+      }
+     ]
+    },
+    {
+     "id": "lbfgs",
+     "title": {
+      "en": "Limited memory and bounds",
+      "ru": "Ограниченная память и ограничения-отрезки"
+     },
+     "blocks": [
+      {
+       "type": "p",
+       "text": {
+        "en": "Dense BFGS stores an $n\\times n$ matrix. **L-BFGS** stores the last $m$ pairs $(s_i,y_i)$, usually $m$ between five and twenty, and applies $G_k$ to $g_k$ without forming it.",
+        "ru": "Плотный BFGS хранит матрицу $n\\times n$. **L-BFGS** хранит последние $m$ пар $(s_i,y_i)$, обычно $m$ от пяти до двадцати, и умножает $G_k$ на $g_k$, не строя её."
+       }
+      },
+      {
+       "type": "list",
+       "items": [
+        {
+         "en": "Set $q=g_k$. For the pairs from the newest to the oldest: $a_i=\\rho_is_i^\\top q$, $q\\leftarrow q-a_iy_i$.",
+         "ru": "Положите $q=g_k$. Для пар от новой к старой: $a_i=\\rho_is_i^\\top q$, $q\\leftarrow q-a_iy_i$."
+        },
+        {
+         "en": "Scale: $r=\\gamma_kq$ with $\\gamma_k=s_{k-1}^\\top y_{k-1}/y_{k-1}^\\top y_{k-1}$, an estimate of the inverse curvature.",
+         "ru": "Масштабируйте: $r=\\gamma_kq$, где $\\gamma_k=s_{k-1}^\\top y_{k-1}/y_{k-1}^\\top y_{k-1}$ — оценка обратной кривизны."
+        },
+        {
+         "en": "For the pairs from the oldest to the newest: $b_i=\\rho_iy_i^\\top r$, $r\\leftarrow r+s_i(a_i-b_i)$.",
+         "ru": "Для пар от старой к новой: $b_i=\\rho_iy_i^\\top r$, $r\\leftarrow r+s_i(a_i-b_i)$."
+        },
+        {
+         "en": "Return $p_k=-r$: about $4mn$ operations and $2mn$ stored numbers.",
+         "ru": "Верните $p_k=-r$: около $4mn$ операций и $2mn$ хранимых чисел."
+        }
+       ]
+      },
+      {
+       "type": "p",
+       "text": {
+        "en": "The result equals $-Gg$ for the matrix obtained from $\\gamma_kI$ by $m$ BFGS updates with the stored pairs. Old curvature is forgotten, which costs iterations on problems where it would still be useful.",
+        "ru": "Результат равен $-Gg$ для матрицы, полученной из $\\gamma_kI$ последовательными обновлениями BFGS по хранимым $m$ парам. Старая кривизна забывается, и на задачах, где она была бы полезна, это стоит итераций."
+       }
+      },
+      {
+       "type": "note",
+       "text": {
+        "en": "For bounds $l\\le x\\le u$, **L-BFGS-B** moves along the projected gradient path to a generalized Cauchy point, fixes the variables at their bounds, minimizes the limited-memory model over the free ones and runs a line search that respects the box. Stationarity is measured by the projected gradient.",
+        "ru": "Для ограничений $l\\le x\\le u$ **L-BFGS-B** движется по пути проекции градиента до обобщённой точки Коши, фиксирует переменные на их границах, минимизирует модель с ограниченной памятью по свободным переменным и делает линейный поиск, не выходящий из бруса. Стационарность измеряется проекцией градиента."
+       },
+       "title": {
+        "en": "L-BFGS-B",
+        "ru": "L-BFGS-B"
+       }
+      },
+      {
+       "type": "trap",
+       "text": {
+        "en": "Clipping the unconstrained L-BFGS solution to the box is not the constrained minimizer in general: when two variables are coupled, fixing one at its bound moves the optimum of the other.",
+        "ru": "Обрезка решения задачи без ограничений по брусу в общем случае не даёт условный минимум: если две переменные связаны, фиксация одной на границе сдвигает оптимум другой."
+       }
+      },
+      {
+       "type": "table",
+       "head": [
+        {
+         "en": "Method",
+         "ru": "Метод"
+        },
+        {
+         "en": "Needs",
+         "ru": "Нужно"
+        },
+        {
+         "en": "Per step",
+         "ru": "На шаг"
+        },
+        {
+         "en": "Near the solution",
+         "ru": "Возле решения"
+        }
+       ],
+       "rows": [
+        [
+         {
+          "en": "Gradient descent",
+          "ru": "Градиентный спуск"
+         },
+         {
+          "en": "$g$",
+          "ru": "$g$"
+         },
+         {
+          "en": "$O(n)$",
+          "ru": "$O(n)$"
+         },
+         {
+          "en": "linear, rate set by $\\kappa$",
+          "ru": "линейная, скорость задаёт $\\kappa$"
+         }
+        ],
+        [
+         {
+          "en": "Newton",
+          "ru": "Ньютон"
+         },
+         {
+          "en": "$g$, $H$",
+          "ru": "$g$, $H$"
+         },
+         {
+          "en": "$O(n^3)$",
+          "ru": "$O(n^3)$"
+         },
+         {
+          "en": "quadratic",
+          "ru": "квадратичная"
+         }
+        ],
+        [
+         {
+          "en": "Newton-CG",
+          "ru": "Newton-CG"
+         },
+         {
+          "en": "$g$, $Hv$",
+          "ru": "$g$, $Hv$"
+         },
+         {
+          "en": "CG iterations",
+          "ru": "итерации CG"
+         },
+         {
+          "en": "superlinear with a tightening tolerance",
+          "ru": "сверхлинейная при уменьшающемся допуске"
+         }
+        ],
+        [
+         {
+          "en": "BFGS",
+          "ru": "BFGS"
+         },
+         {
+          "en": "$g$",
+          "ru": "$g$"
+         },
+         {
+          "en": "$O(n^2)$",
+          "ru": "$O(n^2)$"
+         },
+         {
+          "en": "superlinear",
+          "ru": "сверхлинейная"
+         }
+        ],
+        [
+         {
+          "en": "L-BFGS",
+          "ru": "L-BFGS"
+         },
+         {
+          "en": "$g$",
+          "ru": "$g$"
+         },
+         {
+          "en": "$O(mn)$",
+          "ru": "$O(mn)$"
+         },
+         {
+          "en": "linear in general",
+          "ru": "в общем случае линейная"
+         }
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "id": "practice",
+     "title": {
+      "en": "Implementation checklist and exercises",
+      "ru": "Проверки реализации и упражнения"
+     },
+     "blocks": [
+      {
+       "type": "list",
+       "items": [
+        {
+         "en": "Solve, do not invert; detect $H\\not\\succ0$ by a failed Cholesky factorization and shift.",
+         "ru": "Решайте систему, а не обращайте матрицу; определяйте $H\\not\\succ0$ по неудавшемуся разложению Холецкого и сдвигайте."
+        },
+        {
+         "en": "Test $g^\\top p<0$ before the line search and $y^\\top s>0$ before the BFGS update.",
+         "ru": "Проверяйте $g^\\top p<0$ до линейного поиска и $y^\\top s>0$ до обновления BFGS."
+        },
+        {
+         "en": "Check derivatives: central differences for $g$, a difference of gradients for $Hv$, over several step sizes.",
+         "ru": "Проверяйте производные: центральные разности для $g$, разность градиентов для $Hv$, для нескольких величин шага."
+        },
+        {
+         "en": "Log function, gradient and Hessian calls next to iterations, and compare methods at one stopping rule.",
+         "ru": "Записывайте вызовы функции, градиента и гессиана рядом с итерациями и сравнивайте методы при одном правиле остановки."
+        },
+        {
+         "en": "At the end check the Hessian or the smallest curvature found: a small gradient may mean a saddle.",
+         "ru": "В конце проверяйте гессиан или наименьшую найденную кривизну: малый градиент может означать седло."
+        }
+       ]
+      },
+      {
+       "type": "selfcheck",
+       "question": {
+        "en": "Why can backtracking not repair a Newton direction with $g^\\top p>0$?",
+        "ru": "Почему дробление шага не может исправить направление Ньютона с $g^\\top p>0$?"
+       },
+       "answer": {
+        "en": "Because $f(x+\\alpha p)=f(x)+\\alpha g^\\top p+o(\\alpha)$ rises for every small $\\alpha$; the Armijo test fails for all of them.",
+        "ru": "Потому что $f(x+\\alpha p)=f(x)+\\alpha g^\\top p+o(\\alpha)$ растёт при любом малом $\\alpha$; условие Армихо не выполняется ни для одного из них."
+       }
+      },
+      {
+       "type": "selfcheck",
+       "question": {
+        "en": "What information does one secant pair $(s,y)$ carry?",
+        "ru": "Какую информацию несёт одна секущая пара $(s,y)$?"
+       },
+       "answer": {
+        "en": "The action of the average Hessian along the segment on the single vector $s$, nothing about other directions.",
+        "ru": "Действие среднего гессиана на отрезке на один вектор $s$ и ничего о других направлениях."
+       }
+      },
+      {
+       "type": "selfcheck",
+       "question": {
+        "en": "When is a Hessian-vector product more useful than the Hessian?",
+        "ru": "Когда произведение гессиана на вектор полезнее самого гессиана?"
+       },
+       "answer": {
+        "en": "When $n$ is large: $Hv$ costs a few gradients and $O(n)$ memory, and conjugate gradients need only such products.",
+        "ru": "Когда $n$ велико: $Hv$ стоит несколько градиентов и $O(n)$ памяти, а методу сопряжённых градиентов нужны только такие произведения."
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "cheatsheet": {
+   "sections": [
+    {
+     "id": "newton",
+     "title": {
+      "en": "Newton step",
+      "ru": "Шаг Ньютона"
+     },
+     "items": [
+      {
+       "en": "$m(p)=f+g^\\top p+\\tfrac{1}{2}p^\\top Hp$; $Hp_N=-g$, $x^+=x+p_N$.",
+       "ru": "$m(p)=f+g^\\top p+\\tfrac{1}{2}p^\\top Hp$; $Hp_N=-g$, $x^+=x+p_N$."
+      },
+      {
+       "en": "Solve by Cholesky or LU, never with $H^{-1}$.",
+       "ru": "Решать через Холецкого или LU, без $H^{-1}$."
+      },
+      {
+       "en": "Quadratic, $Q\\succ0$: one step, $x^+=Q^{-1}b$.",
+       "ru": "Квадратичная функция, $Q\\succ0$: один шаг, $x^+=Q^{-1}b$."
+      },
+      {
+       "en": "$\\nabla^2 f(x^*)\\succ0$, $M$-Lipschitz $H$: $\\|e^+\\|\\le\\tfrac{M}{2m}\\|e\\|^2$.",
+       "ru": "$\\nabla^2 f(x^*)\\succ0$, $H$ $M$-липшицев: $\\|e^+\\|\\le\\tfrac{M}{2m}\\|e\\|^2$."
+      },
+      {
+       "en": "Singular $H(x^*)$: only linear, e.g. $x^4$ gives $x^+=\\tfrac{2}{3}x$.",
+       "ru": "Вырожденный $H(x^*)$: только линейная, например, $x^4$ даёт $x^+=\\tfrac{2}{3}x$."
+      }
+     ]
+    },
+    {
+     "id": "fail",
+     "title": {
+      "en": "Failure modes",
+      "ru": "Как ломается"
+     },
+     "items": [
+      {
+       "en": "$g^\\top p_N=-g^\\top H^{-1}g$: may be $>0$ if $H$ is indefinite.",
+       "ru": "$g^\\top p_N=-g^\\top H^{-1}g$: может быть $>0$ при знаконеопределённой $H$."
+      },
+      {
+       "en": "Newton solves $\\nabla f=0$: saddles and maxima attract.",
+       "ru": "Ньютон решает $\\nabla f=0$: сёдла и максимумы притягивают."
+      },
+      {
+       "en": "Good model at $x$, step outside its region: $f$ may jump up.",
+       "ru": "Модель верна в $x$, а шаг выходит из её области: $f$ может вырасти."
+      }
+     ]
+    },
+    {
+     "id": "guard",
+     "title": {
+      "en": "Safeguards",
+      "ru": "Защита"
+     },
+     "items": [
+      {
+       "en": "Armijo: $f(x+\\alpha p)\\le f+c\\alpha g^\\top p$, $\\alpha=1,\\beta,\\beta^2,\\dots$",
+       "ru": "Армихо: $f(x+\\alpha p)\\le f+c\\alpha g^\\top p$, $\\alpha=1,\\beta,\\beta^2,\\dots$"
+      },
+      {
+       "en": "$c<\\tfrac{1}{2}$, $H(x^*)\\succ0$: eventually $\\alpha=1$, quadratic rate kept.",
+       "ru": "$c<\\tfrac{1}{2}$, $H(x^*)\\succ0$: в итоге $\\alpha=1$, квадратичная скорость сохраняется."
+      },
+      {
+       "en": "$(H+\\lambda I)p=-g$, $\\lambda>-\\lambda_{\\min}(H)$; raise $\\lambda$ until Cholesky works.",
+       "ru": "$(H+\\lambda I)p=-g$, $\\lambda>-\\lambda_{\\min}(H)$; увеличивать $\\lambda$, пока не сработает Холецкий."
+      },
+      {
+       "en": "$\\lambda\\to0$: Newton; $\\lambda\\to\\infty$: $p\\approx-g/\\lambda$.",
+       "ru": "$\\lambda\\to0$: Ньютон; $\\lambda\\to\\infty$: $p\\approx-g/\\lambda$."
+      }
+     ]
+    },
+    {
+     "id": "ls",
+     "title": {
+      "en": "Least squares",
+      "ru": "Наименьшие квадраты"
+     },
+     "items": [
+      {
+       "en": "$f=\\tfrac{1}{2}\\|r\\|^2$: $\\nabla f=J^\\top r$, $\\nabla^2 f=J^\\top J+\\sum r_i\\nabla^2 r_i$.",
+       "ru": "$f=\\tfrac{1}{2}\\|r\\|^2$: $\\nabla f=J^\\top r$, $\\nabla^2 f=J^\\top J+\\sum r_i\\nabla^2 r_i$."
+      },
+      {
+       "en": "Gauss–Newton $J^\\top Jp=-J^\\top r$; LM $(J^\\top J+\\lambda I)p=-J^\\top r$.",
+       "ru": "Гаусс–Ньютон $J^\\top Jp=-J^\\top r$; ЛМ $(J^\\top J+\\lambda I)p=-J^\\top r$."
+      }
+     ]
+    },
+    {
+     "id": "cost",
+     "title": {
+      "en": "Cost",
+      "ru": "Стоимость"
+     },
+     "items": [
+      {
+       "en": "Dense: $O(n^2)$ memory, $\\approx n^3/3$ for Cholesky.",
+       "ru": "Плотно: $O(n^2)$ памяти, $\\approx n^3/3$ на Холецкого."
+      },
+      {
+       "en": "Logistic: $Hv=N^{-1}X^\\top(d\\odot Xv)+\\gamma v$, $d=\\sigma(1-\\sigma)$.",
+       "ru": "Логистическая: $Hv=N^{-1}X^\\top(d\\odot Xv)+\\gamma v$, $d=\\sigma(1-\\sigma)$."
+      },
+      {
+       "en": "Newton-CG: $k$ products cost $\\approx2kNn$ vs $Nn^2$ to form $H$.",
+       "ru": "Newton-CG: $k$ произведений стоят $\\approx2kNn$ против $Nn^2$ на построение $H$."
+      }
+     ]
+    },
+    {
+     "id": "bfgs",
+     "title": {
+      "en": "BFGS",
+      "ru": "BFGS"
+     },
+     "items": [
+      {
+       "en": "$s=x^+-x$, $y=g^+-g$; $B^+s=y$, $G^+y=s$.",
+       "ru": "$s=x^+-x$, $y=g^+-g$; $B^+s=y$, $G^+y=s$."
+      },
+      {
+       "en": "$G^+=(I-\\rho sy^\\top)G(I-\\rho ys^\\top)+\\rho ss^\\top$, $\\rho=1/y^\\top s$.",
+       "ru": "$G^+=(I-\\rho sy^\\top)G(I-\\rho ys^\\top)+\\rho ss^\\top$, $\\rho=1/y^\\top s$."
+      },
+      {
+       "en": "$B^+=B-\\tfrac{Bss^\\top B}{s^\\top Bs}+\\tfrac{yy^\\top}{y^\\top s}$; $p=-Gg$.",
+       "ru": "$B^+=B-\\tfrac{Bss^\\top B}{s^\\top Bs}+\\tfrac{yy^\\top}{y^\\top s}$; $p=-Gg$."
+      },
+      {
+       "en": "$G\\succ0$, $y^\\top s>0$ $\\Rightarrow$ $G^+\\succ0$. Superlinear near $x^*$.",
+       "ru": "$G\\succ0$, $y^\\top s>0$ $\\Rightarrow$ $G^+\\succ0$. Сверхлинейная сходимость возле $x^*$."
+      },
+      {
+       "en": "Exact line search on an $n$-dim quadratic: at most $n$ steps.",
+       "ru": "Точный поиск на $n$-мерной квадратичной: не более $n$ шагов."
+      }
+     ]
+    },
+    {
+     "id": "curv",
+     "title": {
+      "en": "Curvature condition",
+      "ru": "Условие кривизны"
+     },
+     "items": [
+      {
+       "en": "$y^\\top s$ = average curvature along $s$; $\\ge\\mu\\|s\\|^2$ if strongly convex.",
+       "ru": "$y^\\top s$ — средняя кривизна вдоль $s$; $\\ge\\mu\\|s\\|^2$ при сильной выпуклости."
+      },
+      {
+       "en": "Wolfe: $\\nabla f(x+\\alpha p)^\\top p\\ge c_2g^\\top p$ $\\Rightarrow$ $y^\\top s>0$.",
+       "ru": "Вульф: $\\nabla f(x+\\alpha p)^\\top p\\ge c_2g^\\top p$ $\\Rightarrow$ $y^\\top s>0$."
+      },
+      {
+       "en": "Skip if $y^\\top s\\le\\varepsilon\\|y\\|\\|s\\|$, or damp.",
+       "ru": "Пропустить при $y^\\top s\\le\\varepsilon\\|y\\|\\|s\\|$ или демпфировать."
+      }
+     ]
+    },
+    {
+     "id": "lbfgs",
+     "title": {
+      "en": "L-BFGS",
+      "ru": "L-BFGS"
+     },
+     "items": [
+      {
+       "en": "Keep $m$ pairs; $q=g$; newest to oldest: $a_i=\\rho_is_i^\\top q$, $q\\mathrel{-}=a_iy_i$.",
+       "ru": "Хранить $m$ пар; $q=g$; от новой к старой: $a_i=\\rho_is_i^\\top q$, $q\\mathrel{-}=a_iy_i$."
+      },
+      {
+       "en": "$r=\\gamma q$, $\\gamma=\\tfrac{s^\\top y}{y^\\top y}$ (last pair).",
+       "ru": "$r=\\gamma q$, $\\gamma=\\tfrac{s^\\top y}{y^\\top y}$ (последняя пара)."
+      },
+      {
+       "en": "Oldest to newest: $b_i=\\rho_iy_i^\\top r$, $r\\mathrel{+}=s_i(a_i-b_i)$; $p=-r$.",
+       "ru": "От старой к новой: $b_i=\\rho_iy_i^\\top r$, $r\\mathrel{+}=s_i(a_i-b_i)$; $p=-r$."
+      },
+      {
+       "en": "$\\approx4mn$ flops, $2mn$ numbers. Bounds: L-BFGS-B, not clipping.",
+       "ru": "$\\approx4mn$ операций, $2mn$ чисел. Брус: L-BFGS-B, а не обрезка."
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

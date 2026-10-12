@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Evgeny Baulin
-// Problem cards: statements, step-by-step solutions with prediction prompts, two hint levels,
+// Problem cards: statements, a step-by-step solution revealed by one button, two hint levels,
 // answer checking through a restricted math.js evaluator, and the P2/P3 timer.
 (function () {
   'use strict';
@@ -10,7 +10,7 @@
   var render = SEM.render;
   var el = dom.el;
 
-  var P = (SEM.problems = { steppers: {}, active: null });
+  var P = (SEM.problems = {});
 
   function mode(name) {
     return document.documentElement.classList.contains('is-' + name);
@@ -29,145 +29,6 @@
     return node;
   }
   P.bindText = bindText;
-
-  /* ------------------------------------------------------------------ stepper */
-
-  // A step-by-step solution. steps: [{text, predict?, table?}]; state key: id.
-  function Stepper(container, id, steps, opts) {
-    var self = this;
-    self.id = id;
-    self.steps = steps;
-    self.opts = opts || {};
-    var store = SEM.state.section('steps');
-    var saved = store[id] || {};
-    self.n = util.clamp(saved.n | 0, 0, steps.length);
-    self.predict = !!saved.predict;
-    self.root = el('div', { class: 'stepper', tabindex: '-1', dataset: { stepper: id } });
-    self.list = el('ol', { class: 'steps' });
-    self.items = steps.map(function (s) {
-      var li = el('li', { class: 'step' });
-      if (s.predict) {
-        var pr = el('p', { class: 'predict' });
-        var tag = el('span', { class: 'predict-tag' });
-        bindText(tag, 'problem.predict');
-        var body = el('span', { class: 'predict-text' });
-        SEM.i18n.bind(function () {
-          render.rich(body, s.predict);
-        });
-        dom.append(pr, [tag, ' ', body]);
-        li.appendChild(pr);
-        li._predict = pr;
-      }
-      var text = el('div', { class: 'step-text' });
-      SEM.i18n.bind(function () {
-        render.rich(text, s.text);
-      });
-      li.appendChild(text);
-      li._text = text;
-      if (s.table) li.appendChild(P.simplexTable(s.table));
-      self.list.appendChild(li);
-      return li;
-    });
-    self.root.appendChild(self.list);
-
-    var controls = el('div', { class: 'stepper-controls' });
-    self.prevBtn = el('button', { type: 'button', class: 'btn', onclick: function () { self.focus(); self.back(); } });
-    self.nextBtn = el('button', { type: 'button', class: 'btn btn-primary', onclick: function () { self.focus(); self.forward(); } });
-    self.allBtn = el('button', { type: 'button', class: 'btn btn-quiet', onclick: function () { self.focus(); self.showAll(); } });
-    self.count = el('span', { class: 'step-count', 'aria-live': 'polite' });
-    bindText(self.prevBtn, 'problem.prev');
-    bindText(self.nextBtn, 'problem.next');
-    bindText(self.allBtn, 'problem.showAll');
-    SEM.i18n.bind(function () {
-      self.updateCount();
-    });
-    dom.append(controls, [self.prevBtn, self.nextBtn, self.allBtn, self.count]);
-    self.root.appendChild(controls);
-    if (self.opts.after) self.root.appendChild(self.opts.after);
-    self.root.addEventListener('pointerdown', function () {
-      self.focus();
-    });
-    self.root.addEventListener('focusin', function () {
-      P.active = self;
-    });
-    container.appendChild(self.root);
-    P.steppers[id] = self;
-    if (P.revealAll()) {
-      self.n = steps.length;
-      self.predict = false;
-    }
-    self.update();
-  }
-
-  Stepper.prototype.focus = function () {
-    P.active = this;
-  };
-
-  Stepper.prototype.save = function () {
-    SEM.state.section('steps')[this.id] = { n: this.n, predict: this.predict };
-    SEM.state.touch();
-  };
-
-  Stepper.prototype.forward = function () {
-    if (this.n >= this.steps.length) return false;
-    var next = this.steps[this.n];
-    if (next.predict && !this.predict) this.predict = true;
-    else {
-      this.n += 1;
-      this.predict = false;
-    }
-    this.save();
-    this.update(true);
-    return true;
-  };
-
-  Stepper.prototype.back = function () {
-    if (this.predict) this.predict = false;
-    else if (this.n > 0) this.n -= 1;
-    else return false;
-    this.save();
-    this.update();
-    return true;
-  };
-
-  Stepper.prototype.showAll = function () {
-    this.n = this.steps.length;
-    this.predict = false;
-    this.save();
-    this.update();
-  };
-
-  Stepper.prototype.updateCount = function () {
-    this.count.textContent = SEM.tuf('problem.stepCount', { n: this.n, total: this.steps.length });
-  };
-
-  Stepper.prototype.update = function (scroll) {
-    var self = this;
-    self.items.forEach(function (li, i) {
-      var shown = i < self.n;
-      var prompting = i === self.n && self.predict;
-      li.hidden = !(shown || prompting);
-      li.classList.toggle('is-prompt', prompting);
-      if (li._text) li._text.hidden = !shown;
-    });
-    self.prevBtn.disabled = self.n === 0 && !self.predict;
-    self.nextBtn.disabled = self.n >= self.steps.length;
-    self.allBtn.disabled = self.n >= self.steps.length;
-    self.updateCount();
-    if (self.opts.onChange) self.opts.onChange(self.n >= self.steps.length);
-    if (scroll) {
-      var target = self.items[Math.min(self.n, self.items.length - 1)];
-      if (self.predict) target = self.items[self.n];
-      else if (self.n > 0) target = self.items[self.n - 1];
-      if (target && target.scrollIntoView) {
-        var r = target.getBoundingClientRect();
-        // clear of the sticky toolbar (--toolbar-h, set by app.js; 0 where the toolbar scrolls away)
-        var clearTop = (parseFloat(window.getComputedStyle(document.documentElement).getPropertyValue('--toolbar-h')) || 0) + 7;
-        if (r.bottom > window.innerHeight - 40 || r.top < clearTop) target.scrollIntoView({ block: 'nearest', behavior: util.reducedMotion() ? 'auto' : 'smooth' });
-      }
-    }
-  };
-  P.Stepper = Stepper;
 
   /* ------------------------------------------------------------------ the simplex table */
 
@@ -813,27 +674,53 @@
       });
     }
 
-    // solution
-    var answerText = null;
+    // solution: a title, a toggle button, and the whole body (steps + answer + review) that it reveals.
+    var solutionTitle = el('h5', { class: 'solution-title' });
+    bindText(solutionTitle, 'problem.solution');
+    solution.appendChild(solutionTitle);
+    var solutionBody = el('div', { class: 'solution-body' });
+    if (prob.steps && prob.steps.length) {
+      var stepsList = el('ol', { class: 'steps' });
+      prob.steps.forEach(function (s) {
+        var li = el('li', { class: 'step' });
+        var text = el('div', { class: 'step-text' });
+        SEM.i18n.bind(function () {
+          render.rich(text, s.text);
+        });
+        li.appendChild(text);
+        if (s.table) li.appendChild(P.simplexTable(s.table));
+        stepsList.appendChild(li);
+      });
+      solutionBody.appendChild(stepsList);
+    }
     if (prob.answerText) {
-      answerText = el('div', { class: 'answer-text' });
+      var answerText = el('div', { class: 'answer-text' });
       var answerLabel = el('strong', { class: 'answer-label-inline' });
       bindText(answerLabel, 'problem.answer');
       var answerBody = render.el('span', null, prob.answerText);
       dom.append(answerText, [answerLabel, ' ', answerBody]);
+      solutionBody.appendChild(answerText);
     }
-    var review = prob.review ? render.el('p', { class: 'review' }, prob.review) : null;
-    var solutionTitle = el('h5', { class: 'solution-title' });
-    bindText(solutionTitle, 'problem.solution');
-    solution.appendChild(solutionTitle);
-    var stepper = new Stepper(solution, pid, prob.steps || [], {
-      after: answerText,
-      onChange: function (done) {
-        if (answerText) answerText.hidden = !done;
-        if (review) review.hidden = !done;
-      }
+    if (prob.review) solutionBody.appendChild(render.el('p', { class: 'review' }, prob.review));
+    var solStore = SEM.state.section('solutions');
+    var toggle = el('button', { type: 'button', class: 'btn btn-primary solution-toggle' });
+    function updateSolution() {
+      var forced = P.revealAll() || P.instructor();
+      var open = forced || !!(solStore[pid] && solStore[pid].open);
+      solutionBody.hidden = !open;
+      toggle.hidden = forced;
+      toggle.textContent = SEM.tu(open ? 'problem.hideSolution' : 'problem.showSolution');
+    }
+    toggle.addEventListener('click', function () {
+      var cur = !!(solStore[pid] && solStore[pid].open);
+      solStore[pid] = { open: !cur };
+      SEM.state.touch();
+      updateSolution();
     });
-    if (review) solution.appendChild(review);
+    SEM.i18n.bind(updateSolution);
+    SEM.on('mode', updateSolution);
+    solution.appendChild(toggle);
+    solution.appendChild(solutionBody);
 
     if (kind === 'board') {
       card.appendChild(solution);
@@ -881,7 +768,7 @@
       card.appendChild(ref);
     }
     container.appendChild(card);
-    return { card: card, stepper: stepper };
+    return { card: card, stepper: null };
   };
 
   /* ------------------------------------------------------------------ timer */

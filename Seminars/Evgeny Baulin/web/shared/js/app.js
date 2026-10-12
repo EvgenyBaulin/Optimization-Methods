@@ -340,7 +340,7 @@
   };
 
   // --toolbar-h on <html>: the height of the toolbar while it stays on top of the page, 0 where it scrolls
-  // away with the page (narrow screens). Scroll margins and the steps that scroll into view keep clear of it.
+  // away with the page (narrow screens). Scroll margins keep clear of it.
   function trackToolbar(bar) {
     var last = -1;
     var measure = function () {
@@ -661,33 +661,6 @@
     app.goBlock(list[i], true);
   };
 
-  function defaultStepper() {
-    var P = SEM.problems;
-    if (P.active && document.body.contains(P.active.root) && P.active.root.offsetParent !== null) return P.active;
-    var candidates = Object.keys(P.steppers).map(function (k) { return P.steppers[k]; }).filter(function (s) {
-      return s.root.offsetParent !== null;
-    });
-    var cur = app.current();
-    var boards = (problemIds[cur] && problemIds[cur].board) || [];
-    var inBlock = candidates.filter(function (s) {
-      return boards.indexOf(s.id) >= 0;
-    });
-    if (root.classList.contains('is-present') && inBlock.length) return inBlock[0];
-    var mid = window.innerHeight / 2;
-    var best = null;
-    var bestD = Infinity;
-    candidates.forEach(function (s) {
-      var r = s.root.getBoundingClientRect();
-      if (r.bottom < 0 || r.top > window.innerHeight) return;
-      var d = Math.abs((r.top + r.bottom) / 2 - mid);
-      if (d < bestD) {
-        bestD = d;
-        best = s;
-      }
-    });
-    return best || inBlock[0] || null;
-  }
-
   function onKey(ev) {
     if (ev.defaultPrevented || ev.ctrlKey || ev.metaKey || ev.altKey) return;
     if (dom.isTyping(ev.target)) {
@@ -720,29 +693,6 @@
     // arrows, and a button, a summary or a link is activated by Space
     var ownsKey = dom.isFormControl(ev.target) || (key === ' ' && (tag === 'button' || tag === 'summary' || tag === 'a'));
     switch (key) {
-      case 'ArrowRight':
-      case ' ':
-        if (page !== 'main' || ownsKey) {
-          handled = false;
-          break;
-        }
-        var s = defaultStepper();
-        if (s) {
-          s.forward();
-          P_active(s);
-        } else handled = false;
-        break;
-      case 'ArrowLeft':
-        if (page !== 'main' || ownsKey) {
-          handled = false;
-          break;
-        }
-        var sb = defaultStepper();
-        if (sb) {
-          sb.back();
-          P_active(sb);
-        } else handled = false;
-        break;
       case 'n': case 'N':
         if (page === 'main') app.step(1); else handled = false;
         break;
@@ -783,9 +733,6 @@
         handled = false;
     }
     if (handled) ev.preventDefault();
-  }
-  function P_active(s) {
-    SEM.problems.active = s;
   }
 
   function trackScroll() {
@@ -871,8 +818,8 @@
   };
 
   // Build the content of the page again after its content has changed (a locked seminar that has just been
-  // opened): everything in <main> but the self-test slot is replaced. The answers typed, the steps shown and the
-  // hints opened are in the page state, so the new cards show them again.
+  // opened): everything in <main> but the self-test slot is replaced. The answers typed, the solutions revealed
+  // and the hints opened are in the page state, so the new cards show them again.
   function clearMain() {
     var main = document.getElementById('content');
     if (!main) return null;
@@ -885,8 +832,6 @@
     var main = clearMain();
     if (!main) return;
     problemIds = {};
-    SEM.problems.steppers = {};
-    SEM.problems.active = null;
     if (SEM.seminar && SEM.seminar.buildMain) SEM.seminar.buildMain(main, app);
     app.goBlock(app.current(), false);
   };

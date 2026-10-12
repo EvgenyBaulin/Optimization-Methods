@@ -174,9 +174,6 @@
   color: var(--accent);
   font-weight: 700;
 }
-.step.is-prompt::marker {
-  color: var(--accent-2);
-}
 .predict {
   margin: 0.2em 0;
   color: var(--fg-soft);
@@ -185,17 +182,11 @@
   color: var(--accent-2);
   font-weight: 700;
 }
-.stepper-controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px 8px;
-  margin: 0.6em 0 0.2em;
+.solution-toggle {
+  margin: 0.3em 0 0.2em;
 }
-.step-count {
-  color: var(--muted);
-  font-size: 0.9rem;
-  margin-left: 4px;
+.solution-body {
+  margin-top: 0.3em;
 }
 .answer-text {
   max-width: var(--measure);

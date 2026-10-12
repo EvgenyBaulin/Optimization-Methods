@@ -32,6 +32,9 @@ __pycache__/
 Seminars/Evgeny Baulin/theory/*/content/teacher.json
 Deploy/locked-seminars/release/
 Seminars/Evgeny Baulin/web/*/release.json
-# Seminar 5 answers stay off GitHub until its class is over (12.10.2026, 14:20); delete these two lines then
-Seminars/Evgeny Baulin/theory/05. Second-Order and Quasi-Newton Methods/
-Seminars/Evgeny Baulin/checks/05. Second-Order and Quasi-Newton Methods.ipynb
+# Seminars 6 and 7 answers stay off GitHub until their classes are over (19.10.2026, 12:30 and 14:00 MSK);
+# delete these four lines then.
+Seminars/Evgeny Baulin/theory/06. Second-Order Methods Part Two/
+Seminars/Evgeny Baulin/checks/06. Second-Order Methods Part Two.ipynb
+Seminars/Evgeny Baulin/theory/07. Pre-colloquium Practice/
+Seminars/Evgeny Baulin/checks/07. Pre-colloquium Practice.ipynb

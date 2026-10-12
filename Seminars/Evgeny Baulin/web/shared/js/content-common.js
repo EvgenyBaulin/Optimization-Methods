@@ -237,25 +237,17 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
     "en": "Predict:",
     "ru": "Прогноз:"
    },
-   "prev": {
-    "en": "Previous step",
-    "ru": "Предыдущий шаг"
-   },
-   "next": {
-    "en": "Next step",
-    "ru": "Следующий шаг"
-   },
-   "showAll": {
-    "en": "Show all steps",
-    "ru": "Показать все шаги"
-   },
-   "stepCount": {
-    "en": "Steps shown: {n} of {total}",
-    "ru": "Показано шагов: {n} из {total}"
-   },
    "solution": {
     "en": "Solution",
     "ru": "Решение"
+   },
+   "showSolution": {
+    "en": "Show the solution",
+    "ru": "Показать решение"
+   },
+   "hideSolution": {
+    "en": "Hide the solution",
+    "ru": "Скрыть решение"
    },
    "answer": {
     "en": "Answer:",
@@ -689,31 +681,6 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
   "shortcuts": [
    {
     "keys": [
-     "→",
-     "␣"
-    ],
-    "action": {
-     "en": "Next step of the focused solution",
-     "ru": "Следующий шаг выбранного решения"
-    },
-    "pages": [
-     "main"
-    ]
-   },
-   {
-    "keys": [
-     "←"
-    ],
-    "action": {
-     "en": "Previous step",
-     "ru": "Предыдущий шаг"
-    },
-    "pages": [
-     "main"
-    ]
-   },
-   {
-    "keys": [
      "N",
      "B"
     ],
@@ -925,17 +892,17 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
     "dir": "06",
     "available": false,
     "title": {
-     "en": "Stochastic Optimization and Modern ML Optimizers",
-     "ru": "Стохастическая оптимизация и современные оптимизаторы в машинном обучении"
+     "en": "Second-Order Methods, Part Two",
+     "ru": "Методы второго порядка, часть 2"
     }
    },
    {
     "n": 7,
     "dir": "07",
-    "available": false,
+    "available": true,
     "title": {
-     "en": "Nonsmooth, Composite and Constrained Optimization",
-     "ru": "Негладкая, составная и условная оптимизация"
+     "en": "Pre-colloquium Practice",
+     "ru": "Практика перед коллоквиумом"
     }
    },
    {

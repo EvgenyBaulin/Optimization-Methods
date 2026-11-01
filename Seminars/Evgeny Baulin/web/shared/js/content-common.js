@@ -908,10 +908,10 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
    {
     "n": 8,
     "dir": "08",
-    "available": false,
+    "available": true,
     "title": {
-     "en": "Introduction to Discrete Optimization and Mathematical Modelling",
-     "ru": "Введение в дискретную оптимизацию и математическое моделирование"
+     "en": "Constrained Optimality and Discrete Modelling",
+     "ru": "Условная оптимальность и дискретное моделирование"
     }
    },
    {

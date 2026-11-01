@@ -33,7 +33,7 @@ The site is published from my Mac by `Deploy/publish.py`, which sends the server
 5. Second-Order and Quasi-Newton Methods
 6. Stochastic Optimization and Modern ML Optimizers
 7. Nonsmooth, Composite and Constrained Optimization
-8. Introduction to Discrete Optimization and Mathematical Modelling
+8. Constrained Optimality and Discrete Modelling
 9. Linear Programming as the Foundation of Integer Optimization
 10. MILP and the Anatomy of Modern Solvers
 11. Dynamic Programming and Packing Problems

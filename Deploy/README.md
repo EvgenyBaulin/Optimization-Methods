@@ -1,6 +1,6 @@
 # Publishing the course site
 
-The site <https://optimization-methods.tarakan-tuc.ru> is built on the Mac and published by the
+The site <https://om.evalbn.ru> is built on the Mac and published by the
 server. `Deploy/publish.py` packs the folders listed in `Deploy/publish.conf`, checks them and pushes
 the result over SSH. On the server, `course-deploy` turns the push into a release, points the site at
 it, checks it over HTTPS and goes back to the previous release if the check fails. A seminar with a
@@ -185,7 +185,7 @@ python3 Deploy/publish.py
 On this first run the server moves the old folder `/var/www/optimization-methods` to
 `/srv/course-deploy/releases/course/00000000T000000Z-legacy` and puts the symlink in its place, so the
 old atlas is one rollback away. The nginx configuration stays as it is: the web root keeps its path.
-Open <https://optimization-methods.tarakan-tuc.ru/version.txt> to see the new release.
+Open <https://om.evalbn.ru/version.txt> to see the new release.
 
 `/root/atlas-upload` is no longer used.
 
@@ -357,7 +357,7 @@ unknown site for `rollback`).
 `course-deploy status`:
 
 ```text
-course  https://optimization-methods.tarakan-tuc.ru
+course  https://om.evalbn.ru
   live release   20260918T071502Z-5d0c9e1
   paths          /, /seminars/, /seminars/1/, /seminars/2/, …, /seminars/14/, /seminars/shared/
   source         a9a55be (dirty: no), bundle built 2026-09-18T07:14:58Z by publish.py 1.1.0

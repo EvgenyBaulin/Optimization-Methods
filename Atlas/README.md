@@ -15,7 +15,7 @@ Double-click `index.html`. That is the whole procedure.
 
 There is no build step, no package manager, no server and no network access of any kind.
 The page works from the `file://` protocol in Chrome, Safari and Firefox, and from any static
-web server; the public copy lives at <https://optimization-methods.tarakan-tuc.ru>. No
+web server; the public copy lives at <https://om.evalbn.ru>. No
 cookies are set. The browser keeps two small things: the chosen language (`localStorage`, key
 `atlas.lang`, and the same value under `om.lang`, the course-wide key of the seminar pages)
 and, for the current tab only, the open section (`sessionStorage`, key `atlas.section`).
@@ -60,7 +60,7 @@ the bar wraps onto more rows.
 | **E. Discrete**    | Seven independent widgets: linear programming, integrality, branch and bound, dynamic programming, network flow, TSP local search, and constraint propagation.                                                     |
 | **F. Cheat sheet** | Every method in one filterable table. Clicking a row opens its widget with a matching setup applied.                                                                                                               |
 
-The address of the atlas always stays clean: `https://optimization-methods.tarakan-tuc.ru`,
+The address of the atlas always stays clean: `https://om.evalbn.ru`,
 never `…/#/C`, `…/index.html` or `…?utm_source=…`, whatever the reader clicks. This concerns the
 atlas page alone; the seminar pages under `/seminars/` are separate pages with addresses of
 their own. Sections are switched in place; each switch is recorded in the browser history under

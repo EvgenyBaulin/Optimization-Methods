@@ -112,7 +112,7 @@
   var sections = {};
   var currentSection = null;
 
-  /* The address stays clean, https://optimization-methods.tarakan-tuc.ru and
+  /* The address stays clean, https://om.evalbn.ru and
      never …/#/B, whatever the user does.  Opening a section records a history
      entry with the SAME address, so Back still steps through the sections,
      and sessionStorage brings the open section back after a reload.  A link

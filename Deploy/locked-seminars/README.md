@@ -78,7 +78,7 @@ place; once the unlock time has passed, the next run replaces the copy.
 ## Before the class
 
 ```bash
-curl -sI "https://optimization-methods.tarakan-tuc.ru/seminars/3/release.json" | head -n 1
+curl -sI "https://om.evalbn.ru/seminars/3/release.json" | head -n 1
 seminar-03-release --check
 ```
 
@@ -90,7 +90,7 @@ unlock at     2026-09-28T11:20:00Z, in 3h 12m
 web user      www-data:www-data
 web root      /var/www/optimization-methods -> /srv/course-deploy/releases/course/<release>
 release.json  not in the live release
-URL           https://optimization-methods.tarakan-tuc.ru/seminars/3/release.json: HTTP 404, as it should be before the unlock time
+URL           https://om.evalbn.ru/seminars/3/release.json: HTTP 404, as it should be before the unlock time
 ```
 
 Any other `key file` line, or `HTTP 200 before the unlock time`, has to be fixed before the class.
@@ -105,7 +105,7 @@ shows two lines within a second of 14:20:00, and the same two again after every 
 
 ```text
 seminar-03: copied /root/seminar-release/seminar-03/release.json to /srv/course-deploy/releases/course/<release>/seminars/3/release.json (www-data:www-data, 0644)
-seminar-03: https://optimization-methods.tarakan-tuc.ru/seminars/3/release.json answers 200 with the key file, id seminar-03
+seminar-03: https://om.evalbn.ru/seminars/3/release.json answers 200 with the key file, id seminar-03
 ```
 
 An error goes to the same log, and `systemctl status seminar-03-release.service` shows the last run.

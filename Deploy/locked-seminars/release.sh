@@ -22,7 +22,7 @@
 #   UNLOCK_AT      2026-09-28T11:20:00Z                            the end of the class, in UTC
 #   WEB_USER       the user named in NGINX_CONF, else www-data     owner of the copy
 #   WEB_GROUP      the group named there, else the group of WEB_USER
-#   SITE_URL       https://optimization-methods.tarakan-tuc.ru
+#   SITE_URL       https://om.evalbn.ru
 #   CHECK_ADDRESS  127.0.0.1    the address the URL check connects to, as course-deploy does; empty for DNS
 #   NGINX_CONF     /etc/nginx/nginx.conf
 #
@@ -38,7 +38,7 @@ SEMINAR_ID="${SEMINAR_ID:-seminar-03}"
 UNLOCK_AT="${UNLOCK_AT:-2026-09-28T11:20:00Z}"
 WEB_USER="${WEB_USER:-}"
 WEB_GROUP="${WEB_GROUP:-}"
-SITE_URL="${SITE_URL:-https://optimization-methods.tarakan-tuc.ru}"
+SITE_URL="${SITE_URL:-https://om.evalbn.ru}"
 CHECK_ADDRESS="${CHECK_ADDRESS-127.0.0.1}"
 NGINX_CONF="${NGINX_CONF:-/etc/nginx/nginx.conf}"
 

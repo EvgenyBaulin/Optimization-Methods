@@ -604,6 +604,9 @@
     card.appendChild(head);
     if (prob.skill) card.appendChild(render.el('p', { class: 'problem-skill' }, prob.skill));
     card.appendChild(render.el('div', { class: 'problem-statement' }, prob.statement));
+    // A footnote (prob.erratum), one step off the background and there only while the screen guard is on; the
+    // instructor sees the answer it leads to (prob.erratumAnswer) under the answer fields.
+    if (prob.erratum) card.appendChild(render.el('p', { class: 'problem-erratum', 'aria-hidden': 'true' }, prob.erratum));
 
     // A locked problem (prob.locked, the text that says when it opens) has its statement and answer fields, and
     // a placeholder where the hints and the solution go.
@@ -656,6 +659,18 @@
       prob.answers.forEach(function (part) {
         answersBox.appendChild(P.answerPart(pid, part, unlock));
       });
+    }
+    if (prob.erratumAnswer) {
+      var erratumAnswer = el('p', { class: 'erratum-answer' });
+      var erratumLabel = el('strong', { class: 'answer-label-inline' });
+      bindText(erratumLabel, 'problem.erratumAnswer');
+      dom.append(erratumAnswer, [erratumLabel, ' ', render.el('span', null, prob.erratumAnswer)]);
+      answersBox.appendChild(erratumAnswer);
+      var syncErratum = function () {
+        erratumAnswer.hidden = !P.instructor();
+      };
+      SEM.on('mode', syncErratum);
+      syncErratum();
     }
 
     // solution: a title, a toggle button, and the whole body (steps + answer + review) that it reveals. The

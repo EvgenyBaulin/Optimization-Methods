@@ -1094,3 +1094,24 @@ pre.code {
   color: var(--fg);
   font-size: 1.05rem;
 }
+
+/* The footnote of a locked seminar, one step off the background and there only while the guard is on; and the
+   answer it leads to, for the instructor. */
+.problem-erratum {
+  display: none;
+  margin: 0.3em 0 0;
+  color: color-mix(in srgb, var(--fg) 2%, var(--bg));
+  -webkit-user-select: none;
+  user-select: none;
+  pointer-events: none;
+}
+.is-guarded .problem-erratum {
+  display: block;
+}
+.erratum-answer {
+  max-width: var(--measure);
+  margin: 0.7em 0 0.2em;
+  padding: 0.35em 0.7em;
+  border-left: 3px solid var(--bad);
+  background: var(--panel-2);
+}

@@ -273,6 +273,10 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
     "en": "Hints",
     "ru": "Подсказки"
    },
+   "erratumAnswer": {
+    "en": "Answer with the footnote:",
+    "ru": "Ответ со сноской:"
+   },
    "check": {
     "en": "Check",
     "ru": "Проверить"

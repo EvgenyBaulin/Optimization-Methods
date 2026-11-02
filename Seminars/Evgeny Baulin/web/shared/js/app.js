@@ -821,8 +821,8 @@
 
   // A locked seminar turns this on while it is locked for the reader (app.guard(true) from its access layer). A
   // page cannot forbid screenshots, it can only get in their way: no selection, copying or context menu outside
-  // the fields and the code, a blurred veil while the window is not in front or Cmd/Win+Shift is held, and an
-  // emptied clipboard after PrintScreen.
+  // the fields and the code, a blurred veil from the moment the window loses the front or Cmd/Win+Shift is pressed
+  // until a click, and an emptied clipboard after PrintScreen.
   var guard = { on: false, veil: null };
 
   function guardEditable(target) {
@@ -858,27 +858,22 @@
         if (guard.on && !guardEditable(e.target)) e.preventDefault();
       }, true);
     });
+    // The veil goes only with a click on it: Cmd+Shift+4 is released before its area is dragged, and the window
+    // keeps (or regains) the focus meanwhile, so neither a key nor the focus may lift it.
     window.addEventListener('blur', function () {
       guardVeil(true);
     });
-    window.addEventListener('focus', function () {
-      guardVeil(false);
-    });
     document.addEventListener('visibilitychange', function () {
-      guardVeil(document.hidden || !document.hasFocus());
+      if (document.hidden) guardVeil(true);
     });
     document.addEventListener('keydown', function (e) {
-      if (!guard.on) return;
-      if ((e.metaKey && e.shiftKey) || e.key === 'PrintScreen') guardVeil(true);
-      else if (document.hasFocus()) guardVeil(false);
+      if (guard.on && ((e.metaKey && e.shiftKey) || e.key === 'PrintScreen')) guardVeil(true);
     }, true);
     document.addEventListener('keyup', function (e) {
-      if (!guard.on) return;
-      if (e.key === 'PrintScreen') guardWipe();
-      else if (!(e.metaKey && e.shiftKey) && document.hasFocus()) guardVeil(false);
+      if (guard.on && e.key === 'PrintScreen') guardWipe();
     }, true);
     document.addEventListener('pointerdown', function () {
-      if (document.hasFocus()) guardVeil(false);
+      guardVeil(false);
     }, true);
   }
   app.guard = function (on) {

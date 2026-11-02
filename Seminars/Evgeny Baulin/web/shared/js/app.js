@@ -817,9 +817,80 @@
     if (SEM.param('selftest') === '1' && SEM.selftest) SEM.selftest.run(selftestSlot);
   };
 
+  /* ------------------------------------------------------------------ the screen guard */
+
+  // A locked seminar turns this on while it is locked for the reader (app.guard(true) from its access layer). A
+  // page cannot forbid screenshots, it can only get in their way: no selection, copying or context menu outside
+  // the fields and the code, a blurred veil while the window is not in front or Cmd/Win+Shift is held, and an
+  // emptied clipboard after PrintScreen.
+  var guard = { on: false, veil: null };
+
+  function guardEditable(target) {
+    if (target && target.nodeType === 3) target = target.parentNode;
+    return !!(target && target.closest && target.closest('input, textarea, select, [contenteditable], .CodeMirror'));
+  }
+  function guardVeil(show) {
+    if (!guard.veil) return;
+    var v = !!show && guard.on;
+    guard.veil.hidden = !v;
+    root.classList.toggle('is-veiled', v);
+  }
+  function guardWipe() {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(' ').then(null, function () {});
+      }
+    } catch (e) {
+      /* the clipboard is not ours to clear here */
+    }
+  }
+  function guardInstall() {
+    var veil = el('div', { class: 'screen-veil', hidden: true });
+    var note = el('p', { class: 'screen-veil-note' });
+    SEM.i18n.bind(function () {
+      note.textContent = SEM.tu('guard.note');
+    });
+    veil.appendChild(note);
+    document.body.appendChild(veil);
+    guard.veil = veil;
+    ['copy', 'cut', 'contextmenu', 'dragstart', 'selectstart'].forEach(function (type) {
+      document.addEventListener(type, function (e) {
+        if (guard.on && !guardEditable(e.target)) e.preventDefault();
+      }, true);
+    });
+    window.addEventListener('blur', function () {
+      guardVeil(true);
+    });
+    window.addEventListener('focus', function () {
+      guardVeil(false);
+    });
+    document.addEventListener('visibilitychange', function () {
+      guardVeil(document.hidden || !document.hasFocus());
+    });
+    document.addEventListener('keydown', function (e) {
+      if (!guard.on) return;
+      if ((e.metaKey && e.shiftKey) || e.key === 'PrintScreen') guardVeil(true);
+      else if (document.hasFocus()) guardVeil(false);
+    }, true);
+    document.addEventListener('keyup', function (e) {
+      if (!guard.on) return;
+      if (e.key === 'PrintScreen') guardWipe();
+      else if (!(e.metaKey && e.shiftKey) && document.hasFocus()) guardVeil(false);
+    }, true);
+    document.addEventListener('pointerdown', function () {
+      if (document.hasFocus()) guardVeil(false);
+    }, true);
+  }
+  app.guard = function (on) {
+    guard.on = !!on;
+    root.classList.toggle('is-guarded', guard.on);
+    if (guard.on && !guard.veil && document.body) guardInstall();
+    if (!guard.on) guardVeil(false);
+  };
+
   // Build the content of the page again after its content has changed (a locked seminar that has just been
-  // opened): everything in <main> but the self-test slot is replaced. The answers typed, the solutions revealed
-  // and the hints opened are in the page state, so the new cards show them again.
+  // opened): everything in <main> but the self-test slot is replaced. The answers typed and the solutions
+  // revealed are in the page state, so the new cards show them again.
   function clearMain() {
     var main = document.getElementById('content');
     if (!main) return null;

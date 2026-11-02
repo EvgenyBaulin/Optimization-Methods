@@ -269,9 +269,9 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
     "en": "Common mistakes",
     "ru": "Типичные ошибки"
    },
-   "hintNext": {
-    "en": "Show hint {n} of {total}",
-    "ru": "Показать подсказку {n} из {total}"
+   "hints": {
+    "en": "Hints",
+    "ru": "Подсказки"
    },
    "check": {
     "en": "Check",
@@ -478,6 +478,12 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
    "preloaded": {
     "en": "Real Python in your browser. `numpy as np` and `matplotlib.pyplot as plt` are already imported; edit anything and run again.",
     "ru": "Настоящий Python в браузере. `numpy as np` и `matplotlib.pyplot as plt` уже импортированы; меняйте что угодно и запускайте снова."
+   }
+  },
+  "guard": {
+   "note": {
+    "en": "Click to go on reading.",
+    "ru": "Нажмите, чтобы читать дальше."
    }
   },
   "selftest": {

@@ -243,9 +243,11 @@
     }
   }
 
-  // Instructor mode is the instructor's view: on while signed in, off while the answers are hidden.
+  // Instructor mode is the instructor's view: on while signed in, off while the answers are hidden. The screen
+  // guard (app.guard) is on while the page is locked for the reader.
   function syncMode() {
     var on = access.state === 'teacher' && !access.hideAnswers;
+    if (SEM.app && SEM.app.guard) SEM.app.guard(access.state === 'locked');
     if (SEM.app && SEM.app.setInstructor && root.classList.contains('is-instructor') !== on) SEM.app.setInstructor(on);
     else root.classList.toggle('is-instructor', on);
     syncBadge();

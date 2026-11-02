@@ -42,7 +42,7 @@
       var prob = SEM.content.problems[pid];
       var fig = prob.figure ? figure(prob.figure) : null;
       if (fig) {
-        var solution = dom.qs('.solution', card);
+        var solution = dom.qs('.solution-body', card) || dom.qs('.solution', card);
         if (solution) solution.appendChild(fig);
       }
     });

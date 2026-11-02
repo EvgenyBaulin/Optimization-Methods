@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Evgeny Baulin
-// Problem cards: statements, a step-by-step solution revealed by one button, two hint levels,
+// Problem cards: statements, a step-by-step solution revealed by one button, the hints,
 // answer checking through a restricted math.js evaluator, and the P2/P3 timer.
 (function () {
   'use strict';
@@ -634,32 +634,16 @@
       updateLock();
     }
 
-    // hints, one level at a time
+    // hints, all of them at once
     if (prob.hints && prob.hints.length) {
       var hintsBox = el('div', { class: 'hints' });
-      var hintState = SEM.state.section('hints');
+      var hintsTitle = el('h5', { class: 'hints-title' });
+      bindText(hintsTitle, 'problem.hints');
       var hintList = el('ol', { class: 'hint-list' });
-      var hintBtn = el('button', { type: 'button', class: 'btn btn-quiet' });
-      var hintItems = prob.hints.map(function (h) {
-        var li = render.el('li', { class: 'hint' }, h);
-        hintList.appendChild(li);
-        return li;
+      prob.hints.forEach(function (h) {
+        hintList.appendChild(render.el('li', { class: 'hint' }, h));
       });
-      var updateHints = function () {
-        var shown = P.revealAll() ? prob.hints.length : hintState[pid] | 0;
-        hintItems.forEach(function (li, i) {
-          li.hidden = i >= shown;
-        });
-        hintBtn.hidden = shown >= prob.hints.length;
-        hintBtn.textContent = SEM.tuf('problem.hintNext', { n: shown + 1, total: prob.hints.length });
-      };
-      hintBtn.addEventListener('click', function () {
-        hintState[pid] = Math.min((hintState[pid] | 0) + 1, prob.hints.length);
-        SEM.state.touch();
-        updateHints();
-      });
-      SEM.i18n.bind(updateHints);
-      dom.append(hintsBox, [hintBtn, hintList]);
+      dom.append(hintsBox, [hintsTitle, hintList]);
       if (kind !== 'board') card.appendChild(hintsBox);
       else o.selfStudy = hintsBox;
     }
@@ -674,7 +658,8 @@
       });
     }
 
-    // solution: a title, a toggle button, and the whole body (steps + answer + review) that it reveals.
+    // solution: a title, a toggle button, and the whole body (steps + answer + review) that it reveals. The
+    // instructor sees a board solution at once and opens the others with the button, as everyone does.
     var solutionTitle = el('h5', { class: 'solution-title' });
     bindText(solutionTitle, 'problem.solution');
     solution.appendChild(solutionTitle);
@@ -705,7 +690,7 @@
     var solStore = SEM.state.section('solutions');
     var toggle = el('button', { type: 'button', class: 'btn btn-primary solution-toggle' });
     function updateSolution() {
-      var forced = P.revealAll() || P.instructor();
+      var forced = P.revealAll() || (P.instructor() && kind === 'board');
       var open = forced || !!(solStore[pid] && solStore[pid].open);
       solutionBody.hidden = !open;
       toggle.hidden = forced;

@@ -927,7 +927,7 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
    {
     "n": 9,
     "dir": "09",
-    "available": false,
+    "available": true,
     "title": {
      "en": "Linear Programming as the Foundation of Integer Optimization",
      "ru": "Линейное программирование как основа целочисленной оптимизации"

@@ -139,11 +139,12 @@
 
   /* ------------------------------------------------------------------ drawing */
 
-  // The cat is drawn by CSS (css/seminar.css): a head with ears cut out by clip-path and a face of gradients.
+  // The cat is a photo, img/cat.jpg: "Tabby cat with blue eyes" by Adina Voicu, CC0, from Wikimedia Commons,
+  // cropped to the face. It sits absolutely inside its cell, so a cat never changes the size of a row.
+  var catSrc = null;
   function catIcon() {
-    var head = el('span', { class: 'cat-icon', 'aria-hidden': 'true' });
-    head.appendChild(el('span', { class: 'cat-face' }));
-    return head;
+    if (!catSrc) catSrc = SEM.course.localHref('img/cat.jpg');
+    return el('img', { class: 'cat-photo', src: catSrc, alt: '', draggable: 'false', 'aria-hidden': 'true' });
   }
 
   function cross() {

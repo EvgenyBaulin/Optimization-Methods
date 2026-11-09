@@ -36,7 +36,7 @@ The site is published from my Mac by `Deploy/publish.py`, which sends the server
 7. Nonsmooth, Composite and Constrained Optimization
 8. Constrained Optimality and Discrete Modelling
 9. Linear Programming as the Foundation of Integer Optimization
-10. MILP and the Anatomy of Modern Solvers
+10. Knapsack and Linear Programming in Practice
 11. Dynamic Programming and Packing Problems
 12. Network Problems and Transportation Optimization
 13. Constraint Programming, SAT and CP-SAT

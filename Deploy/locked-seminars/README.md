@@ -135,6 +135,7 @@ must match `unlockAt` in that seminar's `config.js`:
 | 7 | 19.10.2026 12:40–14:00 | 14:00 | 7 | 07 | 2026-10-19 | 11:00 |
 | 8 | 02.11.2026 13:00–14:20 | 14:20 | 8 | 08 | 2026-11-02 | 11:20 |
 | 9 | 09.11.2026 13:00–14:20 | 14:20 | 9 | 09 | 2026-11-09 | 11:20 |
+| 10 | 16.11.2026 13:00–14:20 | 14:20 | 10 | 10 | 2026-11-16 | 11:20 |
 
 Moscow time is UTC+3 all year. On the Mac, `build_lock.py N` writes the key to
 `Deploy/locked-seminars/release/NN/release.json`. With the seminar 3 files still in

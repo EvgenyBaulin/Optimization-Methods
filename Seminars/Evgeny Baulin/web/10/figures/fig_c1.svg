@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="382.6928pt" height="237.896pt" viewBox="0 0 382.6928 237.896" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.1, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 237.896 
+L 382.6928 237.896 
+L 382.6928 -0 
+L 0 -0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 36.2 195.696 
+L 375.4928 195.696 
+L 375.4928 7.2 
+L 36.2 7.2 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g clip-path="url(#pcac9081887)">
+    <image xlink:href="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAAdgAAAEFCAYAAABAefZoAAAEl0lEQVR4nO3XQWpUQRRA0WoJIjjIzIkjl+xiXIFrcBDo0CMVMoiIdrqTH/JdRLx0unLOAorHo+DyNodlXQcv2u5mP2by8Pg0ZrP99XfMZHt7N2by/ffDmM3uZq4/tz8uYzZvTj0AAMxIYAEgILAAEBBYAAgILAAEBBYAAgILAAGBBYCAwAJAQGABICCwABAQWAAICCwABAQWAAICCwABgQWAgMACQEBgASAgsAAQEFgACAgsAAQEFgACAgsAAYEFgIDAAkBAYAEgILAAEBBYAAgILAAEBBYAAgILAAGBBYCAwAJAQGABICCwABAQWAAICCwABAQWAAICCwABgQWAgMACQEBgASAgsAAQEFgACAgsAAQEFgACAgsAAYEFgIDAAkBAYAEgILAAELiw1Zfv04f3YyZXP/6cegRemY+Xb8ds9vfvxkx2x2XMxgULAAGBBYCAwAJAQGABICCwABAQWAAICCwABAQWAAICCwABgQWAgMACQEBgASAgsAAQEFgACAgsAAQEFgACAgsAAYEFgIDAAkBAYAEgILAAEBBYAAgILAAEBBYAAgILAAGBBYCAwAJAQGABICCwABAQWAAICCwABAQWAAICCwABgQWAgMACQEBgASAgsAAQEFgACAgsAAQEFgACAgsAAYEFgIDAAkBAYAEgILAAEBBYAAgILAAEBBYAAgILAAGBBYCAwAJAYHNY1tVm4Xm+fPs51Qq3t3enHgHOngsWAAICCwABgQWAgMACQEBgASAgsAAQEFgACAgsAAQEFgACAgsAAYEFgIDAAkBAYAEgILAAEBBYAAgILAAEBBYAAgILAAGBBYCAwAJAQGABICCwABAQWAAICCwABAQWAAICCwABgQWAgMACQEBgASAgsAAQEFgACAgsAAQEFgACAgsAAYEFgIDAAkBAYAEgILAAEBBYAAgILAAEBBYAAgILAAGBBYCAwAJAQGABICCwABAQWAAICCwABAQWAAICCwABgQWAgMACQGBzWNa1eBg4X5+/Xp96BDh7LlgACAgsAAQEFgACAgsAAYEFgIDAAkBAYAEgILAAEBBYAAgILAAEBBYAAgILAAGBBYCAwAJAQGABICCwABAQWAAICCwABAQWAAICCwABgQWAgMACQEBgASAgsAAQEFgACAgsAAQEFgACAgsAAYEFgIDAAkBAYAEgILAAEBBYAAgILAAEBBYAAgILAAGBBYCAwAJAQGABICCwABAQWAAICCwABAQWAAICCwABgQWAgMACQEBgASAgsAAQEFgACAgsAAQEFgACm8OyrsXDAPCauWABICCwABAQWAAICCwABAQWAAICCwABgQWAgMACQEBgASAgsAAQEFgACAgsAAQEFgACAgsAAYEFgIDAAkBAYAEgILAAEBBYAAgILAAEBBYAAgILAAGBBYCAwAJAQGABICCwABAQWAAICCwABAQWAAICCwABgQWAgMACQEBgASAgsAAQEFgACAgsAAQEFgACAgsAAYEFgIDAAkBAYAEgILAAEBBYAAgILAAEBBYAAgILAAGBBYCAwAJAQGABICCwABAQWAAY/98/pNU0vfAGrowAAAAASUVORK5CYII=" id="image519e1caf65" transform="scale(1 -1) translate(0 -187.92)" x="36" y="-7.496" width="339.84" height="187.92"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 337.7936 157.9968 
+L 375.4928 157.9968 
+L 375.4928 195.696 
+L 337.7936 195.696 
+L 337.7936 157.9968 
+z
+" clip-path="url(#pcac9081887)" style="fill: none; stroke: #c62828; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 337.7936 120.2976 
+L 375.4928 120.2976 
+L 375.4928 157.9968 
+L 337.7936 157.9968 
+L 337.7936 120.2976 
+z
+" clip-path="url(#pcac9081887)" style="fill: none; stroke: #c62828; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 224.696 82.5984 
+L 262.3952 82.5984 
+L 262.3952 120.2976 
+L 224.696 120.2976 
+L 224.696 82.5984 
+z
+" clip-path="url(#pcac9081887)" style="fill: none; stroke: #c62828; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 224.696 44.8992 
+L 262.3952 44.8992 
+L 262.3952 82.5984 
+L 224.696 82.5984 
+L 224.696 44.8992 
+z
+" clip-path="url(#pcac9081887)" style="fill: none; stroke: #c62828; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 36.2 7.2 
+L 73.8992 7.2 
+L 73.8992 44.8992 
+L 36.2 44.8992 
+L 36.2 7.2 
+z
+" clip-path="url(#pcac9081887)" style="fill: none; stroke: #c62828; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <defs>
+       <path id="m63aa6a4bba" d="M 0 0 
+L 0 3.5 
+" style="stroke: #6c727e; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m63aa6a4bba" x="55.0496" y="195.696" style="fill: #6c727e; stroke: #6c727e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 12px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; text-anchor: middle; fill: #6c727e" x="55.0496" y="211.696" transform="rotate(-0 55.0496 211.696)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2">
+      <g>
+       <use xlink:href="#m63aa6a4bba" x="92.7488" y="195.696" style="fill: #6c727e; stroke: #6c727e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 12px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; text-anchor: middle; fill: #6c727e" x="92.7488" y="211.696" transform="rotate(-0 92.7488 211.696)">1</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3">
+      <g>
+       <use xlink:href="#m63aa6a4bba" x="130.448" y="195.696" style="fill: #6c727e; stroke: #6c727e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 12px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; text-anchor: middle; fill: #6c727e" x="130.448" y="211.696" transform="rotate(-0 130.448 211.696)">2</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#m63aa6a4bba" x="168.1472" y="195.696" style="fill: #6c727e; stroke: #6c727e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 12px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; text-anchor: middle; fill: #6c727e" x="168.1472" y="211.696" transform="rotate(-0 168.1472 211.696)">3</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5">
+      <g>
+       <use xlink:href="#m63aa6a4bba" x="205.8464" y="195.696" style="fill: #6c727e; stroke: #6c727e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font-size: 12px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; text-anchor: middle; fill: #6c727e" x="205.8464" y="211.696" transform="rotate(-0 205.8464 211.696)">4</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#m63aa6a4bba" x="243.5456" y="195.696" style="fill: #6c727e; stroke: #6c727e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_6">
+      <text style="font-size: 12px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; text-anchor: middle; fill: #6c727e" x="243.5456" y="211.696" transform="rotate(-0 243.5456 211.696)">5</text>
+     </g>
+    </g>
+    <g id="xtick_7">
+     <g id="line2d_7">
+      <g>
+       <use xlink:href="#m63aa6a4bba" x="281.2448" y="195.696" style="fill: #6c727e; stroke: #6c727e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_7">
+      <text style="font-size: 12px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; text-anchor: middle; fill: #6c727e" x="281.2448" y="211.696" transform="rotate(-0 281.2448 211.696)">6</text>
+     </g>
+    </g>
+    <g id="xtick_8">
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#m63aa6a4bba" x="318.944" y="195.696" style="fill: #6c727e; stroke: #6c727e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_8">
+      <text style="font-size: 12px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; text-anchor: middle; fill: #6c727e" x="318.944" y="211.696" transform="rotate(-0 318.944 211.696)">7</text>
+     </g>
+    </g>
+    <g id="xtick_9">
+     <g id="line2d_9">
+      <g>
+       <use xlink:href="#m63aa6a4bba" x="356.6432" y="195.696" style="fill: #6c727e; stroke: #6c727e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_9">
+      <text style="font-size: 12px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; text-anchor: middle; fill: #6c727e" x="356.6432" y="211.696" transform="rotate(-0 356.6432 211.696)">8</text>
+     </g>
+    </g>
+    <g id="text_10">
+     <!-- $c$ -->
+     <g transform="translate(203.1464 227.696)">
+      <text>
+       <tspan x="0" y="-0.703125" style="font-style: italic; font-size: 12px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif">c</tspan>
+      </text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_10">
+      <defs>
+       <path id="md8cb5ced59" d="M 0 0 
+L -3.5 0 
+" style="stroke: #6c727e; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#md8cb5ced59" x="36.2" y="26.0496" style="fill: #6c727e; stroke: #6c727e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_11">
+      <text style="font-size: 12px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; text-anchor: end; fill: #6c727e" x="29.2" y="30.5496" transform="rotate(-0 29.2 30.5496)">0</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_11">
+      <g>
+       <use xlink:href="#md8cb5ced59" x="36.2" y="63.7488" style="fill: #6c727e; stroke: #6c727e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_12">
+      <text style="font-size: 12px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; text-anchor: end; fill: #6c727e" x="29.2" y="68.2488" transform="rotate(-0 29.2 68.2488)">1</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_12">
+      <g>
+       <use xlink:href="#md8cb5ced59" x="36.2" y="101.448" style="fill: #6c727e; stroke: #6c727e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_13">
+      <text style="font-size: 12px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; text-anchor: end; fill: #6c727e" x="29.2" y="105.948" transform="rotate(-0 29.2 105.948)">2</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_13">
+      <g>
+       <use xlink:href="#md8cb5ced59" x="36.2" y="139.1472" style="fill: #6c727e; stroke: #6c727e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_14">
+      <text style="font-size: 12px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; text-anchor: end; fill: #6c727e" x="29.2" y="143.6472" transform="rotate(-0 29.2 143.6472)">3</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_14">
+      <g>
+       <use xlink:href="#md8cb5ced59" x="36.2" y="176.8464" style="fill: #6c727e; stroke: #6c727e; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_15">
+      <text style="font-size: 12px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; text-anchor: end; fill: #6c727e" x="29.2" y="181.3464" transform="rotate(-0 29.2 181.3464)">4</text>
+     </g>
+    </g>
+    <g id="text_16">
+     <!-- $i$ -->
+     <g transform="translate(16.2 103.128) rotate(-90)">
+      <text>
+       <tspan x="0" y="-0.15625" style="font-style: italic; font-size: 12px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif">i</tspan>
+      </text>
+     </g>
+    </g>
+   </g>
+   <g id="patch_8">
+    <path d="M 36.2 195.696 
+L 36.2 7.2 
+" style="fill: none; stroke: #6c727e; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 375.4928 195.696 
+L 375.4928 7.2 
+" style="fill: none; stroke: #6c727e; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 36.2 195.696 
+L 375.4928 195.696 
+" style="fill: none; stroke: #6c727e; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 36.2 7.2 
+L 375.4928 7.2 
+" style="fill: none; stroke: #6c727e; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_17">
+    <!-- $0$ -->
+    <g style="fill: #102d69" transform="translate(52.5496 28.5496)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_18">
+    <!-- $0$ -->
+    <g style="fill: #102d69" transform="translate(90.2488 28.5496)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_19">
+    <!-- $0$ -->
+    <g style="fill: #102d69" transform="translate(127.948 28.5496)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_20">
+    <!-- $0$ -->
+    <g style="fill: #102d69" transform="translate(165.6472 28.5496)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_21">
+    <!-- $0$ -->
+    <g style="fill: #102d69" transform="translate(203.3464 28.5496)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_22">
+    <!-- $0$ -->
+    <g style="fill: #102d69" transform="translate(241.0456 28.5496)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_23">
+    <!-- $0$ -->
+    <g style="fill: #102d69" transform="translate(278.7448 28.5496)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_24">
+    <!-- $0$ -->
+    <g style="fill: #102d69" transform="translate(316.444 28.5496)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_25">
+    <!-- $0$ -->
+    <g style="fill: #102d69" transform="translate(354.1432 28.5496)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_26">
+    <!-- $0$ -->
+    <g style="fill: #102d69" transform="translate(52.5496 66.2488)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_27">
+    <!-- $0$ -->
+    <g style="fill: #102d69" transform="translate(90.2488 66.2488)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_28">
+    <!-- $0$ -->
+    <g style="fill: #102d69" transform="translate(127.948 66.2488)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_29">
+    <!-- $0$ -->
+    <g style="fill: #102d69" transform="translate(165.6472 66.2488)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_30">
+    <!-- $0$ -->
+    <g style="fill: #102d69" transform="translate(203.3464 66.2488)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_31">
+    <!-- $13$ -->
+    <g style="fill: #102d69" transform="translate(238.5456 66.2488)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">1</tspan>
+      <tspan x="5" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">3</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_32">
+    <!-- $13$ -->
+    <g style="fill: #102d69" transform="translate(276.2448 66.2488)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">1</tspan>
+      <tspan x="5" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">3</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_33">
+    <!-- $13$ -->
+    <g style="fill: #102d69" transform="translate(313.944 66.2488)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">1</tspan>
+      <tspan x="5" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">3</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_34">
+    <!-- $13$ -->
+    <g style="fill: #102d69" transform="translate(351.6432 66.2488)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">1</tspan>
+      <tspan x="5" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">3</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_35">
+    <!-- $0$ -->
+    <g style="fill: #102d69" transform="translate(52.5496 103.948)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_36">
+    <!-- $0$ -->
+    <g style="fill: #102d69" transform="translate(90.2488 103.948)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_37">
+    <!-- $0$ -->
+    <g style="fill: #102d69" transform="translate(127.948 103.948)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_38">
+    <!-- $0$ -->
+    <g style="fill: #102d69" transform="translate(165.6472 103.948)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_39">
+    <!-- $10$ -->
+    <g style="fill: #102d69" transform="translate(200.8464 103.948)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">1</tspan>
+      <tspan x="5" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_40">
+    <!-- $13$ -->
+    <g style="fill: #102d69" transform="translate(238.5456 103.948)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">1</tspan>
+      <tspan x="5" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">3</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_41">
+    <!-- $13$ -->
+    <g style="fill: #102d69" transform="translate(276.2448 103.948)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">1</tspan>
+      <tspan x="5" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">3</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_42">
+    <!-- $13$ -->
+    <g style="fill: #102d69" transform="translate(313.944 103.948)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">1</tspan>
+      <tspan x="5" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">3</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_43">
+    <!-- $13$ -->
+    <g style="fill: #102d69" transform="translate(351.6432 103.948)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">1</tspan>
+      <tspan x="5" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">3</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_44">
+    <!-- $0$ -->
+    <g style="fill: #102d69" transform="translate(52.5496 141.6472)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_45">
+    <!-- $0$ -->
+    <g style="fill: #102d69" transform="translate(90.2488 141.6472)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_46">
+    <!-- $0$ -->
+    <g style="fill: #102d69" transform="translate(127.948 141.6472)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_47">
+    <!-- $6$ -->
+    <g style="fill: #102d69" transform="translate(165.6472 141.6472)">
+     <text>
+      <tspan x="0" y="-0.15625" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">6</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_48">
+    <!-- $10$ -->
+    <g style="fill: #102d69" transform="translate(200.8464 141.6472)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">1</tspan>
+      <tspan x="5" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_49">
+    <!-- $13$ -->
+    <g style="fill: #102d69" transform="translate(238.5456 141.6472)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">1</tspan>
+      <tspan x="5" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">3</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_50">
+    <!-- $13$ -->
+    <g style="fill: #102d69" transform="translate(276.2448 141.6472)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">1</tspan>
+      <tspan x="5" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">3</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_51">
+    <!-- $16$ -->
+    <g style="fill: #102d69" transform="translate(313.944 141.6472)">
+     <text>
+      <tspan x="0" y="-0.15625" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">1</tspan>
+      <tspan x="5" y="-0.15625" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">6</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_52">
+    <!-- $19$ -->
+    <g style="fill: #102d69" transform="translate(351.6432 141.6472)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">1</tspan>
+      <tspan x="5" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">9</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_53">
+    <!-- $0$ -->
+    <g style="fill: #102d69" transform="translate(52.5496 179.3464)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_54">
+    <!-- $0$ -->
+    <g style="fill: #102d69" transform="translate(90.2488 179.3464)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_55">
+    <!-- $5$ -->
+    <g style="fill: #102d69" transform="translate(127.948 179.3464)">
+     <text>
+      <tspan x="0" y="-0.125" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">5</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_56">
+    <!-- $6$ -->
+    <g style="fill: #102d69" transform="translate(165.6472 179.3464)">
+     <text>
+      <tspan x="0" y="-0.15625" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">6</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_57">
+    <!-- $10$ -->
+    <g style="fill: #102d69" transform="translate(200.8464 179.3464)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">1</tspan>
+      <tspan x="5" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">0</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_58">
+    <!-- $13$ -->
+    <g style="fill: #102d69" transform="translate(238.5456 179.3464)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">1</tspan>
+      <tspan x="5" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">3</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_59">
+    <!-- $15$ -->
+    <g style="fill: #102d69" transform="translate(276.2448 179.3464)">
+     <text>
+      <tspan x="0" y="-0.125" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">1</tspan>
+      <tspan x="5" y="-0.125" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">5</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_60">
+    <!-- $18$ -->
+    <g style="fill: #102d69" transform="translate(313.944 179.3464)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">1</tspan>
+      <tspan x="5" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">8</tspan>
+     </text>
+    </g>
+   </g>
+   <g id="text_61">
+    <!-- $19$ -->
+    <g style="fill: #102d69" transform="translate(351.6432 179.3464)">
+     <text>
+      <tspan x="0" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">1</tspan>
+      <tspan x="5" y="-0.234375" style="font-size: 10px; font-family: 'STIXGeneral', 'STIX Two Text', 'Times New Roman', Times, serif; fill: #102d69">9</tspan>
+     </text>
+    </g>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pcac9081887">
+   <rect x="36.2" y="7.2" width="339.2928" height="188.496"/>
+  </clipPath>
+ </defs>
+</svg>

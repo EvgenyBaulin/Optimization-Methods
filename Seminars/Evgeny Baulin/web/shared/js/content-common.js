@@ -936,10 +936,10 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
    {
     "n": 10,
     "dir": "10",
-    "available": false,
+    "available": true,
     "title": {
-     "en": "MILP and the Anatomy of Modern Solvers",
-     "ru": "MILP и устройство современных солверов"
+     "en": "Knapsack and Linear Programming in Practice",
+     "ru": "Рюкзак и линейное программирование на практике"
     }
    },
    {

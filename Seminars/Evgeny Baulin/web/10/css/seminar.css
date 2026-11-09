@@ -1,0 +1,353 @@
+/* SPDX-License-Identifier: MIT */
+/* Copyright (c) 2026 Evgeny Baulin */
+/* Seminar 10 on top of the shared styles: the locked parts, the access notices and the instructor's badge, block 0
+   and D, the projector clock and the projector contrast. */
+
+/* ---------------------------------------------------------------- locked parts */
+.lock-note {
+  max-width: var(--measure);
+  margin: 0.7em 0;
+  padding: 0.45em 0.8em;
+  border-left: 3px solid var(--line-strong);
+  background: var(--panel-2);
+  color: var(--muted);
+  font-style: italic;
+  --punct-style: italic;
+}
+.handout-locked .handout-head {
+  max-width: var(--measure);
+}
+
+/* ---------------------------------------------------------------- notices */
+.access-notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin: 16px 0 4px;
+  padding: 10px 14px;
+  border: 1px solid var(--line-strong);
+  border-left-width: 4px;
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+.access-notice p {
+  flex: 1 1 22rem;
+  margin: 0;
+}
+.access-notice.is-open {
+  border-left-color: var(--ok);
+}
+.access-notice.is-later {
+  border-left-color: var(--accent-2);
+}
+
+/* ---------------------------------------------------------------- sign-in and session dialogs */
+#access-login .dialog-inner,
+#access-session .dialog-inner {
+  width: min(460px, 100%);
+}
+.access-form {
+  display: grid;
+  gap: 12px;
+}
+.access-field {
+  display: grid;
+  gap: 4px;
+}
+.access-field input {
+  font: inherit;
+  padding: 6px 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--fg);
+}
+.access-field input:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+.access-form .btn-primary {
+  justify-self: start;
+}
+.access-message {
+  min-height: 1.4em;
+  margin: 0;
+  color: var(--bad);
+}
+.access-note,
+.access-status {
+  margin: 0.6em 0;
+  color: var(--muted);
+  font-size: 0.94rem;
+}
+.access-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0.8em 0;
+}
+
+/* the discreet mark of an instructor session, in a corner */
+.access-badge {
+  position: fixed;
+  left: 12px;
+  bottom: 12px;
+  z-index: 40;
+  padding: 3px 10px;
+  border: 1px solid var(--accent-2);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--accent-2);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  opacity: 0.85;
+}
+.access-badge:hover,
+.access-badge:focus-visible {
+  opacity: 1;
+}
+.access-badge[hidden] {
+  display: none;
+}
+
+/* ---------------------------------------------------------------- block 0 and D */
+.jensen-points {
+  max-width: var(--measure);
+  padding-left: 1.4em;
+}
+.jensen-point {
+  margin: 0.8em 0;
+}
+.jensen-title {
+  margin: 0 0 0.2em;
+  font-weight: 700;
+}
+.sandwich {
+  max-width: var(--measure);
+  overflow-x: auto;
+}
+.demo-text {
+  max-width: var(--measure);
+}
+.takeaway {
+  max-width: var(--measure);
+  font-style: italic;
+  --punct-style: italic;
+}
+.home-check {
+  color: var(--muted);
+  font-size: 0.94rem;
+}
+
+/* ---------------------------------------------------------------- the projector */
+.big-timer {
+  display: none;
+}
+.is-present .big-timer {
+  display: block;
+  position: fixed;
+  right: 18px;
+  bottom: 14px;
+  z-index: 45;
+  padding: 0 0.25em;
+  border: 2px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--panel);
+  color: var(--accent);
+  font-size: clamp(3.5rem, 13vh, 9rem);
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.is-present .big-timer[hidden] {
+  display: none;
+}
+.is-present .big-timer.is-ended {
+  border-color: var(--accent-2);
+  background: var(--accent-2);
+  color: var(--on-accent);
+}
+/* the projector washes out greys: the text, the lines and the muted notes are darker (lighter in the dark theme) */
+:root.is-present[data-theme="light"] {
+  --fg: #000000;
+  --fg-soft: #121a2b;
+  --muted: #2b3446;
+  --line: #8f98a8;
+  --line-strong: #4f5767;
+  --panel-2: #e4e9f2;
+}
+:root.is-present[data-theme="dark"] {
+  --fg: #ffffff;
+  --fg-soft: #e7ebf2;
+  --muted: #cad2de;
+  --line: #5a667c;
+  --line-strong: #a4aebd;
+}
+.is-present .problem-statement,
+.is-present .jensen-text,
+.is-present .demo-text {
+  font-weight: 500;
+}
+.is-present .access-badge {
+  bottom: 8px;
+  left: 8px;
+  font-size: 0.6rem;
+}
+
+@media print {
+  .access-badge,
+  .access-notice,
+  .big-timer {
+    display: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------- block G: the cat sudoku */
+.cats {
+  --cats-g0: #dbe6f6;
+  --cats-g1: #f6dfd2;
+  --cats-g2: #dcefdc;
+  --cats-g3: #efe3f5;
+  --cats-g4: #f7efc9;
+  --cats-g5: #d6eeee;
+  --cats-g6: #f3d9e3;
+  --cats-g7: #e4e4d2;
+  --cats-g8: #d9dcf4;
+  --cats-cat: #1d2a44;
+  --cats-solver: #102d69;
+  --cats-edge: #3b4456;
+}
+:root[data-theme='dark'] .cats {
+  --cats-g0: #24344f;
+  --cats-g1: #4a3326;
+  --cats-g2: #24402a;
+  --cats-g3: #3d2c4a;
+  --cats-g4: #4a4222;
+  --cats-g5: #1f4245;
+  --cats-g6: #4a2a36;
+  --cats-g7: #3a3a2a;
+  --cats-g8: #2c3156;
+  --cats-cat: #f1f4fa;
+  --cats-solver: #a3c0ff;
+  --cats-edge: #c5ccd8;
+}
+.cats-body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 24px;
+  align-items: flex-start;
+}
+.cats-stage {
+  flex: 0 1 30rem;
+  min-width: 0;
+}
+.cats-side {
+  flex: 1 1 16rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+.cats-board {
+  display: grid;
+  width: 100%;
+  max-width: 30rem;
+  aspect-ratio: 1;
+  border: 2px solid var(--cats-edge);
+  user-select: none;
+}
+.cats-row {
+  display: grid;
+  grid-template-columns: repeat(var(--cats-n), 1fr);
+}
+.cats-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-right: 1px solid color-mix(in srgb, var(--cats-edge) 25%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--cats-edge) 25%, transparent);
+  color: var(--cats-cat);
+  font: inherit;
+  cursor: pointer;
+}
+.cats-cell.edge-r {
+  border-right: 2px solid var(--cats-edge);
+}
+.cats-cell.edge-b {
+  border-bottom: 2px solid var(--cats-edge);
+}
+.cats-cell:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: -3px;
+  z-index: 1;
+}
+.cats-g0 { background: var(--cats-g0); --cats-face: var(--cats-g0); }
+.cats-g1 { background: var(--cats-g1); --cats-face: var(--cats-g1); }
+.cats-g2 { background: var(--cats-g2); --cats-face: var(--cats-g2); }
+.cats-g3 { background: var(--cats-g3); --cats-face: var(--cats-g3); }
+.cats-g4 { background: var(--cats-g4); --cats-face: var(--cats-g4); }
+.cats-g5 { background: var(--cats-g5); --cats-face: var(--cats-g5); }
+.cats-g6 { background: var(--cats-g6); --cats-face: var(--cats-g6); }
+.cats-g7 { background: var(--cats-g7); --cats-face: var(--cats-g7); }
+.cats-g8 { background: var(--cats-g8); --cats-face: var(--cats-g8); }
+.cat-icon {
+  position: relative;
+  display: block;
+  width: 70%;
+  aspect-ratio: 1;
+  background: currentColor;
+  clip-path: polygon(8% 6%, 36% 30%, 64% 30%, 92% 6%, 95% 52%, 87% 78%, 66% 94%, 34% 94%, 13% 78%, 5% 52%);
+}
+.cat-face {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 34% 56%, var(--cats-face, var(--panel)) 0 7%, transparent 7.5%),
+    radial-gradient(circle at 66% 56%, var(--cats-face, var(--panel)) 0 7%, transparent 7.5%),
+    radial-gradient(ellipse 6% 4% at 50% 72%, var(--cats-face, var(--panel)) 0 98%, transparent 100%);
+}
+.cat-cross {
+  color: var(--muted);
+  font-size: 1.3em;
+  line-height: 1;
+}
+.cats-cell.is-solver {
+  color: var(--cats-solver);
+}
+.cats-cell.is-conflict {
+  color: var(--bad);
+  box-shadow: inset 0 0 0 3px var(--bad);
+}
+.cats.is-won .cats-board {
+  border-color: var(--ok);
+}
+.cats-choose {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.cats-label {
+  margin-right: 4px;
+  color: var(--muted);
+}
+.cats-pick {
+  padding: 2px 8px;
+  font-size: 0.92rem;
+}
+.cats-pick.is-active {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+.cats-notes {
+  margin-top: 14px;
+  max-width: var(--measure);
+}

@@ -4,7 +4,7 @@ Course materials for the optimization methods seminars at HSE University, Facult
 
 ## Repository layout
 
-- `Lecture` — the course lectures by Andrey Ignatov, one file per topic
+- `Lecture` — the course lectures by Andrey Ignatov, one file per week, numbered by the week and named by its topic
 - `Seminars/<teacher>` — the seminar materials of that teacher, named by topic
 - `Seminars/Evgeny Baulin` — my seminars, split into three folders:
   - `web` — one site for all my seminars: the topics are chosen in the sidebar on the left, and each seminar has an interactive page, a theory handout and a cheat sheet, in English and Russian. Open `web/index.html` in a browser; nothing has to be installed

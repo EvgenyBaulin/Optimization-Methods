@@ -1,0 +1,970 @@
+{
+ "id": "seminar-08",
+ "data": {
+  "A2": {
+   "x": [
+    3.5,
+    2
+   ],
+   "lam": [
+    9,
+    0,
+    0
+   ],
+   "active": [
+    1,
+    2
+   ],
+   "f": 6.75,
+   "g": [
+    0,
+    0,
+    -2
+   ]
+  },
+  "B2": {
+   "x": [
+    2.6,
+    0.2
+   ],
+   "lam": 2.8,
+   "p": 9.8,
+   "qMax": 9.8,
+   "xNew": [
+    2.7,
+    0.4
+   ],
+   "lamNew": 2.6,
+   "pNew": 8.45,
+   "predict": 8.4,
+   "err": 0.05
+  },
+  "C2": {
+   "m1Cap": 5,
+   "costM2": 41,
+   "costBoth": 46,
+   "xBoth": [
+    5,
+    2
+   ],
+   "ip": 41,
+   "effU": [
+    6,
+    5.75
+   ],
+   "lpU": 40.25,
+   "effBig": [
+    2.4,
+    5.075
+   ],
+   "lpBig": 22.15
+  },
+  "A3": {
+   "x": [
+    -3,
+    -6
+   ],
+   "lam": 0.16666666666666666,
+   "f": -15,
+   "gradNorm2": 5
+  },
+  "B3": {
+   "argminCoef": [
+    -0.5,
+    -0.25
+   ],
+   "qCoef": [
+    -6,
+    -0.375
+   ],
+   "nu": -8,
+   "d": 24,
+   "x": [
+    4,
+    2
+   ],
+   "p": 24
+  },
+  "C3": {
+   "order": [
+    1,
+    3,
+    2,
+    4
+   ],
+   "lp": 17.8,
+   "lpFrac": 0.8,
+   "ip": 14,
+   "set": [
+    1,
+    2
+   ],
+   "gap": 3.8,
+   "greedy": 13
+  },
+  "answers": {
+   "A2": {
+    "lam1": {
+     "type": "number",
+     "value": 9,
+     "tol": 0.0005
+    },
+    "lam2": {
+     "type": "number",
+     "value": 0,
+     "tol": 0.0005
+    },
+    "f": {
+     "type": "number",
+     "value": 6.75,
+     "tol": 0.0005
+    }
+   },
+   "B2": {
+    "lam": {
+     "type": "number",
+     "value": 2.8,
+     "tol": 0.0005
+    },
+    "p": {
+     "type": "number",
+     "value": 9.8,
+     "tol": 0.0005
+    },
+    "pNew": {
+     "type": "number",
+     "value": 8.45,
+     "tol": 0.0005
+    }
+   },
+   "C2": {
+    "ip": {
+     "type": "number",
+     "value": 41,
+     "tol": 0.0005
+    },
+    "lpU": {
+     "type": "number",
+     "value": 40.25,
+     "tol": 0.0005
+    },
+    "lpBig": {
+     "type": "number",
+     "value": 22.15,
+     "tol": 0.0005
+    }
+   },
+   "A3": {
+    "y": {
+     "type": "number",
+     "value": -6,
+     "tol": 0.0005
+    },
+    "lam": {
+     "type": "number",
+     "value": 0.1667,
+     "tol": 0.0005
+    },
+    "f": {
+     "type": "number",
+     "value": -15,
+     "tol": 0.0005
+    }
+   },
+   "B3": {
+    "nu": {
+     "type": "number",
+     "value": -8,
+     "tol": 0.0005
+    },
+    "d": {
+     "type": "number",
+     "value": 24,
+     "tol": 0.0005
+    },
+    "x": {
+     "type": "number",
+     "value": 4,
+     "tol": 0.0005
+    }
+   },
+   "C3": {
+    "lp": {
+     "type": "number",
+     "value": 17.8,
+     "tol": 0.0005
+    },
+    "ip": {
+     "type": "number",
+     "value": 14,
+     "tol": 0.0005
+    },
+    "k": {
+     "type": "number",
+     "value": 2,
+     "tol": 0.0005
+    }
+   }
+  }
+ },
+ "content": {
+  "main": {
+   "blocks": {
+    "E": {
+     "summary": {
+      "title": {
+       "en": "Three takeaways",
+       "ru": "Три главных вывода"
+      },
+      "items": [
+       {
+        "en": "At a constrained minimizer $-\\nabla f$ is a nonnegative mix of the gradients of the tight constraints. For a convex problem that is also enough, so going through the possible active sets finds the global answer.",
+        "ru": "В точке условного минимума $-\\nabla f$ — неотрицательная комбинация градиентов точных ограничений. Для выпуклой задачи этого и достаточно, поэтому перебор возможных активных множеств находит глобальный ответ."
+       },
+       {
+        "en": "Every $\\lambda\\ge0$ gives a lower bound $q(\\lambda)\\le p^*$. Under Slater the best of these bounds is exact, and the optimal $\\lambda$ is the price of the constraint: $dp^*/db=-\\lambda^*$.",
+        "ru": "Любое $\\lambda\\ge0$ даёт нижнюю оценку $q(\\lambda)\\le p^*$. При условии Слейтера лучшая из этих оценок точна, а оптимальное $\\lambda$ — цена ограничения: $dp^*/db=-\\lambda^*$."
+       },
+       {
+        "en": "Forgetting integrality is a relaxation too and also gives a bound. Rounding its optimum is not a method, and how good the bound is depends on the formulation, a small big M first of all.",
+        "ru": "Отказ от целочисленности — тоже релаксация, и она тоже даёт оценку. Округление её оптимума — не метод, а качество оценки зависит от формулировки, прежде всего от того, насколько мало большое M."
+       }
+      ]
+     },
+     "exit": {
+      "items": [
+       {
+        "answer": {
+         "en": "Zero. Complementary slackness $\\lambda_ig_i(x^*)=0$ with $g_i(x^*)<0$ leaves no other option; near $x^*$ the constraint could be erased.",
+         "ru": "Ноль. Дополняющая нежёсткость $\\lambda_ig_i(x^*)=0$ при $g_i(x^*)<0$ не оставляет других вариантов; возле $x^*$ это ограничение можно стереть."
+        }
+       },
+       {
+        "answer": {
+         "en": "It goes down by about $\\lambda^*\\Delta b$, a change of ${{exit.change}}$: a looser upper bound can only help a minimization. The estimate is first-order and holds while the active set stays the same.",
+         "ru": "Оно уменьшится примерно на $\\lambda^*\\Delta b$, то есть изменится на ${{exit.change}}$: ослабленная верхняя граница минимизации может только помочь. Оценка первого порядка и верна, пока активное множество не меняется."
+        }
+       },
+       {
+        "answer": {
+         "en": "For a minimization the relaxation is below and any integer point above, so the optimum lies in $[{{exit.lp}},{{exit.inc}}]$. The absolute gap is ${{exit.gapAbs}}$, the relative gap with respect to the incumbent ${{exit.gapRel}}$.",
+         "ru": "В задаче минимизации релаксация лежит снизу, а любая целочисленная точка — сверху, поэтому оптимум находится в $[{{exit.lp}},{{exit.inc}}]$. Абсолютный зазор равен ${{exit.gapAbs}}$, относительный по отношению к лучшей найденной точке — ${{exit.gapRel}}$."
+        }
+       }
+      ]
+     }
+    }
+   }
+  },
+  "problems": {
+   "A2": {
+    "hints": [
+     {
+      "en": "Begin with the constraint that cuts off the unconstrained minimizer $(5,2)$, then look at which of the other two happen to be tight at the point you get.",
+      "ru": "Начните с того ограничения, которое отрезает безусловный минимум $(5,2)$, а затем посмотрите, какие из двух оставшихся случайно оказываются точными в найденной точке."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "Without constraints $f$ would sit at $(5,2)$, but there $g_1>0$: the bound $x\\le{{A2.params.u}}$ is violated, so $g_1$ must be tight. Put $x={{A2.params.u}}$ and keep the other multipliers at zero for a moment. The $y$-equation $2(y-2)=0$ gives $y=2$, the $x$-equation $6(x-5)+\\lambda_1=0$ gives $\\lambda_1={{A2.lam.1}}$.",
+       "ru": "Без ограничений $f$ достигала бы минимума в $(5,2)$, но там $g_1>0$: граница $x\\le{{A2.params.u}}$ нарушена, значит, $g_1$ обязано быть точным. Положим $x={{A2.params.u}}$ и пока оставим остальные множители нулевыми. Уравнение по $y$, $2(y-2)=0$, даёт $y=2$, уравнение по $x$, $6(x-5)+\\lambda_1=0$, даёт $\\lambda_1={{A2.lam.1}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "At $x^*={{A2.x}}$ the three constraint values are $g={{A2.g}}$. The sum constraint $g_2$ is tight as well, although nobody asked for it, while $g_3$ is slack, so $\\lambda_3=0$ by complementary slackness. The active set is $\\{{{A2.active.1}},{{A2.active.2}}\\}$.",
+       "ru": "В точке $x^*={{A2.x}}$ значения ограничений равны $g={{A2.g}}$. Ограничение на сумму $g_2$ тоже обращается в равенство, хотя мы его об этом не просили, а $g_3$ выполнено строго, поэтому $\\lambda_3=0$ по дополняющей нежёсткости. Активное множество — $\\{{{A2.active.1}},{{A2.active.2}}\\}$."
+      }
+     },
+     {
+      "text": {
+       "en": "With both $g_1$ and $g_2$ in play, stationarity reads $6(x-5)+\\lambda_1+\\lambda_2=0$ and $2(y-2)+\\lambda_2-\\lambda_3=0$. At $y=2$, $\\lambda_3=0$ the second equation forces $\\lambda_2=0$, and then the first gives $\\lambda_1={{A2.lam.1}}$ again. The gradients $(1,0)$ and $(1,1)$ of the tight constraints are independent, so these multipliers are the only ones: $\\lambda^*={{A2.lam}}$.",
+       "ru": "Когда в игре оба ограничения $g_1$ и $g_2$, стационарность выглядит так: $6(x-5)+\\lambda_1+\\lambda_2=0$ и $2(y-2)+\\lambda_2-\\lambda_3=0$. При $y=2$, $\\lambda_3=0$ второе уравнение вынуждает $\\lambda_2=0$, а первое снова даёт $\\lambda_1={{A2.lam.1}}$. Градиенты $(1,0)$ и $(1,1)$ точных ограничений линейно независимы, так что других множителей нет: $\\lambda^*={{A2.lam}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "All four conditions hold, $f$ is convex and the constraints are linear, so the point is the global minimizer with $f^*={{A2.f}}$. The constraint $g_2$ touches $x^*$ but carries no weight: delete it and nothing moves; delete $g_1$ and the answer changes.",
+       "ru": "Все четыре условия выполнены, $f$ выпукла, ограничения линейны — значит, это глобальный минимум, $f^*={{A2.f}}$. Ограничение $g_2$ касается точки $x^*$, но ничего не весит: уберите его — ничего не сдвинется; уберите $g_1$ — ответ изменится."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "$x^*={{A2.x}}$, $\\lambda_1={{A2.lam.1}}$, $\\lambda_2={{A2.lam.2}}$, $\\lambda_3={{A2.lam.3}}$, $f^*={{A2.f}}$.",
+     "ru": "$x^*={{A2.x}}$, $\\lambda_1={{A2.lam.1}}$, $\\lambda_2={{A2.lam.2}}$, $\\lambda_3={{A2.lam.3}}$, $f^*={{A2.f}}$."
+    },
+    "review": {
+     "en": "Being tight and being priced are different things. Complementary slackness only says that a slack constraint costs nothing; a tight one may cost nothing too.",
+     "ru": "Быть точным и иметь цену — разные вещи. Дополняющая нежёсткость говорит лишь, что нестрогое ограничение ничего не стоит; точное тоже может ничего не стоить."
+    },
+    "mistakes": []
+   },
+   "B2": {
+    "hints": [
+     {
+      "en": "Minimize $L(x,y,\\lambda)$ over $(x,y)$ for a fixed $\\lambda$ first; the minimizer is a linear function of $\\lambda$, and plugging it back gives a concave parabola in $\\lambda$.",
+      "ru": "Сначала при фиксированном $\\lambda$ минимизируйте $L(x,y,\\lambda)$ по $(x,y)$: минимум линейно зависит от $\\lambda$, и после подстановки получится вогнутая парабола по $\\lambda$."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "With $c={{B2.params.center}}$ and $a={{B2.params.a}}$, $L=\\|z-c\\|^2+\\lambda(a^\\top z-b)$ for $z=(x,y)$. Setting the gradient in $z$ to zero gives $z(\\lambda)=c-\\tfrac{\\lambda}{2}a$, that is $x=4-\\lambda/2$, $y=3-\\lambda$. The centre itself has $a^\\top c$ far above $b={{B2.params.b}}$, so the constraint will be tight.",
+       "ru": "При $c={{B2.params.center}}$ и $a={{B2.params.a}}$ имеем $L=\\|z-c\\|^2+\\lambda(a^\\top z-b)$, где $z=(x,y)$. Приравняв градиент по $z$ к нулю, получим $z(\\lambda)=c-\\tfrac{\\lambda}{2}a$, то есть $x=4-\\lambda/2$, $y=3-\\lambda$. В самом центре $a^\\top c$ сильно превышает $b={{B2.params.b}}$, так что ограничение окажется точным."
+      }
+     },
+     {
+      "text": {
+       "en": "Substituting $z(\\lambda)$ gives the dual function $q(\\lambda)=\\lambda(a^\\top c-b)-\\tfrac{1}{4}\\|a\\|^2\\lambda^2$, a downward parabola. Its top is at $\\lambda^*={{B2.lam}}$ with value ${{B2.qMax}}$. The same $\\lambda$ put into $z(\\lambda)$ gives $x^*={{B2.x}}$, which satisfies $a^\\top x^*=b$, and $p^*=\\|x^*-c\\|^2={{B2.p}}$: the two values agree, as Slater's condition promises (the origin is strictly feasible).",
+       "ru": "Подстановка $z(\\lambda)$ даёт двойственную функцию $q(\\lambda)=\\lambda(a^\\top c-b)-\\tfrac{1}{4}\\|a\\|^2\\lambda^2$ — параболу ветвями вниз. Её вершина находится при $\\lambda^*={{B2.lam}}$, значение там ${{B2.qMax}}$. То же $\\lambda$, подставленное в $z(\\lambda)$, даёт $x^*={{B2.x}}$, для которого $a^\\top x^*=b$, и $p^*=\\|x^*-c\\|^2={{B2.p}}$: значения совпадают, как и обещает условие Слейтера (начало координат строго допустимо)."
+      }
+     },
+     {
+      "text": {
+       "en": "The constraint is an upper bound $a^\\top z\\le b$, so $dp^*/db=-\\lambda^*$. For $\\Delta b={{B2.params.db}}$ the first-order forecast is $p^*-\\lambda^*\\Delta b={{B2.predict}}$.",
+       "ru": "Ограничение — это верхняя граница $a^\\top z\\le b$, поэтому $dp^*/db=-\\lambda^*$. При $\\Delta b={{B2.params.db}}$ прогноз первого порядка равен $p^*-\\lambda^*\\Delta b={{B2.predict}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "Solving again with the larger right-hand side gives $\\lambda={{B2.lamNew}}$, $x={{B2.xNew}}$ and $p^*={{B2.pNew}}$. The forecast misses by ${{B2.err}}$, a second-order effect: here $p^*(b)=(a^\\top c-b)^2/\\|a\\|^2$ is a parabola in $b$, and its tangent lies below it.",
+       "ru": "Повторное решение с увеличенной правой частью даёт $\\lambda={{B2.lamNew}}$, $x={{B2.xNew}}$ и $p^*={{B2.pNew}}$. Прогноз ошибается на ${{B2.err}}$ — это эффект второго порядка: здесь $p^*(b)=(a^\\top c-b)^2/\\|a\\|^2$ — парабола по $b$, и касательная лежит под ней."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "$\\lambda^*={{B2.lam}}$, $p^*=d^*={{B2.p}}$; after the change of $b$, $p^*={{B2.pNew}}$ (forecast ${{B2.predict}}$).",
+     "ru": "$\\lambda^*={{B2.lam}}$, $p^*=d^*={{B2.p}}$; после изменения $b$ получаем $p^*={{B2.pNew}}$ (прогноз ${{B2.predict}}$)."
+    },
+    "review": {
+     "en": "The optimal multiplier is the exchange rate between the right-hand side and the optimal value. It is exact for small changes and only a tangent for larger ones.",
+     "ru": "Оптимальный множитель — это курс обмена правой части на оптимальное значение. Для малых изменений он точен, для больших это лишь касательная."
+    },
+    "mistakes": []
+   },
+   "C2": {
+    "hints": [
+     {
+      "en": "In the relaxation a fractional switch is never larger than it must be: $z_i=x_i/M_i$. Work out what one unit then costs on each machine.",
+      "ru": "В релаксации дробный переключатель не бывает больше, чем нужно: $z_i=x_i/M_i$. Посчитайте, во что тогда обходится одна единица продукции на каждой машине."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "Decisions: output $x_i\\ge0$ and a switch $z_i\\in\\{0,1\\}$ for each machine. Objective $\\sum_i(F_iz_i+c_ix_i)$; demand $x_1+x_2=D$; capacity $x_i\\le u_i$; link $x_i\\le M_iz_i$, so that output forces the fixed cost. The smallest valid choice is $M_i=u_i$, and then the link already contains the capacity.",
+       "ru": "Решения: выпуск $x_i\\ge0$ и переключатель $z_i\\in\\{0,1\\}$ для каждой машины. Цель $\\sum_i(F_iz_i+c_ix_i)$; спрос $x_1+x_2=D$; мощность $x_i\\le u_i$; связь $x_i\\le M_iz_i$, чтобы ненулевой выпуск включал постоянные затраты. Наименьшее допустимое значение — $M_i=u_i$, и тогда связь уже содержит ограничение мощности."
+      }
+     },
+     {
+      "text": {
+       "en": "There are only four on/off patterns. Nothing on, or machine 1 alone with capacity ${{C2.m1Cap}}< D$, cannot cover the demand. Machine 2 alone costs $F_2+c_2D={{C2.costM2}}$. Both on, with the cheap machine 1 at full capacity and the rest on machine 2, cost ${{C2.costBoth}}$. The integer optimum is ${{C2.ip}}$: one machine, the dearer one per unit.",
+       "ru": "Вариантов включения всего четыре. Ничего не включать или включить только машину 1 мощностью ${{C2.m1Cap}}< D$ нельзя: спрос не покрыт. Одна машина 2 стоит $F_2+c_2D={{C2.costM2}}$. Обе машины, когда дешёвая машина 1 загружена полностью, а остаток делает машина 2, стоят ${{C2.costBoth}}$. Целочисленный оптимум — ${{C2.ip}}$: работает одна машина, причём та, у которой единица дороже."
+      }
+     },
+     {
+      "text": {
+       "en": "Relax $z_i\\in[0,1]$. Each unit on machine $i$ now pays $c_i+F_i/M_i$. With $M=u$ these rates are ${{C2.effU}}$, so all of the demand goes to machine 2 and the bound is ${{C2.lpU}}$, just below the integer optimum.",
+       "ru": "Ослабим $z_i\\in[0,1]$. Теперь каждая единица на машине $i$ стоит $c_i+F_i/M_i$. При $M=u$ эти ставки равны ${{C2.effU}}$, весь спрос уходит на машину 2, и оценка равна ${{C2.lpU}}$ — чуть ниже целочисленного оптимума."
+      }
+     },
+     {
+      "text": {
+       "en": "Take instead $M_i$ equal to ${{C2.params.scale}}$ capacities. The rates become ${{C2.effBig}}$: the fixed costs have almost vanished, machine 1 is filled to capacity and the bound drops to ${{C2.lpBig}}$. The integer model is the same, but the relaxation now says little about it, and a branch-and-bound solver would have to work much harder.",
+       "ru": "Возьмём вместо этого $M_i$, равное ${{C2.params.scale}}$ мощностям. Ставки станут ${{C2.effBig}}$: постоянные затраты почти исчезли, машина 1 загружена полностью, и оценка падает до ${{C2.lpBig}}$. Целочисленная модель та же самая, но релаксация теперь мало о ней говорит, и методу ветвей и границ пришлось бы работать гораздо дольше."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "Integer optimum ${{C2.ip}}$ (machine 2 alone); relaxation ${{C2.lpU}}$ with $M=u$ and ${{C2.lpBig}}$ with the inflated $M$.",
+     "ru": "Целочисленный оптимум ${{C2.ip}}$ (работает только машина 2); релаксация ${{C2.lpU}}$ при $M=u$ и ${{C2.lpBig}}$ при раздутом $M$."
+    },
+    "review": {
+     "en": "Every valid $M$ gives the same integer solutions, but not the same relaxation. Take the smallest number that the data justify.",
+     "ru": "Любое допустимое $M$ даёт одни и те же целочисленные решения, но разные релаксации. Берите наименьшее число, которое оправдано данными."
+    },
+    "mistakes": []
+   },
+   "A3": {
+    "hints": [
+     {
+      "en": "A linear function has no minimum inside a disk, so the circle itself must be tight.",
+      "ru": "У линейной функции нет минимума внутри круга, поэтому точной обязана быть сама окружность."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "With $c={{A3.params.c}}$ and $g=x^2+y^2-{{A3.params.r2}}$, stationarity is $c+2\\lambda(x,y)=0$, so $(x,y)=-c/(2\\lambda)$: the minimizer lies opposite to $c$, and $\\lambda>0$ is needed.",
+       "ru": "При $c={{A3.params.c}}$ и $g=x^2+y^2-{{A3.params.r2}}$ стационарность имеет вид $c+2\\lambda(x,y)=0$, откуда $(x,y)=-c/(2\\lambda)$: минимум лежит напротив $c$, и нужно $\\lambda>0$."
+      }
+     },
+     {
+      "text": {
+       "en": "The circle is tight: $\\|c\\|^2/(4\\lambda^2)={{A3.params.r2}}$ with $\\|c\\|^2={{A3.gradNorm2}}$, so $\\lambda^*={{A3.lam}}$, $x^*={{A3.x}}$ and $f^*={{A3.f}}$.",
+       "ru": "Окружность точна: $\\|c\\|^2/(4\\lambda^2)={{A3.params.r2}}$, где $\\|c\\|^2={{A3.gradNorm2}}$, поэтому $\\lambda^*={{A3.lam}}$, $x^*={{A3.x}}$ и $f^*={{A3.f}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "The objective is linear and the disk convex, so this KKT point is the global minimizer; the other point of the circle on the same line is the maximizer, with a negative multiplier.",
+       "ru": "Цель линейна, круг выпуклый, значит, эта точка ККТ — глобальный минимум; вторая точка окружности на той же прямой — максимум, и множитель у неё отрицательный."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "$x^*={{A3.x}}$, $\\lambda^*={{A3.lam}}$, $f^*={{A3.f}}$.",
+     "ru": "$x^*={{A3.x}}$, $\\lambda^*={{A3.lam}}$, $f^*={{A3.f}}$."
+    },
+    "review": {
+     "en": "A curved constraint works like a straight one at the solution: its gradient there plays the role of the normal.",
+     "ru": "Кривое ограничение в точке решения работает как прямое: его градиент там играет роль нормали."
+    },
+    "mistakes": []
+   },
+   "B3": {
+    "hints": [
+     {
+      "en": "For an equality the multiplier has no sign restriction, so maximize $q(\\nu)$ over the whole line.",
+      "ru": "У равенства множитель не ограничен по знаку, поэтому максимизируйте $q(\\nu)$ по всей прямой."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "$L=x^2+2y^2+\\nu(x+y-{{B3.params.s}})$. Minimizing over $(x,y)$ gives $x={{B3.argminCoef.1}}\\nu$, $y={{B3.argminCoef.2}}\\nu$.",
+       "ru": "$L=x^2+2y^2+\\nu(x+y-{{B3.params.s}})$. Минимум по $(x,y)$ достигается при $x={{B3.argminCoef.1}}\\nu$, $y={{B3.argminCoef.2}}\\nu$."
+      }
+     },
+     {
+      "text": {
+       "en": "Substituting, $q(\\nu)={{B3.qCoef.1}}\\nu{{B3.qCoef.2}}\\nu^2$, a downward parabola. Its top is at $\\nu^*={{B3.nu}}$ with $d^*={{B3.d}}$.",
+       "ru": "После подстановки $q(\\nu)={{B3.qCoef.1}}\\nu{{B3.qCoef.2}}\\nu^2$ — парабола ветвями вниз. Её вершина при $\\nu^*={{B3.nu}}$, где $d^*={{B3.d}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "Then $x^*={{B3.x}}$ lies on the line and $p^*={{B3.p}}=d^*$. The multiplier came out negative, which is allowed for an equality: it only says on which side of the line $f$ would like to be.",
+       "ru": "Тогда $x^*={{B3.x}}$ лежит на прямой и $p^*={{B3.p}}=d^*$. Множитель получился отрицательным, и для равенства это допустимо: он лишь показывает, с какой стороны прямой $f$ хотела бы оказаться."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "$\\nu^*={{B3.nu}}$, $d^*=p^*={{B3.d}}$, $x^*={{B3.x}}$.",
+     "ru": "$\\nu^*={{B3.nu}}$, $d^*=p^*={{B3.d}}$, $x^*={{B3.x}}$."
+    },
+    "review": {
+     "en": "Signs of multipliers come from the direction of inequalities; an equality has no direction, so its multiplier has no sign.",
+     "ru": "Знак множителя берётся из направления неравенства; у равенства направления нет, поэтому и знака у его множителя нет."
+    },
+    "mistakes": []
+   },
+   "C3": {
+    "hints": [
+     {
+      "en": "For the relaxation sort the items by value per unit of weight and fill the knapsack in that order; only the last item may go in partly.",
+      "ru": "Для релаксации упорядочьте предметы по ценности на единицу веса и заполняйте рюкзак в этом порядке; только последний предмет может войти частично."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "Model: $z_i\\in\\{0,1\\}$, maximize $\\sum_iv_iz_i$ subject to $\\sum_iw_iz_i\\le W$ with $v={{C3.params.values}}$, $w={{C3.params.weights}}$, $W={{C3.params.cap}}$. By the ratio $v_i/w_i$ the order is ${{C3.order}}$.",
+       "ru": "Модель: $z_i\\in\\{0,1\\}$, максимизировать $\\sum_iv_iz_i$ при $\\sum_iw_iz_i\\le W$, где $v={{C3.params.values}}$, $w={{C3.params.weights}}$, $W={{C3.params.cap}}$. По отношению $v_i/w_i$ порядок такой: ${{C3.order}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "The relaxation takes whole items in this order while they fit and a share ${{C3.lpFrac}}$ of the next one: the bound is ${{C3.lp}}$.",
+       "ru": "Релаксация берёт предметы целиком в этом порядке, пока они помещаются, и долю ${{C3.lpFrac}}$ следующего: оценка равна ${{C3.lp}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "Checking the subsets that fit, the best is the set ${{C3.set}}$ worth ${{C3.ip}}$; the gap to the bound is ${{C3.gap}}$. The greedy prefix is not necessarily the integer optimum.",
+       "ru": "Перебрав помещающиеся наборы, находим лучший — ${{C3.set}}$ ценностью ${{C3.ip}}$; зазор до оценки равен ${{C3.gap}}$. Жадный префикс не обязательно оказывается целочисленным оптимумом."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "Relaxation ${{C3.lp}}$, integer optimum ${{C3.ip}}$ with the items ${{C3.set}}$.",
+     "ru": "Релаксация ${{C3.lp}}$, целочисленный оптимум ${{C3.ip}}$, предметы ${{C3.set}}$."
+    },
+    "review": {
+     "en": "The fractional knapsack is solved by sorting; the integer one needs search, and the sorted bound tells the search when to stop.",
+     "ru": "Дробный рюкзак решается сортировкой; целочисленный требует перебора, а оценка из сортировки подсказывает перебору, когда остановиться."
+    },
+    "mistakes": []
+   }
+  },
+  "handout": {
+   "intro": {
+    "en": "This handout follows seminar 8. It goes from the first-order conditions of a constrained problem to the dual problem and the meaning of multipliers, and then turns to models with integer variables, where the same idea of a bound reappears as the relaxation. All nine problems of the class are solved in full.",
+    "ru": "Этот конспект сопровождает семинар 8. Он ведёт от условий первого порядка в задаче с ограничениями к двойственной задаче и смыслу множителей, а затем переходит к моделям с целочисленными переменными, где та же идея оценки возвращается в виде релаксации. Все девять задач занятия разобраны полностью."
+   },
+   "convention": {
+    "en": "Problem: minimize $f(x)$ over $x\\in\\mathbb R^n$ subject to $g_i(x)\\le0$ and $h_j(x)=0$. Multipliers $\\lambda_i\\ge0$ for inequalities, $\\nu_j$ of any sign for equalities. $L=f+\\sum_i\\lambda_ig_i+\\sum_j\\nu_jh_j$, $q=\\inf_xL$, $p^*$ and $d^*$ the primal and dual optimal values. In the integer part a maximization keeps its own sign: there the relaxation bounds the optimum from above.",
+    "ru": "Задача: минимизировать $f(x)$ по $x\\in\\mathbb R^n$ при $g_i(x)\\le0$ и $h_j(x)=0$. Множители $\\lambda_i\\ge0$ — у неравенств, $\\nu_j$ любого знака — у равенств. $L=f+\\sum_i\\lambda_ig_i+\\sum_j\\nu_jh_j$, $q=\\inf_xL$, $p^*$ и $d^*$ — оптимальные значения прямой и двойственной задач. В целочисленной части задача максимизации сохраняет свой знак: там релаксация оценивает оптимум сверху."
+   },
+   "sections": [
+    {
+     "id": "kkt",
+     "title": {
+      "en": "Optimality conditions with constraints",
+      "ru": "Условия оптимальности при ограничениях"
+     },
+     "blocks": [
+      {
+       "type": "p",
+       "text": {
+        "en": "An unconstrained minimizer has $\\nabla f=0$. With constraints this fails as soon as the solution sits on the boundary: $f$ would still like to go further, but the wall stops it. What remains true is a balance between the pull of $f$ and the push of the walls that are touched.",
+        "ru": "В точке безусловного минимума $\\nabla f=0$. С ограничениями это перестаёт быть верным, как только решение оказывается на границе: функция хотела бы двигаться дальше, но её останавливает стенка. Верным остаётся равновесие между тягой $f$ и упором тех стенок, которых точка касается."
+       }
+      },
+      {
+       "type": "definition",
+       "title": {
+        "en": "Active set",
+        "ru": "Активное множество"
+       },
+       "text": {
+        "en": "For a feasible $x$, the indices $i$ with $g_i(x)=0$ form the active set $A(x)$. Constraints with $g_i(x)<0$ are slack and do not restrict small moves.",
+        "ru": "Для допустимого $x$ индексы $i$, при которых $g_i(x)=0$, образуют активное множество $A(x)$. Ограничения с $g_i(x)<0$ выполнены строго и малые сдвиги не стесняют."
+       }
+      },
+      {
+       "type": "theorem",
+       "title": {
+        "en": "Karush–Kuhn–Tucker conditions",
+        "ru": "Условия Каруша–Куна–Таккера"
+       },
+       "text": {
+        "en": "Let $x^*$ be a local minimizer and suppose a constraint qualification holds there (for instance, the gradients of the active constraints and of the $h_j$ are linearly independent, or the problem is convex and Slater's condition holds). Then there are $\\lambda^*$ and $\\nu^*$ such that $\\nabla_xL(x^*,\\lambda^*,\\nu^*)=0$; $x^*$ is feasible; $\\lambda^*\\ge0$; and $\\lambda_i^*g_i(x^*)=0$ for every $i$.",
+        "ru": "Пусть $x^*$ — точка локального минимума и в ней выполнено условие регулярности (например, градиенты активных ограничений и всех $h_j$ линейно независимы, или задача выпукла и выполнено условие Слейтера). Тогда найдутся $\\lambda^*$ и $\\nu^*$, при которых $\\nabla_xL(x^*,\\lambda^*,\\nu^*)=0$; $x^*$ допустима; $\\lambda^*\\ge0$; $\\lambda_i^*g_i(x^*)=0$ для всех $i$."
+       }
+      },
+      {
+       "type": "intuition",
+       "text": {
+        "en": "Stationarity says $-\\nabla f(x^*)=\\sum_i\\lambda_i^*\\nabla g_i(x^*)+\\sum_j\\nu_j^*\\nabla h_j(x^*)$: the direction in which $f$ falls fastest points out of the feasible set, into the cone spanned by the outward normals of the touched walls. Any feasible move then has to go uphill.",
+        "ru": "Стационарность говорит, что $-\\nabla f(x^*)=\\sum_i\\lambda_i^*\\nabla g_i(x^*)+\\sum_j\\nu_j^*\\nabla h_j(x^*)$: направление быстрейшего убывания $f$ смотрит наружу из допустимого множества, в конус внешних нормалей тех стенок, которых касается точка. Любой допустимый сдвиг тогда ведёт вверх."
+       }
+      },
+      {
+       "type": "theorem",
+       "kind": "proposition",
+       "title": {
+        "en": "Sufficiency in the convex case",
+        "ru": "Достаточность в выпуклом случае"
+       },
+       "text": {
+        "en": "If $f$ and every $g_i$ are convex and every $h_j$ is affine, a feasible point that satisfies the KKT conditions with some multipliers is a global minimizer.",
+        "ru": "Если $f$ и все $g_i$ выпуклы, а все $h_j$ аффинны, то допустимая точка, удовлетворяющая условиям ККТ с какими-нибудь множителями, — точка глобального минимума."
+       }
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "With $\\lambda^*\\ge0$ fixed, $x\\mapsto L(x,\\lambda^*,\\nu^*)$ is convex and has zero gradient at $x^*$, so $x^*$ minimizes it over all of $\\mathbb R^n$. Complementary slackness and $h(x^*)=0$ give $L(x^*,\\lambda^*,\\nu^*)=f(x^*)$. For a feasible $x$ the added terms are $\\le0$, so $f(x^*)\\le L(x,\\lambda^*,\\nu^*)\\le f(x)$.",
+        "ru": "При фиксированных $\\lambda^*\\ge0$ функция $x\\mapsto L(x,\\lambda^*,\\nu^*)$ выпукла и имеет нулевой градиент в $x^*$, поэтому $x^*$ минимизирует её на всём $\\mathbb R^n$. Дополняющая нежёсткость и $h(x^*)=0$ дают $L(x^*,\\lambda^*,\\nu^*)=f(x^*)$. Для допустимого $x$ добавленные слагаемые не больше нуля, значит, $f(x^*)\\le L(x,\\lambda^*,\\nu^*)\\le f(x)$."
+       }
+      },
+      {
+       "type": "list",
+       "items": [
+        {
+         "en": "Write $L$ and the stationarity equations.",
+         "ru": "Запишите $L$ и уравнения стационарности."
+        },
+        {
+         "en": "Guess an active set $A$. Put $g_i=0$ for $i\\in A$ and $\\lambda_i=0$ for $i\\notin A$, then solve the square system.",
+         "ru": "Выберите предполагаемое активное множество $A$. Положите $g_i=0$ при $i\\in A$ и $\\lambda_i=0$ при $i\\notin A$ и решите получившуюся квадратную систему."
+        },
+        {
+         "en": "Discard the candidate if some $g_i>0$ or some $\\lambda_i<0$.",
+         "ru": "Отбросьте кандидата, если какое-то $g_i>0$ или какое-то $\\lambda_i<0$."
+        },
+        {
+         "en": "In a convex problem the first survivor is the answer; otherwise compare the values of all survivors and check that a minimizer exists.",
+         "ru": "В выпуклой задаче первый уцелевший кандидат и есть ответ; иначе сравните значения всех уцелевших и убедитесь, что минимум вообще существует."
+        }
+       ]
+      },
+      {
+       "type": "figure",
+       "src": "fig_a1",
+       "alt": {
+        "en": "Level sets of f, the feasible region of A1 and the minimizer on the line x + y = b, with minus the gradient along the outward normal.",
+        "ru": "Линии уровня f, допустимая область задачи A1 и точка минимума на прямой x + y = b, где антиградиент направлен по внешней нормали."
+       },
+       "caption": {
+        "en": "In A1 the minimizer lies on the line of $g_1$; $-\\nabla f$ is a positive multiple of the normal of that line.",
+        "ru": "В задаче A1 минимум лежит на прямой $g_1$; $-\\nabla f$ — положительное кратное нормали к этой прямой."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "A1"
+      },
+      {
+       "type": "trap",
+       "text": {
+        "en": "Active does not mean positive multiplier. The implication goes one way: $\\lambda_i>0$ forces $g_i=0$, but $g_i=0$ allows $\\lambda_i=0$. A constraint that just touches the unconstrained solution is the typical case.",
+        "ru": "Активное не значит с положительным множителем. Импликация работает в одну сторону: из $\\lambda_i>0$ следует $g_i=0$, но при $g_i=0$ возможно $\\lambda_i=0$. Типичный случай — ограничение, которое лишь касается безусловного решения."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "A2"
+      },
+      {
+       "type": "problem",
+       "id": "A3"
+      },
+      {
+       "type": "selfcheck",
+       "question": {
+        "en": "In A1, why is the case with both constraints active rejected, although its point is feasible?",
+        "ru": "Почему в задаче A1 случай с двумя активными ограничениями отбрасывается, хотя его точка допустима?"
+       },
+       "answer": {
+        "en": "Its multiplier for $y\\ge0$ comes out negative, $\\lambda_2={{A1.bothLam.2}}$: the wall $y=0$ would have to pull the point instead of pushing it.",
+        "ru": "Множитель при $y\\ge0$ получается отрицательным, $\\lambda_2={{A1.bothLam.2}}$: стенке $y=0$ пришлось бы тянуть точку к себе, а не отталкивать."
+       }
+      }
+     ]
+    },
+    {
+     "id": "duality",
+     "title": {
+      "en": "Lagrangian duality and prices",
+      "ru": "Двойственность Лагранжа и цены"
+     },
+     "blocks": [
+      {
+       "type": "definition",
+       "title": {
+        "en": "Dual function and dual problem",
+        "ru": "Двойственная функция и двойственная задача"
+       },
+       "text": {
+        "en": "$q(\\lambda,\\nu)=\\inf_xL(x,\\lambda,\\nu)$, possibly $-\\infty$. The dual problem is to maximize $q$ over $\\lambda\\ge0$ and all $\\nu$; its value is $d^*$.",
+        "ru": "$q(\\lambda,\\nu)=\\inf_xL(x,\\lambda,\\nu)$, возможно $-\\infty$. Двойственная задача — максимизировать $q$ по $\\lambda\\ge0$ и всем $\\nu$; её значение — $d^*$."
+       }
+      },
+      {
+       "type": "p",
+       "text": {
+        "en": "For fixed $x$ the Lagrangian is affine in the multipliers, and an infimum of affine functions is concave. So the dual problem is always a concave maximization, whatever $f$ and the constraints look like.",
+        "ru": "При фиксированном $x$ лагранжиан аффинен по множителям, а инфимум аффинных функций вогнут. Поэтому двойственная задача всегда — максимизация вогнутой функции, как бы ни выглядели $f$ и ограничения."
+       }
+      },
+      {
+       "type": "theorem",
+       "title": {
+        "en": "Weak duality",
+        "ru": "Слабая двойственность"
+       },
+       "text": {
+        "en": "For every feasible $x$, every $\\lambda\\ge0$ and every $\\nu$, $q(\\lambda,\\nu)\\le f(x)$. Hence $d^*\\le p^*$.",
+        "ru": "Для любой допустимой $x$, любых $\\lambda\\ge0$ и $\\nu$ выполнено $q(\\lambda,\\nu)\\le f(x)$. Значит, $d^*\\le p^*$."
+       }
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "$q(\\lambda,\\nu)\\le L(x,\\lambda,\\nu)=f(x)+\\sum_i\\lambda_ig_i(x)+\\sum_j\\nu_jh_j(x)\\le f(x)$, since $h(x)=0$ and each $\\lambda_ig_i(x)\\le0$.",
+        "ru": "$q(\\lambda,\\nu)\\le L(x,\\lambda,\\nu)=f(x)+\\sum_i\\lambda_ig_i(x)+\\sum_j\\nu_jh_j(x)\\le f(x)$, так как $h(x)=0$ и каждое $\\lambda_ig_i(x)\\le0$."
+       }
+      },
+      {
+       "type": "theorem",
+       "title": {
+        "en": "Strong duality under Slater's condition",
+        "ru": "Сильная двойственность при условии Слейтера"
+       },
+       "text": {
+        "en": "If the problem is convex with affine equalities, $p^*$ is finite and some feasible point satisfies every inequality strictly, then $d^*=p^*$ and the dual maximum is attained.",
+        "ru": "Если задача выпукла, равенства аффинны, $p^*$ конечно и некоторая допустимая точка выполняет все неравенства строго, то $d^*=p^*$ и максимум двойственной задачи достигается."
+       }
+      },
+      {
+       "type": "intuition",
+       "text": {
+        "en": "Read $\\lambda_i$ as a fine per unit of violation of $g_i\\le0$. The dual asks for the fines at which the unconstrained minimizer of the fined objective is already feasible. Too low a fine and the minimizer cheats; the right fine is exactly the market price of the constraint.",
+        "ru": "Считайте $\\lambda_i$ штрафом за единицу нарушения $g_i\\le0$. Двойственная задача ищет такие штрафы, при которых безусловный минимум оштрафованной цели уже допустим. При слишком низком штрафе минимум жульничает; правильный штраф — это рыночная цена ограничения."
+       }
+      },
+      {
+       "type": "theorem",
+       "kind": "proposition",
+       "title": {
+        "en": "Multipliers measure sensitivity",
+        "ru": "Множители измеряют чувствительность"
+       },
+       "text": {
+        "en": "Write the constraints as $g_i(x)\\le b_i$ and let $p^*(b)$ be the optimal value. Where $p^*$ is differentiable and the optimal multipliers are unique, $\\partial p^*/\\partial b_i=-\\lambda_i^*$.",
+        "ru": "Запишем ограничения как $g_i(x)\\le b_i$, и пусть $p^*(b)$ — оптимальное значение. Там, где $p^*$ дифференцируема, а оптимальные множители единственны, $\\partial p^*/\\partial b_i=-\\lambda_i^*$."
+       }
+      },
+      {
+       "type": "trap",
+       "text": {
+        "en": "Watch the direction of the inequality. In B1 the constraint is a lower bound $x+y\\ge b$, written as $b-x-y\\le0$; raising $b$ tightens it, and the slope of $p^*$ is $+\\lambda^*$, not $-\\lambda^*$.",
+        "ru": "Следите за направлением неравенства. В задаче B1 ограничение — нижняя граница $x+y\\ge b$, записанная как $b-x-y\\le0$; рост $b$ его ужесточает, и наклон $p^*$ равен $+\\lambda^*$, а не $-\\lambda^*$."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "B1"
+      },
+      {
+       "type": "problem",
+       "id": "B2"
+      },
+      {
+       "type": "problem",
+       "id": "B3"
+      },
+      {
+       "type": "selfcheck",
+       "question": {
+        "en": "Can $q(\\lambda)$ ever lie above $p^*$?",
+        "ru": "Может ли $q(\\lambda)$ оказаться выше $p^*$?"
+       },
+       "answer": {
+        "en": "No, for any $\\lambda\\ge0$: that is weak duality, and it needs neither convexity nor Slater.",
+        "ru": "Нет, ни при каком $\\lambda\\ge0$: это слабая двойственность, и ей не нужны ни выпуклость, ни условие Слейтера."
+       }
+      }
+     ]
+    },
+    {
+     "id": "modelling",
+     "title": {
+      "en": "From a word problem to an integer model",
+      "ru": "От текста задачи к целочисленной модели"
+     },
+     "blocks": [
+      {
+       "type": "p",
+       "text": {
+        "en": "Turning a story into a model takes three passes. Name the decisions and give each a variable, stating whether it is continuous, integer or binary. Translate every rule of the story into a constraint. Finally write the goal as a function of the variables. Most errors come from a rule that was never written down.",
+        "ru": "Чтобы превратить историю в модель, нужны три прохода. Назовите решения и дайте каждому переменную, указав, непрерывная она, целая или двоичная. Переведите каждое правило из текста в ограничение. Наконец запишите цель как функцию переменных. Большинство ошибок — это правило, которое так и не записали."
+       }
+      },
+      {
+       "type": "definition",
+       "title": {
+        "en": "Integer program and its relaxation",
+        "ru": "Целочисленная задача и её релаксация"
+       },
+       "text": {
+        "en": "A mixed-integer linear program has a linear objective, linear constraints and some variables restricted to integers. Its LP relaxation is the same problem with the integrality requirement dropped.",
+        "ru": "Смешанная целочисленная линейная задача имеет линейную цель, линейные ограничения и часть переменных, обязанных быть целыми. Её линейная релаксация — та же задача без требования целочисленности."
+       }
+      },
+      {
+       "type": "theorem",
+       "kind": "proposition",
+       "title": {
+        "en": "Dropping integrality gives a bound",
+        "ru": "Релаксация даёт оценку"
+       },
+       "text": {
+        "en": "For a maximization the relaxed optimum is at least the integer optimum; for a minimization it is at most. If the relaxed optimum happens to be integer, it solves the integer problem.",
+        "ru": "В задаче максимизации оптимум релаксации не меньше целочисленного оптимума, в задаче минимизации — не больше. Если оптимум релаксации оказался целым, он решает и целочисленную задачу."
+       }
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "Every integer feasible point is feasible for the relaxation, so the relaxation optimizes over a larger set.",
+        "ru": "Каждая допустимая целочисленная точка допустима и для релаксации, так что релаксация оптимизирует по более широкому множеству."
+       }
+      },
+      {
+       "type": "figure",
+       "src": "fig_c1",
+       "alt": {
+        "en": "Integer points inside the polygon of C1, the fractional vertex of the relaxation and the integer optimum away from it.",
+        "ru": "Целочисленные точки внутри многоугольника задачи C1, дробная вершина релаксации и целочисленный оптимум в стороне от неё."
+       },
+       "caption": {
+        "en": "The relaxation of C1 peaks at a fractional vertex; the best integer point is not one of its roundings.",
+        "ru": "Релаксация задачи C1 достигает максимума в дробной вершине; лучшая целая точка не получается её округлением."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "C1"
+      },
+      {
+       "type": "list",
+       "items": [
+        {
+         "en": "**On/off with a fixed cost.** $x\\le Mz$, $z\\in\\{0,1\\}$, cost $Fz$: any output switches the cost on.",
+         "ru": "**Включение с постоянными затратами.** $x\\le Mz$, $z\\in\\{0,1\\}$, затраты $Fz$: любой выпуск включает эти затраты."
+        },
+        {
+         "en": "**If A then B.** $z_A\\le z_B$ for binary indicators.",
+         "ru": "**Если A, то B.** $z_A\\le z_B$ для двоичных индикаторов."
+        },
+        {
+         "en": "**At most k of n options.** $\\sum_iz_i\\le k$.",
+         "ru": "**Не больше k вариантов из n.** $\\sum_iz_i\\le k$."
+        },
+        {
+         "en": "**Either one constraint or the other.** $a^\\top x\\le b+M(1-z)$ and $c^\\top x\\le d+Mz$.",
+         "ru": "**Либо одно ограничение, либо другое.** $a^\\top x\\le b+M(1-z)$ и $c^\\top x\\le d+Mz$."
+        },
+        {
+         "en": "**Product of binaries.** $w=z_1z_2$ becomes $w\\le z_1$, $w\\le z_2$, $w\\ge z_1+z_2-1$.",
+         "ru": "**Произведение двоичных.** $w=z_1z_2$ заменяется на $w\\le z_1$, $w\\le z_2$, $w\\ge z_1+z_2-1$."
+        }
+       ]
+      },
+      {
+       "type": "trap",
+       "text": {
+        "en": "Rounding the relaxed optimum is not a solution method. The rounded point may break a constraint, and even when it is feasible the true integer optimum can be several steps away, as in C1.",
+        "ru": "Округление оптимума релаксации — не способ решения. Округлённая точка может нарушить ограничение, а даже если она допустима, настоящий целочисленный оптимум может оказаться в нескольких шагах от неё, как в C1."
+       }
+      },
+      {
+       "type": "note",
+       "title": {
+        "en": "How big should M be",
+        "ru": "Каким должно быть M"
+       },
+       "text": {
+        "en": "Any $M$ at least as large as the largest value the variable can take is valid. Larger values keep the same integer solutions but weaken the relaxation, slow down branch and bound and, when $M$ is huge, let a solver accept $z$ a tolerance away from zero as switched off.",
+        "ru": "Допустимо любое $M$, не меньшее наибольшего значения, которое может принять переменная. Большие значения сохраняют те же целочисленные решения, но ослабляют релаксацию, замедляют метод ветвей и границ, а при огромном $M$ позволяют солверу считать выключенным $z$, отличающееся от нуля на величину допуска."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "C2"
+      },
+      {
+       "type": "problem",
+       "id": "C3"
+      },
+      {
+       "type": "selfcheck",
+       "question": {
+        "en": "A binary variable $z$ appears only in $x\\le Mz$ and in the cost $Fz$ with $F>0$. What value does the relaxation give it?",
+        "ru": "Двоичная переменная $z$ входит только в $x\\le Mz$ и в затраты $Fz$, $F>0$. Какое значение даёт ей релаксация?"
+       },
+       "answer": {
+        "en": "The smallest allowed one, $z=x/M$: the relaxation pays only the share $Fx/M$ of the fixed cost.",
+        "ru": "Наименьшее разрешённое, $z=x/M$: релаксация платит только долю $Fx/M$ постоянных затрат."
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "cheatsheet": {
+   "sections": [
+    {
+     "id": "kkt",
+     "title": {
+      "en": "KKT conditions",
+      "ru": "Условия ККТ"
+     },
+     "items": [
+      {
+       "en": "$L=f+\\sum\\lambda_ig_i+\\sum\\nu_jh_j$, $g_i\\le0$, $\\lambda_i\\ge0$, $\\nu_j$ free.",
+       "ru": "$L=f+\\sum\\lambda_ig_i+\\sum\\nu_jh_j$, $g_i\\le0$, $\\lambda_i\\ge0$, $\\nu_j$ любого знака."
+      },
+      {
+       "en": "Stationarity $\\nabla_xL=0$, feasibility, $\\lambda\\ge0$, $\\lambda_ig_i=0$.",
+       "ru": "Стационарность $\\nabla_xL=0$, допустимость, $\\lambda\\ge0$, $\\lambda_ig_i=0$."
+      },
+      {
+       "en": "Necessary under LICQ (or, for a convex problem, a strictly feasible point); sufficient when the problem is convex.",
+       "ru": "Необходимы при условии регулярности (LICQ или Слейтер для выпуклых задач); достаточны для выпуклой задачи."
+      },
+      {
+       "en": "Slack $\\Rightarrow\\lambda_i=0$; tight does not imply $\\lambda_i>0$.",
+       "ru": "Строго выполнено $\\Rightarrow\\lambda_i=0$; из точности не следует $\\lambda_i>0$."
+      }
+     ]
+    },
+    {
+     "id": "cases",
+     "title": {
+      "en": "Active-set recipe",
+      "ru": "Перебор активных множеств"
+     },
+     "items": [
+      {
+       "en": "Pick $A$: $g_i=0$ on $A$, $\\lambda_i=0$ off $A$; solve.",
+       "ru": "Выберите $A$: $g_i=0$ на $A$, $\\lambda_i=0$ вне $A$; решите систему."
+      },
+      {
+       "en": "Reject if some $g_i>0$ or $\\lambda_i<0$.",
+       "ru": "Отбросьте, если какое-то $g_i>0$ или $\\lambda_i<0$."
+      },
+      {
+       "en": "Convex: the survivor is global. Nonconvex: compare all survivors.",
+       "ru": "Выпуклая задача: уцелевший кандидат глобален. Невыпуклая: сравните всех уцелевших."
+      }
+     ]
+    },
+    {
+     "id": "dual",
+     "title": {
+      "en": "Duality and prices",
+      "ru": "Двойственность и цены"
+     },
+     "items": [
+      {
+       "en": "$q=\\inf_xL$ is concave; $q(\\lambda,\\nu)\\le f(x)$ for feasible $x$, $\\lambda\\ge0$.",
+       "ru": "$q=\\inf_xL$ вогнута; $q(\\lambda,\\nu)\\le f(x)$ для допустимой $x$ и $\\lambda\\ge0$."
+      },
+      {
+       "en": "Convex + strictly feasible point: $d^*=p^*$, dual optimum attained.",
+       "ru": "Выпуклость + строго допустимая точка: $d^*=p^*$, и максимум двойственной задачи достигается."
+      },
+      {
+       "en": "$g_i\\le b_i$: $\\partial p^*/\\partial b_i=-\\lambda_i^*$. For $\\ge$ the sign flips.",
+       "ru": "$g_i\\le b_i$: $\\partial p^*/\\partial b_i=-\\lambda_i^*$. Для $\\ge$ знак меняется."
+      },
+      {
+       "en": "$f(x)-q(\\lambda)\\ge0$ certifies how far a feasible $x$ can be from optimal.",
+       "ru": "$f(x)-q(\\lambda)\\ge0$ показывает, насколько допустимая $x$ может быть далека от оптимума."
+      }
+     ]
+    },
+    {
+     "id": "milp",
+     "title": {
+      "en": "Integer models",
+      "ru": "Целочисленные модели"
+     },
+     "items": [
+      {
+       "en": "Decisions $\\to$ variables, rules $\\to$ constraints, goal $\\to$ objective.",
+       "ru": "Решения $\\to$ переменные, правила $\\to$ ограничения, цель $\\to$ целевая функция."
+      },
+      {
+       "en": "Relaxation: max gives an upper bound, min a lower bound; rounding is not a method.",
+       "ru": "Релаксация: в максимизации — оценка сверху, в минимизации — снизу; округление — не метод."
+      },
+      {
+       "en": "$x\\le Mz$ switches a fixed cost; $z_A\\le z_B$ is if A then B; $\\sum z_i\\le k$ caps a choice.",
+       "ru": "$x\\le Mz$ включает постоянные затраты; $z_A\\le z_B$ — «если A, то B»; $\\sum z_i\\le k$ ограничивает выбор."
+      },
+      {
+       "en": "Take $M$ as small as valid: same integer solutions, tighter relaxation.",
+       "ru": "Берите $M$ как можно меньше: те же целые решения, более точная релаксация."
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

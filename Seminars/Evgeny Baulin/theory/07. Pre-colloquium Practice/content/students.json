@@ -1,0 +1,768 @@
+{
+ "id": "seminar-07",
+ "data": {
+  "A2": {
+   "H": [
+    [
+     8,
+     -2
+    ],
+    [
+     -2,
+     2
+    ]
+   ],
+   "grad": "(8x-2y-6,\\ -2x+2y+4)",
+   "system": "\\begin{cases}8x-2y=6\\\\ -2x+2y=-4\\end{cases}",
+   "det": 12,
+   "trace": 10,
+   "xstar": 0.3333,
+   "ystar": -1.6667,
+   "gradCheck": "(0,\\ 0)",
+   "fstar": -4.3333,
+   "mu": 1.3944,
+   "L": 8.6056,
+   "kappa": 6.1713,
+   "rate": 0.7211
+  },
+  "B2": {
+   "Q": [
+    [
+     6,
+     0
+    ],
+    [
+     0,
+     4
+    ]
+   ],
+   "g0": [
+    24,
+    -12
+   ],
+   "x1": [
+    0,
+    -1
+   ],
+   "f0": 66,
+   "f1": 2,
+   "g1": [
+    0,
+    -4
+   ],
+   "x2": [
+    0,
+    -0.3333
+   ],
+   "f2": 0.2222,
+   "g2": [
+    0,
+    -1.3333
+   ],
+   "x3": [
+    0,
+    -0.1111
+   ],
+   "f3": 0.0247,
+   "mu": 4,
+   "L": 6,
+   "twoOverL": 0.3333,
+   "slow": 0.3333,
+   "ratio": 0.0222
+  },
+  "A4": {
+   "H": [
+    [
+     2,
+     0
+    ],
+    [
+     0,
+     20
+    ]
+   ],
+   "grad": "(2x-2,\\ 20y-20)",
+   "system": "\\begin{cases}2x=2\\\\ 20y=20\\end{cases}",
+   "det": 40,
+   "trace": 22,
+   "xstar": 1,
+   "ystar": 1,
+   "gradCheck": "(0,\\ 0)",
+   "fstar": -11,
+   "mu": 2,
+   "L": 20,
+   "kappa": 10,
+   "rate": 0.8182
+  },
+  "B4": {
+   "Q": [
+    [
+     2,
+     0
+    ],
+    [
+     0,
+     2
+    ]
+   ],
+   "g0": [
+    2,
+    -2
+   ],
+   "x1": [
+    -3,
+    3
+   ],
+   "f0": 2,
+   "f1": 18,
+   "g1": [
+    -6,
+    6
+   ],
+   "x2": [
+    9,
+    -9
+   ],
+   "f2": 162,
+   "g2": [
+    18,
+    -18
+   ],
+   "x3": [
+    -27,
+    27
+   ],
+   "f3": 1458,
+   "L": 2,
+   "twoOverL": 1,
+   "growth": 3,
+   "normRatio": 27
+  },
+  "exit": {
+   "muL": "\\mu=1,\\ L=3",
+   "kind": "saddle",
+   "safe": "0.1,\\ 0.2"
+  },
+  "answers": {
+   "A2": {
+    "xstar": {
+     "type": "number",
+     "value": 0.3333,
+     "tol": 0.0005
+    },
+    "ystar": {
+     "type": "number",
+     "value": -1.6667,
+     "tol": 0.0005
+    },
+    "mu": {
+     "type": "number",
+     "value": 1.3944,
+     "tol": 0.0005
+    },
+    "L": {
+     "type": "number",
+     "value": 8.6056,
+     "tol": 0.0005
+    }
+   },
+   "B2": {
+    "f1": {
+     "type": "number",
+     "value": 2,
+     "tol": 0.0005
+    },
+    "f3": {
+     "type": "number",
+     "value": 0.0247,
+     "tol": 0.0005
+    },
+    "L": {
+     "type": "number",
+     "value": 6,
+     "tol": 0.0005
+    },
+    "safe": {
+     "type": "number",
+     "value": 1,
+     "tol": 0.0005
+    }
+   },
+   "A4": {
+    "xstar": {
+     "type": "number",
+     "value": 1,
+     "tol": 0.0005
+    },
+    "ystar": {
+     "type": "number",
+     "value": 1,
+     "tol": 0.0005
+    },
+    "mu": {
+     "type": "number",
+     "value": 2,
+     "tol": 0.0005
+    },
+    "L": {
+     "type": "number",
+     "value": 20,
+     "tol": 0.0005
+    },
+    "kappa": {
+     "type": "number",
+     "value": 10,
+     "tol": 0.0005
+    }
+   },
+   "B4": {
+    "f1": {
+     "type": "number",
+     "value": 18,
+     "tol": 0.0005
+    },
+    "f3": {
+     "type": "number",
+     "value": 1458,
+     "tol": 0.0005
+    },
+    "growth": {
+     "type": "number",
+     "value": 3,
+     "tol": 0.0005
+    }
+   }
+  }
+ },
+ "content": {
+  "main": {
+   "blocks": {
+    "E": {
+     "summary": {
+      "title": {
+       "en": "Three takeaways",
+       "ru": "Три главных вывода"
+      },
+      "items": [
+       {
+        "en": "Problem 3.1 of the colloquium is always the same calculation: form $H$, solve $Hx^*=-\\nabla f(0)$, read the type and $\\mu,L$ off the eigenvalues of $H$.",
+        "ru": "Задача 3.1 коллоквиума — всегда одно и то же: собрать $H$, решить $Hx^*=-\\nabla f(0)$, определить тип и $\\mu,L$ по собственным значениям $H$."
+       },
+       {
+        "en": "Problem 3.2 is $x_{k+1}=(I-\\alpha Q)x_k$ written out three times, with the safety test $\\alpha<2/L$ at the end.",
+        "ru": "Задача 3.2 — это $x_{k+1}=(I-\\alpha Q)x_k$, выписанное три раза, с проверкой безопасности $\\alpha<2/L$ в конце."
+       },
+       {
+        "en": "The definitions and proofs of parts one and two live in a cheat sheet of one page. Learn them to the standard wording, in both languages.",
+        "ru": "Определения и доказательства частей один и два помещаются на одну страницу шпаргалки. Выучите их до стандартной формулировки, на двух языках."
+       }
+      ]
+     },
+     "exit": {
+      "items": [
+       {
+        "answer": {
+         "en": "$H=\\begin{pmatrix}2&1\\\\1&2\\end{pmatrix}$, so ${{exit.muL}}$.",
+         "ru": "$H=\\begin{pmatrix}2&1\\\\1&2\\end{pmatrix}$, значит, ${{exit.muL}}$."
+        }
+       },
+       {
+        "answer": {
+         "en": "A saddle: both eigenvalues of $H$ are positive here, so this is a minimum, actually — reread the question. The {{exit.kind}} case is when eigenvalues have different signs.",
+         "ru": "Это минимум: оба собственных значения $H$ положительны. Случай {{exit.kind}}: собственные значения разных знаков."
+        }
+       },
+       {
+        "answer": {
+         "en": "$2/L=0.2$. The safe ones are $\\alpha={{exit.safe}}$; at $\\alpha=0.2$ the method stalls on the steepest axis and at $\\alpha=0.3$ it diverges.",
+         "ru": "$2/L=0.2$. Безопасные: $\\alpha={{exit.safe}}$; при $\\alpha=0.2$ метод стоит на самой крутой оси, при $\\alpha=0.3$ расходится."
+        }
+       }
+      ]
+     }
+    }
+   }
+  },
+  "problems": {
+   "A2": {
+    "hints": [
+     {
+      "en": "The gradient is $(8x-2y-6,\\ -2x+2y+4)$ and the Hessian is $\\begin{pmatrix}8&-2\\\\-2&2\\end{pmatrix}$.",
+      "ru": "Градиент $(8x-2y-6,\\ -2x+2y+4)$, гессиан $\\begin{pmatrix}8&-2\\\\-2&2\\end{pmatrix}$."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "$\\nabla f={{A2.grad}}$, $H={{A2.H}}$. Setting the gradient to zero: ${{A2.system}}$. $\\det H={{A2.det}}>0$, so a unique solution.",
+       "ru": "$\\nabla f={{A2.grad}}$, $H={{A2.H}}$. Приравнивая градиент нулю: ${{A2.system}}$. $\\det H={{A2.det}}>0$, значит, решение единственно."
+      }
+     },
+     {
+      "text": {
+       "en": "Solve: $x^*={{A2.xstar}}$, $y^*={{A2.ystar}}$. Check: $\\nabla f(x^*)={{A2.gradCheck}}$ and $f(x^*)={{A2.fstar}}$.",
+       "ru": "Решение: $x^*={{A2.xstar}}$, $y^*={{A2.ystar}}$. Проверка: $\\nabla f(x^*)={{A2.gradCheck}}$ и $f(x^*)={{A2.fstar}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "Eigenvalues of $H$: $\\lambda^2-{{A2.trace}}\\lambda+{{A2.det}}=0$, so $\\lambda={{A2.mu}}$ and $\\lambda={{A2.L}}$. Both positive, the point is a strict minimum.",
+       "ru": "Собственные значения $H$: $\\lambda^2-{{A2.trace}}\\lambda+{{A2.det}}=0$, корни ${{A2.mu}}$ и ${{A2.L}}$. Оба положительны, точка — строгий минимум."
+      }
+     },
+     {
+      "text": {
+       "en": "So $\\mu={{A2.mu}}$ and $L={{A2.L}}$. The condition number $\\kappa={{A2.kappa}}$; gradient descent at the best fixed step contracts by $(\\kappa-1)/(\\kappa+1)={{A2.rate}}$ per step.",
+       "ru": "Значит, $\\mu={{A2.mu}}$ и $L={{A2.L}}$. Число обусловленности $\\kappa={{A2.kappa}}$; градиентный спуск с лучшим шагом сжимает в $(\\kappa-1)/(\\kappa+1)={{A2.rate}}$ за шаг."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "Minimum at $({{A2.xstar}},{{A2.ystar}})$; $\\mu={{A2.mu}}$, $L={{A2.L}}$.",
+     "ru": "Минимум в $({{A2.xstar}},{{A2.ystar}})$; $\\mu={{A2.mu}}$, $L={{A2.L}}$."
+    },
+    "review": {
+     "en": "Positive trace and positive determinant give two positive eigenvalues without computing them individually.",
+     "ru": "Положительный след и положительный определитель дают два положительных собственных значения без явного их вычисления."
+    },
+    "mistakes": []
+   },
+   "A4": {
+    "hints": [
+     {
+      "en": "The Hessian is diagonal here, so its eigenvalues sit on the diagonal; the procedure for finding them is still the same.",
+      "ru": "Гессиан диагонален, поэтому его собственные значения стоят на диагонали; но процедура их нахождения та же самая."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "$\\nabla f={{A4.grad}}$, $H={{A4.H}}$. Setting the gradient to zero: ${{A4.system}}$. $\\det H={{A4.det}}>0$, so a unique solution.",
+       "ru": "$\\nabla f={{A4.grad}}$, $H={{A4.H}}$. Приравнивая градиент нулю: ${{A4.system}}$. $\\det H={{A4.det}}>0$, значит, решение единственно."
+      }
+     },
+     {
+      "text": {
+       "en": "Solve: $x^*={{A4.xstar}}$, $y^*={{A4.ystar}}$. Check: $\\nabla f(x^*)={{A4.gradCheck}}$ and $f(x^*)={{A4.fstar}}$.",
+       "ru": "Решение: $x^*={{A4.xstar}}$, $y^*={{A4.ystar}}$. Проверка: $\\nabla f(x^*)={{A4.gradCheck}}$ и $f(x^*)={{A4.fstar}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "Eigenvalues of $H$: $\\lambda^2-{{A4.trace}}\\lambda+{{A4.det}}=0$. Roots: $\\lambda={{A4.mu}}$ and $\\lambda={{A4.L}}$. Both positive, so the point is a strict minimum.",
+       "ru": "Собственные значения $H$: $\\lambda^2-{{A4.trace}}\\lambda+{{A4.det}}=0$. Корни: $\\lambda={{A4.mu}}$ и $\\lambda={{A4.L}}$. Оба положительны, значит, точка — строгий минимум."
+      }
+     },
+     {
+      "text": {
+       "en": "So $\\mu={{A4.mu}}$, $L={{A4.L}}$ and $\\kappa=L/\\mu={{A4.kappa}}$. Gradient descent at the best fixed step contracts the slow axis by $(\\kappa-1)/(\\kappa+1)={{A4.rate}}$ per step: a step shrinks the error by less than a fifth of what the fast axis would allow.",
+       "ru": "Значит, $\\mu={{A4.mu}}$, $L={{A4.L}}$ и $\\kappa=L/\\mu={{A4.kappa}}$. Градиентный спуск с лучшим постоянным шагом сжимает медленную ось в $(\\kappa-1)/(\\kappa+1)={{A4.rate}}$ за шаг: шаг уменьшает ошибку меньше чем в пятую часть того, что позволила бы быстрая ось."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "Minimum at $({{A4.xstar}},{{A4.ystar}})$; $\\mu={{A4.mu}}$, $L={{A4.L}}$, $\\kappa={{A4.kappa}}$.",
+     "ru": "Минимум в $({{A4.xstar}},{{A4.ystar}})$; $\\mu={{A4.mu}}$, $L={{A4.L}}$, $\\kappa={{A4.kappa}}$."
+    },
+    "review": {
+     "en": "A diagonal $H$ makes the eigenvalues obvious; $\\kappa$ reads off the ratio of the two diagonal entries.",
+     "ru": "При диагональном $H$ собственные значения видны сразу; $\\kappa$ читается как отношение двух диагональных элементов."
+    },
+    "mistakes": []
+   },
+   "B2": {
+    "hints": [
+     {
+      "en": "$Q$ is diagonal here: the two coordinates decouple and contract by $1-2\\alpha a$ and $1-2\\alpha c$ per step.",
+      "ru": "Матрица $Q$ диагональна: две координаты не связаны и умножаются на $1-2\\alpha a$ и $1-2\\alpha c$ за шаг."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "$Q={{B2.Q}}$. At $x_0={{B2.params.x0}}$: $\\nabla f={{B2.g0}}$. Step: $x_1=x_0-\\alpha\\nabla f={{B2.x1}}$, $f(x_1)={{B2.f1}}$. The first coordinate is wiped out in one step: $1-2\\alpha a=0$.",
+       "ru": "$Q={{B2.Q}}$. В $x_0={{B2.params.x0}}$: $\\nabla f={{B2.g0}}$. Шаг: $x_1=x_0-\\alpha\\nabla f={{B2.x1}}$, $f(x_1)={{B2.f1}}$. Первая координата обнуляется за шаг: $1-2\\alpha a=0$."
+      }
+     },
+     {
+      "text": {
+       "en": "At $x_1$: $\\nabla f={{B2.g1}}$, $x_2={{B2.x2}}$, $f(x_2)={{B2.f2}}$. At $x_2$: $\\nabla f={{B2.g2}}$, $x_3={{B2.x3}}$, $f(x_3)={{B2.f3}}$. The slow axis contracts by $1-2\\alpha c={{B2.slow}}$ per step.",
+       "ru": "В $x_1$: $\\nabla f={{B2.g1}}$, $x_2={{B2.x2}}$, $f(x_2)={{B2.f2}}$. В $x_2$: $\\nabla f={{B2.g2}}$, $x_3={{B2.x3}}$, $f(x_3)={{B2.f3}}$. Медленная ось сжимается в $1-2\\alpha c={{B2.slow}}$ за шаг."
+      }
+     },
+     {
+      "text": {
+       "en": "Eigenvalues of $Q$: $\\mu={{B2.mu}}$ and $L={{B2.L}}$, so $2/L={{B2.twoOverL}}$. Here $\\alpha={{B2.params.alpha}}$: $\\alpha<2/L$, the step is safe. Actually $\\alpha=1/L$: the border between the two axes meeting the floor and the slow axis contracting.",
+       "ru": "Собственные значения $Q$: $\\mu={{B2.mu}}$ и $L={{B2.L}}$, значит, $2/L={{B2.twoOverL}}$. Здесь $\\alpha={{B2.params.alpha}}$: $\\alpha<2/L$, шаг безопасен. На самом деле $\\alpha=1/L$: ровно на границе, где крутая ось обнуляется, а пологая сжимается."
+      }
+     },
+     {
+      "text": {
+       "en": "The ratio $\\|x_3\\|/\\|x_0\\|={{B2.ratio}}$ matches $(1-2\\alpha c)^3$: the slow axis set the rate for all three steps.",
+       "ru": "Отношение $\\|x_3\\|/\\|x_0\\|={{B2.ratio}}$ совпадает с $(1-2\\alpha c)^3$: все три шага скорость задаёт медленная ось."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "$f(x_1)={{B2.f1}}$, $f(x_3)={{B2.f3}}$; $L={{B2.L}}$, $\\alpha<2/L$ holds.",
+     "ru": "$f(x_1)={{B2.f1}}$, $f(x_3)={{B2.f3}}$; $L={{B2.L}}$, условие $\\alpha<2/L$ выполнено."
+    },
+    "review": {
+     "en": "A diagonal $Q$ decouples the axes; a non-diagonal one couples them, so the eigenvalues of $Q$ take over.",
+     "ru": "Диагональная $Q$ разделяет оси; при недиагональной $Q$ оси перемешиваются, и скорость задают собственные значения $Q$."
+    },
+    "mistakes": []
+   },
+   "B4": {
+    "hints": [
+     {
+      "en": "$Q={{B4.Q}}$ as in B3; only $\\alpha$ has changed. On each coordinate the step multiplier is $1-\\alpha\\cdot{{B4.L}}$.",
+      "ru": "$Q={{B4.Q}}$, как в B3; изменился только $\\alpha$. Множитель шага на каждой координате равен $1-\\alpha\\cdot{{B4.L}}$."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "$L={{B4.L}}$, $2/L={{B4.twoOverL}}$, so $\\alpha={{B4.params.alpha}}>2/L$. The per-coordinate multiplier is $1-\\alpha\\cdot{{B4.L}}=-{{B4.growth}}$: its absolute value is $|1-\\alpha L|={{B4.growth}}>1$.",
+       "ru": "$L={{B4.L}}$, $2/L={{B4.twoOverL}}$, значит, $\\alpha={{B4.params.alpha}}>2/L$. Множитель на каждой координате равен $1-\\alpha\\cdot{{B4.L}}=-{{B4.growth}}$: его модуль $|1-\\alpha L|={{B4.growth}}>1$."
+      }
+     },
+     {
+      "text": {
+       "en": "At $x_0={{B4.params.x0}}$: $\\nabla f(x_0)={{B4.g0}}$, $x_1=x_0-\\alpha\\nabla f(x_0)={{B4.x1}}$, $f(x_1)={{B4.f1}}$. Each coordinate changed sign and doubled in absolute value.",
+       "ru": "В $x_0={{B4.params.x0}}$: $\\nabla f(x_0)={{B4.g0}}$, $x_1=x_0-\\alpha\\nabla f(x_0)={{B4.x1}}$, $f(x_1)={{B4.f1}}$. Каждая координата сменила знак и удвоилась по модулю."
+      }
+     },
+     {
+      "text": {
+       "en": "$x_2={{B4.x2}}$, $f(x_2)={{B4.f2}}$; $x_3={{B4.x3}}$, $f(x_3)={{B4.f3}}$. The coordinates grow by $2$ each step, $f$ grows by $4$ each step.",
+       "ru": "$x_2={{B4.x2}}$, $f(x_2)={{B4.f2}}$; $x_3={{B4.x3}}$, $f(x_3)={{B4.f3}}$. Координаты растут вдвое за шаг, $f$ — вчетверо за шаг."
+      }
+     },
+     {
+      "text": {
+       "en": "The ratio $\\|x_3\\|/\\|x_0\\|={{B4.normRatio}}=|1-\\alpha L|^3$. The method diverges; nothing of the quadratic matters here except the top eigenvalue of $Q$, that is $L$.",
+       "ru": "Отношение $\\|x_3\\|/\\|x_0\\|={{B4.normRatio}}=|1-\\alpha L|^3$. Метод расходится; важно только наибольшее собственное значение $Q$, то есть $L$."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "$f(x_1)={{B4.f1}}$, $f(x_3)={{B4.f3}}$; $|1-\\alpha L|={{B4.growth}}$ per coordinate per step, so the method diverges.",
+     "ru": "$f(x_1)={{B4.f1}}$, $f(x_3)={{B4.f3}}$; $|1-\\alpha L|={{B4.growth}}$ на каждой координате за шаг, метод расходится."
+    },
+    "review": {
+     "en": "The growth factor $|1-\\alpha L|$ depends only on $L$ and $\\alpha$, not on where the method started.",
+     "ru": "Коэффициент роста $|1-\\alpha L|$ зависит только от $L$ и $\\alpha$, но не от того, откуда стартовал метод."
+    },
+    "mistakes": []
+   }
+  },
+  "handout": {
+   "intro": {
+    "en": "This handout is a compact review of what a colloquium ticket asks for: six definitions, two statements with proofs, two problems. The three sections below walk through part three; the cheat sheet is for parts one and two.",
+    "ru": "Этот конспект — короткий разбор того, что просит билет коллоквиума: шесть определений, два утверждения с доказательствами, две задачи. Три раздела ниже разбирают часть три; шпаргалка — для частей один и два."
+   },
+   "convention": {
+    "en": "$f:\\mathbb R^2\\to\\mathbb R$ is a quadratic form in two variables, $Q$ is its Hessian, $x^*$ its stationary point. $\\mu=\\lambda_{\\min}(Q)$ and $L=\\lambda_{\\max}(Q)$ when $Q\\succ0$. Gradient descent is $x_{k+1}=x_k-\\alpha\\nabla f(x_k)$ with a fixed $\\alpha>0$.",
+    "ru": "$f:\\mathbb R^2\\to\\mathbb R$ — квадратичная функция от двух переменных, $Q$ — её гессиан, $x^*$ — стационарная точка. $\\mu=\\lambda_{\\min}(Q)$ и $L=\\lambda_{\\max}(Q)$ при $Q\\succ0$. Градиентный спуск: $x_{k+1}=x_k-\\alpha\\nabla f(x_k)$ с постоянным $\\alpha>0$."
+   },
+   "sections": [
+    {
+     "id": "classify",
+     "title": {
+      "en": "Classifying a stationary point",
+      "ru": "Классификация стационарной точки"
+     },
+     "blocks": [
+      {
+       "type": "definition",
+       "text": {
+        "en": "A point $x^*$ is a **stationary point** of $f$ when $\\nabla f(x^*)=0$. For a quadratic $f(x)=\\tfrac{1}{2}x^\\top Hx+b^\\top x$ this reads $Hx^*=-b$.",
+        "ru": "Точка $x^*$ — **стационарная точка** $f$, если $\\nabla f(x^*)=0$. Для квадратичной $f(x)=\\tfrac{1}{2}x^\\top Hx+b^\\top x$ это $Hx^*=-b$."
+       }
+      },
+      {
+       "type": "theorem",
+       "text": {
+        "en": "Let $f$ be twice continuously differentiable and $\\nabla f(x^*)=0$. If $\\nabla^2 f(x^*)\\succ0$, then $x^*$ is a strict local minimum. If $\\nabla^2 f(x^*)\\prec0$, a strict local maximum. If $\\nabla^2 f(x^*)$ is indefinite, a saddle point.",
+        "ru": "Пусть $f$ дважды непрерывно дифференцируема и $\\nabla f(x^*)=0$. Если $\\nabla^2 f(x^*)\\succ0$, то $x^*$ — строгий локальный минимум. Если $\\nabla^2 f(x^*)\\prec0$ — строгий локальный максимум. Если $\\nabla^2 f(x^*)$ знаконеопределён — седловая точка."
+       },
+       "title": {
+        "en": "Second-order test",
+        "ru": "Критерий второго порядка"
+       }
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "Taylor: $f(x^*+h)=f(x^*)+\\tfrac{1}{2}h^\\top\\nabla^2 f(x^*)h+o(\\|h\\|^2)$. When $\\nabla^2 f(x^*)\\succ0$ there is $m>0$ with $h^\\top\\nabla^2 f(x^*)h\\ge m\\|h\\|^2$, so $f(x^*+h)>f(x^*)$ for all small $h\\ne0$. The other cases swap the sign.",
+        "ru": "Тейлор: $f(x^*+h)=f(x^*)+\\tfrac{1}{2}h^\\top\\nabla^2 f(x^*)h+o(\\|h\\|^2)$. При $\\nabla^2 f(x^*)\\succ0$ существует $m>0$ с $h^\\top\\nabla^2 f(x^*)h\\ge m\\|h\\|^2$, значит, $f(x^*+h)>f(x^*)$ для малых $h\\ne0$. Остальные случаи — переменой знака."
+       }
+      },
+      {
+       "type": "intuition",
+       "text": {
+        "en": "For $f(x,y)=ax^2+bxy+cy^2+dx+ey$ the Hessian is the constant matrix $H=\\begin{pmatrix}2a&b\\\\b&2c\\end{pmatrix}$. Its eigenvalues solve $\\lambda^2-\\operatorname{tr}(H)\\lambda+\\det(H)=0$; the signs follow from $\\operatorname{tr}$ and $\\det$.",
+        "ru": "Для $f(x,y)=ax^2+bxy+cy^2+dx+ey$ гессиан — постоянная матрица $H=\\begin{pmatrix}2a&b\\\\b&2c\\end{pmatrix}$. Собственные значения — корни $\\lambda^2-\\operatorname{tr}(H)\\lambda+\\det(H)=0$; знаки — по следу и определителю."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "A1"
+      },
+      {
+       "type": "problem",
+       "id": "A2"
+      },
+      {
+       "type": "trap",
+       "text": {
+        "en": "A gradient that is a row of zeros means a stationary point was found, not that it is a minimum. The second-order test is the step that cannot be skipped.",
+        "ru": "Градиент из нулей означает, что найдена стационарная точка, а не минимум. Критерий второго порядка — шаг, который нельзя пропустить."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "A3"
+      },
+      {
+       "type": "problem",
+       "id": "A4"
+      }
+     ]
+    },
+    {
+     "id": "strongL",
+     "title": {
+      "en": "Strong convexity and smoothness",
+      "ru": "Сильная выпуклость и гладкость"
+     },
+     "blocks": [
+      {
+       "type": "definition",
+       "text": {
+        "en": "$f$ is **$\\mu$-strongly convex** when $f(y)\\ge f(x)+\\nabla f(x)^\\top(y-x)+\\tfrac{\\mu}{2}\\|y-x\\|^2$ for every $x,y$; it is **$L$-smooth** when $\\|\\nabla f(y)-\\nabla f(x)\\|\\le L\\|y-x\\|$ for every $x,y$.",
+        "ru": "$f$ **$\\mu$-сильно выпукла**, если $f(y)\\ge f(x)+\\nabla f(x)^\\top(y-x)+\\tfrac{\\mu}{2}\\|y-x\\|^2$ для всех $x,y$; **$L$-гладкая**, если $\\|\\nabla f(y)-\\nabla f(x)\\|\\le L\\|y-x\\|$ для всех $x,y$."
+       }
+      },
+      {
+       "type": "p",
+       "text": {
+        "en": "For a twice differentiable $f$ both are equivalent to $\\mu I\\preceq\\nabla^2 f(x)\\preceq L I$ at every $x$. For a positive definite quadratic $f(x)=\\tfrac{1}{2}x^\\top Qx+b^\\top x$ the Hessian is $Q$, so $\\mu=\\lambda_{\\min}(Q)$ and $L=\\lambda_{\\max}(Q)$ at every point.",
+        "ru": "Для дважды дифференцируемой $f$ оба свойства эквивалентны $\\mu I\\preceq\\nabla^2 f(x)\\preceq L I$ в каждой точке. Для положительно определённой квадратичной $f(x)=\\tfrac{1}{2}x^\\top Qx+b^\\top x$ гессиан — это $Q$, значит, $\\mu=\\lambda_{\\min}(Q)$ и $L=\\lambda_{\\max}(Q)$."
+       }
+      },
+      {
+       "type": "example",
+       "text": {
+        "en": "For $f(x,y)=2x^2+2xy+3y^2$ the Hessian is $\\begin{pmatrix}4&2\\\\2&6\\end{pmatrix}$; eigenvalues $\\mu\\approx2.76$, $L\\approx7.24$, condition number $\\kappa=L/\\mu\\approx2.62$.",
+        "ru": "Для $f(x,y)=2x^2+2xy+3y^2$ гессиан равен $\\begin{pmatrix}4&2\\\\2&6\\end{pmatrix}$; собственные значения $\\mu\\approx2.76$, $L\\approx7.24$, число обусловленности $\\kappa=L/\\mu\\approx2.62$."
+       }
+      }
+     ]
+    },
+    {
+     "id": "gd",
+     "title": {
+      "en": "Gradient descent on a quadratic",
+      "ru": "Градиентный спуск на квадратичной функции"
+     },
+     "blocks": [
+      {
+       "type": "definition",
+       "text": {
+        "en": "**Gradient descent** at a fixed step $\\alpha>0$ is $x_{k+1}=x_k-\\alpha\\nabla f(x_k)$.",
+        "ru": "**Градиентный спуск** с постоянным шагом $\\alpha>0$: $x_{k+1}=x_k-\\alpha\\nabla f(x_k)$."
+       }
+      },
+      {
+       "type": "theorem",
+       "text": {
+        "en": "For $f(x)=\\tfrac{1}{2}x^\\top Qx$ with $Q\\succ0$, the iterates satisfy $x_{k+1}=(I-\\alpha Q)x_k$, and $x_k\\to0$ iff $0<\\alpha<2/L$. At $\\alpha=1/L$ the error on the direction of $\\lambda_{\\max}$ vanishes in one step; on $\\lambda_{\\min}$ it contracts by $1-\\mu/L$ per step.",
+        "ru": "Для $f(x)=\\tfrac{1}{2}x^\\top Qx$ при $Q\\succ0$ выполнено $x_{k+1}=(I-\\alpha Q)x_k$, и $x_k\\to0$ тогда и только тогда, когда $0<\\alpha<2/L$. При $\\alpha=1/L$ ошибка по направлению $\\lambda_{\\max}$ обнуляется за шаг; по $\\lambda_{\\min}$ сжимается в $1-\\mu/L$ за шаг."
+       },
+       "title": {
+        "en": "Safe step",
+        "ru": "Безопасный шаг"
+       }
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "In the eigenbasis of $Q$ the iteration is $e_{k+1,i}=(1-\\alpha\\lambda_i)e_{k,i}$, so $|e_{k,i}|=|1-\\alpha\\lambda_i|^k|e_{0,i}|$. The whole sequence tends to zero iff every $|1-\\alpha\\lambda_i|<1$, iff $0<\\alpha<2/\\lambda_i$ for every $i$, iff $0<\\alpha<2/L$.",
+        "ru": "В собственном базисе $Q$ итерация имеет вид $e_{k+1,i}=(1-\\alpha\\lambda_i)e_{k,i}$, поэтому $|e_{k,i}|=|1-\\alpha\\lambda_i|^k|e_{0,i}|$. Вся последовательность стремится к нулю тогда и только тогда, когда $|1-\\alpha\\lambda_i|<1$ для всех $i$, то есть $0<\\alpha<2/\\lambda_i$ для всех $i$, то есть $0<\\alpha<2/L$."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "B1"
+      },
+      {
+       "type": "problem",
+       "id": "B2"
+      },
+      {
+       "type": "trap",
+       "text": {
+        "en": "The border $\\alpha=2/L$ is not safe: the direction of $\\lambda_{\\max}$ oscillates with constant amplitude, so the iterates stop moving but do not converge.",
+        "ru": "Граница $\\alpha=2/L$ небезопасна: по направлению $\\lambda_{\\max}$ амплитуда колебаний постоянна, итерации перестают двигаться, но не сходятся."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "B3"
+      },
+      {
+       "type": "problem",
+       "id": "B4"
+      },
+      {
+       "type": "selfcheck",
+       "question": {
+        "en": "What is $\\alpha<2/L$ equivalent to in terms of the matrix $I-\\alpha Q$?",
+        "ru": "Чему эквивалентно $\\alpha<2/L$ в терминах матрицы $I-\\alpha Q$?"
+       },
+       "answer": {
+        "en": "Every eigenvalue of $I-\\alpha Q$ lies in $(-1,1)$, so $\\|I-\\alpha Q\\|_2<1$ and the iteration is a contraction.",
+        "ru": "Все собственные значения $I-\\alpha Q$ лежат в $(-1,1)$, то есть $\\|I-\\alpha Q\\|_2<1$, и итерация — сжатие."
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "cheatsheet": {
+   "sections": [
+    {
+     "id": "defs",
+     "title": {
+      "en": "Definitions you must know",
+      "ru": "Определения, которые надо знать"
+     },
+     "items": [
+      {
+       "en": "**Convex set** $C$: $tx+(1-t)y\\in C$ for every $x,y\\in C$ and $t\\in[0,1]$.",
+       "ru": "**Выпуклое множество** $C$: $tx+(1-t)y\\in C$ для всех $x,y\\in C$ и $t\\in[0,1]$."
+      },
+      {
+       "en": "**Convex function** $f$ on convex $C$: $f(tx+(1-t)y)\\le tf(x)+(1-t)f(y)$.",
+       "ru": "**Выпуклая функция** $f$ на выпуклом $C$: $f(tx+(1-t)y)\\le tf(x)+(1-t)f(y)$."
+      },
+      {
+       "en": "**Strongly convex** with $\\mu>0$: $f(y)\\ge f(x)+\\nabla f(x)^\\top(y-x)+\\tfrac{\\mu}{2}\\|y-x\\|^2$.",
+       "ru": "**Сильно выпуклая** с $\\mu>0$: $f(y)\\ge f(x)+\\nabla f(x)^\\top(y-x)+\\tfrac{\\mu}{2}\\|y-x\\|^2$."
+      },
+      {
+       "en": "**$L$-smooth**: $\\|\\nabla f(y)-\\nabla f(x)\\|\\le L\\|y-x\\|$ for every $x,y$.",
+       "ru": "**$L$-гладкая**: $\\|\\nabla f(y)-\\nabla f(x)\\|\\le L\\|y-x\\|$ для всех $x,y$."
+      },
+      {
+       "en": "**Gradient**: $\\nabla f(x)=\\bigl(\\partial_1f,\\dots,\\partial_nf\\bigr)^\\top$. **Hessian**: $(\\nabla^2 f)_{ij}=\\partial_i\\partial_j f$, symmetric.",
+       "ru": "**Градиент**: $\\nabla f(x)=\\bigl(\\partial_1f,\\dots,\\partial_nf\\bigr)^\\top$. **Гессиан**: $(\\nabla^2 f)_{ij}=\\partial_i\\partial_j f$, симметричен."
+      },
+      {
+       "en": "**Stationary point**: $\\nabla f(x^*)=0$. **Minimum, maximum, saddle** by the signs of eigenvalues of $\\nabla^2 f(x^*)$.",
+       "ru": "**Стационарная точка**: $\\nabla f(x^*)=0$. **Минимум, максимум, седло** — по знакам собственных значений $\\nabla^2 f(x^*)$."
+      }
+     ]
+    },
+    {
+     "id": "p31",
+     "title": {
+      "en": "Problem 3.1: a quadratic form",
+      "ru": "Задача 3.1: квадратичная форма"
+     },
+     "items": [
+      {
+       "en": "$f(x,y)=ax^2+bxy+cy^2+dx+ey$: $\\nabla f=(2ax+by+d,\\ bx+2cy+e)$.",
+       "ru": "$f(x,y)=ax^2+bxy+cy^2+dx+ey$: $\\nabla f=(2ax+by+d,\\ bx+2cy+e)$."
+      },
+      {
+       "en": "$H=\\begin{pmatrix}2a&b\\\\b&2c\\end{pmatrix}$. Solve $Hx^*=-(d,e)^\\top$.",
+       "ru": "$H=\\begin{pmatrix}2a&b\\\\b&2c\\end{pmatrix}$. Решить $Hx^*=-(d,e)^\\top$."
+      },
+      {
+       "en": "Eigenvalues: $\\lambda^2-\\operatorname{tr}(H)\\lambda+\\det(H)=0$.",
+       "ru": "Собственные значения: $\\lambda^2-\\operatorname{tr}(H)\\lambda+\\det(H)=0$."
+      },
+      {
+       "en": "Both $>0$: minimum; both $<0$: maximum; different signs: saddle.",
+       "ru": "Оба $>0$: минимум; оба $<0$: максимум; разных знаков: седло."
+      },
+      {
+       "en": "$\\mu=\\lambda_{\\min}(H)$, $L=\\lambda_{\\max}(H)$ when $H\\succ0$.",
+       "ru": "$\\mu=\\lambda_{\\min}(H)$, $L=\\lambda_{\\max}(H)$ при $H\\succ0$."
+      }
+     ]
+    },
+    {
+     "id": "p32",
+     "title": {
+      "en": "Problem 3.2: gradient descent",
+      "ru": "Задача 3.2: градиентный спуск"
+     },
+     "items": [
+      {
+       "en": "$f=\\tfrac{1}{2}x^\\top Qx$, $Q\\succ0$: $x_{k+1}=(I-\\alpha Q)x_k$.",
+       "ru": "$f=\\tfrac{1}{2}x^\\top Qx$, $Q\\succ0$: $x_{k+1}=(I-\\alpha Q)x_k$."
+      },
+      {
+       "en": "Safe: $0<\\alpha<2/L$. Border: $\\alpha=2/L$ stalls; $\\alpha>2/L$ diverges.",
+       "ru": "Безопасно: $0<\\alpha<2/L$. Граница: $\\alpha=2/L$ стоит, $\\alpha>2/L$ расходится."
+      },
+      {
+       "en": "In the eigenbasis: $e_{k,i}=(1-\\alpha\\lambda_i)^k e_{0,i}$.",
+       "ru": "В собственном базисе: $e_{k,i}=(1-\\alpha\\lambda_i)^k e_{0,i}$."
+      },
+      {
+       "en": "$\\alpha=1/L$: steepest axis in one step; slow axis by $1-\\mu/L$.",
+       "ru": "$\\alpha=1/L$: самая крутая ось — за шаг; пологая ось — в $1-\\mu/L$."
+      },
+      {
+       "en": "Best fixed step $\\alpha^*=2/(\\mu+L)$: rate $(\\kappa-1)/(\\kappa+1)$ per step.",
+       "ru": "Лучший постоянный шаг $\\alpha^*=2/(\\mu+L)$: скорость $(\\kappa-1)/(\\kappa+1)$ за шаг."
+      }
+     ]
+    },
+    {
+     "id": "proofs",
+     "title": {
+      "en": "Two short proofs",
+      "ru": "Два коротких доказательства"
+     },
+     "items": [
+      {
+       "en": "**Convex combination.** $f,g$ convex, $\\alpha,\\beta\\ge0$: $h=\\alpha f+\\beta g$ is convex by linearity of the defining inequality in $f,g$.",
+       "ru": "**Выпуклая комбинация.** $f,g$ выпуклы, $\\alpha,\\beta\\ge0$: $h=\\alpha f+\\beta g$ выпукла по линейности определения по $f,g$."
+      },
+      {
+       "en": "**Strict minimum.** $\\nabla f(x^*)=0$, $\\nabla^2 f(x^*)\\succ0$: Taylor gives $f(x^*+h)=f(x^*)+\\tfrac{1}{2}h^\\top\\nabla^2 f(x^*)h+o(\\|h\\|^2)>f(x^*)$ for small $h\\ne0$.",
+       "ru": "**Строгий минимум.** $\\nabla f(x^*)=0$, $\\nabla^2 f(x^*)\\succ0$: Тейлор даёт $f(x^*+h)=f(x^*)+\\tfrac{1}{2}h^\\top\\nabla^2 f(x^*)h+o(\\|h\\|^2)>f(x^*)$ для малых $h\\ne0$."
+      }
+     ]
+    },
+    {
+     "id": "traps",
+     "title": {
+      "en": "What to watch for",
+      "ru": "На что обратить внимание"
+     },
+     "items": [
+      {
+       "en": "$H=2a$-$b$-$2c$ — not $a$-$b$-$c$: a factor of two on the diagonal is a common mistake.",
+       "ru": "$H$ — это $2a$-$b$-$2c$, а не $a$-$b$-$c$: двойка на диагонали — частая ошибка."
+      },
+      {
+       "en": "Zero eigenvalue: second-order test fails, need higher-order terms.",
+       "ru": "Нулевое собственное значение: критерий второго порядка не работает, нужны старшие порядки."
+      },
+      {
+       "en": "$\\alpha=1/L$ is not the best step; $\\alpha=2/(\\mu+L)$ is.",
+       "ru": "$\\alpha=1/L$ — не лучший шаг; лучший — $\\alpha=2/(\\mu+L)$."
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

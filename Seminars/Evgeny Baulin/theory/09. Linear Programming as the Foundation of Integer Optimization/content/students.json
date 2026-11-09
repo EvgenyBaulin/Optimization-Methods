@@ -1,0 +1,1260 @@
+{
+ "id": "seminar-09",
+ "data": {
+  "A2": {
+   "nChoices": 10,
+   "nBasic": 9,
+   "nFeasible": 5,
+   "vertices": [
+    [
+     0,
+     0
+    ],
+    [
+     5,
+     0
+    ],
+    [
+     5,
+     2
+    ],
+    [
+     4,
+     3
+    ],
+    [
+     0,
+     5
+    ]
+   ],
+   "zv": [
+    0,
+    15,
+    19,
+    18,
+    10
+   ],
+   "x": [
+    5,
+    2
+   ],
+   "z": 19,
+   "e": {
+    "nFeasible": 4,
+    "z": 20,
+    "x": [
+     5,
+     2.5
+    ]
+   }
+  },
+  "A3": {
+   "n": 5,
+   "x": 6,
+   "y": -5,
+   "ym": 5,
+   "z": -4,
+   "e": {
+    "y": -6,
+    "z": -5
+   }
+  },
+  "B2": {
+   "t0": "\\begin{array}{c|cccccc|c}  & x_1 & x_2 & x_3 & s_1 & s_2 & s_3 & \\\\ \\hline s_1 & 1 & 0 & 1 & 1 & 0 & 0 & 14 \\\\ s_2 & \\boxed{1} & 3 & 0 & 0 & 1 & 0 & 6 \\\\ s_3 & 2 & 1 & 1 & 0 & 0 & 1 & 26 \\\\ \\hline z & -5 & -4 & -3 & 0 & 0 & 0 & 0 \\end{array}",
+   "t1": "\\begin{array}{c|cccccc|c}  & x_1 & x_2 & x_3 & s_1 & s_2 & s_3 & \\\\ \\hline s_1 & 0 & -3 & \\boxed{1} & 1 & -1 & 0 & 8 \\\\ x_1 & 1 & 3 & 0 & 0 & 1 & 0 & 6 \\\\ s_3 & 0 & -5 & 1 & 0 & -2 & 1 & 14 \\\\ \\hline z & 0 & 11 & -3 & 0 & 5 & 0 & 30 \\end{array}",
+   "t2": "\\begin{array}{c|cccccc|c}  & x_1 & x_2 & x_3 & s_1 & s_2 & s_3 & \\\\ \\hline x_3 & 0 & -3 & 1 & 1 & -1 & 0 & 8 \\\\ x_1 & 1 & 3 & 0 & 0 & 1 & 0 & 6 \\\\ s_3 & 0 & -2 & 0 & -1 & -1 & 1 & 6 \\\\ \\hline z & 0 & 2 & 0 & 3 & 2 & 0 & 54 \\end{array}",
+   "ratios1": [
+    14,
+    6,
+    13
+   ],
+   "ratios2": [
+    8,
+    14
+   ],
+   "zPath": [
+    0,
+    30,
+    54
+   ],
+   "x": [
+    6,
+    0,
+    8
+   ],
+   "s3": 6,
+   "z": 54,
+   "e": {
+    "x3": 10,
+    "s3": 4,
+    "z": 60
+   }
+  },
+  "B3": {
+   "ta": "\\begin{array}{c|ccccc|c}  & x & y & s_1 & s_2 & a & \\\\ \\hline s_1 & 1 & 1 & 1 & 0 & 0 & 6 \\\\ a & \\boxed{1} & -1 & 0 & -1 & 1 & 2 \\\\ \\hline -w & -1 & 1 & 0 & 1 & 0 & -2 \\end{array}",
+   "tb": "\\begin{array}{c|ccccc|c}  & x & y & s_1 & s_2 & a & \\\\ \\hline s_1 & 0 & 2 & 1 & 1 & -1 & 4 \\\\ x & 1 & -1 & 0 & -1 & 1 & 2 \\\\ \\hline -w & 0 & 0 & 0 & 0 & 1 & 0 \\end{array}",
+   "t0": "\\begin{array}{c|cccc|c}  & x & y & s_1 & s_2 & \\\\ \\hline s_1 & 0 & \\boxed{2} & 1 & 1 & 4 \\\\ x & 1 & -1 & 0 & -1 & 2 \\\\ \\hline z & 0 & -3 & 0 & -2 & 4 \\end{array}",
+   "t1": "\\begin{array}{c|cccc|c}  & x & y & s_1 & s_2 & \\\\ \\hline y & 0 & 1 & 0.5 & \\boxed{0.5} & 2 \\\\ x & 1 & 0 & 0.5 & -0.5 & 4 \\\\ \\hline z & 0 & 0 & 1.5 & -0.5 & 10 \\end{array}",
+   "t2": "\\begin{array}{c|cccc|c}  & x & y & s_1 & s_2 & \\\\ \\hline s_2 & 0 & 2 & 1 & 1 & 4 \\\\ x & 1 & 1 & 1 & 0 & 6 \\\\ \\hline z & 0 & 1 & 2 & 0 & 12 \\end{array}",
+   "start": [
+    2,
+    0
+   ],
+   "zStart": 4,
+   "mid": [
+    4,
+    2
+   ],
+   "zMid": 10,
+   "x": [
+    6,
+    0
+   ],
+   "s2": 4,
+   "z": 12,
+   "e": {
+    "z": 16,
+    "s2": 6
+   }
+  },
+  "C2": {
+   "dualV": [
+    [
+     0,
+     3
+    ],
+    [
+     3,
+     1
+    ],
+    [
+     5,
+     0
+    ]
+   ],
+   "dualZ": [
+    72,
+    66,
+    70
+   ],
+   "y": [
+    3,
+    1
+   ],
+   "w": 66,
+   "x": [
+    4,
+    3,
+    0
+   ],
+   "e": {
+    "w": 68,
+    "x1": 2
+   }
+  },
+  "C3": {
+   "x": [
+    5,
+    4
+   ],
+   "z": 32,
+   "slack": 2,
+   "y": [
+    2,
+    1,
+    0
+   ],
+   "dub": 1,
+   "ub": 10,
+   "cr": [
+    3,
+    6
+   ],
+   "e": {
+    "x": [
+     6,
+     3
+    ],
+    "z": 33,
+    "ub": 10.5
+   }
+  },
+  "answers": {
+   "A2": {
+    "nBasic": {
+     "type": "number",
+     "value": 9,
+     "tol": 0.0005
+    },
+    "nFeasible": {
+     "type": "number",
+     "value": 5,
+     "tol": 0.0005
+    },
+    "z": {
+     "type": "number",
+     "value": 19,
+     "tol": 0.0005
+    }
+   },
+   "A3": {
+    "n": {
+     "type": "number",
+     "value": 5,
+     "tol": 0.0005
+    },
+    "y": {
+     "type": "number",
+     "value": -5,
+     "tol": 0.0005
+    },
+    "z": {
+     "type": "number",
+     "value": -4,
+     "tol": 0.0005
+    }
+   },
+   "B2": {
+    "z": {
+     "type": "number",
+     "value": 54,
+     "tol": 0.0005
+    },
+    "x3": {
+     "type": "number",
+     "value": 8,
+     "tol": 0.0005
+    },
+    "s3": {
+     "type": "number",
+     "value": 6,
+     "tol": 0.0005
+    }
+   },
+   "B3": {
+    "xStart": {
+     "type": "number",
+     "value": 2,
+     "tol": 0.0005
+    },
+    "z": {
+     "type": "number",
+     "value": 12,
+     "tol": 0.0005
+    },
+    "s2": {
+     "type": "number",
+     "value": 4,
+     "tol": 0.0005
+    }
+   },
+   "C2": {
+    "y1": {
+     "type": "number",
+     "value": 3,
+     "tol": 0.0005
+    },
+    "w": {
+     "type": "number",
+     "value": 66,
+     "tol": 0.0005
+    },
+    "x1": {
+     "type": "number",
+     "value": 4,
+     "tol": 0.0005
+    }
+   },
+   "C3": {
+    "y1": {
+     "type": "number",
+     "value": 2,
+     "tol": 0.0005
+    },
+    "ub": {
+     "type": "number",
+     "value": 10,
+     "tol": 0.0005
+    },
+    "cu": {
+     "type": "number",
+     "value": 6,
+     "tol": 0.0005
+    }
+   }
+  },
+  "exit": {
+   "basics": 20,
+   "gap": 2,
+   "change": 1
+  }
+ },
+ "content": {
+  "main": {
+   "blocks": {
+    "E": {
+     "summary": {
+      "title": {
+       "en": "Three takeaways",
+       "ru": "Три главных вывода"
+      },
+      "items": [
+       {
+        "en": "An optimum of an LP, if there is one, sits at a corner, and a corner is a basic feasible solution: a square linear system with a nonnegative answer. That turns geometry into linear algebra in any dimension.",
+        "ru": "Оптимум линейной задачи, если он есть, лежит в вершине, а вершина — это допустимое базисное решение: квадратная линейная система с неотрицательным ответом. Так геометрия превращается в линейную алгебру в любой размерности."
+       },
+       {
+        "en": "The simplex method moves between neighbouring corners and reads everything it needs from the tableau: who enters, who leaves, when to stop, when the problem is unbounded. Phase I gives it a start.",
+        "ru": "Симплекс-метод ходит между соседними вершинами и всё нужное читает из таблицы: кто входит, кто выходит, когда остановиться, когда задача неограниченна. Первая фаза даёт ему старт."
+       },
+       {
+        "en": "Every LP comes with a dual whose value bounds it and, at the optimum, equals it. The dual solution is a list of prices, valid while the basis lasts, and the same bounding idea will carry integer optimization.",
+        "ru": "У каждой линейной задачи есть двойственная, значение которой её оценивает, а в оптимуме совпадает с ней. Двойственное решение — это список цен, верных, пока держится базис, а та же идея оценки понесёт на себе и целочисленную оптимизацию."
+       }
+      ]
+     },
+     "exit": {
+      "items": [
+       {
+        "answer": {
+         "en": "At most $\\binom{n}{m}={{exit.basics}}$: one for each choice of $m$ columns. There are fewer when some choices of columns are singular, and fewer still among the feasible ones.",
+         "ru": "Самое большее $\\binom{n}{m}={{exit.basics}}$: по одному на каждый выбор $m$ столбцов. Меньше их бывает, когда часть наборов столбцов вырождена, а допустимых среди них ещё меньше."
+        }
+       },
+       {
+        "answer": {
+         "en": "The optimum is not unique, unless the basis is degenerate: bringing that variable in leaves $z$ unchanged, so a whole edge may be optimal.",
+         "ru": "Оптимум не единственный, если только базис не вырожден: ввод этой переменной не меняет $z$, так что оптимальным может быть целое ребро."
+        }
+       },
+       {
+        "answer": {
+         "en": "Weak duality puts the optimum in $[{{exit.low}},{{exit.high}}]$, a gap of ${{exit.gap}}$. Inside the range the optimum grows by the price times the change, that is by ${{exit.change}}$.",
+         "ru": "Слабая двойственность помещает оптимум в $[{{exit.low}},{{exit.high}}]$, зазор равен ${{exit.gap}}$. Внутри диапазона оптимум растёт на цену, умноженную на изменение, то есть на ${{exit.change}}$."
+        }
+       }
+      ]
+     }
+    }
+   }
+  },
+  "problems": {
+   "A2": {
+    "hints": [
+     {
+      "en": "Five variables and three rows give $\\binom{5}{3}$ choices. A choice of columns can fail: look at the third row, which contains only $x$ and $s_3$.",
+      "ru": "Пять переменных и три строки дают $\\binom{5}{3}$ вариантов. Набор столбцов может оказаться вырожденным: посмотрите на третью строку, где есть только $x$ и $s_3$."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "With slacks the system is $x+y+s_1=7$, $x+2y+s_2={{A2.params.b.2}}$, $x+s_3=5$. Choosing three of five columns can be done in ${{A2.nChoices}}$ ways. The choice $\\{y,s_1,s_2\\}$ leaves the third row without any basic variable: its columns are dependent. So the system has ${{A2.nBasic}}$ basic solutions.",
+       "ru": "С дополнительными переменными система такова: $x+y+s_1=7$, $x+2y+s_2={{A2.params.b.2}}$, $x+s_3=5$. Три столбца из пяти выбираются ${{A2.nChoices}}$ способами. При наборе $\\{y,s_1,s_2\\}$ третья строка остаётся без базисной переменной, столбцы зависимы. Поэтому базисных решений ${{A2.nBasic}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "Solving each one, ${{A2.nFeasible}}$ are nonnegative. They are the corners ${{A2.vertices.1}}$, ${{A2.vertices.2}}$, ${{A2.vertices.3}}$, ${{A2.vertices.4}}$ and ${{A2.vertices.5}}$ of the polygon; the rest have a negative slack.",
+       "ru": "Решаем каждую систему: неотрицательных решений ${{A2.nFeasible}}$. Это вершины многоугольника ${{A2.vertices.1}}$, ${{A2.vertices.2}}$, ${{A2.vertices.3}}$, ${{A2.vertices.4}}$ и ${{A2.vertices.5}}$; у прочих какая-то дополнительная переменная отрицательна."
+      }
+     },
+     {
+      "text": {
+       "en": "The objective at these corners takes the values ${{A2.zv}}$. The largest is $z^*={{A2.z}}$ at ${{A2.x}}$.",
+       "ru": "Значения цели в этих вершинах: ${{A2.zv}}$. Наибольшее из них, $z^*={{A2.z}}$, достигается в ${{A2.x}}$."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "{{A2.nBasic}} basic solutions, {{A2.nFeasible}} of them feasible, $z^*={{A2.z}}$ at ${{A2.x}}$.",
+     "ru": "Базисных решений {{A2.nBasic}}, допустимых среди них {{A2.nFeasible}}, $z^*={{A2.z}}$ в точке ${{A2.x}}$."
+    },
+    "erratumAnswer": {
+     "en": "The polygon loses a corner, {{A2.e.nFeasible}} remain, and $z^*={{A2.e.z}}$ at ${{A2.e.x}}$.",
+     "ru": "Многоугольник теряет вершину, их остаётся {{A2.e.nFeasible}}, а $z^*={{A2.e.z}}$ в точке ${{A2.e.x}}$."
+    },
+    "review": {
+     "en": "The binomial coefficient is only an upper limit: some column sets are singular and many solutions are infeasible. Enumeration proves the idea and scales terribly.",
+     "ru": "Биномиальный коэффициент — лишь верхний предел: часть наборов столбцов вырождена, а многие решения недопустимы. Перебор хорош как доказательство идеи, но масштабируется ужасно."
+    },
+    "mistakes": []
+   },
+   "A3": {
+    "hints": [
+     {
+      "en": "Put $y=y^+-y^-$ and treat the first row with a surplus, the second with a slack. Along the line $x+y=1$ the objective depends on $x$ alone.",
+      "ru": "Положите $y=y^+-y^-$; в первой строке нужна избыточная переменная, во второй — дополнительная. Вдоль прямой $x+y=1$ цель зависит только от $x$."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "With $y=y^+-y^-$ the system becomes $x+y^+-y^--s_1=1$, $x+s_2=6$: ${{A3.n}}$ nonnegative variables $x,y^+,y^-,s_1,s_2$ and two rows. The objective is $x+2y^+-2y^-$.",
+       "ru": "При $y=y^+-y^-$ система принимает вид $x+y^+-y^--s_1=1$, $x+s_2=6$: переменных ${{A3.n}}$, это $x,y^+,y^-,s_1,s_2$, все они неотрицательны, а строк две. Цель: $x+2y^+-2y^-$."
+      }
+     },
+     {
+      "text": {
+       "en": "The objective falls as $y$ falls, so the first row is tight: $y=1-x$, and $z=x+2(1-x)=2-x$. That falls with $x$, so $x$ goes to its upper bound.",
+       "ru": "Цель уменьшается вместе с $y$, поэтому первая строка жёсткая: $y=1-x$, и $z=x+2(1-x)=2-x$. Эта величина убывает с ростом $x$, так что $x$ идёт к верхней границе."
+      }
+     },
+     {
+      "text": {
+       "en": "So $x^*={{A3.x}}$, $y^*={{A3.y}}$, $z^*={{A3.z}}$. In standard form $y^+=0$ and $y^-={{A3.ym}}$: the columns of $y^+$ and $y^-$ are opposite, so they never stand in one basis.",
+       "ru": "Итак, $x^*={{A3.x}}$, $y^*={{A3.y}}$, $z^*={{A3.z}}$. В стандартной форме $y^+=0$ и $y^-={{A3.ym}}$: столбцы $y^+$ и $y^-$ противоположны, поэтому в один базис они не попадают."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "{{A3.n}} variables, $y^*={{A3.y}}$, $z^*={{A3.z}}$.",
+     "ru": "Переменных {{A3.n}}, $y^*={{A3.y}}$, $z^*={{A3.z}}$."
+    },
+    "erratumAnswer": {
+     "en": "$x^*={{A3.err.u}}$, $y^*={{A3.e.y}}$, $z^*={{A3.e.z}}$.",
+     "ru": "$x^*={{A3.err.u}}$, $y^*={{A3.e.y}}$, $z^*={{A3.e.z}}$."
+    },
+    "review": {
+     "en": "The conversion rules are mechanical, and a solver applies them for you, but they are what lets one algorithm handle every form of an LP.",
+     "ru": "Правила приведения механические, и солвер применяет их сам, но именно они позволяют одному алгоритму работать с любой записью задачи."
+    },
+    "mistakes": []
+   },
+   "B2": {
+    "hints": [
+     {
+      "en": "The first pivot is in the column of $x_1$. After it, watch out: the entry of $x_2$ in the $z$-row turns positive.",
+      "ru": "Первый шаг — в столбце $x_1$. Заметьте, что после него элемент $x_2$ в $z$-строке становится положительным."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "The first tableau, with the pivot in a box. The largest coefficient belongs to $x_1$, and the ratios ${{B2.ratios1}}$ send out $s_2$. $${{B2.t0}}$$",
+       "ru": "Начальная таблица, разрешающий элемент в рамке. Наибольший коэффициент у $x_1$, отношения ${{B2.ratios1}}$ выводят из базиса $s_2$. $${{B2.t0}}$$"
+      }
+     },
+     {
+      "text": {
+       "en": "After the pivot $z={{B2.zPath.2}}$. Now only $x_3$ pays, and the ratios ${{B2.ratios2}}$ send out $s_1$. $${{B2.t1}}$$",
+       "ru": "После шага $z={{B2.zPath.2}}$. Теперь выгоден только $x_3$, отношения ${{B2.ratios2}}$ выводят $s_1$. $${{B2.t1}}$$"
+      }
+     },
+     {
+      "text": {
+       "en": "Every entry of the $z$-row is now nonnegative, so we stop: $x^*={{B2.x}}$, $s_3={{B2.s3}}$, $z^*={{B2.z}}$. $${{B2.t2}}$$",
+       "ru": "Отрицательных элементов в $z$-строке нет, останавливаемся: $x^*={{B2.x}}$, $s_3={{B2.s3}}$, $z^*={{B2.z}}$. $${{B2.t2}}$$"
+      }
+     }
+    ],
+    "answerText": {
+     "en": "$x^*={{B2.x}}$, $z^*={{B2.z}}$, $s_3={{B2.s3}}$.",
+     "ru": "$x^*={{B2.x}}$, $z^*={{B2.z}}$, $s_3={{B2.s3}}$."
+    },
+    "erratumAnswer": {
+     "en": "$x_3^*={{B2.e.x3}}$, $s_3={{B2.e.s3}}$, $z^*={{B2.e.z}}$.",
+     "ru": "$x_3^*={{B2.e.x3}}$, $s_3={{B2.e.s3}}$, $z^*={{B2.e.z}}$."
+    },
+    "review": {
+     "en": "Three variables make no picture, and nothing in the procedure noticed. A variable with a good coefficient, $x_2$, ends up outside the basis: what counts is the coefficient after the others have been paid for.",
+     "ru": "Три переменные на рисунок уже не лягут, а процедура этого не заметила. Переменная с хорошим коэффициентом, $x_2$, осталась вне базиса: важен коэффициент после того, как оплачены все остальные."
+    },
+    "mistakes": []
+   },
+   "B3": {
+    "hints": [
+     {
+      "en": "Write the second row as $x-y-s_2+a=2$. Phase I minimizes $w=a$; price out the basic $a$ before the first pivot.",
+      "ru": "Запишите вторую строку как $x-y-s_2+a=2$. Первая фаза минимизирует $w=a$; перед первым шагом выразите целевую строку через небазисные переменные."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "With the rows $x+y+s_1=6$ and $x-y-s_2+a=2$ the basis is $s_1,a$. Minimizing $w=a$ means maximizing $-w$, and removing the basic $a$ from that row gives $${{B3.ta}}$$",
+       "ru": "Для строк $x+y+s_1=6$ и $x-y-s_2+a=2$ базис — $s_1,a$. Минимизировать $w=a$ значит максимизировать $-w$; исключив из этой строки базисную $a$, получаем $${{B3.ta}}$$"
+      }
+     },
+     {
+      "text": {
+       "en": "One pivot in the column of $x$ removes $a$ and gives $w=0$, so the problem is feasible and Phase I ends at the point ${{B3.start}}$. $${{B3.tb}}$$",
+       "ru": "Один шаг в столбце $x$ выводит $a$ и даёт $w=0$, значит, задача совместна, и первая фаза заканчивается в точке ${{B3.start}}$. $${{B3.tb}}$$"
+      }
+     },
+     {
+      "text": {
+       "en": "Delete the column of $a$, restore the real objective and price out the basic $x$: $z={{B3.zStart}}+3y+2s_2$. $${{B3.t0}}$$ Then $y$ enters and $s_1$ leaves; the only positive entry is in its row.",
+       "ru": "Удаляем столбец $a$, возвращаем настоящую цель и исключаем базисную $x$: $z={{B3.zStart}}+3y+2s_2$. $${{B3.t0}}$$ Затем входит $y$ и выходит $s_1$: единственный положительный элемент столбца стоит в её строке."
+      }
+     },
+     {
+      "text": {
+       "en": "Now $z={{B3.zMid}}$ at ${{B3.mid}}$, and the $z$-row still asks for $s_2$. Its ratio test keeps only the first row, so $y$ leaves again. $${{B3.t1}}$$",
+       "ru": "Теперь $z={{B3.zMid}}$ в точке ${{B3.mid}}$, а у $s_2$ всё ещё отрицательный элемент. В тесте отношений остаётся только первая строка, так что $y$ снова выходит. $${{B3.t1}}$$"
+      }
+     },
+     {
+      "text": {
+       "en": "Done: $${{B3.t2}}$$ The optimum is ${{B3.x}}$ with $z^*={{B3.z}}$ and $s_2={{B3.s2}}$. A variable that entered may leave later; nothing in the method forbids it.",
+       "ru": "Готово: $${{B3.t2}}$$ Оптимум — ${{B3.x}}$, $z^*={{B3.z}}$, $s_2={{B3.s2}}$. Вошедшая переменная может потом выйти, метод этого не запрещает."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "Phase I ends at ${{B3.start}}$; $x^*={{B3.x}}$, $z^*={{B3.z}}$, $s_2={{B3.s2}}$.",
+     "ru": "Первая фаза заканчивается в ${{B3.start}}$; $x^*={{B3.x}}$, $z^*={{B3.z}}$, $s_2={{B3.s2}}$."
+    },
+    "erratumAnswer": {
+     "en": "$x$ after Phase I is unchanged; the optimum moves to $z^*={{B3.e.z}}$ with $s_2={{B3.e.s2}}$.",
+     "ru": "Значение $x$ после первой фазы не меняется; оптимум становится $z^*={{B3.e.z}}$ при $s_2={{B3.e.s2}}$."
+    },
+    "review": {
+     "en": "Phase I is the simplex method on an auxiliary problem whose optimum is zero exactly when the original is feasible. It is the only thing a solver needs in order to start from nothing.",
+     "ru": "Первая фаза — это симплекс-метод для вспомогательной задачи, оптимум которой равен нулю ровно тогда, когда исходная совместна. Больше солверу ничего не нужно, чтобы начать с пустого места."
+    },
+    "mistakes": []
+   },
+   "C2": {
+    "hints": [
+     {
+      "en": "The dual is a minimization with $\\ge$ rows and two variables. Plot its three rows; a primal variable is zero when its dual row is slack.",
+      "ru": "Двойственная задача — минимизация со строками $\\ge$ и двумя переменными. Постройте три её строки; прямая переменная равна нулю, когда её двойственная строка нежёсткая."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "The dual: minimize ${{C2.params.b.1}}y_1+{{C2.params.b.2}}y_2$ subject to $2y_1+3y_2\\ge9$, $2y_1+4y_2\\ge{{C2.params.c.2}}$, $5y_1+2y_2\\ge3$, $y\\ge0$.",
+       "ru": "Двойственная задача: минимизировать ${{C2.params.b.1}}y_1+{{C2.params.b.2}}y_2$ при $2y_1+3y_2\\ge9$, $2y_1+4y_2\\ge{{C2.params.c.2}}$, $5y_1+2y_2\\ge3$, $y\\ge0$."
+      }
+     },
+     {
+      "text": {
+       "en": "Its corners are ${{C2.dualV.1}}$, ${{C2.dualV.2}}$ and ${{C2.dualV.3}}$, with values ${{C2.dualZ}}$. The smallest is ${{C2.w}}$ at $y^*={{C2.y}}$. The third row is not needed there: it never binds.",
+       "ru": "Её вершины — ${{C2.dualV.1}}$, ${{C2.dualV.2}}$ и ${{C2.dualV.3}}$ со значениями ${{C2.dualZ}}$. Наименьшее, ${{C2.w}}$, достигается при $y^*={{C2.y}}$. Третья строка здесь не работает: она ни в одной из вершин не активна."
+      }
+     },
+     {
+      "text": {
+       "en": "At $y^*$ the third dual row is slack, so complementary slackness gives $x_3=0$; both $y_i>0$, so both primal rows are tight. From $2x_1+2x_2={{C2.params.b.1}}$ and $3x_1+4x_2={{C2.params.b.2}}$ we get $x^*={{C2.x}}$, and the primal value equals ${{C2.w}}$ as it must.",
+       "ru": "Дополняющая нежёсткость: при $y^*$ третья двойственная строка нежёсткая, поэтому $x_3=0$; оба $y_i>0$, значит, обе прямые строки жёсткие. Из $2x_1+2x_2={{C2.params.b.1}}$ и $3x_1+4x_2={{C2.params.b.2}}$ получаем $x^*={{C2.x}}$, и прямое значение, как и должно, равно ${{C2.w}}$."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "$y^*={{C2.y}}$, $x^*={{C2.x}}$, optimal value ${{C2.w}}$.",
+     "ru": "$y^*={{C2.y}}$, $x^*={{C2.x}}$, оптимальное значение ${{C2.w}}$."
+    },
+    "erratumAnswer": {
+     "en": "The prices stay, the plan moves: $x_1^*={{C2.e.x1}}$, optimal value ${{C2.e.w}}$.",
+     "ru": "Цены те же, план сдвигается: $x_1^*={{C2.e.x1}}$, оптимальное значение ${{C2.e.w}}$."
+    },
+    "review": {
+     "en": "Few rows and many columns: the dual is the smaller problem. A solver may well solve the dual of what you wrote and hand back the primal answer.",
+     "ru": "Мало строк и много столбцов: двойственная задача меньше. Солвер вполне может решить двойственную к тому, что вы написали, и вернуть ответ для прямой."
+    },
+    "mistakes": []
+   },
+   "C3": {
+    "hints": [
+     {
+      "en": "The first two rows are tight at the optimum. For a change $\\delta$ of $b_1$, solve those two equations again and check the third row too.",
+      "ru": "В оптимуме жёсткие первые две строки. При изменении $b_1$ на $\\delta$ решите эти два уравнения заново и проверьте также третью строку."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "The first two rows meet at $x^*={{C3.x}}$, the value is ${{C3.z}}$ and the third row has slack ${{C3.slack}}$. The prices solve $y_1+2y_2=4$, $y_1+y_2=3$: $y^*={{C3.y}}$, with zero for the third row.",
+       "ru": "Первые две строки пересекаются в $x^*={{C3.x}}$, значение равно ${{C3.z}}$, запас третьей строки — ${{C3.slack}}$. Цены находим из $y_1+2y_2=4$, $y_1+y_2=3$: $y^*={{C3.y}}$, цена третьей строки нулевая."
+      }
+     },
+     {
+      "text": {
+       "en": "With $b_1=9+\\delta$ the two tight rows give $x={{C3.x.1}}-\\delta$ and $y={{C3.x.2}}+2\\delta$. Nonnegativity alone would allow $\\delta\\le{{C3.x.1}}$, but the third row asks for $y\\le6$, that is $\\delta\\le{{C3.dub}}$. So the basis holds up to $b_1={{C3.ub}}$, and past that point the row $y\\le6$ takes over.",
+       "ru": "При $b_1=9+\\delta$ две жёсткие строки дают $x={{C3.x.1}}-\\delta$ и $y={{C3.x.2}}+2\\delta$. Одна только неотрицательность разрешила бы $\\delta\\le{{C3.x.1}}$, но третья строка требует $y\\le6$, то есть $\\delta\\le{{C3.dub}}$. Значит, базис держится до $b_1={{C3.ub}}$, а дальше в дело вступает строка $y\\le6$."
+      }
+     },
+     {
+      "text": {
+       "en": "Replace the coefficient of $x$ by $c_1$. The point stays optimal while the level line lies between the two tight rows: their slopes require $1\\le c_1/3\\le2$, so $c_1\\in[{{C3.cr.1}},{{C3.cr.2}}]$. The same follows from $y_1=2\\cdot3-c_1\\ge0$ and $y_2=c_1-3\\ge0$.",
+       "ru": "Заменим коэффициент при $x$ на $c_1$. Точка остаётся оптимальной, пока линия уровня лежит между двумя жёсткими строками: их наклоны требуют $1\\le c_1/3\\le2$, то есть $c_1\\in[{{C3.cr.1}},{{C3.cr.2}}]$. То же следует из $y_1=2\\cdot3-c_1\\ge0$ и $y_2=c_1-3\\ge0$."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "$y_1^*={{C3.y.1}}$, the basis holds up to $b_1={{C3.ub}}$, the point up to a coefficient ${{C3.cr.2}}$.",
+     "ru": "$y_1^*={{C3.y.1}}$, базис держится до $b_1={{C3.ub}}$, точка — до коэффициента ${{C3.cr.2}}$."
+    },
+    "erratumAnswer": {
+     "en": "$y_1^*$ and the coefficient do not change; the optimum becomes ${{C3.e.x}}$ with value ${{C3.e.z}}$, and the basis holds up to $b_1={{C3.e.ub}}$.",
+     "ru": "$y_1^*$ и коэффициент не меняются; оптимум становится ${{C3.e.x}}$ со значением ${{C3.e.z}}$, а базис держится до $b_1={{C3.e.ub}}$."
+    },
+    "review": {
+     "en": "A slack row at the optimum costs nothing and still limits the range of a price. Changing $b$ moves the point and keeps the prices; changing $c$ moves the prices and keeps the point.",
+     "ru": "Нежёсткая в оптимуме строка ничего не стоит, но всё равно ограничивает область действия цены. Изменение $b$ двигает точку и сохраняет цены; изменение $c$ двигает цены и сохраняет точку."
+    },
+    "mistakes": []
+   }
+  },
+  "handout": {
+   "intro": {
+    "en": "This handout follows seminar 9. It starts from the geometry of a linear program, turns corners into basic solutions, builds the simplex method on top of that, and then reads the dual solution as a list of prices. The last sections show how the method can fail and what all this gives to integer optimization. All numbers come from the checks notebook of the seminar.",
+    "ru": "Этот конспект сопровождает семинар 9. Он начинается с геометрии линейной задачи, превращает вершины в базисные решения, строит на этом симплекс-метод и затем читает двойственное решение как список цен. Последние разделы показывают, как метод может сбоить и что всё это даёт целочисленной оптимизации. Все числа взяты из проверочного ноутбука семинара."
+   },
+   "convention": {
+    "en": "Primal: maximize $c^{\\top}x$ subject to $Ax\\le b$, $x\\ge0$, with $A\\in\\mathbb R^{m\\times n}$; $s=b-Ax$ are the slacks. Dual: minimize $b^{\\top}y$ subject to $A^{\\top}y\\ge c$, $y\\ge0$. In a tableau the last row is $z-c^{\\top}x=0$, so a negative entry marks a variable worth raising. $B$ is a basis, $x_B$ the basic variables, $p^*(b)$ the optimal value as a function of the right-hand side.",
+    "ru": "Прямая задача: максимизировать $c^{\\top}x$ при $Ax\\le b$, $x\\ge0$, где $A\\in\\mathbb R^{m\\times n}$; $s=b-Ax$ — запасы по строкам (дополнительные). Двойственная: минимизировать $b^{\\top}y$ при $A^{\\top}y\\ge c$, $y\\ge0$. Последняя строка таблицы — $z-c^{\\top}x=0$, поэтому отрицательный элемент отмечает переменную, которую стоит увеличивать. $B$ — базис, $x_B$ — базисные переменные, $p^*(b)$ — оптимум как функция правой части."
+   },
+   "sections": [
+    {
+     "id": "geometry",
+     "title": {
+      "en": "Linear programs and their corners",
+      "ru": "Линейные задачи и их вершины"
+     },
+     "blocks": [
+      {
+       "type": "p",
+       "text": {
+        "en": "A linear program optimizes a linear function over a set cut out by finitely many linear inequalities and equations. Such a set is a polyhedron: convex, with flat faces, possibly unbounded, possibly empty. An LP has exactly three possible outcomes: it is infeasible, it is unbounded, or it has an optimal solution, which is either unique or fills a whole face, in the plane an edge.",
+        "ru": "Линейная задача оптимизирует линейную функцию на множестве, заданном конечным числом линейных неравенств и уравнений. Такое множество — многогранник: выпуклый, с плоскими гранями, возможно неограниченный, возможно пустой. Исходов у линейной задачи ровно три: она несовместна, неограниченна или имеет оптимальное решение, единственное или заполняющее целую грань, на плоскости — ребро."
+       }
+      },
+      {
+       "type": "definition",
+       "title": {
+        "en": "Standard form",
+        "ru": "Стандартная форма"
+       },
+       "text": {
+        "en": "A problem $\\min c^{\\top}x$ subject to $Ax=b$, $x\\ge0$. Any LP can be brought to it: add a slack to a row $\\le$, subtract a surplus from a row $\\ge$, write a free variable as $x^+-x^-$ with both parts nonnegative, multiply a row with $b_i<0$ by $-1$, and replace a maximization of $c^{\\top}x$ by a minimization of $-c^{\\top}x$.",
+        "ru": "Задача $\\min c^{\\top}x$ при $Ax=b$, $x\\ge0$. К ней сводится любая линейная задача: к строке $\\le$ прибавляем дополнительную переменную, из строки $\\ge$ вычитаем избыточную, свободную переменную записываем как $x^+-x^-$ с неотрицательными частями, строку с $b_i<0$ умножаем на $-1$, а максимизацию $c^{\\top}x$ заменяем минимизацией $-c^{\\top}x$."
+       }
+      },
+      {
+       "type": "definition",
+       "title": {
+        "en": "Basic solution",
+        "ru": "Базисное решение"
+       },
+       "text": {
+        "en": "Let $A$ have $m$ independent rows. Choose $m$ independent columns, the basis $B$, set the remaining variables to zero and solve $Bx_B=b$. The result is a basic solution. It is a basic feasible solution (BFS) when $x_B\\ge0$, and degenerate when some component of $x_B$ is zero.",
+        "ru": "Пусть у $A$ есть $m$ независимых строк. Выберем $m$ независимых столбцов, базис $B$, все прочие переменные приравняем к нулю и найдём $x_B$ из $Bx_B=b$. Получится базисное решение. Оно называется допустимым, если $x_B\\ge0$, и вырожденным, если какая-то компонента $x_B$ равна нулю."
+       }
+      },
+      {
+       "type": "theorem",
+       "title": {
+        "en": "Corners are basic feasible solutions",
+        "ru": "Вершины — это базисные допустимые решения"
+       },
+       "text": {
+        "en": "A point of $\\{x\\ge0:Ax=b\\}$ is a corner, that is, not a midpoint of two other feasible points, exactly when it is a basic feasible solution. If an LP in standard form has an optimum, it has an optimal corner.",
+        "ru": "Точка множества $\\{x\\ge0:Ax=b\\}$ является вершиной, то есть не лежит посередине между двумя другими допустимыми точками, в точности тогда, когда она — базисное допустимое решение. Если у задачи в стандартной форме есть оптимум, то есть и оптимальная вершина."
+       }
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "If $x$ is basic and $x=\\tfrac{1}{2}(u+v)$ with feasible $u,v$, then $u$ and $v$ vanish wherever $x$ does, and $Bu_B=Bv_B=b$ gives $u=v=x$. Conversely, if the columns of the positive part of $x$ are dependent, a nonzero $d$ on that support has $Ad=0$, and $x\\pm\\varepsilon d$ are feasible, so $x$ is no corner. For the optimum: if an optimal $x$ has a dependent support, then $c^{\\top}d=0$, since otherwise one of $x\\pm\\varepsilon d$ would beat $x$. Choose the sign of $d$ that gives it a negative component and move along it until a component hits zero. The value stays, the support shrinks, and after finitely many moves it is independent.",
+        "ru": "Если $x$ базисное и $x=\\tfrac{1}{2}(u+v)$ с допустимыми $u,v$, то $u$ и $v$ обращаются в ноль там же, где $x$, и из $Bu_B=Bv_B=b$ следует $u=v=x$. Обратно, если столбцы при положительных компонентах $x$ зависимы, найдётся ненулевое $d$ на этом носителе с $Ad=0$, и точки $x\\pm\\varepsilon d$ допустимы, значит, $x$ не вершина. Об оптимуме: если у оптимальной $x$ носитель зависим, то $c^{\\top}d=0$, иначе одна из точек $x\\pm\\varepsilon d$ была бы лучше $x$. Выберем знак $d$ так, чтобы у него была отрицательная компонента, и двигаемся вдоль него, пока какая-нибудь компонента точки не обнулится. Значение не меняется, носитель сокращается и через конечное число шагов становится независимым."
+       }
+      },
+      {
+       "type": "intuition",
+       "text": {
+        "en": "The level sets of a linear function are flat. Nothing pulls the optimum into the interior, so the last point of contact with the feasible set always contains a corner, and the search can be limited to finitely many points.",
+        "ru": "Линии уровня линейной функции плоские. Ничто не тянет оптимум внутрь множества, поэтому последнее касание всегда содержит вершину, и поиск можно ограничить конечным числом точек."
+       }
+      },
+      {
+       "type": "figure",
+       "src": "fig_a1",
+       "alt": {
+        "en": "Blend: feasible region, corners, basic solutions outside it, the best level line.",
+        "ru": "Смесь: допустимая область, вершины, базисные решения вне её, линия уровня в оптимуме."
+       },
+       "caption": {
+        "en": "The blend of A1. Full dots are basic feasible solutions, crosses are basic solutions outside the feasible set.",
+        "ru": "Смесь из A1. Закрашенные точки — допустимые базисные решения, крестики — базисные решения вне допустимого множества."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "A1"
+      },
+      {
+       "type": "trap",
+       "text": {
+        "en": "The word basic refers to a choice of columns, not to a point. A degenerate corner belongs to several bases, and a basic solution may be infeasible. Counting bases does not count corners.",
+        "ru": "Слово «базисный» относится к выбору столбцов, а не к точке. Вырожденная вершина принадлежит нескольким базисам, а базисное решение может быть недопустимым. Считая базисы, вы не считаете вершины."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "A2"
+      },
+      {
+       "type": "problem",
+       "id": "A3"
+      },
+      {
+       "type": "selfcheck",
+       "question": {
+        "en": "Why can the columns of $y^+$ and $y^-$ of A3 never be basic together?",
+        "ru": "Почему столбцы $y^+$ и $y^-$ из A3 не могут быть базисными одновременно?"
+       },
+       "answer": {
+        "en": "They are opposite vectors, so they are dependent and cannot both belong to a basis.",
+        "ru": "Это противоположные векторы: они зависимы и вместе в базис входить не могут."
+       }
+      }
+     ]
+    },
+    {
+     "id": "simplex",
+     "title": {
+      "en": "The simplex method",
+      "ru": "Симплекс-метод"
+     },
+     "blocks": [
+      {
+       "type": "p",
+       "text": {
+        "en": "Enumeration of bases is hopeless: the number $\\binom{n}{m}$ explodes. The simplex method looks at very few of them. It starts at a corner and moves to a neighbouring corner with a better value until no neighbour is better. For a linear objective on a convex set a corner with no better neighbour is a global optimum.",
+        "ru": "Перебор базисов безнадёжен: число $\\binom{n}{m}$ взрывается. Симплекс-метод смотрит на очень немногие из них. Он начинает в вершине и переходит к соседней с лучшим значением, пока лучших соседей не останется. Для линейной цели на выпуклом множестве вершина без лучших соседей — глобальный оптимум."
+       }
+      },
+      {
+       "type": "definition",
+       "title": {
+        "en": "Tableau",
+        "ru": "Симплекс-таблица"
+       },
+       "text": {
+        "en": "The system $Ax+s=b$ together with $z-c^{\\top}x=0$, rewritten so that each basic variable stands alone in its row. Each basic variable has a unit column, the last column shows their values, and the last row writes $z$ through the nonbasic variables. The entries $r_j$ of the $z$-row are the reduced costs: $z=z_0-\\sum_jr_jx_j$ over the nonbasic $j$.",
+        "ru": "Система $Ax+s=b$ вместе с $z-c^{\\top}x=0$, переписанная так, что каждая базисная переменная стоит в своей строке одна. У каждой базисной переменной единичный столбец, последний столбец содержит их значения, а последняя строка показывает зависимость $z$ от небазисных переменных. Элементы $r_j$ этой строки — приведённые стоимости: $z=z_0-\\sum_jr_jx_j$ по небазисным $j$."
+       }
+      },
+      {
+       "type": "list",
+       "items": [
+        {
+         "en": "Entering: pick a nonbasic column with $r_j<0$, the most negative by Dantzig's rule. If there is none, stop: the point is optimal.",
+         "ru": "Ввод: выбираем небазисный столбец с $r_j<0$, по правилу Данцига — наиболее отрицательный. Если такого нет, останавливаемся: точка оптимальна."
+        },
+        {
+         "en": "Ratio test: among the rows with a positive entry in that column find the smallest ratio of the right-hand side to the entry. If no entry is positive, stop: the LP is unbounded.",
+         "ru": "Тест отношений: среди строк с положительным элементом в этом столбце находим наименьшее отношение правой части к элементу. Если положительных элементов нет, останавливаемся: задача неограниченна."
+        },
+        {
+         "en": "Pivot: divide that row by the entry and subtract multiples of it from the other rows, the $z$-row included, so that the column becomes a unit column.",
+         "ru": "Шаг: делим эту строку на разрешающий элемент и вычитаем её кратные из остальных строк, включая $z$-строку, чтобы столбец стал единичным."
+        }
+       ]
+      },
+      {
+       "type": "theorem",
+       "title": {
+        "en": "Optimality criterion",
+        "ru": "Критерий оптимальности"
+       },
+       "text": {
+        "en": "If every entry $r_j$ of the $z$-row is nonnegative at a basic feasible solution, that solution is optimal.",
+        "ru": "Если в допустимом базисном решении все элементы $r_j$ строки $z$ неотрицательны, это решение оптимально."
+       },
+       "kind": "proposition"
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "The row $z=z_0-\\sum_jr_jx_j$ is an identity on all solutions of the system. Any feasible point has $x_j\\ge0$, so its value is at most $z_0$, and the current point reaches $z_0$. If some nonbasic $r_j=0$, pivoting $x_j$ in leaves $z$ as it is, and unless the step has length zero the edge between the two corners is optimal.",
+        "ru": "Строка $z=z_0-\\sum_jr_jx_j$ — тождество на всех решениях системы. У любой допустимой точки $x_j\\ge0$, поэтому её значение не больше $z_0$, а текущая точка достигает $z_0$. Если у небазисной переменной $r_j=0$, её ввод не меняет $z$, и если шаг ненулевой, оптимально всё ребро между двумя вершинами."
+       }
+      },
+      {
+       "type": "intuition",
+       "text": {
+        "en": "The ratio test keeps the point feasible: raising the entering variable to $t$ lowers each basic variable with a positive entry $a$ by $at$, and the first to reach zero stops the walk. That variable leaves the basis and a neighbouring corner is reached.",
+        "ru": "Тест отношений сохраняет допустимость: при росте вводимой переменной до $t$ каждая базисная переменная с положительным элементом $a$ уменьшается на $at$, и первая обнулившаяся останавливает движение. Она выходит из базиса, и мы приходим в соседнюю вершину."
+       }
+      },
+      {
+       "type": "figure",
+       "src": "fig_b1",
+       "alt": {
+        "en": "The bakery polygon with the simplex path.",
+        "ru": "Пекарня: многоугольник и маршрут метода."
+       },
+       "caption": {
+        "en": "The path of B1: two pivots from the origin, along the $y$ axis and then along the top edge.",
+        "ru": "Путь задачи B1: два шага от начала координат, вдоль оси $y$, а затем по верхнему ребру."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "B1"
+      },
+      {
+       "type": "problem",
+       "id": "B2"
+      },
+      {
+       "type": "p",
+       "text": {
+        "en": "The method needs a first corner. For $Ax\\le b$ with $b\\ge0$ the origin works. Otherwise make the right-hand sides nonnegative by changing the sign of rows, add an artificial variable to each row that lacks a basic variable and, in Phase I, minimize their sum $w$ with the same pivots. If the minimum is positive the LP is infeasible. If it is zero the point is a corner of the original problem: an artificial variable still basic at value zero is pivoted out, or its row is dropped as redundant, and Phase II starts from there with the real objective.",
+        "ru": "Методу нужна первая вершина. Для $Ax\\le b$ при $b\\ge0$ подходит начало координат. В остальных случаях делаем правые части неотрицательными, меняя знак строк, добавляем искусственную переменную в каждую строку без базисной переменной и на первой фазе минимизируем их сумму $w$ теми же шагами. Если минимум положителен, задача несовместна. Если он равен нулю, точка — вершина исходной задачи: искусственную переменную, оставшуюся в базисе на нуле, выводим шагом или удаляем её строку как избыточную, и отсюда начинается вторая фаза с настоящей целью."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "B3"
+      },
+      {
+       "type": "trap",
+       "text": {
+        "en": "In the ratio test negative and zero entries are skipped. Dividing by a negative entry gives a smaller number, and taking it makes the point infeasible.",
+        "ru": "В тесте отношений отрицательные и нулевые элементы пропускаются. Деление на отрицательный элемент даст меньшее число, и если его взять, точка станет недопустимой."
+       }
+      },
+      {
+       "type": "selfcheck",
+       "question": {
+        "en": "In B1 the $z$-row of the last tableau has zeros under $x$, $y$ and $s_2$. Does that mean the optimum is not unique?",
+        "ru": "В B1 в $z$-строке последней таблицы нули стоят под $x$, $y$ и $s_2$. Значит ли это, что оптимум не единственный?"
+       },
+       "answer": {
+        "en": "No. Those variables are basic, and basic variables always have zeros there. Only a zero under a nonbasic variable can point to another optimum.",
+        "ru": "Нет. Это базисные переменные, а у них там всегда нули. Только ноль под небазисной переменной может указывать на другой оптимум."
+       }
+      }
+     ]
+    },
+    {
+     "id": "duality",
+     "title": {
+      "en": "Duality",
+      "ru": "Двойственность"
+     },
+     "blocks": [
+      {
+       "type": "p",
+       "text": {
+        "en": "Where does an upper bound on the optimum come from? Take nonnegative weights $y$ and add up the rows of $Ax\\le b$. If the weighted row dominates the objective, $A^{\\top}y\\ge c$, then $c^{\\top}x\\le y^{\\top}Ax\\le b^{\\top}y$ for all feasible $x$. Looking for the best such bound is an LP in itself.",
+        "ru": "Откуда берётся верхняя оценка оптимума? Возьмём неотрицательные веса $y$ и сложим строки $Ax\\le b$. Если взвешенная строка мажорирует цель, $A^{\\top}y\\ge c$, то $c^{\\top}x\\le y^{\\top}Ax\\le b^{\\top}y$ для всех допустимых $x$. Поиск лучшей такой оценки сам является линейной задачей."
+       }
+      },
+      {
+       "type": "definition",
+       "title": {
+        "en": "Dual problem",
+        "ru": "Двойственная задача"
+       },
+       "text": {
+        "en": "The dual of $\\max c^{\\top}x$, $Ax\\le b$, $x\\ge0$ is $\\min b^{\\top}y$, $A^{\\top}y\\ge c$, $y\\ge0$. A row of the primal gives a variable of the dual, a column gives a row. An equality row gives a free dual variable and a free primal variable gives an equality row. The dual of the dual is the primal. This is the Lagrangian dual of seminar 8 written out for a linear objective.",
+        "ru": "Двойственная к $\\max c^{\\top}x$, $Ax\\le b$, $x\\ge0$ — это $\\min b^{\\top}y$, $A^{\\top}y\\ge c$, $y\\ge0$. Строка прямой задачи даёт переменную двойственной, столбец — строку. Строка-равенство даёт свободную двойственную переменную, а свободная прямая переменная — строку-равенство. Двойственная к двойственной — снова прямая. Это двойственная по Лагранжу задача семинара 8, выписанная для линейной цели."
+       }
+      },
+      {
+       "type": "theorem",
+       "title": {
+        "en": "Weak and strong duality",
+        "ru": "Слабая и сильная двойственность"
+       },
+       "text": {
+        "en": "For feasible $x$ and $y$ we have $c^{\\top}x\\le b^{\\top}y$. If one of the two problems has an optimal solution, so does the other, and the optimal values are equal. If one is unbounded, the other is infeasible.",
+        "ru": "Для допустимых $x$ и $y$ выполнено $c^{\\top}x\\le b^{\\top}y$. Если у одной из двух задач есть оптимальное решение, оно есть и у другой, и оптимальные значения равны. Если одна неограниченна, другая несовместна."
+       }
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "Weak duality is the chain above. For the strong part, run the simplex method to an optimal tableau with basis $B$ and put $y^{\\top}=c_B^{\\top}B^{-1}$. The entries of the $z$-row under the slacks are $y$ and those under the $x_j$ are $(A^{\\top}y-c)_j$; optimality says that both are nonnegative, so $y$ is dual feasible. Moreover $b^{\\top}y=c_B^{\\top}B^{-1}b=c^{\\top}x$.",
+        "ru": "Слабая двойственность — это цепочка выше. Для сильной доведём симплекс-метод до оптимальной таблицы с базисом $B$ и положим $y^{\\top}=c_B^{\\top}B^{-1}$. Элементы $z$-строки под дополнительными переменными равны $y$, а под $x_j$ — $(A^{\\top}y-c)_j$; оптимальность говорит, что все они неотрицательны, значит, $y$ допустимо. Кроме того, $b^{\\top}y=c_B^{\\top}B^{-1}b=c^{\\top}x$."
+       }
+      },
+      {
+       "type": "theorem",
+       "title": {
+        "en": "Complementary slackness",
+        "ru": "Дополняющая нежёсткость"
+       },
+       "text": {
+        "en": "Feasible $x$ and $y$ are both optimal exactly when $y_i(b-Ax)_i=0$ for every row $i$ and $x_j(A^{\\top}y-c)_j=0$ for every column $j$.",
+        "ru": "Допустимые $x$ и $y$ оптимальны одновременно в точности тогда, когда $y_i(b-Ax)_i=0$ для каждой строки $i$ и $x_j(A^{\\top}y-c)_j=0$ для каждого столбца $j$."
+       },
+       "kind": "corollary"
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "The gap is $b^{\\top}y-c^{\\top}x=y^{\\top}(b-Ax)+x^{\\top}(A^{\\top}y-c)$, a sum of nonnegative products. It vanishes exactly when every product does.",
+        "ru": "Зазор равен $b^{\\top}y-c^{\\top}x=y^{\\top}(b-Ax)+x^{\\top}(A^{\\top}y-c)$, это сумма неотрицательных произведений. Он равен нулю в точности тогда, когда равны нулю все произведения."
+       }
+      },
+      {
+       "type": "intuition",
+       "text": {
+        "en": "These are the KKT conditions of an LP: primal feasibility, dual feasibility and complementary slackness, with stationarity built into the dual rows. For an LP no regularity condition is needed.",
+        "ru": "Это условия ККТ линейной задачи: допустимость прямой и двойственной задач и дополняющая нежёсткость, а стационарность заложена в строки двойственной задачи. Условие регулярности для линейной задачи не нужно."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "C1"
+      },
+      {
+       "type": "problem",
+       "id": "C2"
+      }
+     ]
+    },
+    {
+     "id": "sensitivity",
+     "title": {
+      "en": "Shadow prices and ranges",
+      "ru": "Теневые цены и диапазоны"
+     },
+     "blocks": [
+      {
+       "type": "p",
+       "text": {
+        "en": "Keep the optimal basis and change $b$ a little. The basic values $x_B=B^{-1}b$ move linearly, and while they stay nonnegative the basis stays optimal: the $z$-row does not depend on $b$. So the optimal value is $y^{\\top}b$ on that range, with the same $y$.",
+        "ru": "Сохраним оптимальный базис и немного изменим $b$. Базисные значения $x_B=B^{-1}b$ меняются линейно, и пока они неотрицательны, базис не перестаёт быть оптимальным: $z$-строка от $b$ не зависит. Значит, на этом диапазоне оптимум равен $y^{\\top}b$ с тем же $y$."
+       }
+      },
+      {
+       "type": "theorem",
+       "title": {
+        "en": "Shadow prices",
+        "ru": "Теневые цены"
+       },
+       "text": {
+        "en": "For a nondegenerate optimal basis, $\\partial p^*/\\partial b_i=y_i^*$. Globally $p^*(b)$ is piecewise linear and concave; each piece belongs to one basis, and at a kink the left and right slopes are two different optimal prices.",
+        "ru": "Для невырожденного оптимального базиса $\\partial p^*/\\partial b_i=y_i^*$. В целом $p^*(b)$ вогнута и кусочно-линейна; каждый кусок отвечает одному базису, а в изломе левый и правый наклоны — две разные оптимальные цены."
+       }
+      },
+      {
+       "type": "list",
+       "items": [
+        {
+         "en": "Range of $b_i$: the column of $s_i$ in the final tableau is the $i$-th column of $B^{-1}$, so $x_B+\\delta B^{-1}e_i\\ge0$ gives the interval for $\\delta$.",
+         "ru": "Диапазон $b_i$: столбец $s_i$ в последней таблице — это $i$-й столбец $B^{-1}$, поэтому $x_B+\\delta B^{-1}e_i\\ge0$ даёт отрезок для $\\delta$."
+        },
+        {
+         "en": "Range of $c_j$: the point stays and the $z$-row changes. Recompute the row with the new coefficient and require that all its entries stay nonnegative.",
+         "ru": "Диапазон $c_j$: точка та же, меняется $z$-строка. Пересчитайте её с новым коэффициентом и потребуйте, чтобы все элементы остались неотрицательными."
+        },
+        {
+         "en": "Inside a range of $b$ the prices stay and the plan moves; inside a range of $c$ the plan stays and the prices move.",
+         "ru": "Внутри диапазона $b$ цены те же, а план меняется; внутри диапазона $c$ план тот же, а цены меняются."
+        }
+       ]
+      },
+      {
+       "type": "figure",
+       "src": "fig_c1",
+       "alt": {
+        "en": "The bakery's optimal value against the oven limit.",
+        "ru": "График оптимума пекарни по пределу времени печи."
+       },
+       "caption": {
+        "en": "The optimal value of B1 against $b_1$. The slope is the shadow price of oven time, and it falls at each kink.",
+        "ru": "Оптимум задачи B1 как функция $b_1$. Наклон — теневая цена времени печи, в каждом изломе он падает."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "C3"
+      },
+      {
+       "type": "trap",
+       "text": {
+        "en": "A shadow price is a derivative, not a market price. It says nothing beyond its range, and at a degenerate corner the prices need not be unique, so the number may depend on the solver.",
+        "ru": "Теневая цена — производная, а не рыночная цена. За пределами диапазона она ничего не говорит, а в вырожденной вершине цены могут быть неединственными, и число может зависеть от солвера."
+       }
+      },
+      {
+       "type": "selfcheck",
+       "question": {
+        "en": "In C1 the price of oven time is ${{C1.y.1}}$ on $[{{C1.range.1}},{{C1.range.2}}]$. What are the slopes of $p^*$ below and above this range?",
+        "ru": "В C1 цена времени печи равна ${{C1.y.1}}$ на $[{{C1.range.1}},{{C1.range.2}}]$. Каковы наклоны $p^*$ ниже и выше этого отрезка?"
+       },
+       "answer": {
+        "en": "Below it ${{C1.pb.slopes.1}}$, because the oven then limits pies alone; above it ${{C1.pb.slopes.3}}$, because the oven is no longer short.",
+        "ru": "Ниже — ${{C1.pb.slopes.1}}$, потому что тогда печь ограничивает одни пироги; выше — ${{C1.pb.slopes.3}}$, потому что печи уже хватает."
+       }
+      }
+     ]
+    },
+    {
+     "id": "failures",
+     "title": {
+      "en": "Degeneracy, cycling and running time",
+      "ru": "Вырожденность, зацикливание и время работы"
+     },
+     "blocks": [
+      {
+       "type": "p",
+       "text": {
+        "en": "The finite step count of the simplex method rests on one fact: every pivot strictly raises $z$, so no basis repeats. That fails when a basic variable is zero, because the ratio test may then give a step of length zero. Such a degenerate pivot changes the basis without moving the point.",
+        "ru": "Конечность симплекс-метода опирается на один факт: каждый шаг строго увеличивает $z$, поэтому базисы не повторяются. Это перестаёт быть верным, когда базисная переменная равна нулю: тест отношений может дать шаг нулевой длины. Такой вырожденный шаг меняет базис, но не двигает точку."
+       }
+      },
+      {
+       "type": "theorem",
+       "title": {
+        "en": "Bland's rule",
+        "ru": "Правило Бленда"
+       },
+       "text": {
+        "en": "If among all columns with a negative entry the entering variable has the smallest index, and among the rows with the smallest ratio the leaving variable has the smallest index, the simplex method stops after finitely many pivots.",
+        "ru": "Если среди столбцов с отрицательным элементом вводить переменную с наименьшим индексом, а среди строк с наименьшим отношением выводить переменную с наименьшим индексом, симплекс-метод останавливается за конечное число шагов."
+       }
+      },
+      {
+       "type": "p",
+       "text": {
+        "en": "The rule is slow in practice, so codes use it as a fallback or perturb $b$ slightly to break the ties. As for speed, the Klee–Minty cube shows that Dantzig's rule can visit all $2^n$ corners, and no pivot rule is known to be polynomial. Yet on real problems the number of pivots is usually a small multiple of $m$. Polynomial algorithms for LP exist: the ellipsoid method and interior-point methods, and the latter compete with the simplex method in practice.",
+        "ru": "На практике это правило медленное, поэтому программы используют его как запасное или слегка возмущают $b$, чтобы разбить ничьи. Что до скорости, куб Кли — Минти показывает, что правило Данцига может пройти все $2^n$ вершин, и ни одно правило выбора не известно как полиномиальное. Но на настоящих задачах шагов обычно лишь в небольшое число раз больше, чем $m$. Полиномиальные алгоритмы для ЛП существуют: это метод эллипсоидов и методы внутренней точки, причём последние на практике соперничают с симплекс-методом."
+       }
+      },
+      {
+       "type": "figure",
+       "src": "fig_km",
+       "alt": {
+        "en": "Pivot counts for growing dimension.",
+        "ru": "Шаги метода при растущей размерности."
+       },
+       "caption": {
+        "en": "Pivots of Dantzig's rule on Klee–Minty cubes and on random problems of the same sizes.",
+        "ru": "Число шагов правила Данцига на кубах Кли — Минти и на случайных задачах тех же размеров."
+       }
+      },
+      {
+       "type": "list",
+       "items": [
+        {
+         "en": "`linprog` status {{demo.unb.status}}: unbounded. Look for a forgotten constraint.",
+         "ru": "`linprog`, status {{demo.unb.status}}: неограниченна. Ищите забытое ограничение."
+        },
+        {
+         "en": "`linprog` status {{demo.inf.status}}: infeasible. Look for rows that contradict each other; the certificate of Farkas' lemma names them.",
+         "ru": "`linprog`, status {{demo.inf.status}}: несовместна. Ищите противоречащие друг другу строки; сертификат из леммы Фаркаша их указывает."
+        },
+        {
+         "en": "`res.ineqlin.marginals` holds the prices of a minimization: for a problem turned around by a sign they change sign too.",
+         "ru": "`res.ineqlin.marginals` содержит цены задачи минимизации: если задачу развернули сменой знака, у них тоже меняется знак."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "integer",
+     "title": {
+      "en": "Why integer optimization needs all this",
+      "ru": "Зачем всё это целочисленной оптимизации"
+     },
+     "blocks": [
+      {
+       "type": "p",
+       "text": {
+        "en": "A solver for integer models spends most of its time solving LPs. The relaxation of seminar 8 is an LP, and its value is the bound against which every integer point is judged. Strong duality makes that bound cheap to certify: any dual feasible $y$ gives it without trusting the solver.",
+        "ru": "Солвер целочисленных моделей тратит большую часть времени на линейные задачи. Релаксация семинара 8 — это линейная задача, а её значение — оценка, с которой сравнивается каждая целая точка. Сильная двойственность делает эту оценку дешёвой для проверки: любое допустимое $y$ даёт её без доверия к солверу."
+       }
+      },
+      {
+       "type": "p",
+       "text": {
+        "en": "The tableau helps as well. A new bound on a variable or a new valid row leaves the old basis dual feasible, so the next LP restarts from there, usually after a few pivots, instead of from scratch. And when the optimal corner of a relaxation happens to be integer, nothing more needs to be done: the search is over for that subproblem.",
+        "ru": "Таблица тоже помогает. Новая граница на переменную или новая верная строка оставляют старый базис двойственно допустимым, поэтому следующая задача стартует оттуда, обычно за несколько шагов, а не с нуля. А если оптимальная вершина релаксации оказалась целой, больше делать нечего: для этой подзадачи поиск окончен."
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "cheatsheet": {
+   "sections": [
+    {
+     "id": "forms",
+     "title": {
+      "en": "Forms",
+      "ru": "Формы записи"
+     },
+     "items": [
+      {
+       "en": "$\\max c^{\\top}x$, $Ax\\le b$, $x\\ge0$; standard: $\\min c^{\\top}x$, $Ax=b$, $x\\ge0$.",
+       "ru": "$\\max c^{\\top}x$, $Ax\\le b$, $x\\ge0$; стандартная: $\\min c^{\\top}x$, $Ax=b$, $x\\ge0$."
+      },
+      {
+       "en": "Row $\\le$: $+s$; row $\\ge$: $-s$; free $x=x^+-x^-$; $b_i<0$: row times $-1$; $\\max c^{\\top}x=-\\min(-c^{\\top}x)$.",
+       "ru": "Строка $\\le$: $+s$; строка $\\ge$: $-s$; свободная $x=x^+-x^-$; $b_i<0$: строка умножается на $-1$; $\\max c^{\\top}x=-\\min(-c^{\\top}x)$."
+      },
+      {
+       "en": "Outcomes: infeasible, unbounded, optimal.",
+       "ru": "Исходы: несовместна, неограниченна, есть оптимум."
+      }
+     ]
+    },
+    {
+     "id": "basic",
+     "title": {
+      "en": "Corners",
+      "ru": "Вершины"
+     },
+     "items": [
+      {
+       "en": "Basis: $m$ independent columns; $x_B=B^{-1}b$, others zero.",
+       "ru": "Базис: $m$ независимых столбцов; $x_B=B^{-1}b$, остальные — ноль."
+      },
+      {
+       "en": "Corner $\\Leftrightarrow$ basic feasible solution, $x_B\\ge0$.",
+       "ru": "Вершина $\\Leftrightarrow$ базисное допустимое решение, $x_B\\ge0$."
+      },
+      {
+       "en": "At most $\\binom{n}{m}$ bases. An optimum, if any, is at a corner.",
+       "ru": "Базисов не больше $\\binom{n}{m}$. Оптимум, если есть, лежит в вершине."
+      }
+     ]
+    },
+    {
+     "id": "step",
+     "title": {
+      "en": "Simplex step (max)",
+      "ru": "Шаг симплекс-метода (max)"
+     },
+     "items": [
+      {
+       "en": "Last row $z-c^{\\top}x=0$; basis of slacks if $b\\ge0$.",
+       "ru": "Последняя строка $z-c^{\\top}x=0$; базис из дополнительных при $b\\ge0$."
+      },
+      {
+       "en": "Enter: $r_j<0$ (Dantzig: the most negative; Bland: smallest index). None: optimal.",
+       "ru": "Ввод: $r_j<0$ (Данциг: наиболее отрицательный; Бленд: наименьший индекс). Нет таких — оптимум."
+      },
+      {
+       "en": "Leave: smallest $b_i/a_{ie}$ over $a_{ie}>0$. No positive entry: unbounded.",
+       "ru": "Вывод: наименьшее $b_i/a_{ie}$ при $a_{ie}>0$. Нет положительных — задача неограниченна."
+      },
+      {
+       "en": "Pivot: make the column a unit column, $z$-row included.",
+       "ru": "Шаг: столбец становится единичным, включая $z$-строку."
+      },
+      {
+       "en": "Zero under a nonbasic variable: another optimum may exist.",
+       "ru": "Ноль под небазисной переменной: возможен другой оптимум."
+      }
+     ]
+    },
+    {
+     "id": "phase",
+     "title": {
+      "en": "Phase I",
+      "ru": "Первая фаза"
+     },
+     "items": [
+      {
+       "en": "Make $b\\ge0$; rows without a basic variable get artificial $a_i\\ge0$.",
+       "ru": "Делаем $b\\ge0$; строки без базисной переменной получают искусственные $a_i\\ge0$."
+      },
+      {
+       "en": "Minimize $w=\\sum a_i$; price out the basic $a_i$ first.",
+       "ru": "Минимизируем $w=\\sum a_i$; сначала выражаем строку через небазисные."
+      },
+      {
+       "en": "$w^*>0$: infeasible. $w^*=0$: pivot out the $a_i$ left at zero, restore $z$, price out, go on.",
+       "ru": "$w^*>0$: несовместна. $w^*=0$: выводим оставшиеся на нуле $a_i$, возвращаем $z$, выражаем через небазисные, продолжаем."
+      }
+     ]
+    },
+    {
+     "id": "dual",
+     "title": {
+      "en": "Duality",
+      "ru": "Двойственность"
+     },
+     "items": [
+      {
+       "en": "$\\max c^{\\top}x$, $Ax\\le b$, $x\\ge0$ $\\leftrightarrow$ $\\min b^{\\top}y$, $A^{\\top}y\\ge c$, $y\\ge0$.",
+       "ru": "$\\max c^{\\top}x$, $Ax\\le b$, $x\\ge0$ $\\leftrightarrow$ $\\min b^{\\top}y$, $A^{\\top}y\\ge c$, $y\\ge0$."
+      },
+      {
+       "en": "Row $=$ gives free $y_i$; free $x_j$ gives row $=$.",
+       "ru": "Строка $=$ даёт свободное $y_i$; свободное $x_j$ — строку $=$."
+      },
+      {
+       "en": "Weak: $c^{\\top}x\\le b^{\\top}y$. Strong: equal at the optimum.",
+       "ru": "Слабая: $c^{\\top}x\\le b^{\\top}y$. Сильная: в оптимуме равенство."
+      },
+      {
+       "en": "Unbounded primal $\\Rightarrow$ infeasible dual.",
+       "ru": "Прямая неограниченна $\\Rightarrow$ двойственная несовместна."
+      },
+      {
+       "en": "Slackness: $y_i(b-Ax)_i=0$, $x_j(A^{\\top}y-c)_j=0$.",
+       "ru": "Нежёсткость: $y_i(b-Ax)_i=0$, $x_j(A^{\\top}y-c)_j=0$."
+      },
+      {
+       "en": "$y^{\\top}=c_B^{\\top}B^{-1}$: the $z$-row under the slacks.",
+       "ru": "$y^{\\top}=c_B^{\\top}B^{-1}$: $z$-строка под дополнительными."
+      }
+     ]
+    },
+    {
+     "id": "sens",
+     "title": {
+      "en": "Sensitivity",
+      "ru": "Чувствительность"
+     },
+     "items": [
+      {
+       "en": "$\\partial p^*/\\partial b_i=y_i^*$ while the basis lasts; $p^*(b)$ is concave, piecewise linear.",
+       "ru": "$\\partial p^*/\\partial b_i=y_i^*$, пока держится базис; $p^*(b)$ вогнута и кусочно-линейна."
+      },
+      {
+       "en": "Range of $b_i$: $x_B+\\delta B^{-1}e_i\\ge0$; $B^{-1}e_i$ is the column of $s_i$.",
+       "ru": "Диапазон $b_i$: $x_B+\\delta B^{-1}e_i\\ge0$; $B^{-1}e_i$ — столбец $s_i$."
+      },
+      {
+       "en": "Range of $c_j$: keep the $z$-row nonnegative.",
+       "ru": "Диапазон $c_j$: $z$-строка остаётся неотрицательной."
+      },
+      {
+       "en": "Slack row: price zero, but it can still limit a range.",
+       "ru": "Нежёсткая строка: цена ноль, но диапазон она ограничивать может."
+      }
+     ]
+    },
+    {
+     "id": "breaks",
+     "title": {
+      "en": "Failures",
+      "ru": "Сбои"
+     },
+     "items": [
+      {
+       "en": "Degenerate: a basic variable is zero, a pivot may not move the point.",
+       "ru": "Вырожденность: базисная переменная — ноль, шаг может не сдвинуть точку."
+      },
+      {
+       "en": "Cycling: bases repeat. Bland's rule: smallest index in and out.",
+       "ru": "Зацикливание: базисы повторяются. Правило Бленда: наименьший индекс на входе и выходе."
+      },
+      {
+       "en": "Worst case $2^n$ corners (Klee–Minty); usually a few times $m$.",
+       "ru": "Худший случай — $2^n$ вершин (Кли — Минти); обычно шагов в несколько раз больше $m$."
+      },
+      {
+       "en": "`linprog`: status {{demo.inf.status}} infeasible, {{demo.unb.status}} unbounded; `ineqlin.marginals` are the prices of a min.",
+       "ru": "`linprog`: status {{demo.inf.status}} — несовместна, {{demo.unb.status}} — неограниченна; `ineqlin.marginals` — цены задачи min."
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

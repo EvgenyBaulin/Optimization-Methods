@@ -1,0 +1,303 @@
+% SPDX-License-Identifier: MIT
+% Copyright (c) 2026 Evgeny Baulin
+% Optimization Methods, Seminar 07: theory handout (Russian).
+% Compile with: latexmk -xelatex -interaction=nonstopmode -halt-on-error Theory_ru.tex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\setmainfont{cmunrm.otf}[BoldFont=cmunbx.otf, ItalicFont=cmunti.otf, BoldItalicFont=cmunbi.otf]
+\setsansfont{cmunss.otf}[BoldFont=cmunsx.otf, ItalicFont=cmunsi.otf, BoldItalicFont=cmunso.otf]
+\setmonofont{cmuntt.otf}[BoldFont=cmuntb.otf, ItalicFont=cmunit.otf, BoldItalicFont=cmuntx.otf]
+\usepackage{polyglossia}
+\setdefaultlanguage{russian}
+\setotherlanguage{english}
+\newfontfamily\cyrillicfont{cmunrm.otf}[Ligatures=TeX, BoldFont=cmunbx.otf, ItalicFont=cmunti.otf, BoldItalicFont=cmunbi.otf]
+\newfontfamily\cyrillicfontsf{cmunss.otf}[Ligatures=TeX, BoldFont=cmunsx.otf, ItalicFont=cmunsi.otf, BoldItalicFont=cmunso.otf]
+\newfontfamily\cyrillicfonttt{cmuntt.otf}[BoldFont=cmuntb.otf, ItalicFont=cmunit.otf, BoldItalicFont=cmuntx.otf]
+
+\usepackage[a4paper,left=2.3cm,right=2.3cm,top=2.4cm,bottom=2.4cm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{array,booktabs,longtable}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{needspace}
+\usepackage[expansion=false]{microtype}
+\usepackage[colorlinks=true,linkcolor=hseblue,urlcolor=hseblue,citecolor=hseblue]{hyperref}
+
+\definecolor{hseblue}{RGB}{16,45,105}
+\definecolor{hseaccent}{RGB}{198,40,40}
+\definecolor{hsegray}{RGB}{108,114,126}
+\definecolor{hselight}{RGB}{240,243,248}
+\definecolor{hsewarm}{RGB}{253,244,232}
+
+\hypersetup{pdftitle={Optimization Methods. Seminar 07. Конспект теории}, pdfauthor={Evgeny Baulin}}
+
+\titleformat{\section}{\color{hseblue}\Large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\color{hseblue}\large\bfseries}{\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{16pt plus 4pt minus 2pt}{8pt plus 2pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 3pt minus 2pt}{6pt plus 2pt}
+\pretocmd{\section}{\Needspace{7\baselineskip}}{}{\errmessage{cannot patch section}}
+\pretocmd{\subsection}{\Needspace{5\baselineskip}}{}{\errmessage{cannot patch subsection}}
+
+\tcbset{handoutbox/.style={enhanced, breakable, sharp corners, boxrule=0pt, left=7pt, right=7pt, top=5pt, bottom=5pt, before skip=8pt plus 2pt, after skip=8pt plus 2pt}}
+\newtcolorbox{examplebox}{handoutbox, colback=hselight, colframe=hselight, before upper={\textcolor{hseblue}{\bfseries Пример.}\ }}
+\newtcolorbox{whybox}{handoutbox, colback=white, colframe=hseblue, leftrule=2.5pt, top=3pt, bottom=3pt, before upper={\textcolor{hseaccent}{\bfseries Почему.}\ }}
+\newtcolorbox{answerbox}{handoutbox, colback=hsewarm, colframe=hsewarm, before upper={\textcolor{hseaccent}{\bfseries Ответ.}\ }}
+\newtcolorbox{conventionbox}{handoutbox, colback=hselight, colframe=hseblue, leftrule=2.5pt, before upper={\textcolor{hseblue}{\bfseries Обозначения.}\par\smallskip}}
+
+\newcommand{\handoutfigure}[3]{\par\medskip\noindent\begin{minipage}{\linewidth}\centering
+  \includegraphics[width=#1\linewidth]{figures/#2.pdf}\par\smallskip
+  \begin{minipage}{0.94\linewidth}\small\textcolor{hseblue}{\bfseries Рисунок.}\ #3\end{minipage}\end{minipage}\par\medskip}
+\newcommand{\problemhead}[3]{\par\bigskip\noindent{\color{hseblue}\large\bfseries #1.\ #2}\par\nopagebreak
+  \noindent{\small\itshape\color{hsegray}#3}\par\nopagebreak\smallskip}
+\newtcolorbox{definitionbox}[1]{handoutbox, colback=white, colframe=hseblue, leftrule=2.5pt, before upper={\textcolor{hseblue}{\bfseries #1}\ }}
+\newtcolorbox{theorembox}[1]{handoutbox, colback=hselight, colframe=hseblue, leftrule=2.5pt, before upper={\textcolor{hseblue}{\bfseries #1}\ }}
+\newtcolorbox{proofbox}{handoutbox, colback=white, colframe=hsegray, leftrule=1.2pt, top=3pt, bottom=3pt, before upper={\textcolor{hsegray}{\bfseries\itshape Доказательство.}\ }}
+\newtcolorbox{trapbox}{handoutbox, colback=hsewarm, colframe=hseaccent, leftrule=2.5pt, before upper={\textcolor{hseaccent}{\bfseries Ловушка.}\ }}
+\newtcolorbox{selfcheckbox}{handoutbox, colback=white, colframe=hseaccent, leftrule=2.5pt, top=3pt, bottom=3pt, before upper={\textcolor{hseaccent}{\bfseries Проверьте себя.}\ }}
+\newcommand{\handoutdisplay}[1]{\sbox0{$\displaystyle #1$}\ifdim\wd0>\linewidth
+  \par{\centering\binoppenalty=10000\relpenalty=0\relax$\displaystyle #1$\par}\else\[#1\]\fi}
+\newcommand{\selfcheckanswer}{\par\smallskip\textcolor{hsegray}{\bfseries Ответ.}\ }
+
+\setlist[itemize]{itemsep=3pt,topsep=4pt}
+\setlist[enumerate]{itemsep=3pt,topsep=4pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{hsegray}Методы оптимизации}
+\fancyhead[R]{\small\color{hsegray}Семинар 7}
+\fancyfoot[L]{\small\color{hsegray}Евгений Баулин}
+\fancyfoot[C]{\small\thepage}
+\fancyfoot[R]{\small\color{hsegray}Лицензия MIT}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\pagestyle{fancy}}
+
+\begin{document}
+
+\begin{center}
+  {\large\color{hsegray}Методы оптимизации\par}
+  \vspace{4pt}
+  {\large\bfseries\color{hseaccent}Семинар 7\par}
+  \vspace{8pt}
+  {\LARGE\bfseries\color{hseblue}Подготовка к коллоквиуму\par}
+  \vspace{8pt}
+  {\Large Конспект теории\par}
+  \vspace{12pt}
+  НИУ ВШЭ, факультет компьютерных наук\par
+  2026--2027 учебный год\par
+  \vspace{8pt}
+  Лектор курса: Андрей Игнатов\par
+  Евгений Баулин\par
+  Telegram: \href{https://t.me/tarakan_tuc}{@tarakan\_tuc}\par
+\end{center}
+
+\noindent{\color{hseblue}\rule{\linewidth}{0.6pt}}
+
+\tableofcontents
+
+\clearpage
+
+Этот конспект — короткий разбор того, что просит билет коллоквиума: шесть определений, два утверждения с доказательствами, две задачи. Три раздела ниже разбирают часть три; шпаргалка — для частей один и два.
+
+\begin{conventionbox}
+$f:\mathbb R^2\to\mathbb R$ — квадратичная функция от двух переменных, $Q$ — её гессиан, $x^*$ — стационарная точка. $\mu=\lambda_{\min}(Q)$ и $L=\lambda_{\max}(Q)$ при $Q\succ0$. Градиентный спуск: $x_{k+1}=x_k-\alpha\nabla f(x_k)$ с постоянным $\alpha>0$.
+\end{conventionbox}
+
+% =====================================================================
+\section{Классификация стационарной точки}\label{sec:classify}
+
+\begin{definitionbox}{Определение.}
+Точка $x^*$ — \textbf{стационарная точка} $f$, если $\nabla f(x^*)=0$. Для квадратичной $f(x)=\tfrac{1}{2}x^\top Hx+b^\top x$ это $Hx^*=-b$.
+\end{definitionbox}
+
+\begin{theorembox}{Теорема: критерий второго порядка.}
+Пусть $f$ дважды непрерывно дифференцируема и $\nabla f(x^*)=0$. Если $\nabla^2 f(x^*)\succ0$, то $x^*$ — строгий локальный минимум. Если $\nabla^2 f(x^*)\prec0$ — строгий локальный максимум. Если $\nabla^2 f(x^*)$ знаконеопределён — седловая точка.
+\end{theorembox}
+
+\begin{proofbox}
+Тейлор: $f(x^*+h)=f(x^*)+\tfrac{1}{2}h^\top\nabla^2 f(x^*)h+o(\|h\|^2)$. При $\nabla^2 f(x^*)\succ0$ существует $m>0$ с $h^\top\nabla^2 f(x^*)h\ge m\|h\|^2$, значит, $f(x^*+h)>f(x^*)$ для малых $h\ne0$. Остальные случаи — переменой знака.
+\end{proofbox}
+
+\begin{whybox}
+Для $f(x,y)=ax^2+bxy+cy^2+dx+ey$ гессиан — постоянная матрица $H=\begin{pmatrix}2a&b\\b&2c\end{pmatrix}$. Собственные значения — корни $\lambda^2-\operatorname{tr}(H)\lambda+\det(H)=0$; знаки — по следу и определителю.
+\end{whybox}
+
+\problemhead{A1}{Стационарная точка квадратичной формы и её тип}{У доски}
+\textbf{Условие.} Для $f(x,y)=2x^2+2xy+3y^2-8x-2y$ найдите стационарную точку и её тип. Затем найдите $\mu$ и $L$ как наименьшее и наибольшее собственные значения гессиана.
+
+\textbf{Решение.}
+\begingroup\sloppy
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item $\nabla f=(4x+2y-8,\ 2x+6y-2)$, $H=\begin{pmatrix}4&2\\2&6\end{pmatrix}$. Приравнивая градиент нулю: $\begin{cases}4x+2y=8\\ 2x+6y=2\end{cases}$. Определитель $H$ равен $20$, значит, решение единственно.
+  \item Решение: $x^*=2{,}2$, $y^*=-0{,}4$. Проверка: $\nabla f(x^*)=(0,\ 0)$ и $f(x^*)=-8{,}4$.
+  \item Собственные значения $H$ находятся из $\det(H-\lambda I)=0$: $\lambda^2-10\lambda+20=0$. Корни $\lambda_{\min}=5-\sqrt 5\approx 2{,}7639$ и $\lambda_{\max}=5+\sqrt 5\approx 7{,}2361$. Оба положительные, значит, стационарная точка — строгий минимум.
+  \item Значит, $\mu\approx 2{,}7639$ и $L\approx 7{,}2361$. Число обусловленности $\kappa=L/\mu\approx 2{,}618$; градиентный спуск с лучшим шагом сжимает ошибку на медленной оси в $(\kappa-1)/(\kappa+1)\approx 0{,}4472$ за шаг.
+\end{enumerate}
+\endgroup
+\begin{answerbox}
+Минимум в точке $(x^*,y^*)=(2{,}2,-0{,}4)$; $\mu\approx 2{,}7639$, $L\approx 7{,}2361$.
+\end{answerbox}
+
+\handoutfigure{0.75}{fig_a1}{Линии уровня $f$ для задачи A1 с отмеченной стационарной точкой.}
+
+\problemhead{A2}{Стационарная точка другой квадратичной функции}{Самостоятельно}
+\textbf{Условие.} Для $f(x,y)=4x^2-2xy+y^2-6x+4y$ найдите стационарную точку, её тип, а также $\mu$ и $L$.
+
+\textbf{Решение.}
+\begingroup\sloppy
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item $\nabla f=(8x-2y-6,\ -2x+2y+4)$, $H=\begin{pmatrix}8&-2\\-2&2\end{pmatrix}$. Приравнивая градиент нулю: $\begin{cases}8x-2y=6\\ -2x+2y=-4\end{cases}$. $\det H=12>0$, значит, решение единственно.
+  \item Решение: $x^*=1/3\approx 0{,}333$, $y^*=-5/3\approx -1{,}667$. Проверка: $\nabla f(x^*)=(0,\ 0)$ и $f(x^*)=-13/3\approx -4{,}333$.
+  \item Собственные значения $H$: $\lambda^2-10\lambda+12=0$, корни $\lambda\approx 1{,}3944$ и $\lambda\approx 8{,}6056$. Оба положительные, точка — строгий минимум.
+  \item Значит, $\mu\approx 1{,}3944$ и $L\approx 8{,}6056$. Число обусловленности $\kappa\approx 6{,}17$; градиентный спуск с лучшим шагом сжимает в $(\kappa-1)/(\kappa+1)\approx 0{,}721$ за шаг.
+\end{enumerate}
+\endgroup
+\begin{answerbox}
+Минимум в $(1/3,-5/3)$; $\mu\approx 1{,}3944$, $L\approx 8{,}6056$.
+\end{answerbox}
+
+\begin{trapbox}
+Градиент из нулей означает, что найдена стационарная точка, а не минимум. Критерий второго порядка — шаг, который нельзя пропустить.
+\end{trapbox}
+
+\problemhead{A3}{Квадратичная форма с седловой точкой}{У доски}
+\textbf{Условие.} Для $f(x,y)=x^2-4xy+y^2-6x+6y$ найдите стационарную точку и покажите, что это седло. Чему здесь равны $\mu$ и $L$?
+
+\textbf{Решение.}
+\begingroup\sloppy
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item $\nabla f=(2x-4y-6,\ -4x+2y+6)$, $H=\begin{pmatrix}2&-4\\-4&2\end{pmatrix}$. Система $\nabla f=0$: $\begin{cases}2x-4y=6\\ -4x+2y=-6\end{cases}$. $\det H=-12<0$: отрицателен, поэтому собственные значения разных знаков.
+  \item Решение: $x^*=1$, $y^*=-1$. Проверка: $\nabla f(x^*)=(0,\ 0)$ и $f(x^*)=-6$.
+  \item Собственные значения $H$: $\lambda^2-4\lambda-12=0$. Корни $\lambda_{\min}=-2$ и $\lambda_{\max}=6$. Знаки разные, значит, стационарная точка — седло: по одному собственному вектору $f$ растёт, по другому — убывает.
+  \item При знаконеопределённом гессиане константы $\mu$ и $L$ сильной выпуклости и $L$-гладкости не определены: вблизи седла $f$ ни выпукла, ни $L$-гладка, и число обусловленности здесь не имеет смысла.
+\end{enumerate}
+\endgroup
+\begin{answerbox}
+Седло в точке $(1,-1)$; собственные значения $-2$ и $6$. Ни $\mu$, ни $L$ не определены.
+\end{answerbox}
+
+\problemhead{A4}{Квадратичная форма с большим числом обусловленности}{Самостоятельно}
+\textbf{Условие.} Для $f(x,y)=x^2+10y^2-2x-20y$ найдите стационарную точку, её тип, $\mu$, $L$ и число обусловленности $\kappa=L/\mu$.
+
+\textbf{Решение.}
+\begingroup\sloppy
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item $\nabla f=(2x-2,\ 20y-20)$, $H=\begin{pmatrix}2&0\\0&20\end{pmatrix}$. Приравнивая градиент нулю: $\begin{cases}2x=2\\ 20y=20\end{cases}$. $\det H=40>0$, решение единственно.
+  \item Решение: $x^*=1$, $y^*=1$. Проверка: $\nabla f(x^*)=(0,\ 0)$ и $f(x^*)=-11$.
+  \item Собственные значения $H$: $\lambda^2-22\lambda+40=0$. Корни $\lambda=2$ и $\lambda=20$. Оба положительные, точка — строгий минимум.
+  \item Значит, $\mu=2$, $L=20$, $\kappa=L/\mu=10$. Градиентный спуск с лучшим шагом сжимает медленную ось в $(\kappa-1)/(\kappa+1)=9/11\approx 0{,}8182$ за шаг: шаг уменьшает ошибку меньше чем в пятую часть того, что позволила бы быстрая ось.
+\end{enumerate}
+\endgroup
+\begin{answerbox}
+Минимум в $(1,1)$; $\mu=2$, $L=20$, $\kappa=10$.
+\end{answerbox}
+
+% =====================================================================
+\section{Сильная выпуклость и гладкость}\label{sec:strongL}
+
+\begin{definitionbox}{Определение.}
+$f$ \textbf{$\mu$-сильно выпукла}, если $f(y)\ge f(x)+\nabla f(x)^\top(y-x)+\tfrac{\mu}{2}\|y-x\|^2$ для всех $x,y$; \textbf{$L$-гладкая}, если $\|\nabla f(y)-\nabla f(x)\|\le L\|y-x\|$ для всех $x,y$.
+\end{definitionbox}
+
+Для дважды дифференцируемой $f$ оба свойства эквивалентны $\mu I\preceq\nabla^2 f(x)\preceq L I$ в каждой точке. Для положительно определённой квадратичной $f(x)=\tfrac{1}{2}x^\top Qx+b^\top x$ гессиан — это $Q$, значит, $\mu=\lambda_{\min}(Q)$ и $L=\lambda_{\max}(Q)$.
+
+\begin{examplebox}
+Для $f(x,y)=2x^2+2xy+3y^2$ гессиан равен $\begin{pmatrix}4&2\\2&6\end{pmatrix}$; собственные значения $\mu\approx 2{,}7639$, $L\approx 7{,}2361$, число обусловленности $\kappa=L/\mu\approx 2{,}618$.
+\end{examplebox}
+
+% =====================================================================
+\section{Градиентный спуск на квадратичной функции}\label{sec:gd}
+
+\begin{definitionbox}{Определение.}
+\textbf{Градиентный спуск} с постоянным шагом $\alpha>0$: $x_{k+1}=x_k-\alpha\nabla f(x_k)$.
+\end{definitionbox}
+
+\begin{theorembox}{Теорема: безопасный шаг.}
+Для $f(x)=\tfrac{1}{2}x^\top Qx$ при $Q\succ0$ выполнено $x_{k+1}=(I-\alpha Q)x_k$, и $x_k\to0$ тогда и только тогда, когда $0<\alpha<2/L$. При $\alpha=1/L$ ошибка по направлению $\lambda_{\max}$ обнуляется за шаг; по $\lambda_{\min}$ сжимается в $1-\mu/L$ за шаг.
+\end{theorembox}
+
+\begin{proofbox}
+В собственном базисе $Q$ итерация имеет вид $e_{k+1,i}=(1-\alpha\lambda_i)e_{k,i}$, поэтому $|e_{k,i}|=|1-\alpha\lambda_i|^k|e_{0,i}|$. Вся последовательность стремится к нулю тогда и только тогда, когда $|1-\alpha\lambda_i|<1$ для всех $i$, то есть $0<\alpha<2/\lambda_i$ для всех $i$, то есть $0<\alpha<2/L$.
+\end{proofbox}
+
+\problemhead{B1}{Три шага градиентного спуска на квадратичной функции}{У доски}
+\textbf{Условие.} Пусть $f(x,y)=x^2-xy+y^2$. Из $x_0=(6,0)$ сделайте три шага градиентного спуска с $\alpha=1/3$. Укажите градиенты, итерации $x_1,x_2,x_3$, значения $f$. Найдите $L$ и проверьте, что $\alpha<2/L$.
+
+\textbf{Решение.}
+\begingroup\sloppy
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item $Q=\begin{pmatrix}2&-1\\-1&2\end{pmatrix}$, значит, $\nabla f(x)=Qx$. В $x_0=(6,0)$: $\nabla f(x_0)=(12,-6)$. Шаг $x_1=x_0-\alpha\nabla f(x_0)=(2,2)$, $f(x_1)=4$.
+  \item В $x_1$: $\nabla f(x_1)=(2,2)$, $x_2=(4/3,4/3)\approx(1{,}333,1{,}333)$, $f(x_2)=16/9\approx 1{,}778$. В $x_2$: $\nabla f(x_2)=(4/3,4/3)$, $x_3=(8/9,8/9)\approx(0{,}889,0{,}889)$, $f(x_3)=64/81\approx 0{,}790$. Значения уменьшаются с $36$ до $\approx 0{,}79$.
+  \item Собственные значения $Q$: $\lambda_{\min}=1$ и $\lambda_{\max}=3$, значит, $L=3$ и $2/L\approx 0{,}667$. Здесь $\alpha=1/3<2/L$: шаг безопасен.
+  \item Коэффициент сжатия на самой медленной оси равен $1-\alpha\mu=2/3\approx 0{,}667$; отношение $\|x_3\|/\|x_0\|\approx 0{,}209$ совпадает с ним с точностью до смешивания двух осей. Итерации идут в $(0,0)$.
+\end{enumerate}
+\endgroup
+\begin{answerbox}
+$f(x_1)=4$, $f(x_3)\approx 0{,}790$; $L=3$, условие $\alpha<2/L$ выполнено.
+\end{answerbox}
+
+\handoutfigure{0.75}{fig_b1}{Три шага градиентного спуска из задачи B1 на линиях уровня.}
+
+\problemhead{B2}{Три шага на диагональной квадратичной функции}{Самостоятельно}
+\textbf{Условие.} Пусть $f(x,y)=3x^2+2y^2$. Из $x_0=(4,-3)$ сделайте три шага градиентного спуска с $\alpha=1/6$. Укажите $f(x_1)$, $f(x_3)$, $L$ и безопасен ли шаг.
+
+\textbf{Решение.}
+\begingroup\sloppy
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item $Q=\begin{pmatrix}6&0\\0&4\end{pmatrix}$. В $x_0=(4,-3)$: $\nabla f=(24,-12)$. Шаг: $x_1=x_0-\alpha\nabla f=(0,-1)$, $f(x_1)=2$. Первая координата обнуляется за шаг: $1-2\alpha a=0$.
+  \item В $x_1$: $\nabla f=(0,-4)$, $x_2=(0,-1/3)\approx(0,-0{,}333)$, $f(x_2)=2/9\approx 0{,}222$. В $x_2$: $\nabla f=(0,-4/3)$, $x_3=(0,-1/9)\approx(0,-0{,}111)$, $f(x_3)\approx 0{,}0247$. Медленная ось сжимается в $1-2\alpha c=1/3$ за шаг.
+  \item Собственные значения $Q$: $\mu=4$ и $L=6$, значит, $2/L=1/3\approx 0{,}333$. Здесь $\alpha=1/6<2/L$, шаг безопасен. На самом деле $\alpha=1/L$: ровно на границе, где крутая ось обнуляется, а пологая сжимается.
+  \item Отношение $\|x_3\|/\|x_0\|\approx 0{,}0222$ совпадает с $(1/3)^3\cdot|y_0|/\|x_0\|=3/135\approx 0{,}0222$: все три шага скорость задаёт медленная ось.
+\end{enumerate}
+\endgroup
+\begin{answerbox}
+$f(x_1)=2$, $f(x_3)\approx 0{,}0247$; $L=6$, условие $\alpha<2/L$ выполнено.
+\end{answerbox}
+
+\begin{trapbox}
+Граница $\alpha=2/L$ небезопасна: по направлению $\lambda_{\max}$ амплитуда колебаний постоянна, итерации перестают двигаться, но не сходятся.
+\end{trapbox}
+
+\problemhead{B3}{Три шага на границе $\alpha=2/L$}{У доски}
+\textbf{Условие.} Пусть $f(x,y)=x^2+y^2$. Из $x_0=(2,1)$ сделайте три шага градиентного спуска с $\alpha=1$ (это ровно $2/L$). Укажите $x_1,x_2,x_3$, значения $f$ и опишите поведение итераций.
+
+\textbf{Решение.}
+\begingroup\sloppy
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item $Q=\begin{pmatrix}2&0\\0&2\end{pmatrix}$, $L=2$, $2/L=1$. Здесь $\alpha=1=2/L$ ровно. Множитель шага на каждой координате равен $1-\alpha L=-1$.
+  \item В $x_0=(2,1)$: $\nabla f(x_0)=(4,2)$, $x_1=x_0-\alpha\nabla f(x_0)=(-2,-1)$, $f(x_1)=5$. Знак перевернулся, модуль не изменился.
+  \item $x_2=(2,1)$, $f(x_2)=5$; $x_3=(-2,-1)$, $f(x_3)=5$. Последовательность колеблется между $x_0$ и $-x_0$; $\|x_k\|=\sqrt 5$ на каждом шаге, а $f$ остаётся равным $5$.
+  \item Это граничный случай: $|1-\alpha L|=1$. Шаг небезопасен --- метод не расходится, но и не сходится; нужно строгое неравенство $\alpha<2/L$.
+\end{enumerate}
+\endgroup
+\begin{answerbox}
+$f(x_1)=f(x_2)=f(x_3)=5$; $\|x_3\|/\|x_0\|=1$. Итерации колеблются между $x_0$ и $-x_0$ с постоянной амплитудой.
+\end{answerbox}
+
+\problemhead{B4}{Три шага при $\alpha>2/L$}{Самостоятельно}
+\textbf{Условие.} Снова $f(x,y)=x^2+y^2$. Из $x_0=(1,-1)$ сделайте три шага градиентного спуска с $\alpha=3/2$ (это больше $2/L$). Укажите $f(x_1)$, $f(x_3)$ и шаговый коэффициент роста $|1-\alpha L|$ на каждой координате.
+
+\textbf{Решение.}
+\begingroup\sloppy
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item $L=2$, $2/L=1$, значит, $\alpha=3/2>2/L$. Множитель на каждой координате равен $1-\alpha L=-2$: его модуль $|1-\alpha L|=2>1$.
+  \item В $x_0=(1,-1)$: $\nabla f(x_0)=(2,-2)$, $x_1=x_0-\alpha\nabla f(x_0)=(-2,2)$, $f(x_1)=8$. Каждая координата сменила знак и удвоилась по модулю.
+  \item $x_2=(4,-4)$, $f(x_2)=32$; $x_3=(-8,8)$, $f(x_3)=128$. Координаты растут вдвое за шаг, $f$ --- вчетверо за шаг.
+  \item Отношение $\|x_3\|/\|x_0\|=8=|1-\alpha L|^3$. Метод расходится; важно только наибольшее собственное значение $Q$, то есть $L$.
+\end{enumerate}
+\endgroup
+\begin{answerbox}
+$f(x_1)=8$, $f(x_3)=128$; $|1-\alpha L|=2$ на каждой координате за шаг, метод расходится.
+\end{answerbox}
+
+\end{document}
+

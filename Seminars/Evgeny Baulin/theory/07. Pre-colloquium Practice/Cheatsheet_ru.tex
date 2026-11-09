@@ -1,0 +1,131 @@
+% SPDX-License-Identifier: MIT
+% Copyright (c) 2026 Evgeny Baulin
+% Optimization Methods, Seminar 07: one-page cheat sheet (Russian).
+% Compile with: latexmk -xelatex -interaction=nonstopmode -halt-on-error Cheatsheet_ru.tex
+\RequirePackage{fix-cm}
+\documentclass[10pt,a4paper]{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{fontspec}
+\setmainfont{cmunrm.otf}[BoldFont=cmunbx.otf, ItalicFont=cmunti.otf, BoldItalicFont=cmunbi.otf]
+\setsansfont{cmunss.otf}[BoldFont=cmunsx.otf, ItalicFont=cmunsi.otf, BoldItalicFont=cmunso.otf]
+\setmonofont{cmuntt.otf}[BoldFont=cmuntb.otf, ItalicFont=cmunit.otf, BoldItalicFont=cmuntx.otf]
+\usepackage{polyglossia}
+\setdefaultlanguage{russian}
+\setotherlanguage{english}
+\newfontfamily\cyrillicfont{cmunrm.otf}[Ligatures=TeX, BoldFont=cmunbx.otf, ItalicFont=cmunti.otf, BoldItalicFont=cmunbi.otf]
+\newfontfamily\cyrillicfontsf{cmunss.otf}[Ligatures=TeX, BoldFont=cmunsx.otf, ItalicFont=cmunsi.otf, BoldItalicFont=cmunso.otf]
+\newfontfamily\cyrillicfonttt{cmuntt.otf}[BoldFont=cmuntb.otf, ItalicFont=cmunit.otf, BoldItalicFont=cmuntx.otf]
+\PolyglossiaSetup{russian}{hyphenmins={2,3}}
+
+\usepackage[a4paper,left=8mm,right=8mm,top=7mm,bottom=11mm,footskip=5.5mm]{geometry}
+\usepackage{xcolor}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage{ragged2e}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=hseblue,urlcolor=hseblue]{hyperref}
+
+\definecolor{hseblue}{RGB}{16,45,105}
+\definecolor{hseaccent}{RGB}{198,40,40}
+\definecolor{hsegray}{RGB}{108,114,126}
+\definecolor{hselight}{RGB}{240,243,248}
+
+\hypersetup{pdftitle={Шпаргалка к семинару 7: Подготовка к коллоквиуму}, pdfauthor={Evgeny Baulin}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\scriptsize\color{hsegray}\textcopyright\ 2026 Евгений Баулин, \href{https://t.me/tarakan_tuc}{t.me/tarakan\_tuc}}
+\fancyfoot[R]{\scriptsize\color{hsegray}Лицензия MIT}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{4.5mm}
+\setlength{\columnseprule}{0.3pt}
+\renewcommand{\columnseprulecolor}{\color{hselight}}
+\setlength{\emergencystretch}{2em}
+\setlength{\RaggedRightRightskip}{0pt plus 4em}
+\binoppenalty=2000
+\relpenalty=500
+\setlength{\abovedisplayskip}{2pt}
+\setlength{\belowdisplayskip}{2pt}
+\setlist[itemize]{leftmargin=7pt, labelsep=3pt, itemsep=1.2pt, topsep=1pt, parsep=0pt, partopsep=0pt,
+  label={\color{hseaccent}\scriptsize\textbullet}}
+
+\makeatletter
+\newcommand{\cssec}[1]{\par\addvspace{3.5pt}\noindent
+  \colorbox{hselight}{\parbox{\dimexpr\linewidth-2\fboxsep}{\RaggedRight\hyphenpenalty=10000\color{hseblue}\bfseries\strut #1}}%
+  \par\nobreak\vspace{1pt}\@afterheading}
+\makeatother
+\clubpenalty=10000
+\widowpenalty=10000
+
+\begin{document}
+\thispagestyle{fancy}
+
+\noindent
+\begin{minipage}[b]{0.6\textwidth}
+  \RaggedRight\hyphenpenalty=10000
+  {\color{hseaccent}\bfseries\small Шпаргалка к семинару 7}\\[1pt]
+  {\color{hseblue}\bfseries\Large Подготовка к\\ коллоквиуму}
+\end{minipage}\hfill
+\begin{minipage}[b]{0.39\textwidth}
+  \raggedleft\footnotesize
+  {\bfseries Методы оптимизации}\\
+  НИУ ВШЭ, факультет компьютерных наук, 2026--2027\\
+  Лектор курса: Андрей Игнатов\\
+  Автор: Евгений Баулин, Telegram \href{https://t.me/tarakan_tuc}{@tarakan\_tuc}
+\end{minipage}
+
+\vspace{2pt}
+{\color{hseblue}\rule{\textwidth}{0.8pt}}
+\vspace{-4pt}
+
+\fontsize{9}{10.6}\selectfont
+\begin{multicols}{3}
+\RaggedRight
+\cssec{Определения, которые надо знать}
+\begin{itemize}
+  \item \textbf{Выпуклое множество} $C$: $tx+(1-t)y\in C$ для всех $x,y\in C$ и $t\in[0,1]$.
+  \item \textbf{Выпуклая функция} на выпуклом $C$: $f(tx+(1-t)y)\le tf(x)+(1-t)f(y)$.
+  \item \textbf{Сильно выпуклая} с $\mu>0$: $f(y)\ge f(x)+\nabla f(x)^\top(y-x)+\tfrac{\mu}{2}\|y-x\|^2$.
+  \item \textbf{$L$-гладкая}: $\|\nabla f(y)-\nabla f(x)\|\le L\|y-x\|$ для всех $x,y$.
+  \item \textbf{Градиент}: $\nabla f(x)=(\partial_1f,\dots,\partial_nf)^\top$. \textbf{Гессиан}: $(\nabla^2 f)_{ij}=\partial_i\partial_j f$, симметричен.
+  \item \textbf{Стационарная точка}: $\nabla f(x^*)=0$. \textbf{Минимум, максимум, седло} — по знакам собственных значений $\nabla^2 f(x^*)$.
+\end{itemize}
+
+\cssec{Задача 3.1: квадратичная форма}
+\begin{itemize}
+  \item $f(x,y)=ax^2+bxy+cy^2+dx+ey$: $\nabla f=(2ax+by+d,\ bx+2cy+e)$.
+  \item $H=\begin{pmatrix}2a&b\\b&2c\end{pmatrix}$. Решить $Hx^*=-(d,e)^\top$.
+  \item Собственные значения: $\lambda^2-\operatorname{tr}(H)\lambda+\det(H)=0$.
+  \item Оба $>0$: минимум; оба $<0$: максимум; разных знаков: седло.
+  \item $\mu=\lambda_{\min}(H)$, $L=\lambda_{\max}(H)$ при $H\succ0$.
+\end{itemize}
+
+\cssec{Задача 3.2: градиентный спуск}
+\begin{itemize}
+  \item $f=\tfrac{1}{2}x^\top Qx$, $Q\succ0$: $x_{k+1}=(I-\alpha Q)x_k$.
+  \item Безопасно: $0<\alpha<2/L$. Граница: $\alpha=2/L$ стоит, $\alpha>2/L$ расходится.
+  \item В собственном базисе: $e_{k,i}=(1-\alpha\lambda_i)^k e_{0,i}$.
+  \item $\alpha=1/L$: самая крутая ось — за шаг; пологая ось — в $1-\mu/L$.
+  \item Лучший постоянный шаг $\alpha^*=2/(\mu+L)$: скорость $(\kappa-1)/(\kappa+1)$ за шаг.
+\end{itemize}
+
+\cssec{Два коротких доказательства}
+\begin{itemize}
+  \item \textbf{Выпуклая комбинация.} $f,g$ выпуклы, $\alpha,\beta\ge0$: $h=\alpha f+\beta g$ выпукла по линейности определения по $f,g$.
+  \item \textbf{Строгий минимум.} $\nabla f(x^*)=0$, $\nabla^2 f(x^*)\succ0$: Тейлор даёт $f(x^*+h)=f(x^*)+\tfrac{1}{2}h^\top\nabla^2 f(x^*)h+o(\|h\|^2)>f(x^*)$ для малых $h\ne0$.
+\end{itemize}
+
+\cssec{На что обратить внимание}
+\begin{itemize}
+  \item На диагонали $H$ стоят $2a$ и $2c$, а не $a$ и $c$.
+  \item Нулевое собственное значение: критерий второго порядка не работает, нужны старшие порядки.
+  \item $\alpha=1/L$ — не лучший шаг; лучший — $\alpha=2/(\mu+L)$.
+\end{itemize}
+
+\end{multicols}
+\end{document}
+

@@ -1,0 +1,542 @@
+{
+ "id": "seminar-06",
+ "data": {
+  "A2": {
+   "accepted1": [
+    0.8765387295547047,
+    1.47402056655283
+   ],
+   "accepted3": [
+    1.0785372937866384,
+    0.8462746042182968
+   ],
+   "rejects": 0,
+   "f0": 417088.381349345,
+   "f1": 2111.973324635597,
+   "f3": 11.69435796759987
+  },
+  "B2": {
+   "g0": -0.875,
+   "B0": 0.75,
+   "pstar": 1.1666666666666667,
+   "deltaFinal": 0.5,
+   "p": 0.5,
+   "x1": 1.0,
+   "rejects": 2,
+   "f0": -0.484375,
+   "f1": -0.75
+  },
+  "C2": {
+   "gamma1": 0.25291828793774324,
+   "p1": [
+    -0.39078120323256516,
+    0.024423825202035412
+   ],
+   "alpha1": 3.7794117647058822,
+   "x2": [
+    0.0,
+    2.3592239273284576e-16
+   ]
+  },
+  "answers": {
+   "A2": {
+    "a1": {
+     "type": "number",
+     "value": 0.8765,
+     "tol": 0.0005
+    },
+    "b3": {
+     "type": "number",
+     "value": 0.8463,
+     "tol": 0.0005
+    },
+    "rejects": {
+     "type": "number",
+     "value": 0,
+     "tol": 0.5
+    }
+   },
+   "B2": {
+    "delta": {
+     "type": "number",
+     "value": 0.5,
+     "tol": 0.0005
+    },
+    "x1": {
+     "type": "number",
+     "value": 1.0,
+     "tol": 0.0005
+    },
+    "rejects": {
+     "type": "number",
+     "value": 2,
+     "tol": 0.5
+    }
+   },
+   "C2": {
+    "gamma": {
+     "type": "number",
+     "value": 0.2529,
+     "tol": 0.0005
+    },
+    "p1": {
+     "type": "number",
+     "value": -0.3908,
+     "tol": 0.0005
+    },
+    "x2": {
+     "type": "number",
+     "value": 0.0,
+     "tol": 0.0005
+    }
+   }
+  }
+ },
+ "content": {
+  "main": {
+   "blocks": {
+    "E": {
+     "summary": {
+      "title": {
+       "en": "Three takeaways",
+       "ru": "Три главных вывода"
+      },
+      "items": [
+       {
+        "en": "Gauss–Newton drops $\\sum_i r_i\\nabla^2 r_i$ from the Hessian; small residuals near the solution make the drop safe and the convergence almost Newton.",
+        "ru": "Метод Гаусса–Ньютона отбрасывает $\\sum_i r_i\\nabla^2 r_i$ из гессиана; при малых невязках возле решения это безопасно, а сходимость почти как у Ньютона."
+       },
+       {
+        "en": "Levenberg–Marquardt and trust region pay for safety with one scalar each: a shift $\\lambda$ or a radius $\\Delta$. Both lead to a system $(B+\\lambda I)p=-g$.",
+        "ru": "Левенберг–Марквардт и доверительная область платят за безопасность одним скаляром: сдвигом $\\lambda$ или радиусом $\\Delta$. Оба метода приводят к системе $(B+\\lambda I)p=-g$."
+       },
+       {
+        "en": "L-BFGS keeps the curvature of the last $m$ steps and spends $O(mn)$ per direction; it is the quasi-Newton method that scales to the problems where a dense Hessian would not fit.",
+        "ru": "L-BFGS хранит кривизну последних $m$ шагов и тратит $O(mn)$ на направление; это квазиньютоновский метод, который масштабируется на задачи, где плотный гессиан не помещается в память."
+       }
+      ]
+     },
+     "exit": {
+      "items": [
+       {
+        "answer": {
+         "en": "Yes. With $r(x^*)=0$ the dropped term $\\sum_i r_i\\nabla^2 r_i$ vanishes at the solution; Gauss–Newton becomes Newton near $x^*$ and converges quadratically.",
+         "ru": "Да. При $r(x^*)=0$ отброшенное слагаемое $\\sum_i r_i\\nabla^2 r_i$ обращается в ноль в решении; Гаусс–Ньютон становится Ньютоном возле $x^*$ и сходится квадратично."
+        }
+       },
+       {
+        "answer": {
+         "en": "The step was accepted on the boundary with $\\rho={{exit.rho}}>3/4$: $\\Delta$ grows, typically doubled.",
+         "ru": "Шаг принят на границе при $\\rho={{exit.rho}}>3/4$: $\\Delta$ увеличивается, обычно вдвое."
+        }
+       },
+       {
+        "answer": {
+         "en": "Stored: $2m\\cdot n={{exit.store}}$ numbers plus a few scalars. One direction costs about $4mn={{exit.cost}}$ multiply-adds, independent of the Hessian structure.",
+         "ru": "Хранится $2m\\cdot n={{exit.store}}$ чисел и несколько скаляров. Одно направление стоит около $4mn={{exit.cost}}$ умножений со сложением, не завися от структуры гессиана."
+        }
+       }
+      ]
+     }
+    }
+   }
+  },
+  "problems": {
+   "A2": {
+    "hints": [
+     {
+      "en": "$\\rho=(\\text{actual})/(\\text{predicted})$: the predicted drop is $-(g^\\top p+\\tfrac{1}{2}p^\\top Bp)$.",
+      "ru": "$\\rho=(\\text{фактическая})/(\\text{предсказанная})$: предсказанная убыль равна $-(g^\\top p+\\tfrac{1}{2}p^\\top Bp)$."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "From $\\theta_0$ the full Gauss–Newton step overshoots; LM with $\\lambda_0={{A2.params.lam0}}$ shrinks it. The first few trials have $\\rho<{{A2.params.rhoGood}}$ and are rejected; $\\lambda$ grows by ten each time until the shift is large enough.",
+       "ru": "Из $\\theta_0$ полный шаг Гаусса–Ньютона уходит слишком далеко; LM с $\\lambda_0={{A2.params.lam0}}$ его укорачивает. Первые пробные шаги имеют $\\rho<{{A2.params.rhoGood}}$ и отвергаются; $\\lambda$ каждый раз увеличивается в десять раз, пока сдвига не станет достаточно."
+      }
+     },
+     {
+      "text": {
+       "en": "After the first accepted step $\\theta={{A2.accepted1}}$. Three accepted steps bring $\\theta$ to ${{A2.accepted3}}$; the number of rejections along the way is ${{A2.rejects}}$.",
+       "ru": "После первого принятого шага $\\theta={{A2.accepted1}}$. Три принятых шага приводят $\\theta$ к ${{A2.accepted3}}$; суммарное число отказов — ${{A2.rejects}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "Each acceptance divides $\\lambda$ by ten, each rejection multiplies it by ten. The method starts gradient-like, builds up Gauss–Newton behaviour as the model becomes trusted, and ends very close to the Gauss–Newton limit.",
+       "ru": "Каждое принятие делит $\\lambda$ на десять, каждое отвержение — умножает на десять. Метод начинается как градиентный, по мере роста доверия к модели ведёт себя всё более как Гаусс–Ньютон и заканчивается очень близко к его пределу."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "After one accepted step $a={{A2.accepted1.1}}$; after three, $b={{A2.accepted3.2}}$; ${{A2.rejects}}$ rejections.",
+     "ru": "После одного принятого шага $a={{A2.accepted1.1}}$; после трёх, $b={{A2.accepted3.2}}$; отказов — ${{A2.rejects}}$."
+    },
+    "review": {
+     "en": "LM is a trust-region method in disguise: $\\lambda$ plays the role of the Lagrange multiplier for a constraint $\\|p\\|\\le\\Delta$ that is picked by $\\rho$ instead of by $\\Delta$.",
+     "ru": "LM — замаскированный метод доверительной области: $\\lambda$ играет роль множителя Лагранжа для ограничения $\\|p\\|\\le\\Delta$, которое выбирается через $\\rho$, а не через $\\Delta$."
+    },
+    "mistakes": []
+   },
+   "B2": {
+    "hints": [
+     {
+      "en": "The quartic $cx^4$ makes $f$ fall slower than its quadratic model predicts: expect a rejected first step.",
+      "ru": "Квартичное слагаемое $cx^4$ заставляет $f$ убывать медленнее, чем предсказывает её квадратичная модель: первая попытка, скорее всего, будет отвергнута."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "At $x_0={{B2.params.x0}}$: $g={{B2.g0}}$, $B={{B2.B0}}$. The unconstrained minimizer of the model is $-g/B={{B2.pstar}}$: it lies well outside the first ball of radius ${{B2.params.delta0}}$.",
+       "ru": "В точке $x_0={{B2.params.x0}}$: $g={{B2.g0}}$, $B={{B2.B0}}$. Безусловный минимум модели равен $-g/B={{B2.pstar}}$: он лежит далеко за первым шаром радиуса ${{B2.params.delta0}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "The first trial step has length ${{B2.params.delta0}}$ and goes into the direction $-\\operatorname{sign}(g)$. The quartic rises so fast that $f(x_0+p)>f(x_0)$ or $\\rho<{{B2.params.rhoBad}}$; $\\Delta$ is divided by ${{B2.params.shrink}}$ and the step tries again.",
+       "ru": "Первая проба имеет длину ${{B2.params.delta0}}$ и идёт в сторону $-\\operatorname{sign}(g)$. Квартичное слагаемое растёт настолько быстро, что либо $f(x_0+p)>f(x_0)$, либо $\\rho<{{B2.params.rhoBad}}$; $\\Delta$ делится на ${{B2.params.shrink}}$, и проба повторяется."
+      }
+     },
+     {
+      "text": {
+       "en": "The accepted $\\Delta={{B2.deltaFinal}}$ comes after ${{B2.rejects}}$ rejections. The step is ${{B2.p}}$ and $x_1={{B2.x1}}$; $f$ falls from ${{B2.f0}}$ to ${{B2.f1}}$.",
+       "ru": "Принятое $\\Delta={{B2.deltaFinal}}$ приходит после ${{B2.rejects}}$ отказов. Шаг равен ${{B2.p}}$, $x_1={{B2.x1}}$; $f$ падает с ${{B2.f0}}$ до ${{B2.f1}}$."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "$\\Delta={{B2.deltaFinal}}$, $x_1={{B2.x1}}$; ${{B2.rejects}}$ rejections.",
+     "ru": "$\\Delta={{B2.deltaFinal}}$, $x_1={{B2.x1}}$; отказов — ${{B2.rejects}}$."
+    },
+    "review": {
+     "en": "The quadratic model is a Taylor truncation. The ball of trust is the length over which the truncation describes $f$; shrinking $\\Delta$ is how the method finds that length.",
+     "ru": "Квадратичная модель — усечение ряда Тейлора. Шар доверия — это длина, на которой усечение описывает $f$; уменьшение $\\Delta$ — способ найти эту длину."
+    },
+    "mistakes": []
+   },
+   "C2": {
+    "hints": [
+     {
+      "en": "With one pair, two-loop with scaling $\\gamma=s^\\top y/y^\\top y$ equals dense BFGS from $\\gamma I$.",
+      "ru": "С одной парой двухпроходная рекурсия с масштабированием $\\gamma=s^\\top y/y^\\top y$ совпадает с плотным BFGS из $\\gamma I$."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "Step 0 is $-g_0$ with the exact step: it coincides with C1. After it, $\\gamma_1=s_0^\\top y_0/(y_0^\\top y_0)={{C2.gamma1}}$.",
+       "ru": "Нулевой шаг — $-g_0$ с точным $\\alpha$: он совпадает с C1. После него $\\gamma_1=s_0^\\top y_0/(y_0^\\top y_0)={{C2.gamma1}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "The two-loop pass with pairs $[(s_0,y_0)]$ and kernel $\\gamma_1 I$ gives $p_1={{C2.p1}}$. The exact step is $\\alpha_1={{C2.alpha1}}$, so $x_2={{C2.x2}}$. On a 2-D quadratic L-BFGS with $m=n$ matches dense BFGS to the digit.",
+       "ru": "Двухпроходный проход с парами $[(s_0,y_0)]$ и ядром $\\gamma_1 I$ даёт $p_1={{C2.p1}}$. Точный шаг $\\alpha_1={{C2.alpha1}}$, значит, $x_2={{C2.x2}}$. На 2-мерной квадратичной функции L-BFGS с $m=n$ совпадает с плотным BFGS до знака."
+      }
+     },
+     {
+      "text": {
+       "en": "The two-loop never forms $G$: it computes $Gg$ in $O(mn)$ operations. For $m\\ll n$ it stores a Taylor-truncated version of the inverse Hessian along the last few directions.",
+       "ru": "Двухпроходная рекурсия не строит $G$: она вычисляет $Gg$ за $O(mn)$ операций. При $m\\ll n$ она хранит усечённую по последним направлениям версию обратного гессиана."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "$\\gamma_1={{C2.gamma1}}$, first entry of $p_1={{C2.p1.1}}$, first entry of $x_2={{C2.x2.1}}$.",
+     "ru": "$\\gamma_1={{C2.gamma1}}$, первая компонента $p_1={{C2.p1.1}}$, первая компонента $x_2={{C2.x2.1}}$."
+    },
+    "review": {
+     "en": "The scaling $\\gamma_k$ matters: without it the first direction is $-g$ in units that do not know the curvature, and the first step is unnecessarily short.",
+     "ru": "Масштаб $\\gamma_k$ важен: без него первое направление равно $-g$ в единицах, не знающих о кривизне, и первый шаг оказывается без нужды коротким."
+    },
+    "mistakes": []
+   }
+  },
+  "handout": {
+   "intro": {
+    "en": "Second-order methods, continued. Seminar 5 took the Newton step and its safeguards. This handout follows the lecture and the computer seminar of Andrey Ignatov on Gauss–Newton and Levenberg–Marquardt for least squares, the trust region as a different safeguard, and L-BFGS as the limited-memory quasi-Newton method.",
+    "ru": "Методы второго порядка, продолжение. На семинаре 5 были шаг Ньютона и его защита. Конспект следует лекции и компьютерному семинару Андрея Игнатова о методах Гаусса–Ньютона и Левенберга–Марквардта для наименьших квадратов, о доверительной области как другой защите и об L-BFGS как квазиньютоновском методе с ограниченной памятью."
+   },
+   "convention": {
+    "en": "$r:\\mathbb R^n\\to\\mathbb R^m$ is the residual with Jacobian $J$. $B$ is the current Hessian estimate, $G$ its inverse; $s_k=x_{k+1}-x_k$, $y_k=g_{k+1}-g_k$. The trust radius is $\\Delta$; the quadratic model is $m(p)=f+g^\\top p+\\tfrac{1}{2}p^\\top Bp$ and $\\rho=(\\text{actual})/(\\text{predicted})$.",
+    "ru": "$r:\\mathbb R^n\\to\\mathbb R^m$ — вектор невязок с якобианом $J$. $B$ — текущая оценка гессиана, $G$ — обратной к нему; $s_k=x_{k+1}-x_k$, $y_k=g_{k+1}-g_k$. Радиус доверия — $\\Delta$; квадратичная модель — $m(p)=f+g^\\top p+\\tfrac{1}{2}p^\\top Bp$, а $\\rho=(\\text{фактическая})/(\\text{предсказанная})$."
+   },
+   "sections": [
+    {
+     "id": "gn",
+     "title": {
+      "en": "Gauss–Newton",
+      "ru": "Метод Гаусса–Ньютона"
+     },
+     "blocks": [
+      {
+       "type": "p",
+       "text": {
+        "en": "For $f(x)=\\tfrac{1}{2}\\|r(x)\\|^2$ with $r:\\mathbb R^n\\to\\mathbb R^m$ and Jacobian $J$, $\\nabla f=J^\\top r$ and $\\nabla^2 f=J^\\top J+\\sum_i r_i\\nabla^2 r_i$. Gauss–Newton keeps only $J^\\top J$ and solves $J^\\top Jp=-J^\\top r$.",
+        "ru": "Для $f(x)=\\tfrac{1}{2}\\|r(x)\\|^2$ с $r:\\mathbb R^n\\to\\mathbb R^m$ и якобианом $J$ имеем $\\nabla f=J^\\top r$ и $\\nabla^2 f=J^\\top J+\\sum_i r_i\\nabla^2 r_i$. Метод Гаусса–Ньютона оставляет только $J^\\top J$ и решает $J^\\top Jp=-J^\\top r$."
+       }
+      },
+      {
+       "type": "intuition",
+       "text": {
+        "en": "Gauss–Newton is the Newton step for the linearized residual $r+Jp$. The dropped term is the one that would need second derivatives of $r$; it is small when the residuals at the solution are small.",
+        "ru": "Шаг Гаусса–Ньютона — это шаг Ньютона для линеаризованной невязки $r+Jp$. Отброшенное слагаемое — то, которое требовало бы вторых производных $r$; оно мало, когда невязки в решении малы."
+       }
+      },
+      {
+       "type": "theorem",
+       "text": {
+        "en": "If $J(x^*)$ has full column rank and $r(x^*)=0$, there is a neighbourhood of $x^*$ in which Gauss–Newton converges to $x^*$ quadratically. If instead $\\|r(x^*)\\|$ is bounded away from zero, the convergence is at best linear.",
+        "ru": "Если $J(x^*)$ имеет полный столбцовый ранг и $r(x^*)=0$, существует окрестность $x^*$, в которой Гаусс–Ньютон сходится к $x^*$ квадратично. Если же $\\|r(x^*)\\|$ отделено от нуля, сходимость в лучшем случае линейная."
+       },
+       "title": {
+        "en": "Convergence of Gauss–Newton",
+        "ru": "Сходимость метода Гаусса–Ньютона"
+       }
+      },
+      {
+       "type": "trap",
+       "text": {
+        "en": "$J^\\top J$ is positive semidefinite, not definite: a rank-deficient $J$ makes the normal equations singular. Levenberg–Marquardt below handles this with a shift; a QR factorization of $J$ is a more accurate alternative that never forms $J^\\top J$.",
+        "ru": "$J^\\top J$ положительно полуопределена, но не определена: если $J$ не полного ранга, нормальные уравнения становятся вырожденными. Левенберг–Марквардт решает это сдвигом; QR-разложение $J$ — более точная альтернатива, никогда не строящая $J^\\top J$."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "A1"
+      }
+     ]
+    },
+    {
+     "id": "lm",
+     "title": {
+      "en": "Levenberg–Marquardt",
+      "ru": "Метод Левенберга–Марквардта"
+     },
+     "blocks": [
+      {
+       "type": "definition",
+       "text": {
+        "en": "**Levenberg–Marquardt** solves $(J^\\top J+\\lambda I)p=-J^\\top r$ with $\\lambda\\ge0$ adapted by the ratio $\\rho=\\frac{f(x)-f(x+p)}{m(0)-m(p)}$: shrink $\\lambda$ when $\\rho$ is good, grow it when $\\rho$ is bad.",
+        "ru": "**Метод Левенберга–Марквардта** решает $(J^\\top J+\\lambda I)p=-J^\\top r$ с $\\lambda\\ge0$, которое адаптируется по отношению $\\rho=\\frac{f(x)-f(x+p)}{m(0)-m(p)}$: при хорошем $\\rho$ $\\lambda$ уменьшается, при плохом — растёт."
+       }
+      },
+      {
+       "type": "p",
+       "text": {
+        "en": "Small $\\lambda$ is Gauss–Newton; large $\\lambda$ is a short gradient step $-J^\\top r/\\lambda$. The method interpolates between them without the user having to pick a line search strategy.",
+        "ru": "Малое $\\lambda$ — это Гаусс–Ньютон; большое — короткий градиентный шаг $-J^\\top r/\\lambda$. Метод интерполирует между ними без необходимости выбирать стратегию линейного поиска."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "A2"
+      }
+     ]
+    },
+    {
+     "id": "tr",
+     "title": {
+      "en": "Trust region",
+      "ru": "Доверительная область"
+     },
+     "blocks": [
+      {
+       "type": "definition",
+       "text": {
+        "en": "A **trust-region step** minimizes the quadratic model over $\\|p\\|\\le\\Delta$: $$p=\\arg\\min_{\\|p\\|\\le\\Delta} f+g^\\top p+\\tfrac{1}{2}p^\\top Bp.$$ By KKT, the minimizer satisfies $(B+\\lambda I)p=-g$ for some $\\lambda\\ge0$ with $\\lambda(\\|p\\|-\\Delta)=0$.",
+        "ru": "**Шаг доверительной области** минимизирует квадратичную модель при $\\|p\\|\\le\\Delta$: $$p=\\arg\\min_{\\|p\\|\\le\\Delta} f+g^\\top p+\\tfrac{1}{2}p^\\top Bp.$$ По ККТ минимум удовлетворяет $(B+\\lambda I)p=-g$ при некотором $\\lambda\\ge0$ с условием $\\lambda(\\|p\\|-\\Delta)=0$."
+       }
+      },
+      {
+       "type": "p",
+       "text": {
+        "en": "The **dogleg** approximates the solution with the broken line from $0$ to the Cauchy point $p_C=-\\alpha g$ to the Newton point $p_N=-B^{-1}g$: take the farthest point on it still inside the ball. It is exact when $B\\succ0$ and the dogleg path is the trust-region path.",
+        "ru": "**Dogleg** приближает решение ломаной $0\\to p_C\\to p_N$: берут самую дальнюю точку этой ломаной, лежащую в шаре. Это точно, когда $B\\succ0$ и путь dogleg совпадает с кривой решений доверительной области."
+       }
+      },
+      {
+       "type": "list",
+       "items": [
+        {
+         "en": "If $\\rho>3/4$ and $\\|p\\|=\\Delta$, double $\\Delta$.",
+         "ru": "Если $\\rho>3/4$ и $\\|p\\|=\\Delta$, то $\\Delta$ удваивается."
+        },
+        {
+         "en": "If $\\rho>1/4$, keep $\\Delta$.",
+         "ru": "Если $\\rho>1/4$, $\\Delta$ сохраняется."
+        },
+        {
+         "en": "If $\\rho<1/4$, divide $\\Delta$ by four.",
+         "ru": "Если $\\rho<1/4$, $\\Delta$ делится на четыре."
+        },
+        {
+         "en": "Reject the step whenever $\\rho$ is too small; otherwise accept.",
+         "ru": "Шаг отвергается при слишком малом $\\rho$; иначе принимается."
+        }
+       ]
+      },
+      {
+       "type": "problem",
+       "id": "B1"
+      },
+      {
+       "type": "problem",
+       "id": "B2"
+      }
+     ]
+    },
+    {
+     "id": "lbfgs",
+     "title": {
+      "en": "Limited memory BFGS",
+      "ru": "BFGS с ограниченной памятью"
+     },
+     "blocks": [
+      {
+       "type": "p",
+       "text": {
+        "en": "Dense BFGS stores an $n\\times n$ matrix. **L-BFGS** stores the last $m$ pairs $(s_i,y_i)$ and applies $G_k$ to $g_k$ without forming it: with scaling $\\gamma_k=s_{k-1}^\\top y_{k-1}/(y_{k-1}^\\top y_{k-1})$ and the two-loop recursion, one direction costs about $4mn$ multiply-adds.",
+        "ru": "Плотный BFGS хранит матрицу $n\\times n$. **L-BFGS** хранит последние $m$ пар $(s_i,y_i)$ и умножает $G_k$ на $g_k$, не строя её: с масштабированием $\\gamma_k=s_{k-1}^\\top y_{k-1}/(y_{k-1}^\\top y_{k-1})$ и двухпроходной рекурсией одно направление стоит около $4mn$ умножений со сложением."
+       }
+      },
+      {
+       "type": "list",
+       "items": [
+        {
+         "en": "Set $q=g_k$. For the pairs from the newest to the oldest: $a_i=s_i^\\top q/(y_i^\\top s_i)$, $q\\leftarrow q-a_iy_i$.",
+         "ru": "Положите $q=g_k$. Для пар от новой к старой: $a_i=s_i^\\top q/(y_i^\\top s_i)$, $q\\leftarrow q-a_iy_i$."
+        },
+        {
+         "en": "Scale: $r=\\gamma_kq$.",
+         "ru": "Масштабируйте: $r=\\gamma_kq$."
+        },
+        {
+         "en": "For the pairs from the oldest to the newest: $b_i=y_i^\\top r/(y_i^\\top s_i)$, $r\\leftarrow r+s_i(a_i-b_i)$.",
+         "ru": "Для пар от старой к новой: $b_i=y_i^\\top r/(y_i^\\top s_i)$, $r\\leftarrow r+s_i(a_i-b_i)$."
+        },
+        {
+         "en": "Return $p_k=-r$: about $4mn$ operations and $2mn$ stored numbers.",
+         "ru": "Верните $p_k=-r$: около $4mn$ операций и $2mn$ хранимых чисел."
+        }
+       ]
+      },
+      {
+       "type": "theorem",
+       "text": {
+        "en": "The result equals $-Gg$ for the matrix $G$ obtained from $\\gamma_kI$ by $m$ BFGS updates with the stored pairs. With $m\\ge n$, L-BFGS and dense BFGS coincide to a floating-point tolerance.",
+        "ru": "Результат равен $-Gg$ для матрицы $G$, полученной из $\\gamma_kI$ последовательными $m$ обновлениями BFGS по хранимым парам. При $m\\ge n$ L-BFGS и плотный BFGS совпадают с точностью машинного эпсилон."
+       },
+       "kind": "proposition"
+      },
+      {
+       "type": "problem",
+       "id": "C1"
+      },
+      {
+       "type": "problem",
+       "id": "C2"
+      },
+      {
+       "type": "trap",
+       "text": {
+        "en": "Pick $m$ by the problem: too small restarts the method every $m$ steps and loses iterations; too large wastes work without gain. The common range is between five and twenty, and the two-loop recursion rewards keeping the pair with the newest $s^\\top y$ above zero.",
+        "ru": "Выбирайте $m$ по задаче: слишком малое перезапускает метод каждые $m$ шагов и теряет итерации; слишком большое тратит работу без выигрыша. Обычный диапазон — от пяти до двадцати, а двухпроходной рекурсии полезно, чтобы $s^\\top y$ новейшей пары оставалось положительным."
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "cheatsheet": {
+   "sections": [
+    {
+     "id": "gn",
+     "title": {
+      "en": "Gauss–Newton",
+      "ru": "Гаусс–Ньютон"
+     },
+     "items": [
+      {
+       "en": "$f=\\tfrac{1}{2}\\|r\\|^2$: $\\nabla f=J^\\top r$, $\\nabla^2 f=J^\\top J+\\sum r_i\\nabla^2 r_i$.",
+       "ru": "$f=\\tfrac{1}{2}\\|r\\|^2$: $\\nabla f=J^\\top r$, $\\nabla^2 f=J^\\top J+\\sum r_i\\nabla^2 r_i$."
+      },
+      {
+       "en": "GN: $J^\\top Jp=-J^\\top r$. Needs full column rank of $J$.",
+       "ru": "GN: $J^\\top Jp=-J^\\top r$. Нужен полный столбцовый ранг $J$."
+      },
+      {
+       "en": "Small residuals near $x^*$: quadratic convergence; big residuals: linear.",
+       "ru": "Малые невязки возле $x^*$: квадратичная сходимость; большие — линейная."
+      }
+     ]
+    },
+    {
+     "id": "lm",
+     "title": {
+      "en": "Levenberg–Marquardt",
+      "ru": "Левенберг–Марквардт"
+     },
+     "items": [
+      {
+       "en": "$(J^\\top J+\\lambda I)p=-J^\\top r$; $\\rho=\\frac{f-f^+}{m(0)-m(p)}$.",
+       "ru": "$(J^\\top J+\\lambda I)p=-J^\\top r$; $\\rho=\\frac{f-f^+}{m(0)-m(p)}$."
+      },
+      {
+       "en": "$\\rho\\ge3/4$: accept, $\\lambda\\mathrel{/}=10$. $\\rho<1/4$: reject, $\\lambda\\mathrel{*}=10$.",
+       "ru": "$\\rho\\ge3/4$: принять, $\\lambda\\mathrel{/}=10$. $\\rho<1/4$: отвергнуть, $\\lambda\\mathrel{*}=10$."
+      },
+      {
+       "en": "Small $\\lambda$: Gauss–Newton. Large $\\lambda$: short gradient step.",
+       "ru": "Малое $\\lambda$: Гаусс–Ньютон. Большое: короткий градиентный шаг."
+      }
+     ]
+    },
+    {
+     "id": "tr",
+     "title": {
+      "en": "Trust region",
+      "ru": "Доверительная область"
+     },
+     "items": [
+      {
+       "en": "$\\min m(p)$ over $\\|p\\|\\le\\Delta$: $(B+\\lambda I)p=-g$ with $\\lambda\\ge0$.",
+       "ru": "$\\min m(p)$ при $\\|p\\|\\le\\Delta$: $(B+\\lambda I)p=-g$ с $\\lambda\\ge0$."
+      },
+      {
+       "en": "Dogleg: broken line $0\\to p_C\\to p_N$; farthest point in the ball.",
+       "ru": "Dogleg: ломаная $0\\to p_C\\to p_N$; самая дальняя точка в шаре."
+      },
+      {
+       "en": "$\\rho>3/4$ on boundary: $\\Delta\\leftarrow 2\\Delta$. $\\rho<1/4$: $\\Delta\\leftarrow\\Delta/4$.",
+       "ru": "$\\rho>3/4$ на границе: $\\Delta\\leftarrow 2\\Delta$. $\\rho<1/4$: $\\Delta\\leftarrow\\Delta/4$."
+      }
+     ]
+    },
+    {
+     "id": "lbfgs",
+     "title": {
+      "en": "L-BFGS",
+      "ru": "L-BFGS"
+     },
+     "items": [
+      {
+       "en": "Store $m$ pairs $(s_i,y_i)$; $\\gamma_k=s_{k-1}^\\top y_{k-1}/(y_{k-1}^\\top y_{k-1})$.",
+       "ru": "Хранить $m$ пар $(s_i,y_i)$; $\\gamma_k=s_{k-1}^\\top y_{k-1}/(y_{k-1}^\\top y_{k-1})$."
+      },
+      {
+       "en": "Two-loop: back-sweep $a_i,q$; scale $\\gamma_k q$; forward sweep $b_i,r$.",
+       "ru": "Две петли: обратный проход $a_i,q$; масштаб $\\gamma_k q$; прямой проход $b_i,r$."
+      },
+      {
+       "en": "One direction: $4mn$ work, $2mn$ memory, no $n\\times n$ matrix.",
+       "ru": "Одно направление: $4mn$ работы, $2mn$ памяти, без матрицы $n\\times n$."
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

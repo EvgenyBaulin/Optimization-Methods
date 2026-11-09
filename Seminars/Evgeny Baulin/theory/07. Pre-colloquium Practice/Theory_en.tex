@@ -1,0 +1,299 @@
+% SPDX-License-Identifier: MIT
+% Copyright (c) 2026 Evgeny Baulin
+% Optimization Methods, Seminar 07: theory handout (English).
+% Compile with: latexmk -xelatex -interaction=nonstopmode -halt-on-error Theory_en.tex
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{fontspec}
+\setmainfont{cmunrm.otf}[BoldFont=cmunbx.otf, ItalicFont=cmunti.otf, BoldItalicFont=cmunbi.otf]
+\setsansfont{cmunss.otf}[BoldFont=cmunsx.otf, ItalicFont=cmunsi.otf, BoldItalicFont=cmunso.otf]
+\setmonofont{cmuntt.otf}[BoldFont=cmuntb.otf, ItalicFont=cmunit.otf, BoldItalicFont=cmuntx.otf]
+\usepackage{polyglossia}
+\setdefaultlanguage{english}
+
+\usepackage[a4paper,left=2.3cm,right=2.3cm,top=2.4cm,bottom=2.4cm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{array,booktabs,longtable}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{needspace}
+\usepackage[expansion=false]{microtype}
+\usepackage[colorlinks=true,linkcolor=hseblue,urlcolor=hseblue,citecolor=hseblue]{hyperref}
+
+\definecolor{hseblue}{RGB}{16,45,105}
+\definecolor{hseaccent}{RGB}{198,40,40}
+\definecolor{hsegray}{RGB}{108,114,126}
+\definecolor{hselight}{RGB}{240,243,248}
+\definecolor{hsewarm}{RGB}{253,244,232}
+
+\hypersetup{pdftitle={Optimization Methods. Seminar 07. Theory handout}, pdfauthor={Evgeny Baulin}}
+
+\titleformat{\section}{\color{hseblue}\Large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\color{hseblue}\large\bfseries}{\thesubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{16pt plus 4pt minus 2pt}{8pt plus 2pt}
+\titlespacing*{\subsection}{0pt}{12pt plus 3pt minus 2pt}{6pt plus 2pt}
+\pretocmd{\section}{\Needspace{7\baselineskip}}{}{\errmessage{cannot patch section}}
+\pretocmd{\subsection}{\Needspace{5\baselineskip}}{}{\errmessage{cannot patch subsection}}
+
+\tcbset{handoutbox/.style={enhanced, breakable, sharp corners, boxrule=0pt, left=7pt, right=7pt, top=5pt, bottom=5pt, before skip=8pt plus 2pt, after skip=8pt plus 2pt}}
+\newtcolorbox{examplebox}{handoutbox, colback=hselight, colframe=hselight, before upper={\textcolor{hseblue}{\bfseries Example.}\ }}
+\newtcolorbox{whybox}{handoutbox, colback=white, colframe=hseblue, leftrule=2.5pt, top=3pt, bottom=3pt, before upper={\textcolor{hseaccent}{\bfseries Why.}\ }}
+\newtcolorbox{answerbox}{handoutbox, colback=hsewarm, colframe=hsewarm, before upper={\textcolor{hseaccent}{\bfseries Answer.}\ }}
+\newtcolorbox{conventionbox}{handoutbox, colback=hselight, colframe=hseblue, leftrule=2.5pt, before upper={\textcolor{hseblue}{\bfseries Notation.}\par\smallskip}}
+
+\newcommand{\handoutfigure}[3]{\par\medskip\noindent\begin{minipage}{\linewidth}\centering
+  \includegraphics[width=#1\linewidth]{figures/#2.pdf}\par\smallskip
+  \begin{minipage}{0.94\linewidth}\small\textcolor{hseblue}{\bfseries Figure.}\ #3\end{minipage}\end{minipage}\par\medskip}
+\newcommand{\problemhead}[3]{\par\bigskip\noindent{\color{hseblue}\large\bfseries #1.\ #2}\par\nopagebreak
+  \noindent{\small\itshape\color{hsegray}#3}\par\nopagebreak\smallskip}
+\newtcolorbox{definitionbox}[1]{handoutbox, colback=white, colframe=hseblue, leftrule=2.5pt, before upper={\textcolor{hseblue}{\bfseries #1}\ }}
+\newtcolorbox{theorembox}[1]{handoutbox, colback=hselight, colframe=hseblue, leftrule=2.5pt, before upper={\textcolor{hseblue}{\bfseries #1}\ }}
+\newtcolorbox{proofbox}{handoutbox, colback=white, colframe=hsegray, leftrule=1.2pt, top=3pt, bottom=3pt, before upper={\textcolor{hsegray}{\bfseries\itshape Proof.}\ }}
+\newtcolorbox{trapbox}{handoutbox, colback=hsewarm, colframe=hseaccent, leftrule=2.5pt, before upper={\textcolor{hseaccent}{\bfseries Trap.}\ }}
+\newtcolorbox{selfcheckbox}{handoutbox, colback=white, colframe=hseaccent, leftrule=2.5pt, top=3pt, bottom=3pt, before upper={\textcolor{hseaccent}{\bfseries Check yourself.}\ }}
+\newcommand{\handoutdisplay}[1]{\sbox0{$\displaystyle #1$}\ifdim\wd0>\linewidth
+  \par{\centering\binoppenalty=10000\relpenalty=0\relax$\displaystyle #1$\par}\else\[#1\]\fi}
+\newcommand{\selfcheckanswer}{\par\smallskip\textcolor{hsegray}{\bfseries Answer.}\ }
+
+\setlist[itemize]{itemsep=3pt,topsep=4pt}
+\setlist[enumerate]{itemsep=3pt,topsep=4pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{hsegray}Optimization Methods}
+\fancyhead[R]{\small\color{hsegray}Seminar 07}
+\fancyfoot[L]{\small\color{hsegray}Evgeny Baulin}
+\fancyfoot[C]{\small\thepage}
+\fancyfoot[R]{\small\color{hsegray}MIT License}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{\pagestyle{fancy}}
+
+\begin{document}
+
+\begin{center}
+  {\large\color{hsegray}Optimization Methods\par}
+  \vspace{4pt}
+  {\large\bfseries\color{hseaccent}Seminar 07\par}
+  \vspace{8pt}
+  {\LARGE\bfseries\color{hseblue}Pre-colloquium Practice\par}
+  \vspace{8pt}
+  {\Large Theory handout\par}
+  \vspace{12pt}
+  HSE University, Faculty of Computer Science\par
+  Academic year 2026--2027\par
+  \vspace{8pt}
+  Course lecturer: Andrey Ignatov\par
+  Evgeny Baulin\par
+  Telegram: \href{https://t.me/tarakan_tuc}{@tarakan\_tuc}\par
+\end{center}
+
+\noindent{\color{hseblue}\rule{\linewidth}{0.6pt}}
+
+\tableofcontents
+
+\clearpage
+
+This handout is a compact review of what a colloquium ticket asks for: six definitions, two statements with proofs, two problems. The three sections below walk through part three; the cheat sheet is for parts one and two.
+
+\begin{conventionbox}
+$f:\mathbb R^2\to\mathbb R$ is a quadratic form in two variables, $Q$ is its Hessian, $x^*$ its stationary point. $\mu=\lambda_{\min}(Q)$ and $L=\lambda_{\max}(Q)$ when $Q\succ0$. Gradient descent is $x_{k+1}=x_k-\alpha\nabla f(x_k)$ with a fixed $\alpha>0$.
+\end{conventionbox}
+
+% =====================================================================
+\section{Classifying a stationary point}\label{sec:classify}
+
+\begin{definitionbox}{Definition.}
+A point $x^*$ is a \textbf{stationary point} of $f$ when $\nabla f(x^*)=0$. For a quadratic $f(x)=\tfrac{1}{2}x^\top Hx+b^\top x$ this reads $Hx^*=-b$.
+\end{definitionbox}
+
+\begin{theorembox}{Theorem: Second-order test.}
+Let $f$ be twice continuously differentiable and $\nabla f(x^*)=0$. If $\nabla^2 f(x^*)\succ0$, then $x^*$ is a strict local minimum. If $\nabla^2 f(x^*)\prec0$, a strict local maximum. If $\nabla^2 f(x^*)$ is indefinite, a saddle point.
+\end{theorembox}
+
+\begin{proofbox}
+Taylor: $f(x^*+h)=f(x^*)+\tfrac{1}{2}h^\top\nabla^2 f(x^*)h+o(\|h\|^2)$. When $\nabla^2 f(x^*)\succ0$ there is $m>0$ with $h^\top\nabla^2 f(x^*)h\ge m\|h\|^2$, so $f(x^*+h)>f(x^*)$ for all small $h\ne0$. The other cases swap the sign.
+\end{proofbox}
+
+\begin{whybox}
+For $f(x,y)=ax^2+bxy+cy^2+dx+ey$ the Hessian is the constant matrix $H=\begin{pmatrix}2a&b\\b&2c\end{pmatrix}$. Its eigenvalues solve $\lambda^2-\operatorname{tr}(H)\lambda+\det(H)=0$; the signs follow from $\operatorname{tr}$ and $\det$.
+\end{whybox}
+
+\problemhead{A1}{Stationary point and type of a quadratic form}{On the board}
+\textbf{Statement.} For $f(x,y)=2x^2+2xy+3y^2-8x-2y$, find the stationary point and its type. Then find $\mu$ and $L$ as the smallest and the largest eigenvalue of the Hessian.
+
+\textbf{Solution.}
+\begingroup\sloppy
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item $\nabla f=(4x+2y-8,\ 2x+6y-2)$, $H=\begin{pmatrix}4&2\\2&6\end{pmatrix}$. Setting the gradient to zero: $\begin{cases}4x+2y=8\\ 2x+6y=2\end{cases}$. The determinant of $H$ is $20$, so the system has a unique solution.
+  \item Solve: $x^*=2.2$, $y^*=-0.4$. Check: $\nabla f(x^*)=(0,\ 0)$ and $f(x^*)=-8.4$.
+  \item Eigenvalues of $H$ solve $\det(H-\lambda I)=0$, that is $\lambda^2-10\lambda+20=0$. The roots are $\lambda_{\min}=5-\sqrt 5\approx 2.7639$ and $\lambda_{\max}=5+\sqrt 5\approx 7.2361$. Both are positive, so the stationary point is a strict minimum.
+  \item So $\mu\approx 2.7639$ and $L\approx 7.2361$. The condition number is $\kappa=L/\mu\approx 2.618$; gradient descent with the best fixed step contracts the error on the slow axis by $(\kappa-1)/(\kappa+1)\approx 0.4472$ per step.
+\end{enumerate}
+\endgroup
+\begin{answerbox}
+Minimum at $(x^*,y^*)=(2.2,-0.4)$; $\mu\approx 2.7639$, $L\approx 7.2361$.
+\end{answerbox}
+
+\handoutfigure{0.75}{fig_a1}{Level sets of $f$ for problem A1 with the stationary point marked.}
+
+\problemhead{A2}{Stationary point of another quadratic}{On your own}
+\textbf{Statement.} For $f(x,y)=4x^2-2xy+y^2-6x+4y$, find the stationary point, its type, and $\mu$ and $L$.
+
+\textbf{Solution.}
+\begingroup\sloppy
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item $\nabla f=(8x-2y-6,\ -2x+2y+4)$, $H=\begin{pmatrix}8&-2\\-2&2\end{pmatrix}$. Setting the gradient to zero: $\begin{cases}8x-2y=6\\ -2x+2y=-4\end{cases}$. $\det H=12>0$, so a unique solution.
+  \item Solve: $x^*=1/3\approx 0.333$, $y^*=-5/3\approx -1.667$. Check: $\nabla f(x^*)=(0,\ 0)$ and $f(x^*)=-13/3\approx -4.333$.
+  \item Eigenvalues of $H$: $\lambda^2-10\lambda+12=0$, so $\lambda\approx 1.3944$ and $\lambda\approx 8.6056$. Both positive, the point is a strict minimum.
+  \item So $\mu\approx 1.3944$ and $L\approx 8.6056$. The condition number $\kappa\approx 6.17$; gradient descent at the best fixed step contracts by $(\kappa-1)/(\kappa+1)\approx 0.721$ per step.
+\end{enumerate}
+\endgroup
+\begin{answerbox}
+Minimum at $(1/3,-5/3)$; $\mu\approx 1.3944$, $L\approx 8.6056$.
+\end{answerbox}
+
+\begin{trapbox}
+A gradient that is a row of zeros means a stationary point was found, not that it is a minimum. The second-order test is the step that cannot be skipped.
+\end{trapbox}
+
+\problemhead{A3}{A quadratic form with a saddle point}{On the board}
+\textbf{Statement.} For $f(x,y)=x^2-4xy+y^2-6x+6y$, find the stationary point and show that it is a saddle. What are $\mu$ and $L$ here?
+
+\textbf{Solution.}
+\begingroup\sloppy
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item $\nabla f=(2x-4y-6,\ -4x+2y+6)$, $H=\begin{pmatrix}2&-4\\-4&2\end{pmatrix}$. The system $\nabla f=0$ reads $\begin{cases}2x-4y=6\\ -4x+2y=-6\end{cases}$. $\det H=-12<0$: negative, so the eigenvalues have opposite signs.
+  \item Solve: $x^*=1$, $y^*=-1$. Check: $\nabla f(x^*)=(0,\ 0)$ and $f(x^*)=-6$.
+  \item Eigenvalues of $H$: $\lambda^2-4\lambda-12=0$. Roots: $\lambda_{\min}=-2$ and $\lambda_{\max}=6$. Different signs, so the stationary point is a saddle: $f$ grows along one eigenvector and shrinks along the other.
+  \item With an indefinite Hessian the constants $\mu$ and $L$ of strong convexity and $L$-smoothness are not defined: $f$ is neither convex nor $L$-smooth near a saddle, and the condition number does not apply.
+\end{enumerate}
+\endgroup
+\begin{answerbox}
+Saddle at $(1,-1)$; eigenvalues $-2$ and $6$. Neither $\mu$ nor $L$ is defined.
+\end{answerbox}
+
+\problemhead{A4}{A quadratic form with a large condition number}{On your own}
+\textbf{Statement.} For $f(x,y)=x^2+10y^2-2x-20y$, find the stationary point, its type, $\mu$, $L$ and the condition number $\kappa=L/\mu$.
+
+\textbf{Solution.}
+\begingroup\sloppy
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item $\nabla f=(2x-2,\ 20y-20)$, $H=\begin{pmatrix}2&0\\0&20\end{pmatrix}$. Setting the gradient to zero: $\begin{cases}2x=2\\ 20y=20\end{cases}$. $\det H=40>0$, a unique solution.
+  \item Solve: $x^*=1$, $y^*=1$. Check: $\nabla f(x^*)=(0,\ 0)$ and $f(x^*)=-11$.
+  \item Eigenvalues of $H$: $\lambda^2-22\lambda+40=0$. Roots: $\lambda=2$ and $\lambda=20$. Both positive, so the point is a strict minimum.
+  \item So $\mu=2$, $L=20$, $\kappa=L/\mu=10$. Gradient descent at the best fixed step contracts the slow axis by $(\kappa-1)/(\kappa+1)=9/11\approx 0.8182$ per step: a step shrinks the error by less than a fifth of what the fast axis would allow.
+\end{enumerate}
+\endgroup
+\begin{answerbox}
+Minimum at $(1,1)$; $\mu=2$, $L=20$, $\kappa=10$.
+\end{answerbox}
+
+% =====================================================================
+\section{Strong convexity and smoothness}\label{sec:strongL}
+
+\begin{definitionbox}{Definition.}
+$f$ is \textbf{$\mu$-strongly convex} when $f(y)\ge f(x)+\nabla f(x)^\top(y-x)+\tfrac{\mu}{2}\|y-x\|^2$ for every $x,y$; it is \textbf{$L$-smooth} when $\|\nabla f(y)-\nabla f(x)\|\le L\|y-x\|$ for every $x,y$.
+\end{definitionbox}
+
+For a twice differentiable $f$ both are equivalent to $\mu I\preceq\nabla^2 f(x)\preceq L I$ at every $x$. For a positive definite quadratic $f(x)=\tfrac{1}{2}x^\top Qx+b^\top x$ the Hessian is $Q$, so $\mu=\lambda_{\min}(Q)$ and $L=\lambda_{\max}(Q)$ at every point.
+
+\begin{examplebox}
+For $f(x,y)=2x^2+2xy+3y^2$ the Hessian is $\begin{pmatrix}4&2\\2&6\end{pmatrix}$; eigenvalues $\mu\approx 2.7639$, $L\approx 7.2361$, condition number $\kappa=L/\mu\approx 2.618$.
+\end{examplebox}
+
+% =====================================================================
+\section{Gradient descent on a quadratic}\label{sec:gd}
+
+\begin{definitionbox}{Definition.}
+\textbf{Gradient descent} at a fixed step $\alpha>0$ is $x_{k+1}=x_k-\alpha\nabla f(x_k)$.
+\end{definitionbox}
+
+\begin{theorembox}{Theorem: Safe step.}
+For $f(x)=\tfrac{1}{2}x^\top Qx$ with $Q\succ0$, the iterates satisfy $x_{k+1}=(I-\alpha Q)x_k$, and $x_k\to0$ iff $0<\alpha<2/L$. At $\alpha=1/L$ the error on the direction of $\lambda_{\max}$ vanishes in one step; on $\lambda_{\min}$ it contracts by $1-\mu/L$ per step.
+\end{theorembox}
+
+\begin{proofbox}
+In the eigenbasis of $Q$ the iteration is $e_{k+1,i}=(1-\alpha\lambda_i)e_{k,i}$, so $|e_{k,i}|=|1-\alpha\lambda_i|^k|e_{0,i}|$. The whole sequence tends to zero iff every $|1-\alpha\lambda_i|<1$, iff $0<\alpha<2/\lambda_i$ for every $i$, iff $0<\alpha<2/L$.
+\end{proofbox}
+
+\problemhead{B1}{Three steps of gradient descent on a quadratic}{On the board}
+\textbf{Statement.} Let $f(x,y)=x^2-xy+y^2$. From $x_0=(6,0)$ take three steps of gradient descent with $\alpha=1/3$. Report the gradients, the iterates $x_1,x_2,x_3$ and the values of $f$. Find $L$ and check that $\alpha<2/L$.
+
+\textbf{Solution.}
+\begingroup\sloppy
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item $Q=\begin{pmatrix}2&-1\\-1&2\end{pmatrix}$, so $\nabla f(x)=Qx$. At $x_0=(6,0)$: $\nabla f(x_0)=(12,-6)$. The step is $x_1=x_0-\alpha\nabla f(x_0)=(2,2)$ and $f(x_1)=4$.
+  \item At $x_1$: $\nabla f(x_1)=(2,2)$, $x_2=(4/3,4/3)\approx(1.333,1.333)$, $f(x_2)=16/9\approx 1.778$. At $x_2$: $\nabla f(x_2)=(4/3,4/3)$, $x_3=(8/9,8/9)\approx(0.889,0.889)$, $f(x_3)=64/81\approx 0.790$. The values fall from $36$ to $\approx 0.79$.
+  \item Eigenvalues of $Q$: $\lambda_{\min}=1$ and $\lambda_{\max}=3$, so $L=3$ and $2/L\approx 0.667$. Here $\alpha=1/3<2/L$: the step is safe.
+  \item The contraction factor along the slowest axis is $1-\alpha\mu=2/3\approx 0.667$; the ratio $\|x_3\|/\|x_0\|\approx 0.209$ matches it to within the two-axis mixing. The iterates head to $(0,0)$.
+\end{enumerate}
+\endgroup
+\begin{answerbox}
+$f(x_1)=4$, $f(x_3)\approx 0.790$; $L=3$, $\alpha<2/L$ holds.
+\end{answerbox}
+
+\handoutfigure{0.75}{fig_b1}{Three gradient-descent steps on problem B1 on the contour plot.}
+
+\problemhead{B2}{Three steps on a diagonal quadratic}{On your own}
+\textbf{Statement.} Let $f(x,y)=3x^2+2y^2$. From $x_0=(4,-3)$ take three steps of gradient descent with $\alpha=1/6$. Report $f(x_1)$, $f(x_3)$, $L$ and whether the step is safe.
+
+\textbf{Solution.}
+\begingroup\sloppy
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item $Q=\begin{pmatrix}6&0\\0&4\end{pmatrix}$. At $x_0=(4,-3)$: $\nabla f=(24,-12)$. Step: $x_1=x_0-\alpha\nabla f=(0,-1)$, $f(x_1)=2$. The first coordinate is wiped out in one step: $1-2\alpha a=1-6/6=0$.
+  \item At $x_1$: $\nabla f=(0,-4)$, $x_2=(0,-1/3)\approx(0,-0.333)$, $f(x_2)=2/9\approx 0.222$. At $x_2$: $\nabla f=(0,-4/3)$, $x_3=(0,-1/9)\approx(0,-0.111)$, $f(x_3)\approx 0.0247$. The slow axis contracts by $1-2\alpha c=1/3$ per step.
+  \item Eigenvalues of $Q$: $\mu=4$ and $L=6$, so $2/L=1/3\approx 0.333$. Here $\alpha=1/6<2/L$, the step is safe. Actually $\alpha=1/L$: the border between the fast axis meeting the floor and the slow axis contracting.
+  \item The ratio $\|x_3\|/\|x_0\|\approx 0.0222$ matches $(1/3)^3\cdot|y_0|/\|x_0\|=3/135\approx 0.0222$: the slow axis set the rate for all three steps.
+\end{enumerate}
+\endgroup
+\begin{answerbox}
+$f(x_1)=2$, $f(x_3)\approx 0.0247$; $L=6$, $\alpha<2/L$ holds.
+\end{answerbox}
+
+\begin{trapbox}
+The border $\alpha=2/L$ is not safe: the direction of $\lambda_{\max}$ oscillates with constant amplitude, so the iterates stop moving but do not converge.
+\end{trapbox}
+
+\problemhead{B3}{Three steps on the border $\alpha=2/L$}{On the board}
+\textbf{Statement.} Let $f(x,y)=x^2+y^2$. From $x_0=(2,1)$ take three steps of gradient descent with $\alpha=1$ (which equals $2/L$). Report $x_1,x_2,x_3$, the values of $f$, and describe how the iterates behave.
+
+\textbf{Solution.}
+\begingroup\sloppy
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item $Q=\begin{pmatrix}2&0\\0&2\end{pmatrix}$, $L=2$, $2/L=1$. Here $\alpha=1=2/L$ exactly. On each coordinate the step multiplier is $1-\alpha L=-1$.
+  \item At $x_0=(2,1)$: $\nabla f(x_0)=(4,2)$, $x_1=x_0-\alpha\nabla f(x_0)=(-2,-1)$, $f(x_1)=5$. The iterate flipped sign; the magnitude is unchanged.
+  \item $x_2=(2,1)$, $f(x_2)=5$; $x_3=(-2,-1)$, $f(x_3)=5$. The sequence oscillates between $x_0$ and $-x_0$; $\|x_k\|=\sqrt 5$ at every step and $f$ stays at $5$.
+  \item This is the border case: $|1-\alpha L|=1$. The step is not safe --- the method does not diverge, but it does not converge either; a strict inequality $\alpha<2/L$ is needed.
+\end{enumerate}
+\endgroup
+\begin{answerbox}
+$f(x_1)=f(x_2)=f(x_3)=5$; $\|x_3\|/\|x_0\|=1$. The iterates oscillate between $x_0$ and $-x_0$ with constant amplitude.
+\end{answerbox}
+
+\problemhead{B4}{Three steps when $\alpha>2/L$}{On your own}
+\textbf{Statement.} Let $f(x,y)=x^2+y^2$ again. From $x_0=(1,-1)$ take three steps of gradient descent with $\alpha=3/2$ (which is above $2/L$). Report $f(x_1)$, $f(x_3)$, and the per-step growth factor $|1-\alpha L|$ on each coordinate.
+
+\textbf{Solution.}
+\begingroup\sloppy
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*]
+  \item $L=2$, $2/L=1$, so $\alpha=3/2>2/L$. The per-coordinate multiplier is $1-\alpha L=-2$: its absolute value is $|1-\alpha L|=2>1$.
+  \item At $x_0=(1,-1)$: $\nabla f(x_0)=(2,-2)$, $x_1=x_0-\alpha\nabla f(x_0)=(-2,2)$, $f(x_1)=8$. Each coordinate changed sign and doubled in absolute value.
+  \item $x_2=(4,-4)$, $f(x_2)=32$; $x_3=(-8,8)$, $f(x_3)=128$. The coordinates grow by $2$ each step, $f$ grows by $4$ each step.
+  \item The ratio $\|x_3\|/\|x_0\|=8=|1-\alpha L|^3$. The method diverges; nothing of the quadratic matters here except the top eigenvalue of $Q$, that is $L$.
+\end{enumerate}
+\endgroup
+\begin{answerbox}
+$f(x_1)=8$, $f(x_3)=128$; $|1-\alpha L|=2$ per coordinate per step, so the method diverges.
+\end{answerbox}
+
+\end{document}
+

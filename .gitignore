@@ -32,6 +32,3 @@ __pycache__/
 Seminars/Evgeny Baulin/theory/*/content/teacher.json
 Deploy/locked-seminars/release/
 Seminars/Evgeny Baulin/web/*/release.json
-# Seminar 10 answers stay off GitHub until its class is over (16.11.2026, 14:20 MSK); delete these three lines then.
-Seminars/Evgeny Baulin/theory/10. Knapsack and Linear Programming in Practice/
-Seminars/Evgeny Baulin/checks/10. Knapsack and Linear Programming in Practice.ipynb

@@ -1,0 +1,1315 @@
+{
+ "id": "seminar-10",
+ "data": {
+  "A2": {
+   "greedy": 20,
+   "greedySet": [
+    5,
+    3
+   ],
+   "ip": 25,
+   "set": [
+    4,
+    5
+   ],
+   "lp": 29.3333,
+   "lpTex": "\\tfrac{88}{3}",
+   "lpX": "(0,1,0,\\tfrac{5}{6},1)",
+   "order": [
+    5,
+    3,
+    1,
+    4,
+    2
+   ],
+   "e": {
+    "ip": 29,
+    "set": [
+     1,
+     2,
+     5
+    ]
+   }
+  },
+  "A3": {
+   "lp": 71.3333,
+   "lpTex": "\\tfrac{214}{3}",
+   "greedy": 62,
+   "ip": 66,
+   "x": [
+    0,
+    3,
+    2
+   ],
+   "e": {
+    "ip": 78,
+    "x": [
+     0,
+     3,
+     3
+    ],
+    "lpTex": "\\tfrac{242}{3}"
+   }
+  },
+  "B2": {
+   "order": [
+    4,
+    3,
+    5,
+    2,
+    1
+   ],
+   "root": "\\tfrac{464}{9}",
+   "dfs": 11,
+   "best": 7,
+   "table": "\\begin{array}{c|l|c|c} k & \\text{fixed} & U & z_{\\text{inc}} \\\\ \\hline 1 & \\text{---} & 51.56 & 0 \\\\ 2 & x_5=1 & 50.33 & 0 \\\\ 3 & x_5=1,\\ x_3=1 & 48.4 & 0 \\\\ 4 & x_5=1,\\ x_3=1,\\ x_4=1 & \\text{---} & 0 \\\\ 5 & x_5=1,\\ x_3=1,\\ x_4=0 & 42.25 & 0 \\\\ 6 & x_5=1,\\ x_3=1,\\ x_4=0,\\ x_2=1 & \\text{---} & 0 \\\\ 7 & x_5=1,\\ x_3=1,\\ x_4=0,\\ x_2=0 & 39.57 & 0 \\\\ 8 & x_5=1,\\ x_3=1,\\ x_4=0,\\ x_2=0,\\ x_1=1 & \\text{---} & 0 \\\\ 9 & x_5=1,\\ x_3=1,\\ x_4=0,\\ x_2=0,\\ x_1=0 & 37 & 0 \\\\ 10 & x_5=1,\\ x_3=0 & 46 & 37 \\\\ 11 & x_5=0 & 45.57 & 46 \\end{array}",
+   "ip": 46,
+   "set": [
+    2,
+    4,
+    5
+   ],
+   "e": {
+    "ip": 43,
+    "dfs": 21,
+    "best": 11
+   }
+  },
+  "B3": {
+   "x": [
+    0.8,
+    4.6
+   ],
+   "xTex": "(\\tfrac{4}{5},\\tfrac{23}{5})",
+   "z": 12.4,
+   "zTex": "\\tfrac{62}{5}",
+   "row": "x_1+\\tfrac{1}{5}s_1-\\tfrac{1}{5}s_2=\\tfrac{4}{5}",
+   "fracRow": "\\tfrac{1}{5}s_1+\\tfrac{4}{5}s_2\\ge\\tfrac{4}{5}",
+   "cut": [
+    1,
+    1
+   ],
+   "rhs": 5,
+   "after": [
+    1,
+    4
+   ],
+   "zAfter": 12,
+   "ip": 12,
+   "e": {
+    "xTex": "(\\tfrac{3}{5},\\tfrac{47}{10})",
+    "zTex": "\\tfrac{59}{5}",
+    "cut": [
+     1,
+     1
+    ],
+    "rhs": 5,
+    "zAfter": 11.5
+   }
+  },
+  "C2": {
+   "D": [
+    0,
+    0,
+    0,
+    11,
+    14,
+    17,
+    22,
+    25,
+    28,
+    33,
+    36,
+    39,
+    44,
+    47
+   ],
+   "opt": 47,
+   "x": [
+    1,
+    0,
+    3
+   ],
+   "greedy": 44,
+   "e": {
+    "opt": 58,
+    "x": [
+     1,
+     0,
+     4
+    ]
+   }
+  },
+  "C3": {
+   "reach": [
+    0,
+    5,
+    6,
+    9,
+    11,
+    14,
+    15,
+    19,
+    20
+   ],
+   "count": 9,
+   "best": 20,
+   "hit": 0,
+   "cells": 88,
+   "e": {
+    "count": 8,
+    "best": 19,
+    "hit": 1
+   }
+  },
+  "D2": {
+   "ip": 23,
+   "set": [
+    1,
+    3,
+    4
+   ],
+   "wrong": 30,
+   "wrongSet": [
+    1,
+    2,
+    3,
+    4
+   ],
+   "ncons": 5,
+   "e": {
+    "ip": 27,
+    "set": [
+     1,
+     2,
+     3,
+     4
+    ]
+   }
+  },
+  "D3": {
+   "weak": 18,
+   "strong": 23,
+   "ip": 23,
+   "yWeak": [
+    0.5,
+    0.5
+   ],
+   "open": [
+    1
+   ],
+   "e": {
+    "weak": 20,
+    "strong": 27,
+    "ip": 27
+   }
+  },
+  "answers": {
+   "A2": {
+    "greedy": {
+     "type": "number",
+     "value": 20,
+     "tol": 0.0005
+    },
+    "ip": {
+     "type": "number",
+     "value": 25,
+     "tol": 0.0005
+    },
+    "lp": {
+     "type": "number",
+     "value": 29.3333,
+     "tol": 0.0005
+    }
+   },
+   "A3": {
+    "lp": {
+     "type": "number",
+     "value": 71.3333,
+     "tol": 0.0005
+    },
+    "ip": {
+     "type": "number",
+     "value": 66,
+     "tol": 0.0005
+    },
+    "x2": {
+     "type": "number",
+     "value": 3,
+     "tol": 0.0005
+    }
+   },
+   "B2": {
+    "dfs": {
+     "type": "number",
+     "value": 11,
+     "tol": 0.0005
+    },
+    "best": {
+     "type": "number",
+     "value": 7,
+     "tol": 0.0005
+    },
+    "ip": {
+     "type": "number",
+     "value": 46,
+     "tol": 0.0005
+    }
+   },
+   "B3": {
+    "z": {
+     "type": "number",
+     "value": 12.4,
+     "tol": 0.0005
+    },
+    "rhs": {
+     "type": "number",
+     "value": 5,
+     "tol": 0.0005
+    },
+    "zAfter": {
+     "type": "number",
+     "value": 12,
+     "tol": 0.0005
+    }
+   },
+   "C2": {
+    "opt": {
+     "type": "number",
+     "value": 47,
+     "tol": 0.0005
+    },
+    "x3": {
+     "type": "number",
+     "value": 3,
+     "tol": 0.0005
+    },
+    "greedy": {
+     "type": "number",
+     "value": 44,
+     "tol": 0.0005
+    }
+   },
+   "C3": {
+    "count": {
+     "type": "number",
+     "value": 9,
+     "tol": 0.0005
+    },
+    "best": {
+     "type": "number",
+     "value": 20,
+     "tol": 0.0005
+    }
+   },
+   "D2": {
+    "ip": {
+     "type": "number",
+     "value": 23,
+     "tol": 0.0005
+    },
+    "wrong": {
+     "type": "number",
+     "value": 30,
+     "tol": 0.0005
+    },
+    "ncons": {
+     "type": "number",
+     "value": 5,
+     "tol": 0.0005
+    }
+   },
+   "D3": {
+    "weak": {
+     "type": "number",
+     "value": 18,
+     "tol": 0.0005
+    },
+    "strong": {
+     "type": "number",
+     "value": 23,
+     "tol": 0.0005
+    },
+    "ip": {
+     "type": "number",
+     "value": 23,
+     "tol": 0.0005
+    }
+   }
+  },
+  "exit": {
+   "gap": 2,
+   "leaves": 1048576
+  }
+ },
+ "content": {
+  "main": {
+   "blocks": {
+    "H": {
+     "summary": {
+      "title": {
+       "en": "Three takeaways",
+       "ru": "Три главных вывода"
+      },
+      "items": [
+       {
+        "en": "A relaxation gives an upper bound and a feasible point gives a lower bound. For the knapsack the relaxation is solved by sorting by density, and the bound is often enough to prove that a packing is optimal.",
+        "ru": "Релаксация даёт верхнюю оценку, а допустимая точка — нижнюю. Для рюкзака релаксация решается сортировкой по плотности, и часто одной оценки хватает, чтобы доказать оптимальность укладки."
+       },
+       {
+        "en": "Branch and bound and dynamic programming are both exact. The first lives on good bounds and an early incumbent and accepts any weights; the second fills a table of size $O(nW)$ and needs small integer capacities.",
+        "ru": "Ветви и границы и динамическое программирование — оба точные методы. Первый живёт хорошими оценками и ранним рекордом и принимает любые веса; второй заполняет таблицу размера $O(nW)$ и требует небольших целых вместимостей."
+       },
+       {
+        "en": "The model decides how hard the problem is. Logic and products become linear rows in binaries, and disaggregated rows tighten the relaxation.",
+        "ru": "Модель решает, насколько трудна задача. Логика и произведения становятся линейными строками по двоичным переменным, а раздельные строки усиливают релаксацию."
+       }
+      ]
+     },
+     "exit": {
+      "items": [
+       {
+        "answer": {
+         "en": "By at most $\\lfloor{{exit.lp}}\\rfloor-{{exit.inc}}={{exit.gap}}$. The search may stop when no open node has a bound above ${{exit.inc}}$, or earlier if this gap is acceptable.",
+         "ru": "Не больше чем на $\\lfloor{{exit.lp}}\\rfloor-{{exit.inc}}={{exit.gap}}$. Поиск можно остановить, когда ни у одного открытого узла оценка не выше ${{exit.inc}}$, или раньше, если такой разрыв приемлем."
+        }
+       },
+       {
+        "answer": {
+         "en": "$2^n={{exit.leaves}}$ leaves. A subtree is skipped as soon as its root is infeasible or its bound is not above the incumbent, so a good bound and an early incumbent remove most of the tree.",
+         "ru": "$2^n={{exit.leaves}}$ листьев. Поддерево пропускается, как только его корень недопустим или его оценка не выше рекорда, поэтому хорошая оценка и ранний рекорд убирают большую часть дерева."
+        }
+       }
+      ]
+     }
+    }
+   }
+  },
+  "problems": {
+   "A2": {
+    "hints": [
+     {
+      "en": "With two rows the density by weight is only a heuristic. The volume row is the one that binds; list the packings that fit both.",
+      "ru": "С двумя строками плотность по весу — лишь эвристика. Связывает строка объёма; переберите укладки, которые проходят по обоим пределам."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "By profit per unit of weight the order is ${{A2.order}}$. Going down it and skipping what breaks a limit, the greedy load is ${{A2.greedySet}}$ worth ${{A2.greedy}}$: the light dense boxes use up the volume.",
+       "ru": "По ценности на единицу веса порядок такой: ${{A2.order}}$. Идём по нему, пропуская то, что нарушает предел, и получаем жадную загрузку ${{A2.greedySet}}$ ценностью ${{A2.greedy}}$: лёгкие плотные коробки съедают объём."
+      }
+     },
+     {
+      "text": {
+       "en": "Checking the packings that respect both limits, the best is ${{A2.set}}$ worth ${{A2.ip}}$.",
+       "ru": "Перебирая укладки, проходящие по обоим пределам, находим лучшую: ${{A2.set}}$ ценностью ${{A2.ip}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "The relaxation with both rows has its optimum at $x={{A2.lpX}}$ with value ${{A2.lpTex}}\\approx{{A2.lp}}$. The volume row is tight there and the weight row still has room, so only one variable is fractional; with both rows tight a vertex could have two.",
+       "ru": "Оптимум релаксации с обеими строками — в $x={{A2.lpX}}$ со значением ${{A2.lpTex}}\\approx{{A2.lp}}$. Строка объёма там выполняется как равенство, а у строки веса остаётся запас, поэтому дробная переменная одна; если бы обе строки были равенствами, в вершине их могло бы быть две."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "Greedy ${{A2.greedy}}$, optimum ${{A2.ip}}$ with boxes ${{A2.set}}$, LP bound ${{A2.lpTex}}\\approx{{A2.lp}}$.",
+     "ru": "Жадное правило ${{A2.greedy}}$, оптимум ${{A2.ip}}$ с коробками ${{A2.set}}$, оценка ЛП ${{A2.lpTex}}\\approx{{A2.lp}}$."
+    },
+    "erratumAnswer": {
+     "en": "With $V={{A2.err.V}}$ the best load is ${{A2.e.set}}$ worth ${{A2.e.ip}}$.",
+     "ru": "При $V={{A2.err.V}}$ лучшая загрузка — ${{A2.e.set}}$ ценностью ${{A2.e.ip}}$."
+    },
+    "review": {
+     "en": "Sorting solves the relaxation only with one row. With several resources there is no single density, and the relaxation needs a real LP solver.",
+     "ru": "Сортировка решает релаксацию только при одной строке. При нескольких ресурсах единой плотности нет, и для релаксации нужен настоящий решатель ЛП."
+    },
+    "mistakes": []
+   },
+   "A3": {
+    "hints": [
+     {
+      "en": "The relaxation fills the densest kind up to $u$ copies, then the next one. For the integers, try each number of copies of the densest kind.",
+      "ru": "Релаксация заполняет самый плотный вид до $u$ копий, затем следующий. Для целых переберите число копий самого плотного вида."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "The third kind is the densest, then the second. The relaxation takes $u$ copies of the third and the fraction of the second that fills the rest: $U={{A3.lpTex}}\\approx{{A3.lp}}$.",
+       "ru": "Самый плотный — третий вид, за ним второй. Релаксация берёт $u$ копий третьего и такую долю второго, что заполняет остаток: $U={{A3.lpTex}}\\approx{{A3.lp}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "Rounding that down and filling greedily in whole copies gives ${{A3.greedy}}$. Two copies fewer of the densest kind leave room for two more of the second: the optimum is $x={{A3.x}}$ with value ${{A3.ip}}$, and the capacity is used to the last unit.",
+       "ru": "Если округлить это вниз и дозаполнить жадно целыми копиями, получится ${{A3.greedy}}$. Если взять на две копии самого плотного вида меньше, освободится место ещё для двух копий второго: оптимум $x={{A3.x}}$ со значением ${{A3.ip}}$, и вместимость использована до последней единицы."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "$U={{A3.lpTex}}\\approx{{A3.lp}}$, optimum ${{A3.ip}}$ at $x={{A3.x}}$.",
+     "ru": "$U={{A3.lpTex}}\\approx{{A3.lp}}$, оптимум ${{A3.ip}}$ при $x={{A3.x}}$."
+    },
+    "erratumAnswer": {
+     "en": "With $W={{A3.err.W}}$ the relaxation gives ${{A3.e.lpTex}}$ and the optimum is ${{A3.e.ip}}$ at $x={{A3.e.x}}$.",
+     "ru": "При $W={{A3.err.W}}$ релаксация даёт ${{A3.e.lpTex}}$, а оптимум равен ${{A3.e.ip}}$ при $x={{A3.e.x}}$."
+    },
+    "review": {
+     "en": "The best integer solution does not have to contain as much of the densest item as possible. Copies are integer variables with an upper bound, and the relaxation treats them like any other.",
+     "ru": "Лучшее целое решение не обязано содержать как можно больше самого плотного предмета. Копии — это целые переменные с верхней границей, и релаксация обращается с ними как с любыми другими."
+    },
+    "mistakes": []
+   },
+   "B2": {
+    "hints": [
+     {
+      "en": "Depth first will dive along the dense items and hit several infeasible children before it finds a packing. Best bound may meet a packing as the child of an expanded node; compare every open node with it before expanding.",
+      "ru": "Поиск в глубину нырнёт по плотным предметам и встретит несколько недопустимых потомков, прежде чем найдёт укладку. Поиск по лучшей оценке может встретить укладку как потомка раскрытого узла; сравнивайте с ней каждый открытый узел перед раскрытием."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "The density order is ${{B2.order}}$ and the root bound is ${{B2.root}}$. Depth first goes down the branches $x_j=1$ and meets three infeasible children before the first packing, worth the first incumbent in the log: $${{B2.table}}$$ That is {{B2.dfs}} nodes.",
+       "ru": "Порядок по плотности: ${{B2.order}}$, оценка корня ${{B2.root}}$. Поиск в глубину идёт вниз по веткам $x_j=1$ и встречает три недопустимых потомка до первой укладки, которая даёт первый рекорд в журнале: $${{B2.table}}$$ Всего {{B2.dfs}} узлов."
+      }
+     },
+     {
+      "text": {
+       "en": "Best bound expands the root's child with the larger bound, and one of its children is already a packing worth ${{B2.ip}}$. It then expands the only open node still above that value; its children are infeasible or below it, and the root's other child, below the incumbent, is never expanded. It computes {{B2.best}} bounds.",
+       "ru": "Поиск по лучшей оценке раскрывает потомка корня с большей оценкой, и один из его потомков уже оказывается укладкой ценностью ${{B2.ip}}$. Затем он раскрывает единственный открытый узел, оценка которого ещё выше этого значения; его потомки недопустимы или ниже, а второй потомок корня, лежащий ниже рекорда, так и не раскрывается. Он вычисляет {{B2.best}} оценок."
+      }
+     },
+     {
+      "text": {
+       "en": "Both end with the optimum ${{B2.ip}}$, items ${{B2.set}}$.",
+       "ru": "Оба приходят к оптимуму ${{B2.ip}}$, предметы ${{B2.set}}$."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "Depth first {{B2.dfs}} nodes, best bound {{B2.best}}, optimum ${{B2.ip}}$.",
+     "ru": "В глубину {{B2.dfs}} узлов, по лучшей оценке {{B2.best}}, оптимум ${{B2.ip}}$."
+    },
+    "erratumAnswer": {
+     "en": "With $W={{B2.err.W}}$: depth first {{B2.e.dfs}} nodes, best bound {{B2.e.best}}, optimum ${{B2.e.ip}}$.",
+     "ru": "При $W={{B2.err.W}}$: в глубину {{B2.e.dfs}} узлов, по лучшей оценке {{B2.e.best}}, оптимум ${{B2.e.ip}}$."
+    },
+    "review": {
+     "en": "Depth first wastes nodes when its first incumbent is weak; best bound spends memory on open nodes. Solvers mix the two: dive for an incumbent, then work on the best bound.",
+     "ru": "Поиск в глубину тратит узлы, если первый рекорд слабый; поиск по лучшей оценке тратит память на открытые узлы. Солверы смешивают оба: ныряют за рекордом, а затем работают с лучшей оценкой."
+    },
+    "mistakes": []
+   },
+   "B3": {
+    "hints": [
+     {
+      "en": "Both rows are tight at the LP optimum. In the row $x_1+\\alpha s_1+\\beta s_2=\\gamma$ keep the fractional parts: $\\{\\alpha\\}s_1+\\{\\beta\\}s_2\\ge\\{\\gamma\\}$, then replace the slacks by their expressions in $x$.",
+      "ru": "В оптимуме ЛП обе строки выполняются как равенства. В строке $x_1+\\alpha s_1+\\beta s_2=\\gamma$ оставьте дробные части: $\\{\\alpha\\}s_1+\\{\\beta\\}s_2\\ge\\{\\gamma\\}$, затем выразите дополнительные переменные через $x$."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "Both rows tight give $x={{B3.xTex}}$ with $z={{B3.zTex}}={{B3.z}}$; both variables are fractional.",
+       "ru": "Обе строки как равенства дают $x={{B3.xTex}}$ и $z={{B3.zTex}}={{B3.z}}$; обе переменные дробные."
+      }
+     },
+     {
+      "text": {
+       "en": "With $x_1,x_2$ basic the row of $x_1$ is $${{B3.row}}$$ The fractional parts of $-\\tfrac{1}{5}$ and $\\tfrac{1}{5}$ are $\\tfrac{4}{5}$ and $\\tfrac{1}{5}$, so the cut is $${{B3.fracRow}}$$",
+       "ru": "Когда $x_1,x_2$ базисные, строка $x_1$ такова: $${{B3.row}}$$ Дробные части $-\\tfrac{1}{5}$ и $\\tfrac{1}{5}$ равны $\\tfrac{4}{5}$ и $\\tfrac{1}{5}$, поэтому отсечение: $${{B3.fracRow}}$$"
+      }
+     },
+     {
+      "text": {
+       "en": "Substitute $s_1=b_1-6x_1-2x_2$ and $s_2=b_2-x_1-2x_2$: the $x$-terms add up to $-2x_1-2x_2$ and the inequality becomes $x_1+x_2\\le{{B3.rhs}}$. The current optimum has $x_1+x_2>{{B3.rhs}}$, so it is cut off, while every integer point satisfies the cut.",
+       "ru": "Подставим $s_1=b_1-6x_1-2x_2$ и $s_2=b_2-x_1-2x_2$: слагаемые с $x$ дают $-2x_1-2x_2$, и неравенство превращается в $x_1+x_2\\le{{B3.rhs}}$. У текущего оптимума $x_1+x_2>{{B3.rhs}}$, поэтому он отсекается, а все целые точки отсечению удовлетворяют."
+      }
+     },
+     {
+      "text": {
+       "en": "With the cut the LP optimum moves to ${{B3.after}}$ with value ${{B3.zAfter}}$. That point is integral, so it is the integer optimum: one cut closed the gap.",
+       "ru": "С отсечением оптимум ЛП переходит в ${{B3.after}}$ со значением ${{B3.zAfter}}$. Эта точка целая, значит, это целый оптимум: одно отсечение закрыло разрыв."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "$z={{B3.zTex}}={{B3.z}}$, the cut $x_1+x_2\\le{{B3.rhs}}$, after it $z={{B3.zAfter}}$ at ${{B3.after}}$.",
+     "ru": "$z={{B3.zTex}}={{B3.z}}$, отсечение $x_1+x_2\\le{{B3.rhs}}$, после него $z={{B3.zAfter}}$ в ${{B3.after}}$."
+    },
+    "erratumAnswer": {
+     "en": "With $b_1={{B3.err.b}}$ the LP optimum is ${{B3.e.xTex}}$ with $z={{B3.e.zTex}}$, the cut is again $x_1+x_2\\le{{B3.e.rhs}}$, and after it $z={{B3.e.zAfter}}$.",
+     "ru": "При $b_1={{B3.err.b}}$ оптимум ЛП равен ${{B3.e.xTex}}$, $z={{B3.e.zTex}}$, отсечение снова $x_1+x_2\\le{{B3.e.rhs}}$, а после него $z={{B3.e.zAfter}}$."
+    },
+    "review": {
+     "en": "Gomory's cut is valid for every integer point because the slacks are integers too when the data are. Usually one cut is not enough; solvers add many, mostly at the root, and then branch.",
+     "ru": "Отсечение Гомори верно для всех целых точек, потому что при целых данных дополнительные переменные тоже целые. Обычно одного отсечения мало; солверы добавляют много, в основном в корне, а затем ветвятся."
+    },
+    "mistakes": []
+   },
+   "C2": {
+    "hints": [
+     {
+      "en": "Go left to right; each cell looks back by $w_1$, $w_2$ and $w_3$ in the same row. Remember which item won in each cell to recover the copies.",
+      "ru": "Идите слева направо; каждая клетка смотрит назад на $w_1$, $w_2$ и $w_3$ в той же строке. Запоминайте, какой предмет победил в клетке, чтобы восстановить копии."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "The row is $D={{C2.D}}$ for $c=0,1,\\dots,W$. The corner is $D(W)={{C2.opt}}$.",
+       "ru": "Строка равна $D={{C2.D}}$ для $c=0,1,\\dots,W$. В углу $D(W)={{C2.opt}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "Walking back by the winning items gives the copies $x={{C2.x}}$: they use the whole capacity.",
+       "ru": "Обратный ход по победившим предметам даёт копии $x={{C2.x}}$: они занимают всю вместимость."
+      }
+     },
+     {
+      "text": {
+       "en": "The third kind is the densest. Taking it as often as it fits leaves a remainder that no item fills, and the greedy load is worth ${{C2.greedy}}$.",
+       "ru": "Самый плотный — третий вид. Если брать его сколько влезет, останется остаток, который ничем не заполнить, и жадная загрузка стоит ${{C2.greedy}}$."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "$D(W)={{C2.opt}}$ with $x={{C2.x}}$; greedy ${{C2.greedy}}$.",
+     "ru": "$D(W)={{C2.opt}}$ при $x={{C2.x}}$; жадное правило ${{C2.greedy}}$."
+    },
+    "erratumAnswer": {
+     "en": "With $W={{C2.err.W}}$: $D(W)={{C2.e.opt}}$ with $x={{C2.e.x}}$.",
+     "ru": "При $W={{C2.err.W}}$: $D(W)={{C2.e.opt}}$ при $x={{C2.e.x}}$."
+    },
+    "review": {
+     "en": "The only change from the 0–1 table is where the second option looks: the same row instead of the previous one. One row of memory suffices, scanned upwards here and downwards for the 0–1 case.",
+     "ru": "Единственное отличие от таблицы 0–1 — куда смотрит второй вариант: в ту же строку, а не в предыдущую. Хватает одной строки памяти, которую здесь проходим вверх, а в случае 0–1 — вниз."
+    },
+    "mistakes": []
+   },
+   "C3": {
+    "hints": [
+     {
+      "en": "Start from $\\{0\\}$ and add each weight to everything already reachable; the downward scan stops a weight from being used twice.",
+      "ru": "Начните с $\\{0\\}$ и прибавляйте каждый вес ко всему уже достижимому; проход вниз не даёт использовать вес дважды."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "After all four weights the reachable totals up to $W$ are ${{C3.reach}}$: ${{C3.count}}$ of them.",
+       "ru": "После всех четырёх весов достижимые суммы до $W$ таковы: ${{C3.reach}}$, их ${{C3.count}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "The largest is ${{C3.best}}$, short of $W$, so no subset sums to $W$ and the knapsack with $p_i=w_i$ has optimum ${{C3.best}}$, not $W$.",
+       "ru": "Наибольшая — ${{C3.best}}$, меньше $W$, поэтому ни одно подмножество не даёт в сумме $W$, и у рюкзака с $p_i=w_i$ оптимум ${{C3.best}}$, а не $W$."
+      }
+     },
+     {
+      "text": {
+       "en": "The row has $W+1$ booleans and each weight scans it once: $O(nW)$ again, which is why subset sum, an NP-complete problem, is easy for small $W$.",
+       "ru": "В строке $W+1$ логических значений, и каждый вес проходит её один раз: снова $O(nW)$, поэтому задача о сумме подмножества, NP-полная, проста при небольшом $W$."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "${{C3.count}}$ reachable totals, the largest ${{C3.best}}$; the optimum is not $W$.",
+     "ru": "Достижимых сумм ${{C3.count}}$, наибольшая ${{C3.best}}$; оптимум не равен $W$."
+    },
+    "erratumAnswer": {
+     "en": "With $W={{C3.err.W}}$ there are ${{C3.e.count}}$ reachable totals, the largest ${{C3.e.best}}$, which is the target: the optimum equals $W$.",
+     "ru": "При $W={{C3.err.W}}$ достижимых сумм ${{C3.e.count}}$, наибольшая ${{C3.e.best}}$ — это и есть цель: оптимум равен $W$."
+    },
+    "review": {
+     "en": "Deciding whether a knapsack can be filled exactly is subset sum; a fast algorithm for the knapsack would decide it. The table is fast only because $W$ is small.",
+     "ru": "Решить, можно ли заполнить рюкзак точно, — это задача о сумме подмножества; быстрый алгоритм для рюкзака решал бы и её. Таблица быстра лишь потому, что $W$ мало."
+    },
+    "mistakes": []
+   },
+   "D2": {
+    "hints": [
+     {
+      "en": "In a maximization a bonus $z$ wants to grow and needs upper bounds; a penalty wants to shrink and needs a lower bound.",
+      "ru": "В задаче максимизации бонус $z$ хочет расти, и ему нужны ограничения сверху; штраф хочет уменьшиться, и ему нужно ограничение снизу."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "The two bonuses get $z\\le x_i$ and $z\\le x_{i+1}$; the objective pushes them up, so they equal $1$ exactly when both stands are chosen. The penalty gets $z_{2,3}\\ge x_2+x_3-1$; the objective pushes it down to $0$ unless both are chosen. That is ${{D2.ncons}}$ rows.",
+       "ru": "Двум бонусам нужны $z\\le x_i$ и $z\\le x_{i+1}$; цель толкает их вверх, поэтому они равны $1$ ровно тогда, когда выбраны оба стенда. Штрафу нужно $z_{2,3}\\ge x_2+x_3-1$; цель толкает его вниз к $0$, если только оба не выбраны. Итого ${{D2.ncons}}$ строк."
+      }
+     },
+     {
+      "text": {
+       "en": "Checking the subsets within the budget, the best is ${{D2.set}}$ with value ${{D2.ip}}$: stand $2$ is dropped to avoid the penalty.",
+       "ru": "Перебирая подмножества в рамках бюджета, находим лучшее: ${{D2.set}}$ с ценностью ${{D2.ip}}$; стенд $2$ исключён, чтобы избежать штрафа."
+      }
+     },
+     {
+      "text": {
+       "en": "With only $z_{2,3}\\le x_2$, $z_{2,3}\\le x_3$ the solver is free to set $z_{2,3}=0$ even when both stands are chosen, so the penalty is never paid. It picks ${{D2.wrongSet}}$ and reports ${{D2.wrong}}$, a value no real plan reaches.",
+       "ru": "Если оставить только $z_{2,3}\\le x_2$, $z_{2,3}\\le x_3$, солвер может положить $z_{2,3}=0$ даже при обоих выбранных стендах, и штраф никогда не платится. Он выберет ${{D2.wrongSet}}$ и сообщит ${{D2.wrong}}$ — значение, недостижимое ни одним реальным планом."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "Optimum ${{D2.ip}}$ with stands ${{D2.set}}$; with the wrong rows ${{D2.wrong}}$; ${{D2.ncons}}$ rows.",
+     "ru": "Оптимум ${{D2.ip}}$ со стендами ${{D2.set}}$; с неверными строками ${{D2.wrong}}$; строк ${{D2.ncons}}$."
+    },
+    "erratumAnswer": {
+     "en": "With the penalty ${{D2.err.bonus}}$ it is worth paying: the optimum is ${{D2.e.ip}}$ with stands ${{D2.e.set}}$.",
+     "ru": "При штрафе ${{D2.err.bonus}}$ его выгодно заплатить: оптимум ${{D2.e.ip}}$ со стендами ${{D2.e.set}}$."
+    },
+    "review": {
+     "en": "Which half of the linearization a product needs depends on the sign of its coefficient. A wrong half does not raise an error; it gives a confident wrong answer.",
+     "ru": "Какая половина линеаризации нужна произведению, зависит от знака его коэффициента. Неверная половина не вызывает ошибки, а даёт уверенный неверный ответ."
+    },
+    "mistakes": []
+   },
+   "D3": {
+    "hints": [
+     {
+      "en": "In the aggregated relaxation each shop takes its cheaper warehouse and $y_j$ only has to cover a quarter per shop. In the other one $y_j$ must be at least the largest $x_{ij}$.",
+      "ru": "В суммарной релаксации каждый магазин берёт более дешёвый склад, а $y_j$ должно покрыть лишь по четверти на магазин. В другой $y_j$ не меньше наибольшего $x_{ij}$."
+     }
+    ],
+    "steps": [
+     {
+      "text": {
+       "en": "Aggregated: every shop goes to its cheaper warehouse, and $y={{D3.yWeak}}$ just covers them, paying a fraction of each opening cost. The LP value is ${{D3.weak}}$.",
+       "ru": "Суммарные строки: каждый магазин идёт на свой более дешёвый склад, а $y={{D3.yWeak}}$ лишь покрывает их, оплачивая долю каждого открытия. Значение ЛП ${{D3.weak}}$."
+      }
+     },
+     {
+      "text": {
+       "en": "Disaggregated: a shop served half from a warehouse forces half of that warehouse open, and fractional $y$ no longer saves anything. The LP value is ${{D3.strong}}$, and its optimum is already integral.",
+       "ru": "Раздельные строки: магазин, обслуживаемый наполовину со склада, заставляет открыть этот склад наполовину, и дробные $y$ больше ничего не экономят. Значение ЛП ${{D3.strong}}$, и его оптимум уже целый."
+      }
+     },
+     {
+      "text": {
+       "en": "The integer optimum opens warehouse ${{D3.open}}$ only and costs ${{D3.ip}}$, equal to the stronger bound.",
+       "ru": "Целый оптимум открывает только склад ${{D3.open}}$ и стоит ${{D3.ip}}$ — столько же, сколько сильная оценка."
+      }
+     }
+    ],
+    "answerText": {
+     "en": "LP values ${{D3.weak}}$ and ${{D3.strong}}$, optimum ${{D3.ip}}$.",
+     "ru": "Значения ЛП ${{D3.weak}}$ и ${{D3.strong}}$, оптимум ${{D3.ip}}$."
+    },
+    "erratumAnswer": {
+     "en": "With the first warehouse at ${{D3.err.f}}$: LP values ${{D3.e.weak}}$ and ${{D3.e.strong}}$, optimum ${{D3.e.ip}}$.",
+     "ru": "При стоимости первого склада ${{D3.err.f}}$: значения ЛП ${{D3.e.weak}}$ и ${{D3.e.strong}}$, оптимум ${{D3.e.ip}}$."
+    },
+    "review": {
+     "en": "Both models have the same integer points; only the relaxation differs. The disaggregated rows are implied by integrality, and writing them out gives the LP that knowledge for free.",
+     "ru": "У обеих моделей одни и те же целые точки; различаются лишь релаксации. Раздельные строки следуют из целочисленности, и, выписав их, мы даром передаём это знание ЛП."
+    },
+    "mistakes": []
+   }
+  },
+  "handout": {
+   "intro": {
+    "en": "This handout follows seminar 10. It starts from the 0–1 knapsack and its relaxation, builds branch and bound and dynamic programming on it, then turns to modelling with binary variables. Every problem of the seminar is here with its full solution.",
+    "ru": "Этот конспект сопровождает семинар 10. Он начинается с рюкзака 0–1 и его релаксации, строит на нём метод ветвей и границ и динамическое программирование, а затем переходит к моделированию двоичными переменными. Все задачи семинара приведены здесь с полными решениями."
+   },
+   "convention": {
+    "en": "Maximization unless stated otherwise. Profits $p_i>0$, weights $w_i>0$, capacity $W$; $x_i\\in\\{0,1\\}$ says whether item $i$ is packed. $U(N)$ is an upper bound for a node $N$ of the search, $z_{\\text{inc}}$ the value of the best feasible point found so far. $D(i,c)$ is the best profit from the first $i$ items in capacity $c$.",
+    "ru": "Максимизация, если не сказано иное. Ценности $p_i>0$, веса $w_i>0$, вместимость $W$; $x_i\\in\\{0,1\\}$ говорит, уложен ли предмет $i$. $U(N)$ — верхняя оценка для узла $N$ перебора, $z_{\\text{inc}}$ — значение лучшей найденной допустимой точки. $D(i,c)$ — лучшая ценность, которую дают первые $i$ предметов, если вместимость равна $c$."
+   },
+   "sections": [
+    {
+     "id": "knapsack",
+     "title": {
+      "en": "The knapsack and the density bound",
+      "ru": "Рюкзак и оценка по плотности"
+     },
+     "blocks": [
+      {
+       "type": "p",
+       "text": {
+        "en": "The knapsack is the simplest integer program with one constraint, and almost everything about integer optimization can be seen on it: bounds, search, tables and the gap between the relaxation and the integers.",
+        "ru": "Рюкзак — простейшая целочисленная задача с одним ограничением, и на нём видно почти всё о целочисленной оптимизации: оценки, перебор, таблицы и разрыв между релаксацией и целыми."
+       }
+      },
+      {
+       "type": "definition",
+       "title": {
+        "en": "0–1 knapsack and its relaxation",
+        "ru": "Рюкзак 0–1 и его релаксация"
+       },
+       "text": {
+        "en": "$\\max\\sum_ip_ix_i$ subject to $\\sum_iw_ix_i\\le W$, $x\\in\\{0,1\\}^n$. The relaxation keeps the objective and the row and replaces $x_i\\in\\{0,1\\}$ by $0\\le x_i\\le1$. Variants: bounded copies $0\\le x_i\\le u_i$ integer, unlimited copies $x_i\\in\\mathbb Z_{\\ge0}$, several resource rows, several knapsacks.",
+        "ru": "$\\max\\sum_ip_ix_i$ при $\\sum_iw_ix_i\\le W$, $x\\in\\{0,1\\}^n$. Релаксация сохраняет цель и строку и заменяет $x_i\\in\\{0,1\\}$ на $0\\le x_i\\le1$. Варианты: ограниченные копии $0\\le x_i\\le u_i$ целые, неограниченные копии $x_i\\in\\mathbb Z_{\\ge0}$, несколько строк ресурсов, несколько рюкзаков."
+       }
+      },
+      {
+       "type": "theorem",
+       "title": {
+        "en": "Fractional knapsack",
+        "ru": "Дробный рюкзак"
+       },
+       "text": {
+        "en": "Sort the items by density $p_i/w_i$, decreasing. Take whole items while they fit, then the fraction of the next item that fills the capacity. This solves the relaxation, and at most one variable is fractional.",
+        "ru": "Упорядочим предметы по убыванию плотности $p_i/w_i$. Берём целые предметы, пока они помещаются, затем долю следующего, заполняющую вместимость. Это решение релаксации, и дробной в нём будет не более одной переменной."
+       }
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "Take an optimal relaxed solution in which a denser item $i$ is not full while a less dense item $j$ uses weight. Moving a small weight $\\delta$ from $j$ to $i$ keeps the row and changes the profit by $\\delta(p_i/w_i-p_j/w_j)\\ge0$. Repeating this ends with a full prefix of the sorted list and one partial item, which is the greedy solution.",
+        "ru": "Возьмём оптимальное решение релаксации, в котором более плотный предмет $i$ взят не полностью, а менее плотный $j$ занимает вес. Перенос малого веса $\\delta$ от $j$ к $i$ сохраняет строку и меняет ценность на $\\delta(p_i/w_i-p_j/w_j)\\ge0$. Повторяя это, придём к полностью взятому началу упорядоченного списка и одному частичному предмету — это и есть жадное решение."
+       }
+      },
+      {
+       "type": "intuition",
+       "text": {
+        "en": "The relaxation is a sale by weight: you pay with capacity, so you buy the goods with the best price per kilogram first. Integrality is what breaks this: the last item cannot be cut.",
+        "ru": "Релаксация — это продажа на вес: платим вместимостью, поэтому сначала берём товар с лучшей ценой за килограмм. Целочисленность всё ломает: последний предмет нельзя разрезать."
+       }
+      },
+      {
+       "type": "figure",
+       "src": "fig_a1",
+       "caption": {
+        "en": "The drone of A1: its capacity taken item by item in density order, and the optimal load underneath.",
+        "ru": "Дрон из A1: вместимость, занятая предметами по убыванию плотности, и под ней оптимальная загрузка."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "A1"
+      },
+      {
+       "type": "trap",
+       "text": {
+        "en": "Rounding the relaxed solution down is a heuristic, not a method: in A1 it loses almost a third of the value. With integer profits, $\\lfloor U\\rfloor$ is the honest upper bound.",
+        "ru": "Округление решения релаксации вниз — эвристика, а не метод: в A1 оно теряет почти треть ценности. При целых ценностях честная верхняя оценка — $\\lfloor U\\rfloor$."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "A2"
+      },
+      {
+       "type": "problem",
+       "id": "A3"
+      },
+      {
+       "type": "selfcheck",
+       "question": {
+        "en": "Why does sorting by density fail to solve the relaxation with two resource rows?",
+        "ru": "Почему сортировка по плотности не решает релаксацию с двумя строками ресурсов?"
+       },
+       "answer": {
+        "en": "There is no single price per unit: an item can be light and bulky. The relaxation is a real LP, and its vertex can have two fractional variables.",
+        "ru": "Единой цены за единицу нет: предмет может быть лёгким, но объёмным. Релаксация — настоящая задача ЛП, и в её вершине могут быть две дробные переменные."
+       }
+      }
+     ]
+    },
+    {
+     "id": "bnb",
+     "title": {
+      "en": "Branch and bound",
+      "ru": "Метод ветвей и границ"
+     },
+     "blocks": [
+      {
+       "type": "p",
+       "text": {
+        "en": "Enumeration of all $2^n$ packings is a binary tree: each level fixes one variable. Branch and bound walks this tree but skips every subtree that provably holds nothing better than what it already has.",
+        "ru": "Перебор всех $2^n$ укладок — двоичное дерево: каждый уровень фиксирует одну переменную. Метод ветвей и границ ходит по этому дереву, но пропускает всякое поддерево, о котором доказано, что в нём нет ничего лучше уже найденного."
+       }
+      },
+      {
+       "type": "definition",
+       "title": {
+        "en": "Node, bound, incumbent",
+        "ru": "Узел, оценка, рекорд"
+       },
+       "text": {
+        "en": "A node $N$ fixes some variables; its completions are the packings that agree with them. $U(N)$ is a valid upper bound if every feasible completion has value at most $U(N)$; for the knapsack it is the profit of the items fixed at one plus the relaxed value of the other free items in the capacity that is left. The incumbent $z_{\\text{inc}}$ is the best feasible value found so far.",
+        "ru": "Узел $N$ закрепляет значения некоторых переменных; его продолжения — укладки, согласные с ними. $U(N)$ — верная верхняя оценка, если у каждого допустимого продолжения значение не больше $U(N)$; для рюкзака это зафиксированная ценность плюс релаксация по свободным предметам в оставшейся вместимости. Рекорд $z_{\\text{inc}}$ — лучшее найденное допустимое значение."
+       }
+      },
+      {
+       "type": "theorem",
+       "title": {
+        "en": "Pruning and exactness",
+        "ru": "Отсечение и точность"
+       },
+       "text": {
+        "en": "If $U(N)\\le z_{\\text{inc}}$, the node $N$ contains no better solution. With valid bounds and complete branching, the incumbent is optimal when no node is left open.",
+        "ru": "Если $U(N)\\le z_{\\text{inc}}$, в узле $N$ нет лучшего решения. При верных оценках и полном ветвлении рекорд оптимален, когда не осталось открытых узлов."
+       }
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "Any feasible completion $x$ of $N$ has $f(x)\\le U(N)\\le z_{\\text{inc}}$, so discarding $N$ loses nothing. Every branch fixes one more variable, so the tree is finite, and every feasible point lies in exactly one leaf that was either examined or discarded for this reason.",
+        "ru": "У любого допустимого продолжения $x$ узла $N$ выполнено $f(x)\\le U(N)\\le z_{\\text{inc}}$, поэтому, отбросив $N$, мы ничего не теряем. Каждое ветвление фиксирует ещё одну переменную, поэтому дерево конечно, и каждая допустимая точка лежит ровно в одном листе, который либо рассмотрен, либо отброшен по этой причине."
+       }
+      },
+      {
+       "type": "list",
+       "items": [
+        {
+         "en": "A node is finished in three cases: its fixed items exceed the capacity; $U(N)\\le z_{\\text{inc}}$; the relaxed optimum at the node is already a packing, which may replace the incumbent.",
+         "ru": "Узел завершается в трёх случаях: закреплённые предметы превышают вместимость; $U(N)\\le z_{\\text{inc}}$; оптимум релаксации в узле уже является укладкой, и она может заменить рекорд."
+        },
+        {
+         "en": "Branch on the fractional item of the relaxation: both children change the bound, and one of them often closes at once.",
+         "ru": "Ветвитесь по дробному предмету релаксации: оба потомка меняют оценку, и один из них часто сразу закрывается."
+        },
+        {
+         "en": "Depth first: little memory, an incumbent soon. Best bound: fewer nodes to prove optimality, more open nodes in memory.",
+         "ru": "В глубину: мало памяти и скорый рекорд. По лучшей оценке: меньше узлов до доказательства оптимальности, больше открытых узлов в памяти."
+        },
+        {
+         "en": "An unfinished run still certifies something: the incumbent bounds the optimum from below, the biggest bound among the open nodes from above.",
+         "ru": "Даже незаконченный прогон кое-что гарантирует: рекорд ограничивает оптимум снизу, а самая большая оценка среди открытых узлов — сверху."
+        }
+       ]
+      },
+      {
+       "type": "figure",
+       "src": "fig_b1",
+       "caption": {
+        "en": "The search tree of B1 with every bound: the cross is the infeasible node, the orange one is closed by its bound, the red ones are incumbents.",
+        "ru": "Дерево перебора B1 со всеми оценками: крестик — недопустимый узел, оранжевый закрыт по оценке, красные — рекорды."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "B1"
+      },
+      {
+       "type": "problem",
+       "id": "B2"
+      },
+      {
+       "type": "trap",
+       "text": {
+        "en": "Counting nodes needs a convention: whether the root, the infeasible children and the children closed at once are counted. Compare strategies only under the same convention.",
+        "ru": "Для подсчёта узлов нужна договорённость: считаются ли корень, недопустимые потомки и сразу закрытые потомки. Сравнивайте стратегии только при одной и той же договорённости."
+       }
+      }
+     ]
+    },
+    {
+     "id": "cuts",
+     "title": {
+      "en": "Cutting planes",
+      "ru": "Отсекающие плоскости"
+     },
+     "blocks": [
+      {
+       "type": "p",
+       "text": {
+        "en": "Instead of splitting the problem, one can tighten it: add an inequality that holds at each integer point and fails at the relaxed optimum found so far. Solvers do both, which is called branch and cut.",
+        "ru": "Вместо того чтобы делить задачу, её можно усилить: добавить неравенство, верное для каждой целой точки и нарушенное в найденном оптимуме релаксации. Солверы делают и то и другое, это называется методом ветвей и отсечений."
+       }
+      },
+      {
+       "type": "theorem",
+       "title": {
+        "en": "Gomory's fractional cut",
+        "ru": "Дробное отсечение Гомори"
+       },
+       "text": {
+        "en": "Let the data be integers and let a row of the optimal tableau read $x_k+\\sum_{j\\in N}\\bar a_jx_j=\\bar b$ with $\\bar b$ fractional, $N$ the nonbasic variables. Then $\\sum_{j\\in N}\\{\\bar a_j\\}x_j\\ge\\{\\bar b\\}$ holds at every integer point and fails at the LP optimum, where $\\{t\\}=t-\\lfloor t\\rfloor$.",
+        "ru": "Пусть данные целые, а строка оптимальной таблицы имеет вид $x_k+\\sum_{j\\in N}\\bar a_jx_j=\\bar b$ с дробным $\\bar b$, где $N$ — небазисные переменные. Тогда $\\sum_{j\\in N}\\{\\bar a_j\\}x_j\\ge\\{\\bar b\\}$ верно во всех целых точках и нарушено в оптимуме ЛП, где $\\{t\\}=t-\\lfloor t\\rfloor$."
+       }
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "Split each coefficient into its integer and fractional parts: $x_k+\\sum\\lfloor\\bar a_j\\rfloor x_j-\\lfloor\\bar b\\rfloor=\\{\\bar b\\}-\\sum\\{\\bar a_j\\}x_j$. At an integer point the left side is an integer, and the right side is below one, so it is at most zero. At the LP optimum all $x_j$, $j\\in N$, are zero and the right side is $\\{\\bar b\\}>0$.",
+        "ru": "Разделим каждый коэффициент на целую и дробную части: $x_k+\\sum\\lfloor\\bar a_j\\rfloor x_j-\\lfloor\\bar b\\rfloor=\\{\\bar b\\}-\\sum\\{\\bar a_j\\}x_j$. В целой точке левая часть целая, а правая меньше единицы, значит, она не больше нуля. В оптимуме ЛП все $x_j$, $j\\in N$, равны нулю, и правая часть равна $\\{\\bar b\\}>0$."
+       }
+      },
+      {
+       "type": "intuition",
+       "text": {
+        "en": "The cut slices off the corner of the polytope that holds the fractional optimum and nothing else that matters. In two variables one can see it: the line $x_1+x_2\\le d$ of B3 passes through integer points.",
+        "ru": "Отсечение срезает угол многогранника, в котором лежит дробный оптимум, и ничего важного больше. В двух переменных это видно: прямая $x_1+x_2\\le d$ из B3 проходит через целые точки."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "B3"
+      }
+     ]
+    },
+    {
+     "id": "dp",
+     "title": {
+      "en": "Dynamic programming for the knapsack",
+      "ru": "Динамическое программирование для рюкзака"
+     },
+     "blocks": [
+      {
+       "type": "p",
+       "text": {
+        "en": "With integer weights the knapsack has a second exact method. It does not search a tree; it fills a table of subproblems, each solved once from two smaller ones.",
+        "ru": "При целых весах у рюкзака есть второй точный метод. Он не ищет по дереву, а заполняет таблицу подзадач, каждая из которых решается один раз из двух меньших."
+       }
+      },
+      {
+       "type": "definition",
+       "title": {
+        "en": "State",
+        "ru": "Состояние"
+       },
+       "text": {
+        "en": "$D(i,c)$ is the best profit using only the first $i$ items in integer capacity $c$, for $0\\le i\\le n$ and $0\\le c\\le W$. The boundary values are $D(0,c)=0$, and the answer is $D(n,W)$.",
+        "ru": "$D(i,c)$ — лучшая ценность, если использовать только первые $i$ предметов при целой вместимости $c$, для $0\\le i\\le n$ и $0\\le c\\le W$. Граничные значения $D(0,c)=0$, ответ — $D(n,W)$."
+       }
+      },
+      {
+       "type": "theorem",
+       "title": {
+        "en": "The recurrence",
+        "ru": "Рекуррентное соотношение"
+       },
+       "text": {
+        "en": "$D(i,c)=D(i-1,c)$ if $w_i>c$, and $D(i,c)=\\max\\{D(i-1,c),\\ p_i+D(i-1,c-w_i)\\}$ otherwise.",
+        "ru": "$D(i,c)=D(i-1,c)$, если $w_i>c$, и $D(i,c)=\\max\\{D(i-1,c),\\ p_i+D(i-1,c-w_i)\\}$ иначе."
+       }
+      },
+      {
+       "type": "proof",
+       "text": {
+        "en": "An optimal choice among the first $i$ items either leaves item $i$ out, and is then optimal for $(i-1,c)$, or takes it, and then the rest is optimal for $(i-1,c-w_i)$. Both options are achievable, so the larger of the two is optimal. Induction on $i$ finishes the proof.",
+        "ru": "Оптимальный выбор среди первых $i$ предметов либо не берёт предмет $i$ и тогда оптимален для $(i-1,c)$, либо берёт его, и тогда остальное оптимально для $(i-1,c-w_i)$. Оба варианта достижимы, поэтому оптимален больший из них. Индукция по $i$ завершает доказательство."
+       }
+      },
+      {
+       "type": "list",
+       "items": [
+        {
+         "en": "The way back: start at $(n,W)$; when $D(i,c)=D(i-1,c)$ skip item $i$, else take it and subtract $w_i$ from $c$.",
+         "ru": "Обратный ход: начинаем с $(n,W)$; если $D(i,c)=D(i-1,c)$, пропускаем предмет $i$, иначе берём его и вычитаем $w_i$ из $c$."
+        },
+        {
+         "en": "One row of memory suffices for the value: update it from $c=W$ down to $c=w_i$, so that each item is used once.",
+         "ru": "Для значения хватает одной строки памяти: обновляйте её от $c=W$ вниз до $c=w_i$, чтобы каждый предмет использовался один раз."
+        },
+        {
+         "en": "Unlimited copies: $D(i,c)=\\max\\{D(i-1,c),\\ p_i+D(i,c-w_i)\\}$, the same row; in one row, scan upwards.",
+         "ru": "Неограниченные копии: $D(i,c)=\\max\\{D(i-1,c),\\ p_i+D(i,c-w_i)\\}$, та же строка; в одной строке проходите вверх."
+        },
+        {
+         "en": "Bounded copies: maximize over $q=0,\\dots,\\min(u_i,\\lfloor c/w_i\\rfloor)$ copies of item $i$.",
+         "ru": "Ограниченные копии: максимум по $q=0,\\dots,\\min(u_i,\\lfloor c/w_i\\rfloor)$ копиям предмета $i$."
+        }
+       ]
+      },
+      {
+       "type": "figure",
+       "src": "fig_c1",
+       "caption": {
+        "en": "C1 as a table; the framed cells trace the packing back.",
+        "ru": "Задача C1 таблицей; клетки в рамках прослеживают укладку назад."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "C1"
+      },
+      {
+       "type": "problem",
+       "id": "C2"
+      },
+      {
+       "type": "problem",
+       "id": "C3"
+      },
+      {
+       "type": "trap",
+       "text": {
+        "en": "$O(nW)$ is not polynomial: $W$ is written with about $\\log_2W$ bits, so the table is exponential in the input length. Multiplying all weights and the capacity by a thousand leaves the problem the same and makes the table about a thousand times larger.",
+        "ru": "$O(nW)$ — не полиномиальное время: $W$ записывается примерно $\\log_2W$ битами, поэтому таблица экспоненциальна по длине входа. Если умножить все веса и вместимость на тысячу, задача не изменится, а таблица вырастет примерно в тысячу раз."
+       }
+      },
+      {
+       "type": "selfcheck",
+       "question": {
+        "en": "When would you choose branch and bound over the table?",
+        "ru": "Когда стоит выбрать ветви и границы, а не таблицу?"
+       },
+       "answer": {
+        "en": "When the weights are large or not integers, when the bounds are strong, or when only one capacity matters. The table wins with small integer capacities or when every capacity is needed.",
+        "ru": "Когда веса велики или не целые, когда оценки сильные или когда важна только одна вместимость. Таблица выигрывает при небольших целых вместимостях или когда нужны все вместимости сразу."
+       }
+      }
+     ]
+    },
+    {
+     "id": "modelling",
+     "title": {
+      "en": "Binary variables in models",
+      "ru": "Двоичные переменные в моделях"
+     },
+     "blocks": [
+      {
+       "type": "p",
+       "text": {
+        "en": "Most practical integer models are linear programs with a few binary switches. The switches carry logic, fixed costs and interactions; the art is to write them so that the relaxation stays close to the integers.",
+        "ru": "Большинство практических целочисленных моделей — линейные задачи с несколькими двоичными переключателями. Переключатели несут логику, фиксированные затраты и взаимодействия; искусство в том, чтобы записать их так, чтобы релаксация оставалась близкой к целым."
+       }
+      },
+      {
+       "type": "list",
+       "items": [
+        {
+         "en": "If $A$ then $B$: $y_A\\le y_B$. Not both: $y_A+y_B\\le1$. At most $k$ of a set: $\\sum y_i\\le k$. Exactly one: $\\sum y_i=1$.",
+         "ru": "Если $A$, то $B$: $y_A\\le y_B$. Не оба: $y_A+y_B\\le1$. Не больше $k$ из набора: $\\sum y_i\\le k$. Ровно один: $\\sum y_i=1$."
+        },
+        {
+         "en": "Fixed charge: $x\\le u\\,y$ with a valid bound $u$, and $-f\\,y$ in the objective. The smaller the valid $u$, the stronger the relaxation.",
+         "ru": "Фиксированные затраты: $x\\le u\\,y$ с верной границей $u$ и $-f\\,y$ в цели. Чем меньше верная граница $u$, тем сильнее релаксация."
+        },
+        {
+         "en": "Product of binaries $z=x_ix_j$: $z\\le x_i$, $z\\le x_j$, $z\\ge x_i+x_j-1$, $z\\ge0$; keep only the side the objective pushes against.",
+         "ru": "Произведение двоичных $z=x_ix_j$: $z\\le x_i$, $z\\le x_j$, $z\\ge x_i+x_j-1$, $z\\ge0$; оставляйте только ту сторону, против которой давит цель."
+        },
+        {
+         "en": "Binary times continuous $z=y\\,x$ with $0\\le x\\le u$: $z\\le u\\,y$, $z\\le x$, $z\\ge x-u(1-y)$, $z\\ge0$.",
+         "ru": "Двоичная на непрерывную $z=y\\,x$ при $0\\le x\\le u$: $z\\le u\\,y$, $z\\le x$, $z\\ge x-u(1-y)$, $z\\ge0$."
+        }
+       ]
+      },
+      {
+       "type": "problem",
+       "id": "D1"
+      },
+      {
+       "type": "problem",
+       "id": "D2"
+      },
+      {
+       "type": "trap",
+       "text": {
+        "en": "A missing half of a linearization raises no error. The solver simply exploits the gap and reports a value that no real plan reaches, as in D2.",
+        "ru": "Пропущенная половина линеаризации не вызывает ошибки. Солвер просто пользуется лазейкой и сообщает значение, которого не достигает ни один реальный план, как в D2."
+       }
+      }
+     ]
+    },
+    {
+     "id": "formulations",
+     "title": {
+      "en": "Strong and weak formulations",
+      "ru": "Сильные и слабые модели"
+     },
+     "blocks": [
+      {
+       "type": "definition",
+       "title": {
+        "en": "Stronger formulation",
+        "ru": "Более сильная модель"
+       },
+       "text": {
+        "en": "Two formulations of the same set of integer points are compared by their relaxations: $P_1$ is stronger than $P_2$ if $P_1\\subseteq P_2$. The ideal formulation is the convex hull of the integer points, where every vertex is integral.",
+        "ru": "Две модели одного и того же множества целых точек сравнивают по релаксациям: $P_1$ сильнее $P_2$, если $P_1\\subseteq P_2$. Идеальная модель — выпуклая оболочка целых точек, у которой все вершины целые."
+       }
+      },
+      {
+       "type": "theorem",
+       "title": {
+        "en": "Bounds of nested relaxations",
+        "ru": "Оценки вложенных релаксаций"
+       },
+       "kind": "proposition",
+       "text": {
+        "en": "If $P_1\\subseteq P_2$, then for a maximization $\\max_{P_1}c^{\\top}x\\le\\max_{P_2}c^{\\top}x$: the stronger formulation gives a bound at least as good, and branch and bound closes more nodes with it.",
+        "ru": "Если $P_1\\subseteq P_2$, то для максимизации $\\max_{P_1}c^{\\top}x\\le\\max_{P_2}c^{\\top}x$: более сильная модель даёт не худшую оценку, и метод ветвей и границ закрывает с ней больше узлов."
+       }
+      },
+      {
+       "type": "problem",
+       "id": "D3"
+      },
+      {
+       "type": "intuition",
+       "text": {
+        "en": "The aggregated row $\\sum_ix_{ij}\\le m\\,y_j$ lets a warehouse serve some shops fully while paying only a fraction of its opening cost; the rows $x_{ij}\\le y_j$ say what integrality says anyway, that a shop can only use an open warehouse.",
+        "ru": "Суммарная строка $\\sum_ix_{ij}\\le m\\,y_j$ позволяет складу полностью обслужить часть магазинов, заплатив лишь долю стоимости открытия; строки $x_{ij}\\le y_j$ говорят то, что и так следует из целочисленности: магазин может пользоваться только открытым складом."
+       }
+      }
+     ]
+    },
+    {
+     "id": "cats",
+     "title": {
+      "en": "The cat sudoku",
+      "ru": "Котосудоку"
+     },
+     "blocks": [
+      {
+       "type": "p",
+       "text": {
+        "en": "The puzzle of block G is a feasibility problem in binaries: one cat per row, column and region, no two touching. Its solver on the page is a depth-first search over rows that closes a node as soon as a row or a region has no cell left, that is, branch and bound with infeasibility as the only bound.",
+        "ru": "Головоломка блока G — задача допустимости в двоичных переменных: по коту на строку, столбец и область, никакие два не касаются. Решатель на странице — поиск в глубину по строкам, закрывающий узел, как только в строке или области не остаётся клеток, то есть метод ветвей и границ, где единственная оценка — недопустимость."
+       }
+      },
+      {
+       "type": "p",
+       "text": {
+        "en": "Written as an integer program, it has the rows of the model in block G. The square inequalities are the stronger choice: a solver with them usually needs no branching at all on small boards.",
+        "ru": "Как целочисленная задача она имеет строки модели из блока G. Неравенства по квадратам — более сильный выбор: на небольших полях солверу с ними обычно вовсе не нужно ветвиться."
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "cheatsheet": {
+   "sections": [
+    {
+     "id": "knap",
+     "title": {
+      "en": "Knapsack",
+      "ru": "Рюкзак"
+     },
+     "items": [
+      {
+       "en": "$\\max p^{\\top}x$, $w^{\\top}x\\le W$, $x\\in\\{0,1\\}^n$; relaxation $0\\le x\\le1$.",
+       "ru": "$\\max p^{\\top}x$, $w^{\\top}x\\le W$, $x\\in\\{0,1\\}^n$; релаксация $0\\le x\\le1$."
+      },
+      {
+       "en": "Relaxation: sort by $p_i/w_i$, whole items, one fraction; value $U$.",
+       "ru": "Релаксация: сортировка по $p_i/w_i$, целые предметы, одна доля; значение $U$."
+      },
+      {
+       "en": "Integer profits: $\\text{opt}\\le\\lfloor U\\rfloor$. Rounding down is only a heuristic.",
+       "ru": "Целые ценности: $\\text{opt}\\le\\lfloor U\\rfloor$. Округление вниз — лишь эвристика."
+      }
+     ]
+    },
+    {
+     "id": "bnb",
+     "title": {
+      "en": "Branch and bound",
+      "ru": "Ветви и границы"
+     },
+     "items": [
+      {
+       "en": "Node $N$: fixed variables; $U(N)$ = fixed profit + relaxation of the rest.",
+       "ru": "Узел $N$: зафиксированные переменные; $U(N)$ = зафиксированная ценность + релаксация остального."
+      },
+      {
+       "en": "Close if infeasible, if $U(N)\\le z_{\\text{inc}}$, or if integral (update $z_{\\text{inc}}$).",
+       "ru": "Закрыть, если недопустим, если $U(N)\\le z_{\\text{inc}}$ или если целый (обновить $z_{\\text{inc}}$)."
+      },
+      {
+       "en": "Branch on the fractional variable: $x_j=1$, $x_j=0$.",
+       "ru": "Ветвиться по дробной переменной: $x_j=1$, $x_j=0$."
+      },
+      {
+       "en": "Depth first: memory, early incumbent. Best bound: fewer nodes.",
+       "ru": "В глубину: память, ранний рекорд. По лучшей оценке: меньше узлов."
+      },
+      {
+       "en": "Any time: $z_{\\text{inc}}\\le\\text{opt}\\le\\max\\bigl(z_{\\text{inc}},\\max_{\\text{open}}U(N)\\bigr)$.",
+       "ru": "В любой момент: $z_{\\text{inc}}\\le\\text{opt}\\le\\max\\bigl(z_{\\text{inc}},\\max_{\\text{open}}U(N)\\bigr)$."
+      }
+     ]
+    },
+    {
+     "id": "cut",
+     "title": {
+      "en": "Gomory cut",
+      "ru": "Отсечение Гомори"
+     },
+     "items": [
+      {
+       "en": "Row $x_k+\\sum_N\\bar a_jx_j=\\bar b$, $\\bar b\\notin\\mathbb Z$: $\\sum_N\\{\\bar a_j\\}x_j\\ge\\{\\bar b\\}$.",
+       "ru": "Строка $x_k+\\sum_N\\bar a_jx_j=\\bar b$, $\\bar b\\notin\\mathbb Z$: $\\sum_N\\{\\bar a_j\\}x_j\\ge\\{\\bar b\\}$."
+      },
+      {
+       "en": "Valid for integer points, violated by the LP optimum; substitute slacks to get it in $x$.",
+       "ru": "Верно для целых точек, нарушено оптимумом ЛП; подставьте дополнительные переменные, чтобы записать в $x$."
+      }
+     ]
+    },
+    {
+     "id": "dp",
+     "title": {
+      "en": "The DP table",
+      "ru": "Таблица ДП"
+     },
+     "items": [
+      {
+       "en": "$D(i,c)=\\max\\{D(i-1,c),\\,p_i+D(i-1,c-w_i)\\}$, $D(0,c)=0$, answer $D(n,W)$.",
+       "ru": "$D(i,c)=\\max\\{D(i-1,c),\\,p_i+D(i-1,c-w_i)\\}$, $D(0,c)=0$, ответ $D(n,W)$."
+      },
+      {
+       "en": "Back: $D(i,c)=D(i-1,c)\\Rightarrow$ out; else in, $c\\mathrel{-}=w_i$.",
+       "ru": "Назад: $D(i,c)=D(i-1,c)\\Rightarrow$ не взят; иначе взят, $c\\mathrel{-}=w_i$."
+      },
+      {
+       "en": "One row: $0$–$1$ scan $c$ down; unlimited copies scan up.",
+       "ru": "Одна строка: для $0$–$1$ проход по $c$ вниз; неограниченные копии — вверх."
+      },
+      {
+       "en": "$O(nW)$ is pseudo-polynomial; subset sum is the case $p=w$.",
+       "ru": "$O(nW)$ — псевдополиномиально; сумма подмножества — случай $p=w$."
+      }
+     ]
+    },
+    {
+     "id": "model",
+     "title": {
+      "en": "Binaries",
+      "ru": "Двоичные переменные"
+     },
+     "items": [
+      {
+       "en": "$A\\Rightarrow B$: $y_A\\le y_B$; at most $k$: $\\sum y\\le k$.",
+       "ru": "$A\\Rightarrow B$: $y_A\\le y_B$; не больше $k$: $\\sum y\\le k$."
+      },
+      {
+       "en": "Fixed charge: $x\\le u\\,y$, $-f\\,y$; smallest valid $u$.",
+       "ru": "Фиксированные затраты: $x\\le u\\,y$, $-f\\,y$; наименьшая верная $u$."
+      },
+      {
+       "en": "$z=x_ix_j$: $z\\le x_i$, $z\\le x_j$, $z\\ge x_i+x_j-1$.",
+       "ru": "$z=x_ix_j$: $z\\le x_i$, $z\\le x_j$, $z\\ge x_i+x_j-1$."
+      },
+      {
+       "en": "$z=y\\,x$, $0\\le x\\le u$: $z\\le uy$, $z\\le x$, $z\\ge x-u(1-y)$.",
+       "ru": "$z=y\\,x$, $0\\le x\\le u$: $z\\le uy$, $z\\le x$, $z\\ge x-u(1-y)$."
+      }
+     ]
+    },
+    {
+     "id": "forms",
+     "title": {
+      "en": "Formulations",
+      "ru": "Модели"
+     },
+     "items": [
+      {
+       "en": "$P_1\\subseteq P_2$: $P_1$ stronger, better bound, smaller tree.",
+       "ru": "$P_1\\subseteq P_2$: $P_1$ сильнее, оценка лучше, дерево меньше."
+      },
+      {
+       "en": "Disaggregate: $x_{ij}\\le y_j$ beats $\\sum_ix_{ij}\\le m\\,y_j$; cliques beat pairs.",
+       "ru": "Разделяйте: $x_{ij}\\le y_j$ лучше $\\sum_ix_{ij}\\le m\\,y_j$; клики лучше пар."
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

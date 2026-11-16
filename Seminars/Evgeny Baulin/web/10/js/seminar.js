@@ -167,11 +167,9 @@
     app.buildProblemBlock(main, 'B', { board: ['B1'], students: ['B2', 'B3'], ownTime: 'P23', reviewLocked: locked });
     var c = app.buildProblemBlock(main, 'C', { board: ['C1'], students: ['C2', 'C3'], ownTime: 'P23', reviewLocked: locked });
     var d = app.buildProblemBlock(main, 'D', { board: ['D1'], students: ['D2', 'D3'], ownTime: 'P23', reviewLocked: locked });
-    var e = app.buildProblemBlock(main, 'E', { board: ['E1'], students: ['E2', 'E3'], ownTime: 'P23', reviewLocked: locked });
     liveCell(a, 'A', 'greedy');
     liveCell(c, 'C', 'table');
     liveCell(d, 'D', 'forms');
-    liveCell(e, 'E', 'matching');
     buildBreaks(main, app);
     buildGame(main, app);
     buildWrap(main, app);
@@ -216,7 +214,7 @@
   }
 
   SEM.seminar = {
-    blocks: ['0', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'],
+    blocks: ['0', 'A', 'B', 'C', 'D', 'F', 'G', 'H'],
     timerDefault: 'timeline.sec.A.P23',
     buildMain: buildMain,
     buildOverview: buildOverview,

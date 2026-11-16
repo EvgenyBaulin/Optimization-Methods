@@ -25,8 +25,8 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
       "ru": "Для задачи максимизации любая релаксация (допустимых точек больше) даёт верхнюю оценку, а любая допустимая целая точка — нижнюю. Ветви и границы, отсечения и выбор между двумя моделями — всё это способы свести эти два числа вместе."
      },
      {
-      "en": "The plan: the knapsack and its relaxation (A), branch and bound and one cut (B), dynamic programming (C), modelling with binary variables (D), problems whose relaxation is already integral and one whose is not (E). After the demonstrations there is a puzzle with cats.",
-      "ru": "План: рюкзак и его релаксация (A), ветви и границы и одно отсечение (B), динамическое программирование (C), моделирование двоичными переменными (D), задачи, у которых релаксация сразу целая, и одна, у которой нет (E). После демонстраций — головоломка с котами."
+      "en": "The plan: the knapsack and its relaxation (A), branch and bound and one cut (B), dynamic programming (C), modelling with binary variables (D). After the demonstrations there is a puzzle with cats.",
+      "ru": "План: рюкзак и его релаксация (A), ветви и границы и одно отсечение (B), динамическое программирование (C), моделирование двоичными переменными (D). После демонстраций — головоломка с котами."
      }
     ]
    },
@@ -160,40 +160,6 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
      }
     }
    },
-   "E": {
-    "title": {
-     "en": "E. Assignment, covering and a puzzle",
-     "ru": "E. Назначения, покрытия и головоломка"
-    },
-    "short": {
-     "en": "E. Structure",
-     "ru": "E. Структура"
-    },
-    "recap": [
-     {
-      "en": "Assignment: $\\min\\sum_{ij}c_{ij}x_{ij}$, every row and every column of $x$ sums to $1$. The constraint matrix is totally unimodular, so every vertex of the relaxation is a permutation matrix and a simplex-type solver returns an integer answer.",
-      "ru": "Назначения: $\\min\\sum_{ij}c_{ij}x_{ij}$, сумма каждой строки и каждого столбца $x$ равна $1$. Матрица ограничений вполне унимодулярна, поэтому каждая вершина релаксации — матрица перестановки, и солвер симплексного типа возвращает целый ответ."
-     },
-     {
-      "en": "Covering: every element must be covered by a chosen set, $\\sum_{S\\ni e}x_S\\ge1$. Here the relaxation may stop at halves, as on an odd cycle, and the bound stays strictly below the integer optimum.",
-      "ru": "Покрытие: каждый элемент должен быть покрыт выбранным множеством, $\\sum_{S\\ni e}x_S\\ge1$. Здесь релаксация может остановиться на половинах, как на нечётном цикле, и оценка остаётся строго ниже целого оптимума."
-     },
-     {
-      "en": "A puzzle is an integer program with a constant objective: binaries $x_{rc}$, an equation per row, column and region, and inequalities that keep neighbours apart. The solver only has to find a feasible point, or prove there is none.",
-      "ru": "Головоломка — целочисленная задача с постоянной целью: двоичные $x_{rc}$, уравнение на каждую строку, столбец и область и неравенства, разводящие соседей. Солверу нужно лишь найти допустимую точку или доказать, что её нет."
-     }
-    ],
-    "live": {
-     "title": {
-      "en": "Live code: integral by structure",
-      "ru": "Живой код: целое по устройству"
-     },
-     "text": {
-      "en": "The simplex solves the relaxation of a matching in a bipartite graph and returns zeros and ones. On a triangle, which is not bipartite, the same relaxation stops at halves.",
-      "ru": "Симплекс-метод решает релаксацию паросочетания в двудольном графе и возвращает нули и единицы. На треугольнике, который не двудольный, та же релаксация останавливается на половинах."
-     }
-    }
-   },
    "F": {
     "title": {
      "en": "F. How it breaks",
@@ -218,8 +184,8 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
        "ru": "Максимизируем $x_2$ при $Ax\\le b$, где $A={{demo.round.A}}$, $b={{demo.round.b}}$, $x\\ge0$ целые. Релаксация достигает максимума в ${{demo.round.lp}}$ со значением ${{demo.round.z}}$. Из четырёх целых точек вокруг допустимы {{demo.round.nearOk}}, а целый оптимум ${{demo.round.ip}}$ имеет значение ${{demo.round.zIp}}$."
       },
       "takeaway": {
-       "en": "The LP optimum is a bound, not a draft of the answer. Round only when the structure guarantees integral vertices, as in block E.",
-       "ru": "Оптимум ЛП — оценка, а не черновик ответа. Округлять можно, только когда устройство задачи гарантирует целые вершины, как в блоке E."
+       "en": "The LP optimum is a bound, not a draft of the answer. Round only when the structure of the problem guarantees integral vertices.",
+       "ru": "Оптимум ЛП — оценка, а не черновик ответа. Округлять можно, только когда устройство задачи гарантирует целые вершины."
       }
      },
      {
@@ -329,12 +295,6 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
         "en": "A knapsack has $n={{exit.n}}$ items. How many leaves has the full enumeration tree, and what lets branch and bound skip most of them?",
         "ru": "В рюкзаке $n={{exit.n}}$ предметов. Сколько листьев у полного дерева перебора и что позволяет методу ветвей и границ пропустить большую их часть?"
        }
-      },
-      {
-       "question": {
-        "en": "An LP solver returns a fractional point for the relaxation of an assignment problem. Is the model wrong?",
-        "ru": "Солвер ЛП вернул дробную точку для релаксации задачи о назначениях. Модель неверна?"
-       }
       }
      ]
     },
@@ -380,8 +340,8 @@ Object.assign(window.SEM.content, /*JSON-BEGIN*/{
         "ru": "Своё котосудоку"
        },
        "statement": {
-        "en": "Model a puzzle of block G as an integer program for `milp`, with the square inequalities of E3. Check that your model finds the cats of the page, then add the inequality that excludes this solution and confirm that the puzzle has no other.",
-        "ru": "Запишите головоломку блока G как целочисленную задачу для `milp` с неравенствами по квадратам из E3. Проверьте, что модель находит тех же котов, что и страница, затем добавьте неравенство, исключающее это решение, и убедитесь, что других решений нет."
+        "en": "Model a puzzle of block G as an integer program for `milp`, with one inequality per $2\\times2$ square. Check that your model finds the cats of the page, then add the inequality that excludes this solution and confirm that the puzzle has no other.",
+        "ru": "Запишите головоломку блока G как целочисленную задачу для `milp` с одним неравенством на каждый квадрат $2\\times2$. Проверьте, что модель находит тех же котов, что и страница, затем добавьте неравенство, исключающее это решение, и убедитесь, что других решений нет."
        }
       }
      ]
